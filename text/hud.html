@@ -1,3 +1,6 @@
+<div id="CODEXHUDTOP">
+  <div id="CODEXSHOWCOVER">Show Cover</div>
+</div>
 <div id="CODEXHEAD">
   <div id="CODEXTOC" class="hudpanel"></div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
@@ -83,9 +86,7 @@
   <!-- This is populated when a glosspoint is tapped.
        It contains the glosses for a particular passage. -->
 </div>
-<div id="CODEXAPPSPLASH" class="hudpanel"></div>
 <div id="CODEXHELP" class="hudpanel codexhelp"></div>
-<div id="CODEXHUDHELP"></div>
 <div id="CODEXKEYBOARDHELPBOX" class="closed">
   <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
   <span class="close" onclick="Codex.keyboardHelp(false);">close</span>
@@ -116,44 +117,6 @@
   <span class="fortouch">tap</span><span class="notouch">click</span>
   here to see the book tools
 </div>
-<div id="CODEXHUDBUTTONS" class="hudpanel">
-  <div class="sbookplate">
-    <a href="https://auth.sbooks.net/admin/logout" class="logout"
-       onclick="if (Codex.refuri) Codex.clearOffline();"
-       title="logout" class="cxUSER">
-      logout</a>
-    <a href="javascript:Codex.setMode('login');" name="IDLINK"
-       class="username" id="CODEXUSERNAME">
-      (login)</a>
-  </div> <!-- .flyleafplate -->
-  <div class="tabbar icons" id="CODEXTABS">
-    <img svg="{{bmg}}codex/about_tab.svgz"
-         src="{{bmg}}codex/about_tab.png"
-         alt="About" class="tab" contentid="CODEXABOUTBOOK"
-         onclick="Codex.toggleMode('about'); return fdjt.UI.cancel(event);"
-         title="information about this book"/>
-    <img svg="{{bmg}}codex/manage_tab.svgz"
-         src="{{bmg}}codex/manage_tab.png"
-         alt="sBooks" class="tab cxUSER" contentid="SBOOKSAPP"
-         onclick="Codex.toggleMode('sbooksapp'); return fdjt.UI.cancel(event);"
-         title="manage added layers for your sBook"/>
-    <img svg="{{bmg}}codex/settings_tab.svgz"
-         src="{{bmg}}codex/settings_tab.png"
-         alt="Device" class="tab" contentid="CODEXSETTINGS"
-         onclick="Codex.toggleMode('device'); return fdjt.UI.cancel(event);"
-         title="alter appearance and interaction"/>
-    <img svg="{{bmg}}codex/console_tab.svgz"
-         src="{{bmg}}codex/console_tab.png"
-         alt="Console" class="tab" contentid="CODEXCONSOLE"
-         onclick="Codex.toggleMode('console'); return fdjt.UI.cancel(event);"
-         title="show debugging console" />
-    <img svg="{{bmg}}codex/login_tab.svgz"
-         src="{{bmg}}codex/login_tab.png"
-         alt="Login" class="tab cxNOUSER" contentid="CODEXLOGIN"
-         onclick="Codex.toggleMode('login'); return fdjt.UI.cancel(event);"
-         title="login to sBooks" />
-  </div> <!-- .tabbar -->
-</div> <!-- id="CODEXHUDBUTTONS" -->
 <div class="helphud topleft" data-hudmode="toc">
   <span class="nobreak"><span class="arrow">&#x2190;</span>browse</span><br/>
   <span class="nobreak">sections</span></div>

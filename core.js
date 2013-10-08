@@ -1147,8 +1147,7 @@ var Codex={
     
     function getCover(){
         if (Codex.cover) return Codex.cover;
-        var cover=fdjtID("CODEXCOVERPAGE")||
-            fdjtID("SBOOKCOVERPAGE")||
+        var cover=fdjtID("SBOOKCOVERPAGE")||
             fdjtID("COVERPAGE");
         if (cover) {}
         else if (Codex.coverpage) {
@@ -1158,7 +1157,7 @@ var Codex={
         // This should generate a textual cover page
         else if ((!(fdjt.ID("CODEXTITLEPAGE")))&&
                  (!(fdjt.ID("SBOOKTITLEPAGE")))) {
-            cover=fdjtDOM("div.codexcoverpage.codexfullpage#CODEXCOVERPAGE","\n",
+            cover=fdjtDOM("div.codexcoverpage.codexfullpage#SBOOKTITLEPAGE","\n",
                           ((Codex.booktitle)?
                            (fdjtDOM("h1.title",Codex.booktitle)):
                            null),

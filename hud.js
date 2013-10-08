@@ -96,22 +96,10 @@ Codex.setMode=
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);
-            // Set up the help page
-            var help=Codex.DOM.help=fdjtID("CODEXHELP");
-            help.innerHTML=fixStaticRefs(Codex.HTML.help);
-            // Set up the app splash/status page
-            var splash=Codex.DOM.appsplash=fdjtID("CODEXAPPSPLASH");
-            splash.innerHTML=fixStaticRefs(Codex.HTML.splash);
             // Setup heart
             var heart=fdjtID("CODEXHEART");
             heart.innerHTML=fixStaticRefs(Codex.HTML.heart);
             Codex.DOM.heart=heart;
-            // Setup settings
-            var settings=fdjtID("CODEXSETTINGS");
-            settings.innerHTML=fixStaticRefs(Codex.HTML.settings);
-            Codex.DOM.settings=settings;
-            var login=fdjtID("CODEXLOGIN");
-            login.innerHTML=fixStaticRefs(Codex.HTML.login);
             // Other HUD parts
             Codex.DOM.head=fdjtID("CODEXHEAD");
             Codex.DOM.heart=fdjtID("CODEXHEART");
@@ -177,9 +165,6 @@ Codex.setMode=
             input_button.onclick=consolebutton_click;
             input_console.onkeypress=consoleinput_keypress;
 
-            Codex.DOM.sbooksapp=sbooksapp=fdjtID("SBOOKSAPP");
-            Codex.DOM.sbookslogin=sbookslogin=fdjtID("CODEXLOGIN");
-            
             function messageHandler(evt){
                 var origin=evt.origin;
                 if (Codex.Trace.messages)
@@ -198,7 +183,7 @@ Codex.setMode=
                     if (!(Codex.user)) {
                         Codex.userinfo=JSON.parse(evt.data.slice(8));
                         Codex.loginUser(Codex.userinfo);
-                        Codex.setMode("splash");
+                        Codex.setMode("welcome");
                         Codex.userSetup();}}
                 else if (evt.data)
                     fdjtDOM("CODEXINTRO",evt.data);
@@ -240,6 +225,9 @@ Codex.setMode=
                 fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);
             fdjtUI.TapHold(Codex.DOM.foot,Codex.touch);
             
+            var help=Codex.DOM.help=fdjtID("CODEXHELP");
+            help.innerHTML=fixStaticRefs(Codex.HTML.help);
+
             if (Codex.Trace.startup) fdjtLog("Filling in tabs");
             fillinTabs();
             
@@ -391,26 +379,32 @@ Codex.setMode=
                 document.body.focus();}}
         Codex.setHUD=setHUD;
 
+        /* Opening and closing the cover */
+
+        function showCover(){
+            addClass(document.body,"cxCOVER");}
+        Codex.showCover=showCover;
+        function hideCover(){
+            dropClass(document.body,"cxCOVER");}
+        Codex.hideCover=hideCover;
+        
         /* Mode controls */
         
-        var CodexModes=/\b((splash)|(device)|(sbooksapp)|(scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(about)|(console)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail)|(login))\b/g;
-        var codexHeartModes=/\b((device)|(sbooksapp)|(statictoc)|(about)|(console)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(login)|(showaside)|(glossdetail))\b/g;
+        var CodexModes=/\b((scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
+        var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossdetail))\b/g;
         var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(scanning)|(tocscan)|(shownote))\b/g;
         var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
+        var CodexCoverModes=/\b((welcome)|(help)|(overlays)|(login)|(settings)|(cover)|(aboutsbooks)|(console)(aboutbook)|(titlepage))\b/g;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
              expandsearch: "CODEXALLTAGS",
              search: "CODEXSEARCHCLOUD",
              refinesearch: "CODEXSEARCHCLOUD",
-             console: "CODEXCONSOLE",
              openglossmark: "CODEXPOINTGLOSSES",
-             // sbooksapp: "SBOOKSAPP",
-             device: "CODEXSETTINGS",
-             statictoc: "CODEXSTATICTOC",
-             about: "CODEXABOUTBOOK"};
+             statictoc: "CODEXSTATICTOC"};
         var codex_mode_foci=
             {gotopage: "CODEXPAGEINPUT",
              gotoloc: "CODEXLOCINPUT",
@@ -445,6 +439,7 @@ Codex.setMode=
                 if (mode===Codex.mode) {}
                 else if (mode===true) {
                     /* True just puts up the HUD with no mode info */
+                    if (Codex.closed) openCover();
                     if (codex_mode_foci[Codex.mode]) {
                         var input=fdjtID(codex_mode_foci[Codex.mode]);
                         input.blur();}
@@ -454,6 +449,10 @@ Codex.setMode=
                     Codex.last_mode=true;}
                 else if (typeof mode !== 'string') 
                     throw new Error('mode arg not a string');
+                else if (CodexCoverModes.test(mode)) {
+                    fdjtID("CODEXCOVER").className=mode;
+                    showCover();
+                    return;}
                 else {
                     if (codex_mode_foci[Codex.mode]) {
                         var modeinput=fdjtID(codex_mode_foci[Codex.mode]);
@@ -465,7 +464,7 @@ Codex.setMode=
                 if ((mode==="sbooksapp")&&
                     (!(fdjtID("SBOOKSAPP").src))&&
                     (!(Codex.appinit)))
-                    initFlyleafApp();
+                    initIFrameApp();
                 // Update Codex.scrolling which is the scrolling
                 // element in the HUD for this mode
                 if (typeof mode !== 'string')
@@ -696,7 +695,7 @@ Codex.setMode=
                     if (refuris[i].value==='fillin')
                         refuris[i++].value=Codex.refuri;
                 else i++;}
-            fillinAboutInfo();
+
             /* Get various external APPLINK uris */
             var offlineuri=fdjtDOM.getLink("Codex.offline")||altLink("offline");
             var epuburi=fdjtDOM.getLink("Codex.epub")||altLink("ebub");
@@ -752,106 +751,9 @@ Codex.setMode=
                 return "https://offline."+uri.slice(8);
             else return false;}
 
-        function _sbookFillTemplate(template,spec,content){
-            if (!(content)) return;
-            var elt=fdjtDOM.$(spec,template);
-            if ((elt)&&(elt.length>0)) elt=elt[0];
-            else return;
-            if (typeof content === 'string')
-                elt.innerHTML=fixStaticRefs(content);
-            else if (content.cloneNode)
-                fdjtDOM.replace(elt,content.cloneNode(true));
-            else fdjtDOM(elt,content);}
-
-        function fillinAboutInfo(){
-            var about=fdjtID("CODEXABOUTBOOK");
-            var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
-            var authorabout=fdjtID("SBOOKAUTHORPAGE")||
-                fdjtID("SBOOKABOUTAUTHOR");
-            var acknowledgements=
-                fdjtID("SBOOKACKNOWLEDGEMENTSPAGE")||
-                fdjtID("SBOOKACKNOWLEDGEMENTS");
-            var metadata=fdjtDOM.Anchor(
-                "https://www.sbooks.net/publish/metadata?REFURI="+
-                    encodeURIComponent(Codex.refuri),
-                "metadata",
-                "edit metadata");
-            metadata.target="_blank";
-            metadata.title=
-                "View (and possibly edit) the metadata for this book";
-            var reviews=fdjtDOM.Anchor(
-                null,
-                // "https://www.sbooks.net/publish/reviews?REFURI="+
-                //                  encodeURIComponent(Codex.refuri),
-                "reviews",
-                "see/add reviews");
-            reviews.target="_blank";
-            reviews.title="Sorry, not yet implemented";
-            // fdjtDOM(about,fdjtDOM("div.links",metadata,reviews));
-
-            if (bookabout) fdjtDOM(about,bookabout);
-            else {
-                var title=
-                    fdjtID("SBOOKTITLE")||
-                    fdjtDOM.getMeta("Codex.title")||
-                    fdjtDOM.getMeta("SBOOK.title")||
-                    fdjtDOM.getMeta("DC.title")||
-                    fdjtDOM.getMeta("~TITLE")||
-                    document.title;
-                var byline=
-                    fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
-                    fdjtDOM.getMeta("Codex.byline")||
-                    fdjtDOM.getMeta("Codex.author")||
-                    fdjtDOM.getMeta("SBOOK.byline")||
-                    fdjtDOM.getMeta("SBOOK.author")||
-                    fdjtDOM.getMeta("BYLINE")||
-                    fdjtDOM.getMeta("AUTHOR");
-                var copyright=
-                    fdjtID("SBOOKCOPYRIGHT")||
-                    fdjtDOM.getMeta("Codex.copyright")||
-                    fdjtDOM.getMeta("Codex.rights")||
-                    fdjtDOM.getMeta("SBOOK.copyright")||
-                    fdjtDOM.getMeta("SBOOK.rights")||
-                    fdjtDOM.getMeta("COPYRIGHT")||
-                    fdjtDOM.getMeta("RIGHTS");
-                var publisher=
-                    fdjtID("SBOOKPUBLISHER")||
-                    fdjtDOM.getMeta("Codex.publisher")||
-                    fdjtDOM.getMeta("SBOOK.publisher")||                    
-                    fdjtDOM.getMeta("PUBLISHER");
-                var description=
-                    fdjtID("SBOOKDESCRIPTION")||
-                    fdjtDOM.getMeta("Codex.description")||
-                    fdjtDOM.getMeta("SBOOK.description")||
-                    fdjtDOM.getMeta("DESCRIPTION");
-                var digitized=
-                    fdjtID("SBOOKDIGITIZED")||
-                    fdjtDOM.getMeta("Codex.digitized")||
-                    fdjtDOM.getMeta("SBOOK.digitized")||
-                    fdjtDOM.getMeta("DIGITIZED");
-                var sbookified=fdjtID("SBOOK.converted")||
-                    fdjtDOM.getMeta("SBOOK.converted");
-                _sbookFillTemplate(about,".title",title);
-                _sbookFillTemplate(about,".byline",byline);
-                _sbookFillTemplate(about,".publisher",publisher);
-                _sbookFillTemplate(about,".copyright",copyright);
-                _sbookFillTemplate(about,".description",description);
-                _sbookFillTemplate(about,".digitized",digitized);
-                _sbookFillTemplate(about,".sbookified",sbookified);
-                _sbookFillTemplate(about,".about",fdjtID("SBOOKABOUT"));
-                var cover=fdjtDOM.getLink("cover");
-                if (cover) {
-                    var cover_elt=fdjtDOM.$(".cover",about)[0];
-                    if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}
-            if (authorabout) fdjtDOM(about,authorabout);
-            if (acknowledgements) {
-                var clone=acknowledgements.cloneNode(true);
-                clone.id=null;
-                fdjtDOM(about,clone);}}
-
-        var flyleaf_app_init=false;
-        function initFlyleafApp(){
-            if (flyleaf_app_init) return;
+        var iframe_app_init=false;
+        function initIFrameApp(){
+            if (iframe_app_init) return;
             if (Codex.appinit) return;
             var query="";
             if (document.location.search) {
@@ -877,8 +779,8 @@ Codex.setMode=
             if (Codex.user) {
                 appuri=appuri+"&BOOKUSER="+encodeURIComponent(Codex.user._id);}
             fdjtID("SBOOKSAPP").src=appuri;
-            flyleaf_app_init=true;}
-        Codex.initFlyleafApp=initFlyleafApp;
+            iframe_app_init=true;}
+        Codex.initIFrameApp=initIFrameApp;
 
         Codex.selectApp=function(){
             if (Codex.mode==='sbooksapp') setMode(false);

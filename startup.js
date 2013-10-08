@@ -284,6 +284,7 @@ Codex.Startup=
             catch (ex) {}}
         
         var getParent=fdjtDOM.getParent;
+        var hasParent=fdjtDOM.hasParent;
         var getChild=fdjtDOM.getChild;
 
         function updateConfig(name,id,save){
@@ -410,6 +411,14 @@ Codex.Startup=
             // scanning, graphics, layout, glosses, etc.
             readSettings();
 
+            // Create a custom stylesheet for the app
+            var style=fdjtDOM("STYLE");
+            fdjtDOM(document.head,style);
+            Codex.stylesheet=style.sheet;
+
+            // Setup the cover as soon as you can
+            setupCover();
+
             // Initialize the databases
             Codex.initDB();
 
@@ -419,10 +428,12 @@ Codex.Startup=
             // This initializes the book tools (the HUD/Heads Up Display)
             Codex.initHUD();
 
+            /*
             if (Codex.coverpage) {
                 var status_cover=fdjtID("CODEXSTATUSCOVER");
                 status_cover.src=Codex.coverpage;
                 status_cover.style.display='block';}
+                */
 
             addConfig(
                 "keepdata",
@@ -713,7 +724,7 @@ Codex.Startup=
             if (action||join||overlay) {
                 // We have args to pass to the flyleaf app, 
                 // so we initialize it:
-                Codex.initFlyleafApp();
+                Codex.initIFrameApp();
                 var appframe=fdjtID("SBOOKSAPP");
                 var appwindow=((appframe)&&(appframe.contentWindow));
                 if ((Codex.overlays)&&(join)) {
@@ -1119,7 +1130,7 @@ Codex.Startup=
                             var elt=elements[k++];
                             if (!(hasTOCLevel(elt))) elt.toclevel=i;}}}
                 i++;}
-            // These are all meta class definit6ions, which is why
+            // These are all meta class definitions, which is why
             //  they don't have regular schema prefixes
             if (getMeta("sbookignore")) 
                 Codex.ignore=new fdjtDOM.Selector(getMeta("sbookignore"));
@@ -1137,11 +1148,182 @@ Codex.Startup=
             var i=0; var lim=meta.length;
             while (i<lim) fdjtDOM.addClass(fdjtDOM.$(meta[i++]),name);}
 
+        function setupCover(){
+            var cover=fdjtID("CODEXCOVER");
+            if (!(cover)) {
+                cover=fdjtDOM("div#CODEXCOVER");
+                cover.innerHTML=Codex.HTML.cover;}
+
+            var settings=fdjtID("CODEXSETTINGS");
+            settings.innerHTML=fixStaticRefs(Codex.HTML.settings);
+            Codex.DOM.settings=settings;
+
+            var help=Codex.DOM.help=fdjtID("CODEXAPPHELP");
+            help.innerHTML=fixStaticRefs(Codex.HTML.coverhelp);
+
+            var welcome=Codex.DOM.welcome=fdjtID("CODEXWELCOME");
+            welcome.innerHTML=fixStaticRefs(Codex.HTML.welcome);
+
+            var login=Codex.DOM.sbookslogin=fdjtID("CODEXLOGIN");
+            login.innerHTML=fixStaticRefs(Codex.HTML.login);
+            
+            var console=fdjtID("CODEXCONSOLE");
+            console.innerHTML=Codex.HTML.console;
+
+            if (fdjtID("CODEXTITLEPAGE"))
+                fdjtDOM.replace(fdjtID("CODEXTITLEPAGEHOLDER"),
+                                fdjtID("CODEXTITLEPAGE"));
+            else if (fdjtID("SBOOKSTITLEPAGE")) {
+                var clone=fdjtID("SBOOKSTITLEPAGE").cloneNode(true);
+                fdjtDOM.stripIDs(clone);
+                fdjtDOM.replace(fdjtID("CODEXTITLEPAGEHOLDER"),clone);}
+            else fdjtID("CODEXTITLEPAGEHOLDER").id="CODEXTITLEPAGE";
+
+            if (fdjtID("CODEXINFOPAGE"))
+                fdjtDOM.replace(fdjtID("CODEXINFOPAGEHOLDER"),
+                                fdjtID("CODEXINFOPAGE"));
+            else if (fdjtID("SBOOKSINFOPAGE")) {
+                var info_clone=fdjtID("SBOOKSINFOPAGE").cloneNode(true);
+                fdjtDOM.stripIDs(info_clone);
+                fdjtDOM.replace(fdjtID("CODEXINFOPAGEHOLDER"),info_clone);}
+            else fdjtID("CODEXINFOPAGEHOLDER").id="CODEXINFOPAGE";
+
+            fillAboutInfo();
+            Codex.DOM.sbooksapp=fdjtID("SBOOKSAPP");
+            
+            fdjtDOM.addListener(cover,"click",cover_clicked);
+
+            addClass(document.body,"cxCOVER");
+            Codex.CSS.hidecover=fdjtDOM.addCSSRule(
+                "div#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
+
+            return cover;}
+
+        function cover_clicked(evt){
+            var target=fdjtUI.T(evt);
+            if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS"))))
+                dropClass(document.body,"cxCOVER");
+            var scan=target;
+            while (scan) {
+                if (scan===document.body) break;
+                else if (scan.getAttribute("data-mode")) break;
+                else scan=scan.parentNode;}
+            var mode=scan.getAttribute("data-mode");
+            if ((mode==="overlays")&&
+                (!(fdjtID("SBOOKSAPP").src))&&
+                (!(Codex.appinit)))
+                Codex.initIFrameApp();
+
+            if (!(mode))
+                dropClass(document.body,"cxCOVER");
+            else fdjtID("CODEXCOVER").className=mode;
+            fdjt.UI.cancel(evt);}
+
+        /* Filling in information */
+
+        function fillTemplate(template,spec,content){
+            if (!(content)) return;
+            var elt=fdjtDOM.$(spec,template);
+            if ((elt)&&(elt.length>0)) elt=elt[0];
+            else return;
+            if (typeof content === 'string')
+                elt.innerHTML=fixStaticRefs(content);
+            else if (content.cloneNode)
+                fdjtDOM.replace(elt,content.cloneNode(true));
+            else fdjtDOM(elt,content);}
+
+        function fillAboutInfo(){
+            var about=fdjtID("CODEXABOUTBOOK");
+            var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
+            var authorabout=fdjtID("SBOOKAUTHORPAGE")||
+                fdjtID("SBOOKABOUTAUTHOR");
+            var acknowledgements=
+                fdjtID("SBOOKACKNOWLEDGEMENTSPAGE")||
+                fdjtID("SBOOKACKNOWLEDGEMENTS");
+            var metadata=fdjtDOM.Anchor(
+                "https://www.sbooks.net/publish/metadata?REFURI="+
+                    encodeURIComponent(Codex.refuri),
+                "metadata",
+                "edit metadata");
+            metadata.target="_blank";
+            metadata.title=
+                "View (and possibly edit) the metadata for this book";
+            var reviews=fdjtDOM.Anchor(
+                null,
+                // "https://www.sbooks.net/publish/reviews?REFURI="+
+                //                  encodeURIComponent(Codex.refuri),
+                "reviews",
+                "see/add reviews");
+            reviews.target="_blank";
+            reviews.title="Sorry, not yet implemented";
+            // fdjtDOM(about,fdjtDOM("div.links",metadata,reviews));
+
+            if (bookabout) fdjtDOM(about,bookabout);
+            else {
+                var title=
+                    fdjtID("SBOOKTITLE")||
+                    fdjtDOM.getMeta("Codex.title")||
+                    fdjtDOM.getMeta("SBOOK.title")||
+                    fdjtDOM.getMeta("DC.title")||
+                    fdjtDOM.getMeta("~TITLE")||
+                    document.title;
+                var byline=
+                    fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
+                    fdjtDOM.getMeta("Codex.byline")||
+                    fdjtDOM.getMeta("Codex.author")||
+                    fdjtDOM.getMeta("SBOOK.byline")||
+                    fdjtDOM.getMeta("SBOOK.author")||
+                    fdjtDOM.getMeta("BYLINE")||
+                    fdjtDOM.getMeta("AUTHOR");
+                var copyright=
+                    fdjtID("SBOOKCOPYRIGHT")||
+                    fdjtDOM.getMeta("Codex.copyright")||
+                    fdjtDOM.getMeta("Codex.rights")||
+                    fdjtDOM.getMeta("SBOOK.copyright")||
+                    fdjtDOM.getMeta("SBOOK.rights")||
+                    fdjtDOM.getMeta("COPYRIGHT")||
+                    fdjtDOM.getMeta("RIGHTS");
+                var publisher=
+                    fdjtID("SBOOKPUBLISHER")||
+                    fdjtDOM.getMeta("Codex.publisher")||
+                    fdjtDOM.getMeta("SBOOK.publisher")||                    
+                    fdjtDOM.getMeta("PUBLISHER");
+                var description=
+                    fdjtID("SBOOKDESCRIPTION")||
+                    fdjtDOM.getMeta("Codex.description")||
+                    fdjtDOM.getMeta("SBOOK.description")||
+                    fdjtDOM.getMeta("DESCRIPTION");
+                var digitized=
+                    fdjtID("SBOOKDIGITIZED")||
+                    fdjtDOM.getMeta("Codex.digitized")||
+                    fdjtDOM.getMeta("SBOOK.digitized")||
+                    fdjtDOM.getMeta("DIGITIZED");
+                var sbookified=fdjtID("SBOOK.converted")||
+                    fdjtDOM.getMeta("SBOOK.converted");
+                fillTemplate(about,".title",title);
+                fillTemplate(about,".byline",byline);
+                fillTemplate(about,".publisher",publisher);
+                fillTemplate(about,".copyright",copyright);
+                fillTemplate(about,".description",description);
+                fillTemplate(about,".digitized",digitized);
+                fillTemplate(about,".sbookified",sbookified);
+                fillTemplate(about,".about",fdjtID("SBOOKABOUT"));
+                var cover=fdjtDOM.getLink("cover");
+                if (cover) {
+                    var cover_elt=fdjtDOM.$(".cover",about)[0];
+                    if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}
+            if (authorabout) fdjtDOM(about,authorabout);
+            if (acknowledgements) {
+                var clone=acknowledgements.cloneNode(true);
+                clone.id=null;
+                fdjtDOM(about,clone);}}
+
+        /* Initializing the body and content */
+
         function initBody(){
             var body=document.body;
-            var content=fdjtDOM("div#CODEXCONTENT");
-            // Get any author provided splash page
-            var splash=fdjtID("CODEXSPLASH");
+            var init_content=fdjtID("CODEXCONTENT");
+            var content=(init_content)||(fdjtDOM("div#CODEXCONTENT"));
             var i, lim;
             if (Codex.Trace.startup) fdjtLog("Organizing content");
 
@@ -1154,49 +1336,8 @@ Codex.Startup=
             // Save those DOM elements in a handy place
             Codex.content=content;
 
-            // Interpet links
-            var notelinks=getChildren(
-                body,"a[rel='sbooknote'],a[rel='footnote'],a[rel='endnote']");
-            i=0, lim=notelinks.length; while (i<lim) {
-                var ref=notelinks[i++];
-                var href=ref.href;
-                if (!(fdjtDOM.hasText(ref))) ref.innerHTML="Note";
-                if ((href)&&(href[0]==="#")) {
-                    addClass(fdjt.ID(href.slice(1)),"sbooknote");}}
-            
-            // Move the publisher-provided splash page directly into
-            //  the body (if neccessary)
-            if ((splash)&&(splash.parentNode!==body))
-                fdjtDOM.prepend(body,splash);
-            var children=body.childNodes, nodes=[];
-            i=0, lim=children.length;
-            if (splash) {
-                // Gather all of the nodes before the splash page.
-                //   There should really be any, but we'll check anyway.
-                while (i<lim) {
-                    //  We're trying to minimize display artifacts during
-                    //   startup and this shuffling about might help in
-                    //   some browsers.
-                    var child=children[i++];
-                    if (child===splash) {i++; break;}
-                    else nodes.push(child);}}
-            // Now copy the rest of the nodes from the body into the array
-            while (i<lim) nodes.push(children[i++]);
-            
-            // Create a custom stylesheet for the app
-            var style=fdjtDOM("STYLE");
-            fdjtDOM(document.head,style);
-            Codex.stylesheet=style.sheet;
-
-            // Initialize cover and titlepage (if specified)
-            Codex.cover=Codex.getCover();
-            Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
-
             // Move all the notes together
-            var notesblock=fdjtID("SBOOKNOTES");
-            if (!(notesblock)) {
-                notesblock=fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
-                fdjtDOM(content,notesblock);}
+            var notesblock=fdjtID("SBOOKNOTES")||fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
             applyMetaClass("sbooknote");
             var note_counter=1;
             var allnotes=getChildren(content,".sbooknote");
@@ -1217,16 +1358,32 @@ Codex.Startup=
                     fdjtDOM.append(notesblock,notable,"\n");}
                 else fdjtDOM.append(notesblock,notable,"\n");}
 
-            // Now, move all of the body nodes into the content element
-            i=0, lim=nodes.length; while (i<lim) {
-                var node=nodes[i++];
-                if (node.nodeType===1) {
-                    if ((node.tagName!=='LINK')&&(node.tagName!=='META')&&
-                        (node.tagName!=='SCRIPT'))
-                        content.appendChild(node);}
-                else content.appendChild(node);}
-
+            // Interpet links
+            var notelinks=getChildren(
+                body,"a[rel='sbooknote'],a[rel='footnote'],a[rel='endnote']");
+            i=0, lim=notelinks.length; while (i<lim) {
+                var ref=notelinks[i++];
+                var href=ref.href;
+                if (!(fdjtDOM.hasText(ref))) ref.innerHTML="Note";
+                if ((href)&&(href[0]==="#")) {
+                    addClass(fdjt.ID(href.slice(1)),"sbooknote");}}
+            
+            if (!(init_content)) {
+                var children=[], childnodes=body.childNodes;
+                i=0, lim=childnodes.length; while (i<lim) children.push(childnodes[i++]);
+                i=0; while (i<lim) {
+                    // Copy all of the content nodes
+                    var child=children[i++];
+                    if (child.nodeType!==1) content.appendChild(child);
+                    else if ((child.id)&&(child.id.search("CODEX")===0)) {}
+                    else if (/(META|LINK|SCRIPT)/gi.test(child.tagName)) {}
+                    else content.appendChild(child);}}
+            // Append the notes block to the content
             fdjtDOM.append(content,"\n",notesblock,"\n");
+            
+            // Initialize cover and titlepage (if specified)
+            Codex.cover=Codex.getCover();
+            Codex.titlepage=fdjtID("SBOOKTITLEPAGE");
 
             var pages=Codex.pages=fdjtID("CODEXPAGES")||
                 fdjtDOM("div#CODEXPAGES");

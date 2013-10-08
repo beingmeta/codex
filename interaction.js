@@ -107,6 +107,8 @@
     var getInput=fdjtDOM.getInput;
     var getInputs=fdjtDOM.getInputs;
     var getInputsFor=fdjtDOM.getInputsFor;
+    var getInputValues=fdjtDOM.getInputValues;
+    var hasText=fdjtDOM.hasText;
 
     var submitEvent=fdjtUI.submitEvent;
 
@@ -477,8 +479,6 @@
     
     var selectors=[];
     var slip_timer=false;
-    var hasText=fdjtDOM.hasText;
-    var getChildren=getChildren;
     function content_held(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -1024,6 +1024,9 @@
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if ((ch===72)||(ch===104)) { // 'H' or 'h'
             fdjtDOM.toggleClass(document.body,'codexhelp');
+            return false;}
+        else if ((ch===67)||(ch===99)) { // 'C' or 'c'
+            fdjtDOM.toggleClass(document.body,'cxCOVER');
             return false;}
         else modearg=modechars[ch];
         if (modearg==="openheart")
@@ -1950,6 +1953,7 @@
     function pageinfo_slip(evt){
         evt=evt||event;
         var rel=evt.relatedTarget;
+        var pageinfo=fdjtID("CODEXPAGEINFO");
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
             fdjtLog("pageinfo_slip %o, previewing=%o, target=%o start=%o",
                     evt,Codex.previewing,Codex.previewTarget,
@@ -2323,6 +2327,16 @@
             Codex.setMode("device");}}
     Codex.UI.highlightSetting=highlightSetting;
 
+    function showcover_handler(evt){
+        if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
+            fdjtID("CODEXCOVER").classname="bookcover";
+        addClass(document.body,"cxCOVER");}
+
+    function raiseHUD(evt){
+        Codex.setHUD(true); return false;}
+    function lowerHUD(evt){
+        Codex.setHUD(false); return false;}
+
     fdjt.DOM.defListeners(
         Codex.UI.handlers.mouse,
         {window: {
@@ -2352,6 +2366,8 @@
                    slip: slice_slipped},
          hud: {click: handleXTarget, tap: handleXTarget},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
+         "#CODEXHUDTOP": {click: raiseHUD},
+         "#CODEXSHOWCOVER": {click: showcover_handler},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
          ".codexheart": {tap: flyleaf_tap},
@@ -2403,7 +2419,7 @@
          "#CODEXPREVSCAN": {click: function(evt){
              Codex.scanBackward(evt); cancel(evt);}},
          "#CODEXSHOWTEXT": {click: back_to_reading},
-         "#CODEXAPPSPLASH": {click: hideSplash},
+         "#CODEXWELCOME": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          "#CODEXNOTETEXT": {click: jumpToNote},
          ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
@@ -2449,6 +2465,8 @@
                    slip: slice_slipped},
          "#CODEXHEART": {touchstart: heart_touched},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
+         "#CODEXHUDTOP": {touchstart: raiseHUD},
+         "#CODEXSHOWCOVER": {touchstart: showcover_handler},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
          "#CODEXPAGEFOOT": {},
@@ -2504,7 +2522,7 @@
              touchstart: back_to_reading,
              touchmove: cancel,
              touchend: cancel},
-         "#CODEXAPPSPLASH": {click: hideSplash},
+         "#CODEXWELCOME": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
          ".hudmodebutton": {

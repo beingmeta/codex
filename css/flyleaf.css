@@ -9,14 +9,6 @@
 div#CODEXHUD div#CODEXHEART table {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 
-div#CODEXHUD.about div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXABOUTBOOK'],
-div#CODEXHUD.device div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSETTINGS'],
-div#CODEXHUD.statictoc div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXSTATICTOC'],
-div#CODEXHUD.console div#CODEXFLYHEAD div.tabbar .tab[contentid='CODEXCONSOLE'],
-div#CODEXHUD.sbooksapp div#CODEXFLYHEAD div.tabbar .tab[contentid='SBOOKSAPP'] {
-    border: gold solid 3px; background-color: gold;
-    border-top: transparent solid 3px;}
-
 div#CODEXHUD div#CODEXHEART .tabcontent {
     overflow-y: hidden; overflow-x: hidden;}
 div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP,
@@ -41,71 +33,6 @@ div#CODEXHUD div#CODEXHEART .flyleafplate a:visited {
     text-decoration: none; color: blue;}
 div#CODEXHUD div#CODEXHEART .flyleafplate a:hover {
     text-decoration: underline;}
-
-div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
- div.setting {
-     clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
- div.setting span.checkspan {
-     font-size: 125%; color: orange;}
-div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
-  div.setting span.checkspan input[type='CHECKBOX'] {
-      width: 16px; height: 16px; color: orange; background-color: orange;
-      vertical-align: bottom;}
-div#CODEXHUD.device div#CODEXHEART .tabcontent#CODEXSETTINGS
-  div.setting div.explanation { 
-      font-style: italic; clear: both; margin-left: 3em;}
-div#CODEXHEART table.settings {
-    width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
-div#CODEXHEART table.settings .codexhighlightsetting {
-    font-size: 120%; background-color: yellow;}
-div#CODEXHEART table.settings tbody { margin-bottom: 1ex;}
-div#CODEXHEART table.settings th {
-    text-align: right; vertical-align: top;
-    white-space: nowrap;}
-div#CODEXHEART table.settings td {
-    text-align: left; vertical-align: top; padding-left: 12px;}
-div#CODEXHEART table.settings td button { float: right; margin-bottom: 3px;}
-div#CODEXHEART table.settings td input[type='TEXT'] {
-    width: 100%;}
-div#CODEXHUD div#CODEXHEART table.settings tr.buttons td {
-    text-align: right;}
-div#CODEXHUD div#CODEXHEART table.settings tr.buttons td
-  span#CODEXSETTINGSMESSAGE {
-      float: left; color: red;}
-
-table.settings .checkspan.ischecked {
-    font-weight: normal; color: rgb(0,61,111); font-size: 110%;}
-
-div#CODEXHUD.settings div#CODEXHEART table.settings .smallbutton {
-    cursor: pointer;
-    margin-left: 4px; margin-right: 4px; padding: 3px;
-    background-color: gold; color: darkblue;
-    font-size: 80%; font-weight: bold;
-    border-radius: 4px;
-    -o-border-radius: 4px; 
-    -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;}
-
-div#CODEXSETTINGS span.button {
-    float: right; font-size: 125%; cursor: pointer;
-    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
-    color: white; background-color: silver;
-    margin-left: 6px; padding: 4px; border: solid black 2px;
-    border-radius: 5px;
-    -o-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;}
-div#CODEXSETTINGS p.codexsettingschanged { display: none;}
-div#CODEXSETTINGS.changed p.codexsettingschanged { display: block;}
-
-table.settings td { padding-bottom: 0.5ex;}
-
-table.settings td .checkspan {
-    padding-right: 0.5ex;}
-table.settings td .checkspan input[TYPE='CHECKBOX'],
-table.settings td .checkspan input[TYPE='RADIO'] {
-    padding-right: 3px;}
 
 div#CODEXHUD #CODEXABOUTBOOK.hudpanel { text-align: left;}
 div#CODEXABOUTBOOK div.links {

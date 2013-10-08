@@ -1,0 +1,245 @@
+body.cxCOVER div#CODEXCOVER {
+    opacity: 1.0; z-index: 100; pointer-events: all;}
+div#CODEXCOVER {
+    position: fixed; width: 100%; height: 100%;
+    top: 0px; bottom: 0px; left: 0px; right: 0px;
+    margin: 0px; border: 0px; padding: 0px;
+    background-color: black; opacity: 1.0;
+    text-align: center;
+    font-size: 1.5em;
+    z-index: 100;}
+div#CODEXCOVER {}
+
+body.cxCOVER #CODEXBODY {
+    visibility: hidden; z-index: -50; pointer-events: none;}
+body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
+    visibility: hidden; z-index: -50; pointer-events: none;}
+
+div#CODEXCOVER > div, div#CODEXCOVER > iframe {
+    position: absolute;
+    top: 50px; left: 50px; right: 50px;
+    bottom: 120px; height: auto; width: auto;
+    border: solid black 3px; border-radius: 1em;
+    display: none;}
+
+div#CODEXCOVER > div#CODEXTAPMESSAGE {
+    position: absolute; white-space: nowrap;
+    font-size: 1.5em; font-style: italic; opacity: 0.4;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    top: 0px; left: 30%; right: 30%; bottom: auto;
+    text-align: center; overflow: visible; color: silver;
+    display: block;}
+
+div#CODEXCOVER > div#CODEXCOVERCONTROLS {
+    position: absolute; width: 90%; bottom: 0px; left: 5%; right: 5%;
+    padding-left: 2em; padding-right: 2em;
+    height: 100px; top: auto;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    display: block;}
+div#CODEXCOVERCONTROLS > .username {
+    float: left; vertical-align: top;}
+div#CODEXCOVERCONTROLS > .oldcontrol {
+    background-color: silver; border-radius: 1ex;
+    display: inline-block; width: 60px; height: 60px; vertical-align: top;
+    margin-left: 10px; margin-right: 10px; margin-top: 1ex; margin-bottom: 1ex;
+    font-size: 18px; padding: 2px;
+    border: solid transparent 4px;}
+div#CODEXCOVERCONTROLS > .control > img {
+    width: 90%; height: auto; clear: both;}
+
+div#CODEXCOVERCONTROLS > span.control {
+    font-size: 2em; color: silver; white-space: nowrap;
+    padding-left: 1ex; padding-right: 1ex;
+    cursor: pointer;}
+div#CODEXCOVERCONTROLS > span.control:hover {
+    text-decoration: underline;}
+
+div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER { display: block;}
+div#CODEXCOVER.titlepage > div#CODEXTITLEPAGE { display: block;}
+div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOK { display: block;}
+div#CODEXCOVER.welcome > div#CODEXWELCOME { display: block;}
+div#CODEXCOVER.help > div#CODEXAPPHELP { display: block;}
+div#CODEXCOVER.aboutsbooks > div#CODEXABOUTSBOOKS { display: block;}
+div#CODEXCOVER.console > div#CODEXCONSOLE { display: block;}
+div#CODEXCOVER.settings > div#CODEXSETTINGS { display: block;}
+div#CODEXCOVER.overlays > iframe#SBOOKSAPP { display: block;}
+
+div#CODEXCOVER.bookcover .control[data-mode='bookcover'],
+div#CODEXCOVER.titlepage .control[data-mode='titlepage'],
+div#CODEXCOVER.welcome .control[data-mode='welcome'],
+div#CODEXCOVER.overlays .control[data-mode='overlays'],
+div#CODEXCOVER.aboutbook .control[data-mode='aboutbook'],
+div#CODEXCOVER.settings .control[data-mode='settings'],
+div#CODEXCOVER.help .control[data-mode='help'],
+div#CODEXCOVER.console .control[data-mode='console'],
+div#CODEXCOVER.login .control[data-mode='login'] {
+    color: gold; border-color: blue;}
+
+.control[data-mode='console'], .control[data-mode='overlays'] {
+    display: none;}
+body.cxUSER span.control[data-mode='console'],
+body.cxUSER span.control[data-mode='overlays'] {
+    display: inline;}
+body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
+
+div#CODEXWELCOME, div#CODEXTITLEPAGE,
+div#CODEXABOUTBOOK, div#CODEXABOUTSBOOKS,
+div#CODEXAPPHELP {
+    padding-top: 1ex;
+    margin-left: auto; margin-right: auto;
+    background-color: ivory;
+    overflow: auto;}
+div#CODEXWELCOME, div#CODEXABOUTBOOK,
+div#CODEXABOUTSBOOKS, div#CODEXAPPHELP {
+    text-align: left;}
+
+div#CODEXBOOKCOVER img {
+    max-width: 90%; height: 90%;
+    margin-top: 3%; margin-bottom: 7%;
+    width: auto;}
+
+/* The sBooks app for managing overlays */
+
+div#CODEXCOVER > iframe#SBOOKSAPP {
+    width: 80%; left: 10%; right: 10%;
+    background-color: ivory;}
+
+/* Help */
+
+div#CODEXAPPHELP {
+    background-color: silver;
+    padding-left: 2em; padding-right: 2em;}
+div#CODEXAPPHELP table, div#CODEXAPPHELP p {
+    margin-left: auto; margin-right: auto;
+    max-width: 40em;}
+
+div#CODEXABOUTBOOK, div#ABOUTSBOOKS {
+    background-color: ivory; }
+div#CODEXCONSOLE, div#CODEXSETTINGS {
+    overflow: auto; background-color: silver;}
+
+/* Welcome */
+
+div#CODEXWELCOME form.sbooksapp {
+    clear: none;}
+
+div#CODEXWELCOME p, div#CODEXWELCOME h1 {
+    text-align: left; text-indent: 0px; clear: none;}
+div#CODEXWELCOME p, div#CODEXWELCOME h1 {
+    margin-left: 10%; margin-right: 5%;
+    margin-top: 1ex; margin-bottom: 0.5ex;}
+div#CODEXWELCOME h1 { margin-top: 0.5ex;}
+div#CODEXWELCOME .left { float: left; padding-right: 5px;}
+div#CODEXWELCOME img { vertical-align: top;}
+
+div#CODEXWELCOME img.cover {
+    float: right; max-width: 12%;
+    padding-top: 0.5ex; padding-right: 1ex;}
+
+/* Title page */
+
+div#CODEXTITLEPAGE { text-align: center;}
+div#CODEXTITLEPAGE div.title {
+    position: absolute; top: 0px; right: 10%; left: 10%;
+    font-weight: bold; font-size: 3em;
+    margin-top: 1em;}
+div#CODEXTITLEPAGE > div.byline, div#CODEXTITLEPAGE > div.credits {
+    position: absolute; top: 50%; right: 5%; left: 5%;
+    font-style: italic; font-size: 2em;}
+div#CODEXTITLEPAGE > div.pubinfo {
+    position: absolute; bottom: 0px; left: 15%; right: 15%;}
+
+/* Settings */
+
+div#CODEXSETTINGS {}
+
+div#CODEXSETTINGS div.setting {
+     clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
+div#CODEXSETTINGS div.setting span.checkspan {
+     font-size: 125%; color: orange;}
+div#CODEXSETTINGS div.setting span.checkspan input[type='CHECKBOX'] {
+      width: 16px; height: 16px; color: orange; background-color: orange;
+      vertical-align: bottom;}
+div#CODEXSETTINGS div.setting div.explanation { 
+      font-style: italic; clear: both; margin-left: 3em;}
+div#CODEXSETTINGS table.settings {
+    width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
+div#CODEXSETTINGS table.settings .codexhighlightsetting {
+    font-size: 120%; background-color: yellow;}
+div#CODEXSETTINGS table.settings tbody { margin-bottom: 1ex;}
+div#CODEXSETTINGS table.settings th {
+    text-align: right; vertical-align: top;
+    white-space: nowrap;}
+div#CODEXSETTINGS table.settings td {
+    text-align: left; vertical-align: top; padding-left: 12px;}
+div#CODEXSETTINGS table.settings td button { float: right; margin-bottom: 3px;}
+div#CODEXSETTINGS table.settings td input[type='TEXT'] {
+    width: 100%;}
+div#CODEXSETTINGS table.settings tr.buttons td {
+    text-align: right;}
+div#CODEXSETTINGS table.settings tr.buttons td span#CODEXSETTINGSMESSAGE {
+    float: left; color: red;}
+
+table.settings .checkspan.ischecked {
+    font-weight: normal; color: rgb(0,61,111); font-size: 110%;}
+
+div#CODEXSETTINGS table.settings .smallbutton {
+    cursor: pointer;
+    margin-left: 4px; margin-right: 4px; padding: 3px;
+    background-color: gold; color: darkblue;
+    font-size: 80%; font-weight: bold;
+    border-radius: 4px;
+    -o-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -moz-border-radius: 4px;}
+
+div#CODEXSETTINGS span.button {
+    float: right; font-size: 125%; cursor: pointer;
+    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
+    color: white; background-color: silver;
+    margin-left: 6px; padding: 4px; border: solid black 2px;
+    border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;}
+div#CODEXSETTINGS p.codexsettingschanged { display: none;}
+div#CODEXSETTINGS.changed p.codexsettingschanged { display: block;}
+
+table.settings td { padding-bottom: 0.5ex;}
+
+table.settings td .checkspan {
+    padding-right: 0.5ex;}
+table.settings td .checkspan input[TYPE='CHECKBOX'],
+table.settings td .checkspan input[TYPE='RADIO'] {
+    padding-right: 3px;}
+
+/* The Welcome page */
+
+
+/* The Console */
+
+div#CODEXCONSOLE { font-size: 70%;}
+
+div#CODEXCONSOLE h1 {
+    font-size: 1.5em; text-align: center;
+    margin-top: 4px; margin-bottom: 1em;}
+div#CODEXCONSOLE div#CODEXCONSOLELOG { }
+div#CODEXCONSOLE div.fdjtlog {
+    margin-left: 0.5em; border-top: solid black 1px;}
+div#CODEXCONSOLE div.message {
+    text-align: center; font-size: 150%;}
+
+div#CODEXCONSOLE div#CODEXCONSOLEINPUT { margin-left: 4em;}
+div#CODEXCONSOLE div#CODEXCONSOLEINPUT span.button { float: right;}
+div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
+
+div#CODEXCOVER .sbooks em, div#CODEXCOVER .sbooks i {
+    color: rgb(112,112,229);}
+
+/* Emacs local variables
+;;;  Local variables: ***
+;;;  compile-command: "cd ../..; make" ***
+;;;  indent-tabs-mode: nil ***
+;;;  End: ***
+*/
+

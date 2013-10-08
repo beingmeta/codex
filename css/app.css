@@ -467,7 +467,6 @@ body.hudup .codextarget .codexglossmark.hover > * {
 
 body.cxNOUSER a.logout {display: none;}
 body.cxNOUSER #SBOOKLOGOUT { display: none;}
-body.cxNOUSER .tab[CONTENTID='SBOOKSAPP'] { display: none;}
 body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
@@ -842,28 +841,6 @@ div.startupmessage.running {
     -moz-opacity: 1.00;
     -o-opacity: 1.00;}
 
-/* CODEXSPLASH page */
-
-div#CODEXSPLASH {
-    position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
-    width: 100%;
-    background-color: silver; 
-    text-align: center;
-    opacity: 0.9;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-    filter: alpha(opacity=90);
-    -webkit-opacity: 0.90;
-    -khtml-opacity: 0.90;
-    -moz-opacity: 0.90;
-    -o-opacity: 0.90;}
-div#CODEXSPLASH img.coverpage {
-    margin: 0px; padding: 0px;
-    height: 100%; width: auto;}
-div#CODEXSPLASH div.title {
-    position: absolute; top: 10%; font-weight: bold; font-size: 32px;}
-div#CODEXSPLASH div.byline {
-    position: absolute; top: 50%; font-style: italic; font-size: 32px;}
-
 /* Logotypes */
 
 .sbooks { }
@@ -896,7 +873,7 @@ div#CODEXSPLASH div.byline {
         left: 15px; right: 15px;}
     div#CODEXHUD div#CODEXHELP.hudpanel {
         left: 15px; right: 15px; top: 60px; bottom: 60px;}
-    div#CODEXHUD div.hudpanel#CODEXAPPSPLASH {
+    div#CODEXHUD div.hudpanel#CODEXWELCOME {
         left: 15px; right: 15px; top: 60px; bottom: 60px;}
     div#CODEXPAGE {
         left: 10px; right: 10px;}
