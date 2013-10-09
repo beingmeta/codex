@@ -84,6 +84,8 @@ body.sbook { font-size: 62.5%; }
 #SBOOKTITLEPAGE .title, #SBOOKTITLEPAGE .author { margin-bottom: 1em;}
 #SBOOKTITLEPAGE .pubinfo { margin-top: 3em;}
 
+#CODEXBODY .titlepage, #CODEXBODY .sbooktitlepage { text-align: center;}
+
 @media handheld {
     #CODEXPAGE {
         height: 98%; top: 1%; bottom: 1%;
