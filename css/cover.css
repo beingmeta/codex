@@ -28,7 +28,7 @@ div#CODEXCOVER > div#CODEXTAPMESSAGE {
     font-family: Arial,Verdana,Helvetica,sans-serif;
     top: 0px; left: 30%; right: 30%; bottom: auto;
     text-align: center; overflow: visible; color: silver;
-    display: block;}
+    cursor: pointer; display: block;}
 
 div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     position: absolute; width: 90%; bottom: 0px; left: 5%; right: 5%;
@@ -38,12 +38,6 @@ div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     display: block;}
 div#CODEXCOVERCONTROLS > .username {
     float: left; vertical-align: top;}
-div#CODEXCOVERCONTROLS > .oldcontrol {
-    background-color: silver; border-radius: 1ex;
-    display: inline-block; width: 60px; height: 60px; vertical-align: top;
-    margin-left: 10px; margin-right: 10px; margin-top: 1ex; margin-bottom: 1ex;
-    font-size: 18px; padding: 2px;
-    border: solid transparent 4px;}
 div#CODEXCOVERCONTROLS > .control > img {
     width: 90%; height: auto; clear: both;}
 
@@ -108,7 +102,7 @@ div#CODEXCOVER > div#CODEXOVERLAYS iframe#SBOOKSAPP {
 /* Help */
 
 div#CODEXAPPHELP {
-    background-color: silver;
+    background-color: ivory;
     padding-left: 2em; padding-right: 2em;}
 div#CODEXAPPHELP table, div#CODEXAPPHELP p {
     margin-left: auto; margin-right: auto;
@@ -117,7 +111,7 @@ div#CODEXAPPHELP table, div#CODEXAPPHELP p {
 div#CODEXABOUTBOOK, div#ABOUTSBOOKS {
     background-color: ivory; }
 div#CODEXCONSOLE, div#CODEXSETTINGS {
-    overflow: auto; background-color: silver;}
+    overflow: auto; background-color: ivory;}
 
 body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 

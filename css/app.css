@@ -642,32 +642,32 @@ details > summary , .html5details > summary {
     border: solid black 2px;
     display: block;}
 
-body.sbook #CODEXBODY .sbooknote {display: none;}
+#CODEXBODY .sbooknote {display: none;}
 
-body.sbook a[rel='sbooknote'],
-body.sbook a[rel='footnote'],
-body.sbook a[rel='endnote'] {
+#CODEXBODY a[rel='sbooknote'],
+#CODEXBODY a[rel='footnote'],
+#CODEXBODY a[rel='endnote'] {
     font-size: 80%; vertical-align: super; margin-left: 0.5ex;
     color: darkblue; text-decoration: overline; font-variant: small-caps;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -khtml-border-radius: 1ex; -moz-border-radius: 1ex;
     -o-border-radius: 1ex;}
-body.sbook a[rel='sbooknote']:hover,
-body.sbook a[rel='footnote']:hover,
-body.sbook a[rel='endnote']:hover {
+#CODEXBODY a[rel='sbooknote']:hover,
+#CODEXBODY a[rel='footnote']:hover,
+#CODEXBODY a[rel='endnote']:hover {
     text-decoration: overline;}
 
 /* Block elements */
 
-body.sbook div#SBOOKDETAILS,
-body.sbook div#SBOOKASIDES,
-body.sbook div#SBOOKNOTES {
+#CODEXBODY div#SBOOKDETAILS,
+#CODEXBODY div#SBOOKASIDES,
+#CODEXBODY div#SBOOKNOTES {
     page-break-before: always;}
 
-body.sbook div#SBOOKDETAILS detail,
-body.sbook div#SBOOKDETAILS .sbookdetail,
-body.sbook div#SBOOKDETAILS aside,
-body.sbook div#SBOOKDETAILS .sbookaside {
+#CODEXBODY div#SBOOKDETAILS detail,
+#CODEXBODY div#SBOOKDETAILS .sbookdetail,
+#CODEXBODY div#SBOOKDETAILS aside,
+#CODEXBODY div#SBOOKDETAILS .sbookaside {
     page-break-before: always;}
 
 div.codexglossform form table {

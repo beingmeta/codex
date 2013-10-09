@@ -42,7 +42,7 @@ div#CODEXABOUTBOOK div.links a.metadata {
 div#CODEXABOUTBOOK div.links a.reviews {
     float: left; font-weight: bold; font-size: 80%;}
 
-body.sbook #CODEXABOUTBOOK div, body.sbook #CODEXABOUTBOOK section {
+#CODEXABOUTBOOK div, #CODEXABOUTBOOK section {
     max-width: 50em; margin-left: auto; margin-right: auto;}
 
 /* Emacs local variables

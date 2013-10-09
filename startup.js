@@ -1431,7 +1431,6 @@ Codex.Startup=
             
             Codex.body=fdjtDOM("div#CODEXBODY.codexbody",content,page);
             fdjtDOM.append(body,Codex.body);
-            fdjtDOM.addClass(body,"sbook");
             // Initialize the margins
             initMargins();
             // Size the content

@@ -101,7 +101,6 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard span.audience .outlet { color: forestgreen; }
 .codexcard .audience .outlet:before {
     content: "→ "; font-weight: bold;}
-body.sbook a.codexcard { display: block;}
 .codexcard .codexcardbody { padding-top: 3px;}
 .codexcard .fdjtclearfloats { margin-bottom: 3px;}
 .codexcard.gloss .codexcardbody {
