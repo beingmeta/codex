@@ -608,6 +608,9 @@ div#CODEXHUDTOP:hover div#CODEXSHOWCOVER {
     opacity: 0.2;}
 body.hudup div#CODEXHUDTOP div#CODEXSHOWCOVER {
     opacity: 0.3;}
+body.cxPREVIEW div#CODEXHUDTOP div#CODEXSHOWCOVER, 
+body.cxPREVIEW.hudup div#CODEXHUDTOP div#CODEXSHOWCOVER {
+    opacity: 0;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
     float: left; margin: 0px; padding: 0px; border: 0px;}
