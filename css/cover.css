@@ -46,7 +46,7 @@ div#CODEXCOVER > div {
 
 div#CODEXCOVER > div#CODEXTAPMESSAGE {
     position: absolute; white-space: nowrap;
-    font-size: 1.5em; font-style: italic; opacity: 0.4;
+    font-size: 1.5em; font-style: italic; opacity: 0.6;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     top: 0px; left: 30%; right: 30%; bottom: auto;
     text-align: center; overflow: visible; color: silver;
@@ -116,6 +116,12 @@ div#CODEXCOVER > div#CODEXOVERLAYS iframe#SBOOKSAPP {
     height: 100%; width: 100%; margin: 0px; padding: 0px;
     background-color: ivory;}
 
+/* The book cover */
+
+div#CODEXBOOKCOVER img {
+    max-width: 90%; max-height: 90%;
+    width: auto; height: auto;}
+
 /* Help */
 
 div#CODEXAPPHELP {
@@ -132,7 +138,7 @@ div#CODEXCONSOLE, div#CODEXSETTINGS {
 
 body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
-/* Welcome */
+/* The Welcome page */
 
 div#CODEXWELCOME form.sbooksapp {
     clear: none;}
@@ -232,9 +238,6 @@ table.settings td .checkspan input[TYPE='RADIO'] {
 
 table.settings tbody.buttons { border-top: solid black 2px;}
 table.settings tr.buttons td, table.settings tr.buttons th { padding-top: 1ex;}
-
-/* The Welcome page */
-
 
 /* The Console */
 
