@@ -1259,7 +1259,7 @@ Codex.Startup=
             if (coverpage) {
                 coverpage.style.opacity=0.0; coverpage.style.display="block";
                 coverpage.style.overflow="visible";
-                fdjt.UI.adjustFit(coverpage,0.9);
+                fdjtDOM.scaleToFit(coverpage,0.9);
                 coverpage.style.opacity=null; coverpage.style.display=null;
                 coverpage.style.overflow=null;}
 
@@ -1288,7 +1288,7 @@ Codex.Startup=
             if (titlepage) {
                 titlepage.style.opacity=0.0; titlepage.style.display="block";
                 titlepage.style.overflow="visible";
-                fdjt.UI.adjustFit(titlepage,0.9);
+                fdjtDOM.scaleToFit(titlepage,0.9);
                 titlepage.style.opacity=null; titlepage.style.display=null;
                 titlepage.style.overflow=null;}
             
@@ -1304,7 +1304,7 @@ Codex.Startup=
             if (infopage) {
                 infopage.style.opacity=0.0; infopage.style.display="block";
                 infopage.style.overflow="visible";
-                fdjt.UI.adjustFit(infopage,0.9);
+                fdjtDOM.scaleToFit(infopage,0.9);
                 infopage.style.opacity=null; infopage.style.display=null;
                 infopage.style.overflow=null;}
             
