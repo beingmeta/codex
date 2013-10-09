@@ -428,12 +428,11 @@ Codex.Startup=
             // This initializes the book tools (the HUD/Heads Up Display)
             Codex.initHUD();
 
-            /*
-            if (Codex.coverpage) {
-                var status_cover=fdjtID("CODEXSTATUSCOVER");
-                status_cover.src=Codex.coverpage;
-                status_cover.style.display='block';}
-                */
+            var uri=Codex.bookimage||Codex.bookcover||Codex.coverpage;
+            if ((uri)&&(typeof uri === "string")) {
+                var images=fdjtDOM.$("img.codexbookimage");
+                var i=0, lim=images.length;
+                while (i<lim) images[i++].src=uri;}
 
             addConfig(
                 "keepdata",
