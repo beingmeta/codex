@@ -1733,6 +1733,7 @@ Codex.Startup=
                     if (fdjtState.getLocal("queued("+Codex.refuri+")"))
                         Codex.glossdb.load(
                             fdjtState.getLocal("queued("+Codex.refuri+")",true));
+                    fdjtID("CODEXCOVER").className="welcome";
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
             else if (info.wronguser) {
@@ -1903,6 +1904,7 @@ Codex.Startup=
             var i=0, lim;
             if (Codex._user_setup) return;
             if (!(Codex.user)) {
+                fdjtID("CODEXCOVER").className="welcome";
                 fdjtDOM.addClass(document.body,"cxNOUSER");
                 return;}
             fdjtDOM.dropClass(document.body,"cxNOUSER");
