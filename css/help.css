@@ -228,8 +228,8 @@ div#CODEXHUD .helphud {
     display: none;}
 div#CODEXHUD .helphud.topleft {top: 3px; left: 60px; text-align: right;}
 div#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
-div#CODEXHUD .helphud.botleft {bottom: 3px; left: 60px; text-align: right;}
-div#CODEXHUD .helphud.botright {bottom: 3px; right: 60px; text-align: left;}
+div#CODEXHUD .helphud.botleft {bottom: 25px; left: 60px; text-align: right;}
+div#CODEXHUD .helphud.botright {bottom: 25px; right: 60px; text-align: left;}
 div#CODEXHUD .helphud.topcenter {
     top: 0px; width: 50%; left: 25%; right: 25%; text-align: center;
     border-top-left-radius: 0px; border-top-right-radius: 0px;

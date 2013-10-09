@@ -299,8 +299,9 @@ body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
-    margin-bottom: 1.5ex; margin-right: 1px;
-    padding-top: 1ex; padding-bottom: 1em;}
+    margin-bottom: 1.5ex; margin-top: 1.5ex; 
+    padding-bottom: 1em; padding-top: 1ex;
+    margin-right: 1px;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART div.hudpanel,
