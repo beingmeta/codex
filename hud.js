@@ -91,7 +91,10 @@ Codex.setMode=
                            fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
                                    fdjtDOM("div.indicator"),
                                    fdjtDOM("div.message")));
-            fdjtDOM.prepend(document.body,messages,hud);
+            if (fdjtID("CODEXFRAME")) {
+                var frame=fdjtID("CODEXFRAME");
+                frame.appendChild(messages); frame.appendChild(hud);}
+            else fdjtDOM.prepend(document.body,messages,hud);
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);

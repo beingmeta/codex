@@ -1,4 +1,4 @@
-<h1>Device Settings</h1>
+<h1>Codex Settings</h1>
 <form onsubmit="fdjt.UI.cancel(event); return false;">
   <table class="settings"
          onclick="fdjt.UI.CheckSpan.onclick(event); Codex.UI.settingsUpdate(event);"
@@ -16,7 +16,7 @@
             Clear</button></td>
       </tr>
     </tbody>
-      <tr class="padding"></tr>
+    <tr class="padding"></tr>
     <tbody id="CODEXFONTSETTINGS">
       <tr><th rowspan="2">Body font</th>
         <td colspan="2">
@@ -46,7 +46,7 @@
           <span class="checkspan">
             <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="small"/>small</span></td></tr>
     </tbody>
-      <tr class="padding"></tr>
+    <tr class="padding"></tr>
     <tbody id="CODEXINTERACTIONSETTINGS">
       <tr>
         <th>Layout</th>
@@ -64,7 +64,7 @@
           <span class="checkspan">
             <input TYPE="CHECKBOX" NAME="CODEXANIMATEHUD" VALUE="yes"/>interface (HUD, etc)</span></td></tr>
     </tbody>
-      <tr class="padding"></tr>
+    <tr class="padding"></tr>
     <tbody id="CODEXHELPSETTINGS" >
       <tr class="checkspan" id="CODEXHIDESPLASHSETTING">
         <th><input TYPE="CHECKBOX" NAME="CODEXHIDESPLASH" VALUE="yes"
@@ -83,6 +83,7 @@
       <tr class="checkspan">
         <th><input TYPE="CHECKBOX" NAME="CODEXSHOWCONSOLE" VALUE="yes"/></th>
         <td colspan="2">Show the Codex console</td></tr>
+      <tr class="padding"></tr>
       <tr title="A name to display for this device when recording changes">
         <th>Device name</th>
         <td colspan="2">
@@ -92,16 +93,19 @@
                  onblur="Codex.UI.blur(event);"/></td>
       </tr>
     </tbody>
-    <tr class="buttons">
-      <th/>
-      <td colspan="2">
-        <span class="button" onclick="Codex.UI.settingsSave(event);">Save</span>
-        <span class="button" onclick="Codex.UI.settingsReset(event);">Reset</span>
-        <p class="codexsettingschanged">
-          Your changes have been applied but not saved.</p>
-        <span ID="CODEXSETTINGSMESSAGE"></span>
-      </td>
-    </tr>
+    <tr class="padding"></tr>
+    <tbody class="buttons">
+      <tr class="buttons">
+        <th/>
+        <td colspan="2">
+          <span class="button" onclick="Codex.UI.settingsSave(event);">Save</span>
+          <span class="button" onclick="Codex.UI.settingsReset(event);">Reset</span>
+          <p class="codexsettingschanged">
+            Your changes have been applied but not saved.</p>
+          <span ID="CODEXSETTINGSMESSAGE"></span>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </form>
 

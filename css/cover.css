@@ -1,19 +1,41 @@
-body.cxCOVER div#CODEXCOVER {
-    opacity: 1.0; z-index: 100; pointer-events: all;}
-div#CODEXCOVER {
-    position: fixed; width: 100%; height: 100%;
-    top: 0px; bottom: 0px; left: 0px; right: 0px;
-    margin: 0px; border: 0px; padding: 0px;
-    background-color: black; opacity: 1.0;
-    text-align: center;
-    font-size: 1.5em;
-    z-index: 100;}
+ /* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2013 beingmeta, inc.
+   This file implements a Javascript/DHTML web application for reading
+    large structured documents (sBooks).
+
+   For more information on sbooks, visit www.sbooks.net
+   For more information on knodules, visit www.knodules.net
+   For more information about beingmeta, visit www.beingmeta.com
+
+   This library uses the FDJT (www.fdjt.org) toolkit.
+
+   This program comes with absolutely NO WARRANTY, including implied
+   warranties of merchantability or fitness for any particular
+   purpose.
+
+    Use and redistribution (especially embedding in other
+      CC licensed content) is permitted under the terms of the
+      Creative Commons "Attribution-NonCommercial" license:
+
+          http://creativecommons.org/licenses/by-nc/3.0/ 
+
+    Other uses may be allowed based on prior agreement with
+      beingmeta, inc.  Inquiries can be addressed to:
+
+       licensing@biz.beingmeta.com
+
+   Enjoy!
+
+*/
+
+@charset "UTF-8";
+
 div#CODEXCOVER {}
 
-body.cxCOVER #CODEXBODY {
-    visibility: hidden; z-index: -50; pointer-events: none;}
-body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
-    visibility: hidden; z-index: -50; pointer-events: none;}
+body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
+#CODEXHUD.openglossmark, body.codexhelp #CODEXHUD {
+    z-index: 100; }
 
 div#CODEXCOVER > div {
     position: absolute;
@@ -88,11 +110,6 @@ div#CODEXWELCOME, div#CODEXABOUTBOOK,
 div#CODEXABOUTSBOOKS, div#CODEXAPPHELP {
     text-align: left;}
 
-div#CODEXBOOKCOVER img {
-    max-width: 90%; height: 90%;
-    margin-top: 3%; margin-bottom: 7%;
-    width: auto;}
-
 /* The sBooks app for managing overlays */
 
 div#CODEXCOVER > div#CODEXOVERLAYS iframe#SBOOKSAPP {
@@ -126,6 +143,7 @@ div#CODEXWELCOME p, div#CODEXWELCOME h1 {
     margin-left: 10%; margin-right: 5%;
     margin-top: 1ex; margin-bottom: 0.5ex;}
 div#CODEXWELCOME h1 { margin-top: 0.5ex;}
+div#CODEXWELCOME p { max-width: 40em;}
 div#CODEXWELCOME .left { float: left; padding-right: 5px;}
 div#CODEXWELCOME img { vertical-align: top;}
 
@@ -148,7 +166,9 @@ div#CODEXTITLEPAGE > div.pubinfo {
 
 /* Settings */
 
-div#CODEXSETTINGS {}
+div#CODEXSETTINGS { padding: 1em; }
+
+div#CODEXSETTINGS h1 { text-align: left;}
 
 div#CODEXSETTINGS div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
@@ -209,6 +229,9 @@ table.settings td .checkspan {
 table.settings td .checkspan input[TYPE='CHECKBOX'],
 table.settings td .checkspan input[TYPE='RADIO'] {
     padding-right: 3px;}
+
+table.settings tbody.buttons { border-top: solid black 2px;}
+table.settings tr.buttons td, table.settings tr.buttons th { padding-top: 1ex;}
 
 /* The Welcome page */
 

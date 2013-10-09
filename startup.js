@@ -342,6 +342,7 @@ Codex.Startup=
             // arguments, for handy debugging.
             if (getQuery("cxtrace")) readTraceSettings();
 
+            bookSetup();
             deviceSetup();
             appSetup();
             showMessage();
@@ -417,7 +418,7 @@ Codex.Startup=
             Codex.stylesheet=style.sheet;
 
             // Setup the cover as soon as you can
-            setupCover();
+            coverSetup();
 
             // Initialize the databases
             Codex.initDB();
@@ -983,6 +984,54 @@ Codex.Startup=
             fdjtLog("Device: %s %dx%d ui=%s, body=\"%s\"",
                     opt_string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
                     Codex.ui,body.className);}
+
+        function bookSetup(){
+            if (Codex.bookinfo) return;
+            var bookinfo=Codex.bookinfo={};
+            bookinfo.title=
+                fdjtDOM.getMeta("Codex.title")||
+                fdjtDOM.getMeta("SBOOK.title")||
+                fdjtDOM.getMeta("DC.title")||
+                fdjtDOM.getMeta("~TITLE")||
+                document.title||"untitled";
+            var authors=
+                fdjtDOM.getMeta("SBOOK.author",true).concat(
+                    fdjtDOM.getMeta("DC.creator",true)).concat(
+                        fdjtDOM.getMeta("AUTHOR")).concat(
+                            fdjtDOM.getMeta("~AUTHOR"));
+            if ((authors)&&(authors.length)) bookinfo.authors=authors;
+            bookinfo.byline=
+                fdjtDOM.getMeta("Codex.byline")||
+                fdjtDOM.getMeta("SBOOK.byline")||
+                fdjtDOM.getMeta("BYLINE")||
+                ((authors)&&(authors.length)&&(authors[0]));
+            bookinfo.copyright=
+                fdjtDOM.getMeta("SBOOK.copyright")||
+                fdjtDOM.getMeta("SBOOK.rights")||
+                fdjtDOM.getMeta("DC.rights")||
+                fdjtDOM.getMeta("COPYRIGHT")||
+                fdjtDOM.getMeta("RIGHTS");
+            bookinfo.publisher=
+                fdjtDOM.getMeta("SBOOK.pubname")||
+                fdjtDOM.getMeta("DC.publisher")||
+                fdjtDOM.getMeta("PUBLISHER");
+            bookinfo.pubyear=
+                fdjtDOM.getMeta("SBOOK.pubyear")||
+                fdjtDOM.getMeta("DC.date");
+            bookinfo.description=
+                fdjtDOM.getMeta("SBOOK.description")||
+                fdjtDOM.getMeta("DC.description")||
+                fdjtDOM.getMeta("DESCRIPTION");
+            bookinfo.digitized=
+                fdjtDOM.getMeta("SBOOK.digitized")||
+                fdjtDOM.getMeta("DIGITIZED");
+            bookinfo.converted=fdjtID("SBOOK.converted")||
+                fdjtDOM.getMeta("SBOOK.converted");}
+        function getBookInfo(){
+            if (Codex.bookinfo) return Codex.bookinfo;
+            else {bookSetup(); return Codex.bookinfo;}}
+        Codex.getBookInfo=getBookInfo;
+        
         
         function initUserOffline(){
             var refuri=Codex.refuri;
@@ -1173,63 +1222,164 @@ Codex.Startup=
                     if (evt.shiftKey) input_console.value="";}}}
 
         // Cover setup
-        function setupCover(){
-            var cover=fdjtID("CODEXCOVER");
-            if (!(cover)) {
+        function coverSetup(){
+            var frame=fdjtID("CODEXFRAME");
+            var cover, existing_cover=fdjtID("CODEXCOVER");
+            if (!(frame)) {
+                frame=fdjtDOM("div#CODEXFRAME");
+                fdjtDOM.prepend(document.body,frame);}
+            if (existing_cover) {
+                frame.appendChild(existing_cover);
+                cover=existing_cover;}
+            else {
                 cover=fdjtDOM("div#CODEXCOVER");
-                cover.innerHTML=Codex.HTML.cover;}
+                cover.innerHTML=Codex.HTML.cover;
+                frame.appendChild(cover);}
 
+            var coverpage=fdjtID("CODEXCOVERPAGE");
+            if (coverpage) {}
+            else if (fdjtID("SBOOKCOVERPAGE")) {
+                coverpage=fdjtID("SBOOKCOVERPAGE").cloneNode(true);
+                fdjtDOM.stripIDs(coverpage);
+                coverpage.id="CODEXBOOKCOVER";}
+            else if (Codex.coverpage) {
+                var coverimage=fdjtDOM.Image(Codex.coverpage);
+                coverpage=fdjtDOM("div#CODEXBOOKCOVER",coverimage);}
+            else {}
+            if (coverpage) {
+                cover.setAttribute("data-defaultclass","bookcover");
+                cover.className="bookcover";
+                if (fdjtID("CODEXBOOKCOVERHOLDER")) 
+                    fdjtDOM.replace(fdjtID("CODEXBOOKCOVERHOLDER"),
+                                    coverpage);
+                else cover.appendChild(coverpage);}
+            else {
+                cover.setAttribute("data-defaultclass","titlepage");
+                cover.className="titlepage";}
+            if (coverpage) {
+                coverpage.style.opacity=0.0; coverpage.style.display="block";
+                coverpage.style.overflow="visible";
+                fdjt.UI.adjustFit(coverpage,0.9);
+                coverpage.style.opacity=null; coverpage.style.display=null;
+                coverpage.style.overflow=null;}
+
+            var titlepage=fdjtID("CODEXTITLEPAGE");
+            if (!(titlepage)) {
+                titlepage=fdjtID("SBOOKSTITLEPAGE")||fdjtID("TITLEPAGE")||
+                    fdjt.$(".sbookstitlepage");
+                if (titlepage) {
+                    titlepage=titlepage.cloneNode(true);
+                    fdjtDOM.stripIDs(titlepage);
+                    titlepage.style="";}
+                else {
+                    var info=getBookInfo();
+                    titlepage=fdjtDOM("div#CODEXTITLEPAGE",
+                                      fdjtDOM("DIV.title",info.title),
+                                      fdjtDOM("DIV.credits",
+                                              ((info.byline)?(fdjtDOM("DIV.byline",info.byline)):
+                                               ((info.authors)&&(info.authors.length))?
+                                               (fdjtDOM("DIV.author",info.authors[0])):
+                                               (false))),
+                                      fdjtDOM("DIV.pubinfo"));}}
+            if (fdjtID("CODEXTITLEPAGEHOLDER")) {
+                fdjtDOM.replace(fdjtID("CODEXTITLEPAGEHOLDER"),titlepage);
+                titlepage.id="CODEXTITLEPAGE";}
+            else if (hasParent(titlepage,cover)) {}
+            else cover.appendChild(titlepage);
+            if (titlepage) {
+                titlepage.style.opacity=0.0; titlepage.style.display="block";
+                titlepage.style.overflow="visible";
+                fdjt.UI.adjustFit(titlepage,0.9);
+                titlepage.style.opacity=null; titlepage.style.display=null;
+                titlepage.style.overflow=null;}
+            
+            var infopage=fdjtID("CODEXINFOPAGE");
+            if (infopage)
+                fdjtDOM.replace(fdjtID("CODEXINFOPAGEHOLDER"),
+                                fdjtID("CODEXINFOPAGE"));
+            else if (fdjtID("SBOOKSINFOPAGE")) {
+                infopage=fdjtID("SBOOKSINFOPAGE").cloneNode(true);
+                fdjtDOM.stripIDs(infopage); infopage.id="CODEXINFOPAGE";
+                fdjtDOM.replace(fdjtID("CODEXINFOPAGEHOLDER"),infopage);}
+            else fdjtID("CODEXINFOPAGEHOLDER").id="CODEXINFOPAGE";
+            if (infopage) {
+                infopage.style.opacity=0.0; infopage.style.display="block";
+                infopage.style.overflow="visible";
+                fdjt.UI.adjustFit(infopage,0.9);
+                infopage.style.opacity=null; infopage.style.display=null;
+                infopage.style.overflow=null;}
+            
             var settings=fdjtID("CODEXSETTINGS");
+            if (!(settings)) {
+                settings=fdjtDOM("div#CODEXSETTINGS");
+                cover.appendChild(settings);}
             settings.innerHTML=fixStaticRefs(Codex.HTML.settings);
             Codex.DOM.settings=settings;
 
             var help=Codex.DOM.help=fdjtID("CODEXAPPHELP");
+            if (!(help)) {
+                help=fdjtDOM("div#CODEXAPPHELP");
+                cover.appendChild(help);}
             help.innerHTML=fixStaticRefs(Codex.HTML.coverhelp);
 
             var welcome=Codex.DOM.welcome=fdjtID("CODEXWELCOME");
+            if (!(welcome)) {
+                welcome=fdjtDOM("div#CODEXWELCOME");
+                cover.appendChild(welcome);}
             welcome.innerHTML=fixStaticRefs(Codex.HTML.welcome);
 
-            var login=Codex.DOM.sbookslogin=fdjtID("CODEXLOGIN");
+            var login=fdjtID("CODEXLOGIN");
+            if (!(login)) {
+                login=fdjtDOM("div#CODEXLOGIN");
+                cover.appendChild(login);}
+            Codex.DOM.sbookslogin=login;
             login.innerHTML=fixStaticRefs(Codex.HTML.login);
             
-            if (fdjtID("CODEXTITLEPAGE"))
-                fdjtDOM.replace(fdjtID("CODEXTITLEPAGEHOLDER"),
-                                fdjtID("CODEXTITLEPAGE"));
-            else if (fdjtID("SBOOKSTITLEPAGE")) {
-                var clone=fdjtID("SBOOKSTITLEPAGE").cloneNode(true);
-                fdjtDOM.stripIDs(clone);
-                fdjtDOM.replace(fdjtID("CODEXTITLEPAGEHOLDER"),clone);}
-            else fdjtID("CODEXTITLEPAGEHOLDER").id="CODEXTITLEPAGE";
-
-            if (fdjtID("CODEXINFOPAGE"))
-                fdjtDOM.replace(fdjtID("CODEXINFOPAGEHOLDER"),
-                                fdjtID("CODEXINFOPAGE"));
-            else if (fdjtID("SBOOKSINFOPAGE")) {
-                var info_clone=fdjtID("SBOOKSINFOPAGE").cloneNode(true);
-                fdjtDOM.stripIDs(info_clone);
-                fdjtDOM.replace(fdjtID("CODEXINFOPAGEHOLDER"),info_clone);}
-            else fdjtID("CODEXINFOPAGEHOLDER").id="CODEXINFOPAGE";
-            
             var console=Codex.DOM.console=fdjtID("CODEXCONSOLE");
+            if (!(console)) {
+                console=fdjtDOM("div#CODEXCONSOLE");
+                cover.appendChild(console);}
+            Codex.DOM.console=console;
             if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
             console.innerHTML=Codex.HTML.console;
-            Codex.DOM.input_console=input_console=fdjtDOM.getChild(console,"TEXTAREA");
-            Codex.DOM.input_button=input_button=fdjtDOM.getChild(console,"span.button");
+            Codex.DOM.input_console=input_console=
+                fdjtDOM.getChild(console,"TEXTAREA");
+            Codex.DOM.input_button=input_button=
+                fdjtDOM.getChild(console,"span.button");
             input_button.onclick=consolebutton_click;
             input_console.onkeypress=consoleinput_keypress;
 
-            fillAboutInfo();
-            Codex.DOM.sbooksapp=fdjtID("SBOOKSAPP");
+            var overlays=fdjtID("CODEXOVERLAYS");
+            if (!(overlays)) {
+                overlays=fdjtDOM("div#CODEXOVERLAYS");
+                cover.appendChild(overlays);}
+            var sbooksapp=fdjtID("SBOOKSAPP");
+            if (!(sbooksapp)) {
+                sbooksapp=fdjtDOM("iframe#SBOOKSAPP");
+                sbooksapp.setAttribute("frameborder",0);
+                sbooksapp.setAttribute("scrolling","auto");}
+            overlays.appendChild(sbooksapp);
+            Codex.DOM.sbooksapp=sbooksapp;
+                
+            var about=fdjtID("CODEXABOUTBOOK");
+            if (about) {}
+            else {
+                about=fdjtDOM("div#CODEXABOUTBOOK");
+                fillAboutInfo(about);
+                if (fdjtID("CODEXABOUTBOOKHOLDER"))
+                    fdjtDOM.replace(fdjtID("CODEXABOUTBOOKHOLDER"),about);
+                else cover.appendChild(about);}
             
             fdjtDOM.addListener(cover,"click",cover_clicked);
 
             addClass(document.body,"cxCOVER");
+            // Make the cover hidden by default
             Codex.CSS.hidecover=fdjtDOM.addCSSRule(
                 "div#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
-
             return cover;}
 
         function cover_clicked(evt){
+            var cover=fdjtID("CODEXCOVER");
             var target=fdjtUI.T(evt);
             if (fdjt.UI.isClickable(target)) return;
             if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS"))))
@@ -1240,6 +1390,12 @@ Codex.Startup=
                 else if (scan.getAttribute("data-mode")) break;
                 else scan=scan.parentNode;}
             var mode=scan.getAttribute("data-mode");
+            if ((mode)&&(cover.className===mode)) {
+                if (cover.getAttribute("data-defaultclass"))
+                    cover.className=cover.getAttribute("data-defaultclass");
+                else cover.className="welcome";
+                fdjt.UI.cancel(evt);
+                return;}
             if ((mode==="overlays")&&
                 (!(fdjtID("SBOOKSAPP").src))&&
                 (!(Codex.appinit)))
@@ -1256,19 +1412,7 @@ Codex.Startup=
         
         /* Filling in information */
 
-        function fillTemplate(template,spec,content){
-            if (!(content)) return;
-            var elt=fdjtDOM.$(spec,template);
-            if ((elt)&&(elt.length>0)) elt=elt[0];
-            else return;
-            if (typeof content === 'string')
-                elt.innerHTML=fixStaticRefs(content);
-            else if (content.cloneNode)
-                fdjtDOM.replace(elt,content.cloneNode(true));
-            else fdjtDOM(elt,content);}
-
-        function fillAboutInfo(){
-            var about=fdjtID("CODEXABOUTBOOK");
+        function fillAboutInfo(about){
             var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
             var authorabout=fdjtID("SBOOKAUTHORPAGE")||
                 fdjtID("SBOOKABOUTAUTHOR");
@@ -1352,6 +1496,17 @@ Codex.Startup=
                 var clone=acknowledgements.cloneNode(true);
                 clone.id=null;
                 fdjtDOM(about,clone);}}
+
+        function fillTemplate(template,spec,content){
+            if (!(content)) return;
+            var elt=fdjtDOM.$(spec,template);
+            if ((elt)&&(elt.length>0)) elt=elt[0];
+            else return;
+            if (typeof content === 'string')
+                elt.innerHTML=fixStaticRefs(content);
+            else if (content.cloneNode)
+                fdjtDOM.replace(elt,content.cloneNode(true));
+            else fdjtDOM(elt,content);}
 
         /* Initializing the body and content */
 

@@ -1,0 +1,127 @@
+ /* -*- Mode: CSS; character-encoding: utf-8; -*- */
+
+/* Copyright (C) 2009-2013 beingmeta, inc.
+   This file implements a Javascript/DHTML web application for reading
+    large structured documents (sBooks).
+
+   For more information on sbooks, visit www.sbooks.net
+   For more information on knodules, visit www.knodules.net
+   For more information about beingmeta, visit www.beingmeta.com
+
+   This library uses the FDJT (www.fdjt.org) toolkit.
+
+   This program comes with absolutely NO WARRANTY, including implied
+   warranties of merchantability or fitness for any particular
+   purpose.
+
+    Use and redistribution (especially embedding in other
+      CC licensed content) is permitted under the terms of the
+      Creative Commons "Attribution-NonCommercial" license:
+
+          http://creativecommons.org/licenses/by-nc/3.0/ 
+
+    Other uses may be allowed based on prior agreement with
+      beingmeta, inc.  Inquiries can be addressed to:
+
+       licensing@biz.beingmeta.com
+
+   Enjoy!
+
+*/
+
+@charset "UTF-8";
+
+/* General DOM layout:
+   body
+     #CODEXFRAME
+       #CODEXHUD
+       #CODEXCOVER
+     #CODEXBODY
+       #CODEXCONTENT
+       #CODEXPAGE
+         #CODEXPAGES
+           .codexpage 
+           ....
+*/
+
+body {
+    /* -- Sets 1em to equal 10px -- */ 
+    font-size: 62.5%;
+    /* Override any width definition on body itself */
+    width: inherit; margin-left: auto; margin-right: auto;
+    /* We do our own selection handling, to be consistent */
+    user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    /* Disable the default touch+hold action */
+    -webkit-touch-callout: none;
+    /* Disable tap highlighting */
+    -webkit-tap-highlight-color: rgba(0,0,0);
+}
+
+/* We reduce the number of fixed position containers because that puts
+   an extra load on some devices (such as iOS). */
+#CODEXFRAME {
+    position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
+    width: 100%; height: 100%;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    pointer-events: none;}
+
+/* The HUD is where all of the active interface elements for reading
+   appear.  */
+#CODEXHUD {
+    position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;
+    width: 100%; height: 100%;}
+#CODEXFRAME > #CODEXHUD > * {
+    pointer-events: all;}
+
+/* The COVER contains the usual wrapping elements for the book
+   (coverpage, title, blurbs, etc) and also contains elements which
+   aren't part of physical books: settings, overlay management, and
+   a small Codex tutorial. */
+div#CODEXCOVER {
+    position: absolute; width: 100%; height: 100%;
+    top: 0px; bottom: 0px; left: 0px; right: 0px;
+    margin: 0px; border: 0px; padding: 0px;
+    background-color: black; opacity: 1.0;
+    text-align: center;
+    font-size: 1.5em;
+    z-index: 100;}
+#CODEXFRAME > #CODEXCOVER { pointer-events: all; }
+
+body.cxCOVER div#CODEXCOVER {
+    opacity: 1.0; z-index: 100; pointer-events: all;}
+body.cxCOVER #CODEXBODY {
+    visibility: hidden; z-index: -50; pointer-events: none;}
+body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
+    visibility: hidden; z-index: -50; pointer-events: none;}
+
+/* CODEXBODY is where all of the content lives, whether broken into
+   pages or not. */
+div#CODEXBODY {}
+
+/* CODEXCONTENT is where linear content lives for scrolling layout.
+   It is also used to determine the width of the content region
+   (whether scrolled or paged), so the width can be controlled by
+   putting constraints on div#CODEXCONTENT */
+div#CODEXCONTENT {}
+
+/* CODEXPAGE is the fixed position wrapper for paged layout.
+   It's left and right styles are set based on the content width. */
+div#CODEXPAGE {
+    position: fixed; overflow: visible;
+    padding: 0px; margin: 0px;
+    left: 50px; right: 50px;
+    top: 40px; bottom: 40px;
+    border: solid transparent 3px;
+    border-radius: 18px;
+    -o-border-radius: 18px;
+    -moz-border-radius: 18px;
+    -webkit-border-radius: 18px;}
+
+/* In some web debuggers, the HUD intercerpts all attempts to click on
+   content elements, even though it's pointer-events: none; this goes
+   away, if we move the z-index down, though it might/can cause display
+   issues. */
+body.hudup.cxDEBUG #CODEXHUD {z-index: 0;}
