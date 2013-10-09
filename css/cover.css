@@ -253,9 +253,6 @@ div#CODEXCONSOLE div#CODEXCONSOLEINPUT { margin-left: 4em;}
 div#CODEXCONSOLE div#CODEXCONSOLEINPUT span.button { float: right;}
 div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
 
-div#CODEXCOVER .sbooks em, div#CODEXCOVER .sbooks i {
-    color: rgb(112,112,229);}
-
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***
