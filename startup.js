@@ -1265,8 +1265,7 @@ Codex.Startup=
 
             var titlepage=fdjtID("CODEXTITLEPAGE");
             if (!(titlepage)) {
-                titlepage=fdjtID("SBOOKSTITLEPAGE")||fdjtID("TITLEPAGE")||
-                    fdjt.$(".sbookstitlepage");
+                titlepage=fdjtID("SBOOKSTITLEPAGE")||fdjtID("TITLEPAGE");
                 if (titlepage) {
                     titlepage=titlepage.cloneNode(true);
                     fdjtDOM.stripIDs(titlepage);
