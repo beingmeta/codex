@@ -15,11 +15,11 @@ body.cxCOVER #CODEXBODY {
 body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
     visibility: hidden; z-index: -50; pointer-events: none;}
 
-div#CODEXCOVER > div, div#CODEXCOVER > iframe {
+div#CODEXCOVER > div {
     position: absolute;
     top: 50px; left: 50px; right: 50px;
     bottom: 120px; height: auto; width: auto;
-    border: solid black 3px; border-radius: 1em;
+    border: solid black 3px; /* border-radius: 1em; */
     display: none;}
 
 div#CODEXCOVER > div#CODEXTAPMESSAGE {
@@ -62,7 +62,7 @@ div#CODEXCOVER.help > div#CODEXAPPHELP { display: block;}
 div#CODEXCOVER.aboutsbooks > div#CODEXABOUTSBOOKS { display: block;}
 div#CODEXCOVER.console > div#CODEXCONSOLE { display: block;}
 div#CODEXCOVER.settings > div#CODEXSETTINGS { display: block;}
-div#CODEXCOVER.overlays > iframe#SBOOKSAPP { display: block;}
+div#CODEXCOVER.overlays > div#CODEXOVERLAYS { display: block;}
 
 div#CODEXCOVER.bookcover .control[data-mode='bookcover'],
 div#CODEXCOVER.titlepage .control[data-mode='titlepage'],
@@ -101,8 +101,8 @@ div#CODEXBOOKCOVER img {
 
 /* The sBooks app for managing overlays */
 
-div#CODEXCOVER > iframe#SBOOKSAPP {
-    width: 80%; left: 10%; right: 10%;
+div#CODEXCOVER > div#CODEXOVERLAYS iframe#SBOOKSAPP {
+    height: 100%; width: 100%; margin: 0px; padding: 0px;
     background-color: ivory;}
 
 /* Help */
