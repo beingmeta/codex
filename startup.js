@@ -1361,13 +1361,13 @@ Codex.Startup=
             Codex.DOM.sbooksapp=sbooksapp;
                 
             var about=fdjtID("CODEXABOUTBOOK");
-            if (about) {}
-            else {
+            if (!(about)) {
                 about=fdjtDOM("div#CODEXABOUTBOOK");
-                fillAboutInfo(about);
-                if (fdjtID("CODEXABOUTBOOKHOLDER"))
-                    fdjtDOM.replace(fdjtID("CODEXABOUTBOOKHOLDER"),about);
-                else cover.appendChild(about);}
+                fillAboutInfo(about);}
+            if (hasParent(about,cover)) {}
+            else if (fdjtID("CODEXABOUTBOOKHOLDER")) 
+                fdjtDOM.replace(fdjtID("CODEXABOUTBOOKHOLDER"),about);
+            else cover.appendChild(about);
             
             fdjtDOM.addListener(cover,"click",cover_clicked);
 
