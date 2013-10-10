@@ -402,6 +402,7 @@ Codex.Startup=
             fdjt.Init();
 
             fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
+            fdjtDOM.addAppSchema("SBOOKS","http://sbooks.net/");
             fdjtDOM.addAppSchema("Codex","http://codex.sbooks.net/");
             fdjtDOM.addAppSchema("DC","http://purl.org/dc/elements/1.1/");
             fdjtDOM.addAppSchema("DCTERMS","http://purl.org/dc/terms/");
@@ -823,7 +824,7 @@ Codex.Startup=
             else if (Codex.force_offline) return true;
             var config_val=getConfig("keepdata");
             if (typeof config_val !== 'undefined') return config_val;
-            var value=(getMeta("Codex.offline"))||(getMeta("SBOOK.offline"));
+            var value=(getMeta("Codex.offline"))||(getMeta("SBOOKS.offline"));
             if ((value===0)||(value==="0")||
                 (value==="no")||(value==="off")||
                 (value==="never")) {
@@ -850,8 +851,8 @@ Codex.Startup=
                     (qval==="never")||(qval==="0"))
                     Codex.force_online=true;
                 else Codex.force_offline=true;}
-            else if (getMeta("SBOOK.offline")) {
-                var mval=getMeta("SBOOK.offline");
+            else if (getMeta("SBOOKS.offline")) {
+                var mval=getMeta("SBOOKS.offline");
                 if ((mval===false)||(mval===0)||(mval==="no")||(mval==="off")||
                     (mval==="never")||(mval==="0"))
                     Codex.force_online=true;
@@ -859,7 +860,7 @@ Codex.Startup=
 
             var refuris=getLocal("codex.refuris",true)||[];
 
-            Codex.sourceid=getMeta("SBOOK.sourceid");
+            Codex.sourceid=getMeta("SBOOKS.sourceid");
 
             // Get the settings for scanning the document structure
             getScanSettings();
@@ -874,19 +875,19 @@ Codex.Startup=
             if ((getLocal("codex.nologin"))||(getQuery("nologin")))
                 Codex.nologin=true;
             Codex.bypage=(Codex.page_style==='bypage'); 
-            Codex.max_excerpt=getMeta("SBOOK.maxexcerpt")||(Codex.max_excerpt);
-            Codex.min_excerpt=getMeta("SBOOK.minexcerpt")||(Codex.min_excerpt);
-            var sbooksrv=getMeta("SBOOK.server")||getMeta("SBOOKSERVER");
+            Codex.max_excerpt=getMeta("SBOOKS.maxexcerpt")||(Codex.max_excerpt);
+            Codex.min_excerpt=getMeta("SBOOKS.minexcerpt")||(Codex.min_excerpt);
+            var sbooksrv=getMeta("SBOOKS.server")||getMeta("SBOOKSERVER");
             if (sbooksrv) Codex.server=sbooksrv;
             else if (fdjtState.getCookie("SBOOKSERVER"))
                 Codex.server=fdjtState.getCookie("SBOOKSERVER");
             else Codex.server=lookupServer(document.domain);
             if (!(Codex.server)) Codex.server=Codex.default_server;
             
-            var notespecs=fdjtDOM.getMeta("sbooknote",true).concat(
-                fdjtDOM.getMeta("SBOOK.note",true));
-            var noterefspecs=fdjtDOM.getMeta("sbooknoteref",true).concat(
-                fdjtDOM.getMeta("SBOOK.noteref",true));
+            var notespecs=getMeta("sbooknote",true).concat(
+                getMeta("SBOOKS.note",true));
+            var noterefspecs=getMeta("sbooknoteref",true).concat(
+                getMeta("SBOOKS.noteref",true));
             Codex.sbooknotes=(((notespecs)&&(notespecs.length))?
                               (fdjtDOM.sel(notespecs)):(false));
             Codex.sbooknoterefs=(((noterefspecs)&&(noterefspecs.length))?
@@ -894,16 +895,16 @@ Codex.Startup=
 
             refuris.push(refuri);
 
-            var coverpage=fdjtDOM.getLink("SBOOK.coverpage",false,true)||
-                fdjtDOM.getLink("coverpage",false,true);
+            var coverpage=getLink("SBOOKS.coverpage",false,true)||
+                getLink("coverpage",false,true);
             if (coverpage) Codex.coverpage=coverpage;
             
-            var baseid=getMeta("SBOOK.id")||
-                getMeta("SBOOK.prefix")||getMeta("SBOOK.baseid");
+            var baseid=getMeta("SBOOKS.id")||
+                getMeta("SBOOKS.prefix")||getMeta("SBOOKS.baseid");
             if (baseid) Codex.baseid=baseid;
-            var prefix=getMeta("SBOOK.prefix")||baseid;
+            var prefix=getMeta("SBOOKS.prefix")||baseid;
             if (prefix) Codex.prefix=prefix;
-            var targetprefix=getMeta("SBOOK.targetprefix");
+            var targetprefix=getMeta("SBOOKS.targetprefix");
             if ((targetprefix)&&(targetprefix==="*"))
                 Codex.targetids=false;
             else if ((targetprefix)&&(targetprefix[0]==='/'))
@@ -914,7 +915,7 @@ Codex.Startup=
                 Codex.targetids=new RegExp("^"+prefix);
             else Codex.targetids=false;
             
-            var autotoc=getMeta("SBOOK.autotoc");
+            var autotoc=getMeta("SBOOKS.autotoc");
             if (autotoc) {
                 if ((autotoc[0]==="y")||(autotoc[0]==="Y")||
                     (autotoc==="ON")||(autotoc==="on")||
@@ -923,7 +924,7 @@ Codex.Startup=
                 else Codex.autotoc=false;}
 
             if (!((Codex.nologin)||(Codex.force_online))) {
-                Codex.mycopyid=getMeta("SBOOK.mycopyid")||
+                Codex.mycopyid=getMeta("SBOOKS.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
                     false;}
             if (Codex.keepdata) setLocal("codex.refuris",refuris,true);}
@@ -989,44 +990,44 @@ Codex.Startup=
             if (Codex.bookinfo) return;
             var bookinfo=Codex.bookinfo={};
             bookinfo.title=
-                fdjtDOM.getMeta("Codex.title")||
-                fdjtDOM.getMeta("SBOOK.title")||
-                fdjtDOM.getMeta("DC.title")||
-                fdjtDOM.getMeta("~TITLE")||
+                getMeta("Codex.title")||
+                getMeta("SBOOKS.title")||
+                getMeta("DC.title")||
+                getMeta("~TITLE")||
                 document.title||"untitled";
             var authors=
-                fdjtDOM.getMeta("SBOOK.author",true).concat(
-                    fdjtDOM.getMeta("DC.creator",true)).concat(
-                        fdjtDOM.getMeta("AUTHOR")).concat(
-                            fdjtDOM.getMeta("~AUTHOR"));
+                getMeta("SBOOKS.author",true).concat(
+                    getMeta("DC.creator",true)).concat(
+                        getMeta("AUTHOR")).concat(
+                            getMeta("~AUTHOR"));
             if ((authors)&&(authors.length)) bookinfo.authors=authors;
             bookinfo.byline=
-                fdjtDOM.getMeta("Codex.byline")||
-                fdjtDOM.getMeta("SBOOK.byline")||
-                fdjtDOM.getMeta("BYLINE")||
+                getMeta("Codex.byline")||
+                getMeta("SBOOKS.byline")||
+                getMeta("BYLINE")||
                 ((authors)&&(authors.length)&&(authors[0]));
             bookinfo.copyright=
-                fdjtDOM.getMeta("SBOOK.copyright")||
-                fdjtDOM.getMeta("SBOOK.rights")||
-                fdjtDOM.getMeta("DC.rights")||
-                fdjtDOM.getMeta("COPYRIGHT")||
-                fdjtDOM.getMeta("RIGHTS");
+                getMeta("SBOOKS.copyright")||
+                getMeta("SBOOKS.rights")||
+                getMeta("DC.rights")||
+                getMeta("COPYRIGHT")||
+                getMeta("RIGHTS");
             bookinfo.publisher=
-                fdjtDOM.getMeta("SBOOK.pubname")||
-                fdjtDOM.getMeta("DC.publisher")||
-                fdjtDOM.getMeta("PUBLISHER");
+                getMeta("SBOOKS.pubname")||
+                getMeta("DC.publisher")||
+                getMeta("PUBLISHER");
             bookinfo.pubyear=
-                fdjtDOM.getMeta("SBOOK.pubyear")||
-                fdjtDOM.getMeta("DC.date");
+                getMeta("SBOOKS.pubyear")||
+                getMeta("DC.date");
             bookinfo.description=
-                fdjtDOM.getMeta("SBOOK.description")||
-                fdjtDOM.getMeta("DC.description")||
-                fdjtDOM.getMeta("DESCRIPTION");
+                getMeta("SBOOKS.description")||
+                getMeta("DC.description")||
+                getMeta("DESCRIPTION");
             bookinfo.digitized=
-                fdjtDOM.getMeta("SBOOK.digitized")||
-                fdjtDOM.getMeta("DIGITIZED");
-            bookinfo.converted=fdjtID("SBOOK.converted")||
-                fdjtDOM.getMeta("SBOOK.converted");}
+                getMeta("SBOOKS.digitized")||
+                getMeta("DIGITIZED");
+            bookinfo.converted=fdjtID("SBOOKS.converted")||
+                getMeta("SBOOKS.converted");}
         function getBookInfo(){
             if (Codex.bookinfo) return Codex.bookinfo;
             else {bookSetup(); return Codex.bookinfo;}}
@@ -1105,9 +1106,9 @@ Codex.Startup=
         /* Getting settings */
 
         function _getsbookrefuri(){
-            var refuri=fdjtDOM.getLink("SBOOK.refuri",false,true)||
-                fdjtDOM.getLink("refuri",false,true)||
-                getMeta("SBOOK.refuri",false,true)||
+            var refuri=getLink("SBOOKS.refuri",false,true)||
+                getLink("refuri",false,true)||
+                getMeta("SBOOKS.refuri",false,true)||
                 getMeta("refuri",false,true)||
                 getLink("canonical",false,true);
             if (refuri) return decodeURI(refuri);
@@ -1119,9 +1120,9 @@ Codex.Startup=
                 if (hstart>=0) locref=locref.slice(0,hstart);
                 return decodeURI(locref);}}
         function _getsbookdocuri(){
-            return fdjtDOM.getLink("SBOOK.docuri",false)||
-                fdjtDOM.getLink("docuri",false)||
-                fdjtDOM.getLink("canonical",false)||
+            return getLink("SBOOKS.docuri",false)||
+                getLink("docuri",false)||
+                getLink("canonical",false)||
                 location.href;}
 
         function lookupServer(string){
@@ -1156,12 +1157,12 @@ Codex.Startup=
 
         function getScanSettings(){
             if (!(Codex.docroot))
-                if (getMeta("SBOOK.root"))
-                    Codex.docroot=fdjtID(getMeta("SBOOK.root"));
+                if (getMeta("SBOOKS.root"))
+                    Codex.docroot=fdjtID(getMeta("SBOOKS.root"));
             else Codex.docroot=fdjtID("SBOOKCONTENT")||document.body;
             if (!(Codex.start))
-                if (getMeta("SBOOK.start"))
-                    Codex.start=fdjtID(getMeta("SBOOK.start"));
+                if (getMeta("SBOOKS.start"))
+                    Codex.start=fdjtID(getMeta("SBOOKS.start"));
             else if (fdjtID("SBOOKSTART"))
                 Codex.start=fdjtID("SBOOKSTART");
             else {}
@@ -1440,44 +1441,44 @@ Codex.Startup=
             else {
                 var title=
                     fdjtID("SBOOKTITLE")||
-                    fdjtDOM.getMeta("Codex.title")||
-                    fdjtDOM.getMeta("SBOOK.title")||
-                    fdjtDOM.getMeta("DC.title")||
-                    fdjtDOM.getMeta("~TITLE")||
+                    getMeta("Codex.title")||
+                    getMeta("SBOOKS.title")||
+                    getMeta("DC.title")||
+                    getMeta("~TITLE")||
                     document.title;
                 var byline=
                     fdjtID("SBOOKBYLINE")||fdjtID("SBOOKAUTHOR")||
-                    fdjtDOM.getMeta("Codex.byline")||
-                    fdjtDOM.getMeta("Codex.author")||
-                    fdjtDOM.getMeta("SBOOK.byline")||
-                    fdjtDOM.getMeta("SBOOK.author")||
-                    fdjtDOM.getMeta("BYLINE")||
-                    fdjtDOM.getMeta("AUTHOR");
+                    getMeta("Codex.byline")||
+                    getMeta("Codex.author")||
+                    getMeta("SBOOKS.byline")||
+                    getMeta("SBOOKS.author")||
+                    getMeta("BYLINE")||
+                    getMeta("AUTHOR");
                 var copyright=
                     fdjtID("SBOOKCOPYRIGHT")||
-                    fdjtDOM.getMeta("Codex.copyright")||
-                    fdjtDOM.getMeta("Codex.rights")||
-                    fdjtDOM.getMeta("SBOOK.copyright")||
-                    fdjtDOM.getMeta("SBOOK.rights")||
-                    fdjtDOM.getMeta("COPYRIGHT")||
-                    fdjtDOM.getMeta("RIGHTS");
+                    getMeta("Codex.copyright")||
+                    getMeta("Codex.rights")||
+                    getMeta("SBOOKS.copyright")||
+                    getMeta("SBOOKS.rights")||
+                    getMeta("COPYRIGHT")||
+                    getMeta("RIGHTS");
                 var publisher=
                     fdjtID("SBOOKPUBLISHER")||
-                    fdjtDOM.getMeta("Codex.publisher")||
-                    fdjtDOM.getMeta("SBOOK.publisher")||                    
-                    fdjtDOM.getMeta("PUBLISHER");
+                    getMeta("Codex.publisher")||
+                    getMeta("SBOOKS.publisher")||                    
+                    getMeta("PUBLISHER");
                 var description=
                     fdjtID("SBOOKDESCRIPTION")||
-                    fdjtDOM.getMeta("Codex.description")||
-                    fdjtDOM.getMeta("SBOOK.description")||
-                    fdjtDOM.getMeta("DESCRIPTION");
+                    getMeta("Codex.description")||
+                    getMeta("SBOOKS.description")||
+                    getMeta("DESCRIPTION");
                 var digitized=
                     fdjtID("SBOOKDIGITIZED")||
-                    fdjtDOM.getMeta("Codex.digitized")||
-                    fdjtDOM.getMeta("SBOOK.digitized")||
-                    fdjtDOM.getMeta("DIGITIZED");
-                var sbookified=fdjtID("SBOOK.converted")||
-                    fdjtDOM.getMeta("SBOOK.converted");
+                    getMeta("Codex.digitized")||
+                    getMeta("SBOOKS.digitized")||
+                    getMeta("DIGITIZED");
+                var sbookified=fdjtID("SBOOKS.converted")||
+                    getMeta("SBOOKS.converted");
                 fillTemplate(about,".title",title);
                 fillTemplate(about,".byline",byline);
                 fillTemplate(about,".publisher",publisher);
@@ -1486,7 +1487,7 @@ Codex.Startup=
                 fillTemplate(about,".digitized",digitized);
                 fillTemplate(about,".sbookified",sbookified);
                 fillTemplate(about,".about",fdjtID("SBOOKABOUT"));
-                var cover=fdjtDOM.getLink("cover");
+                var cover=getLink("cover");
                 if (cover) {
                     var cover_elt=fdjtDOM.$(".cover",about)[0];
                     if (cover_elt) fdjtDOM(cover_elt,fdjtDOM.Image(cover));}}

@@ -476,56 +476,56 @@ Codex.Paginate=
                 fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
             if (avoidbreakclasses) args.avoidbreakinside.push(avoidbreakclasses);
             avoidbreakclasses=
-                fdjtDOM.sel(fdjtDOM.getMeta("SBOOK.avoidbreakinside",true));
+                fdjtDOM.sel(fdjtDOM.getMeta("SBOOKS.avoidbreakinside",true));
             if (avoidbreakclasses) args.avoidbreakinside.push(avoidbreakclasses);
 
             var fbb=fdjtDOM.getMeta("alwaysbreakbefore",true).concat(
-                fdjtDOM.getMeta("SBOOK.alwaysbreakbefore",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.alwaysbreakbefore",true)).concat(
                     fdjtDOM.getMeta("forcebreakbefore",true)).concat(
-                        fdjtDOM.getMeta("SBOOK.forcebreakbefore",true));
+                        fdjtDOM.getMeta("SBOOKS.forcebreakbefore",true));
             if ((fbb)&&(fbb.length)) args.forcebreakbefore=fdjtDOM.sel(fbb);
 
             var fba=fdjtDOM.getMeta("alwaysbreakafter",true).concat(
-                fdjtDOM.getMeta("SBOOK.alwaysbreakafter",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.alwaysbreakafter",true)).concat(
                     fdjtDOM.getMeta("forcebreakafter",true)).concat(
-                        fdjtDOM.getMeta("SBOOK.forcebreakafter",true));
+                        fdjtDOM.getMeta("SBOOKS.forcebreakafter",true));
             if ((fba)&&(fba.length)) args.forcebreakafter=fdjtDOM.sel(fba);
 
             var abb=fdjtDOM.getMeta("avoidbreakbefore",true).concat(
-                fdjtDOM.getMeta("SBOOK.avoidbreakbefore",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.avoidbreakbefore",true)).concat(
                     fdjtDOM.getMeta("dontbreakbefore",true)).concat(
-                        fdjtDOM.getMeta("SBOOK.dontbreakbefore",true));
+                        fdjtDOM.getMeta("SBOOKS.dontbreakbefore",true));
             if ((abb)&&(abb.length)) args.avoidbreakbefore=fdjtDOM.sel(abb);
 
             var aba=fdjtDOM.getMeta("avoidbreakafter",true).concat(
-                fdjtDOM.getMeta("SBOOK.avoidbreakafter",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.avoidbreakafter",true)).concat(
                     fdjtDOM.getMeta("dontbreakafter",true)).concat(
-                        fdjtDOM.getMeta("SBOOK.dontbreakafter",true));
+                        fdjtDOM.getMeta("SBOOKS.dontbreakafter",true));
             if ((aba)&&(aba.length)) args.avoidbreakafter=fdjtDOM.sel(aba);
 
             var abi=fdjtDOM.getMeta("avoidbreakinside",true).concat(
-                fdjtDOM.getMeta("SBOOK.avoidbreakinside",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.avoidbreakinside",true)).concat(
                     fdjtDOM.getMeta("dontbreakinside",true)).concat(
-                        fdjtDOM.getMeta("SBOOK.dontbreakinside",true));
+                        fdjtDOM.getMeta("SBOOKS.dontbreakinside",true));
             if ((abi)&&(abi.length)) args.avoidbreakinside=fdjtDOM.sel(abi);
 
             var fullpages=[".sbookfullpage",".sbooktitlepage",".sbookpage"].concat(
-                fdjtDOM.getMeta("SBOOK.fullpage",true)).concat(
-                    fdjtDOM.getMeta("SBOOK.fullpage",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.fullpage",true)).concat(
+                    fdjtDOM.getMeta("SBOOKS.fullpage",true)).concat(
                         fdjtDOM.getMeta("sbookfullpage",true));
             if ((fullpages)&&(fullpages.length))
                 args.fullpages=fdjtDOM.sel(fullpages);
             
             var floatpages=[".sbookfloatpage"].concat(
-                fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
-                    fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.floatpage",true)).concat(
+                    fdjtDOM.getMeta("SBOOKS.floatpage",true)).concat(
                         fdjtDOM.getMeta("sbookfloatpage",true));
             if ((floatpages)&&(floatpages.length))
                 args.floatpages=fdjtDOM.sel(floatpages);
             
             var floating=[".sbookfloatpage"].concat(
-                fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
-                    fdjtDOM.getMeta("SBOOK.floatpage",true)).concat(
+                fdjtDOM.getMeta("SBOOKS.floatpage",true)).concat(
+                    fdjtDOM.getMeta("SBOOKS.floatpage",true)).concat(
                         fdjtDOM.getMeta("sbookfloatpage",true));
             if ((floating)&&(floating.length))
                 args.floating=fdjtDOM.sel(floating);

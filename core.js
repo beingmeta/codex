@@ -168,7 +168,7 @@ var Codex={
                                   "^tags*","~^tags*","*^tags*","**^tags*"]});
         
         var knodule_name=
-            fdjtDOM.getMeta("SBOOK.knodule")||
+            fdjtDOM.getMeta("SBOOKS.knodule")||
             fdjtDOM.getMeta("~KNODULE")||
             refuri;
         Codex.knodule=new Knodule(knodule_name);
