@@ -1483,7 +1483,6 @@
     /* Moving forward and backward */
 
     var last_motion=false;
-    var fast_page=false;
 
     function forward(evt){
         var now=fdjtTime();
@@ -1499,6 +1498,9 @@
     Codex.Forward=forward;
     function right_margin_tap(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;}
         if (Codex.previewing) {
             Codex.stopPreview("right_margin_tap",true);
             cancel(evt);
@@ -1518,14 +1520,16 @@
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan"))
             Codex.setMode(false);
-        if (fast_page) {
-            clearInterval(fast_page); fast_page=false;}
-        fast_page=setInterval(function(){forward();},800);
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;}
+        Codex.page_turner=setInterval(function(){forward();},800);
         cancel(evt);}
     function right_margin_release(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-        if (fast_page) {
-            clearInterval(fast_page); fast_page=false;}
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;}
         cancel(evt);}
     function right_margin_swipe(evt){
         var dx=evt.deltaX, dy=evt.deltaY;
@@ -1563,6 +1567,9 @@
     Codex.Backward=backward;
     function left_margin_tap(evt){
 	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;}
         if (Codex.previewing) {
             Codex.stopPreview("left_margin_tap",true);
             cancel(evt);
@@ -1582,14 +1589,16 @@
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan"))
             Codex.setMode(false);
-        if (fast_page) {
-            clearInterval(fast_page); fast_page=false;}
-        fast_page=setInterval(function(){backward();},800);
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;}
+        Codex.page_turner=setInterval(function(){backward();},800);
         cancel(evt);}
     function left_margin_release(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-        if (fast_page) {
-            clearInterval(fast_page); fast_page=false;}
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;}
         cancel(evt);}
     function left_margin_swipe(evt){
         var dx=evt.deltaX, dy=evt.deltaY;
@@ -1612,6 +1621,11 @@
                 else if (dy>10) Codex.setMode("statictoc");
                 else {}}}
         cancel(evt);}
+
+    function stopPageTurner(){
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;}}
 
     function pageForward(evt){
         evt=evt||event;
@@ -1905,9 +1919,9 @@
                 gopage,Codex.curpage);
         else pageinfo.title=fdjtString(
             ((Codex.touch)?
-             ("Release to settle here (page %d), move up or tap the margin to return to page %d"):
-             ("Release to settle here (page %d), move up or tap a key to return to page %d")),
-            gopage,Codex.curpage);
+             ("Release to return to page %d, tap the content or margin to settle here (page %d)"):
+             ("Release to return to page %d, tap a key to settle here (page %d)")),
+            Codex.curpage,gopage);
         previewing_page=gopage;
         Codex.startPreview(gopage,"pageinfo_span_hold");}
     function pageinfo_tap(evt){
@@ -2346,6 +2360,7 @@
             keyup: onkeyup,
             keydown: onkeydown,
             keypress: onkeypress,
+            mouseup: stopPageTurner,
             click: default_tap,
             focus: codexfocus,
             blur: codexblur},
@@ -2449,6 +2464,7 @@
             keypress: onkeypress,
             touchstart: default_tap,
             touchmove: fdjt.UI.noDefault,
+            touchend: stopPageTurner,
             focus: codexfocus,
             blur: codexblur},
          content: {tap: content_tapped,
