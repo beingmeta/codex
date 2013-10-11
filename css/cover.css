@@ -74,6 +74,17 @@ div#CODEXCOVERCONTROLS > span.control {
 div#CODEXCOVERCONTROLS > span.control:hover {
     text-decoration: underline;}
 
+div#CODEXCOVER > div#CODEXCOVERCONTROLS > div.loginbox {
+    clear: both; width: 100%;}
+div#CODEXCOVER div.loginbox { 
+    transition-property: height; transition-duration: 2s;
+    -webkit-transition-property: height; -webkit-transition-duration: 2s;}
+div#CODEXCOVER div.loginbox {
+    margin: 0px; padding: 0px;
+    height: 0px; overflow: hidden;}
+body.cxNOUSER div#CODEXCOVER div.loginbox {
+    margin-top: 1ex; padding-top: 0.5ex; height: auto;}
+
 div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER { display: block;}
 div#CODEXCOVER.titlepage > div#CODEXTITLEPAGE { display: block;}
 div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOK { display: block;}
@@ -110,8 +121,8 @@ div#CODEXAPPHELP {
     margin-left: auto; margin-right: auto;
     background-color: ivory;
     overflow: auto;}
-div#CODEXWELCOME, div#CODEXABOUTBOOK,
-div#CODEXABOUTSBOOKS, div#CODEXAPPHELP {
+div#CODEXABOUTBOOK, div#CODEXAPPHELP {
+    padding-left: 2em; padding-right: 2em;
     text-align: left;}
 
 /* The sBooks app for managing overlays */
@@ -141,25 +152,6 @@ div#CODEXCONSOLE, div#CODEXSETTINGS {
     overflow: auto; background-color: ivory;}
 
 body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
-
-/* The Welcome page */
-
-div#CODEXWELCOME form.sbooksapp {
-    clear: none;}
-
-div#CODEXWELCOME p, div#CODEXWELCOME h1 {
-    text-align: left; text-indent: 0px; clear: none;}
-div#CODEXWELCOME p, div#CODEXWELCOME h1 {
-    margin-left: 10%; margin-right: 5%;
-    margin-top: 1ex; margin-bottom: 0.5ex;}
-div#CODEXWELCOME h1 { margin-top: 0.5ex;}
-div#CODEXWELCOME p { max-width: 40em;}
-div#CODEXWELCOME .left { float: left; padding-right: 5px;}
-div#CODEXWELCOME img { vertical-align: top;}
-
-div#CODEXWELCOME img.cover {
-    float: right; max-width: 12%;
-    padding-top: 0.5ex; padding-right: 1ex;}
 
 /* Title page */
 
@@ -191,7 +183,7 @@ div#CODEXTITLEPAGE > div p {
 
 div#CODEXSETTINGS { padding: 1em; }
 
-div#CODEXSETTINGS h1 { text-align: left;}
+div#CODEXSETTINGS h1 { margin-top: 0px; text-align: left;}
 
 div#CODEXSETTINGS div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}

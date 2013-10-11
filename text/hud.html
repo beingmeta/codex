@@ -86,7 +86,18 @@
   <!-- This is populated when a glosspoint is tapped.
        It contains the glosses for a particular passage. -->
 </div>
-<div id="CODEXHELP" class="hudpanel codexhelp"></div>
+<div id="CODEXHELP" class="hudpanel codexhelp">
+  <!-- This is the help text for reading the book as a whole (it get's
+       displayed for help when there isn't an active reader mode) -->
+  <img svg="{{bmg}}codex/redx.svgz"
+       src="{{bmg}}codex/redx24x24.png"
+       alt="close" class="closebutton"
+       onclick="Codex.toggleHelp();"/>
+  <h1><span class="adjustfont">Welcome to Codex,
+      the <span class="sbooks"><em>s</em>Books</span> e-reader</span></h1>
+  <div id="CODEXAPPHELP"></div>
+</div>
+<div id="CODEXHUDHELP"></div>
 <div id="CODEXKEYBOARDHELPBOX" class="closed">
   <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
   <span class="close" onclick="Codex.keyboardHelp(false);">close</span>

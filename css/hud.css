@@ -364,7 +364,8 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
 
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
-body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
+body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: none;}
 
 body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT,
@@ -586,12 +587,15 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
 div#CODEXHUD div#CODEXHUDTOP {
     position: absolute; top: 0px; height: 40px;
     text-align: center; left: 50px; right: 50px;}
-div#CODEXHUD #CODEXSHOWCOVER {
-    display: inline-block; white-space: nowrap;
+#CODEXSHOWCOVER {
+    white-space: nowrap;
     background-color: rgba(0,0,0,0.5); color: white;
     font-size: 1.25em; 
     margin-top: 0.5ex; padding: 0px 1ex 0px 1ex;
-    border-radius: 1ex; }
+    border-radius: 1ex;
+    display: none;}
+body.hudup #CODEXSHOWCOVER, #CODEXHUDTOP:hover #CODEXSHOWCOVER {
+    display: inline-block;}
 div#CODEXHUDTOP:hover #CODEXSHOWCOVER {
     opacity: 0.5;}
 body.hudup div#CODEXHUDTOP #CODEXSHOWCOVER {

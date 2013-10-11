@@ -94,7 +94,7 @@ div.helpbox {
     overflow: auto;
     display: none;}
 
-div.helpbox img.closebutton, div#CODEXHELP img.closebutton {
+div.helpbox img.closebutton, div.codexhelp img.closebutton {
     position: absolute; width: 24px; height: 24px;
     top: 6px; right: 6px; padding: 2px;
     border: solid red 2px; 
@@ -117,16 +117,16 @@ div.helpbox.atfoot {
 div#CODEXHUD div.helpbox {
     border-color: black; z-index: 250;}
 body.codexhelp div#CODEXHUD .helphud,
-body.codexhelp div#CODEXHUD > div#CODEXHELP {display: block;}
+body.codexhelp div#CODEXHUD > div.codexhelp {display: block;}
 body.codexhelp div#CODEXHUD .hudbutton {
     opacity: 0.5;}
-body.codexhelp.hudup div#CODEXHUD div#CODEXHELP, 
-body.codexhelp.cxSHRINK div#CODEXHUD div#CODEXHELP,
-body.codexhelp.cxPREVIEW div#CODEXHUD div#CODEXHELP,
+body.codexhelp.hudup div#CODEXHUD div.codexhelp, 
+body.codexhelp.cxSHRINK div#CODEXHUD div.codexhelp,
+body.codexhelp.cxPREVIEW div#CODEXHUD div.codexhelp,
 body.codexhelp.hudup div#CODEXHUD .helphud,
-body.codexhelp div#CODEXHUD.scanning div#CODEXHELP,
+body.codexhelp div#CODEXHUD.scanning div.codexhelp,
 body.codexhelp div#CODEXHUD.scanning .helphud,
-body.codexhelp div#CODEXHUD.tocscan div#CODEXHELP,
+body.codexhelp div#CODEXHUD.tocscan div.codexhelp,
 body.codexhelp div#CODEXHUD.tocscan .helphud,
 body.codexhelp div#CODEXHUD.addgloss .helphud,
 body.codexhelp div#CODEXHUD.overtoc .helphud,
@@ -134,7 +134,7 @@ body.codexhelp div#CODEXHUD.statictoc .helphud,
 body.codexhelp.cxSHRINK div#CODEXHUD .helphud,
 body.codexhelp.cxPREVIEW div#CODEXHUD .helphud {
     display: none;}
-body.codexhelp.hudup div#CODEXHUD.splash div#CODEXHELP {
+body.codexhelp.hudup div#CODEXHUD.splash div.codexhelp {
     display: block;}
 div#CODEXHUDHELP { display: none;}
 body.codexhelp div#CODEXHUDHELP { display: block; }
@@ -264,33 +264,38 @@ div#CODEXHUD div.helphud.rightmiddle {
 .helphud.botleft span.arrow { float: left;}
 .helphud.botright span.arrow { float: right;}
 
-div#CODEXHELP div.helphud#HIDETHISHELP {
+div.codexhelp div.helphud#HIDETHISHELP {
     position: absolute;
     top: 40px; right: 4px; width: 70px;}
 
+div.codexhelp td {
+    color: rgba(0,0,0,0.75);}
+
 div.codexhelp h1 {
-    margin-left: 15%; margin-right: 15%;
+    margin-left: 5%; margin-right: 5%;
     margin-top: 3px; padding-top: 0px;}
 
-div#CODEXHELP .action {
-    font-weight: bold; font-size: 125%;}
-div#CODEXHELP .result {
-    font-weight: normal; font-size: 125%;
-    font-style: italic;}
-div#CODEXHELP > table {
+div.codexhelp .action {
+    color: darkblue;}
+div.codexhelp .result {}
+div.codexhelp td dfn {
+    color: rgba(0,0,0,1);}
+div.codexhelp > table {
     margin-left: 10%; margin-right: 10%; width: 80%;
     margin-top: 1em;}
-div#CODEXHELP table th { padding-right: 0.5ex;}
-div#CODEXHELP table th img {
-    background-color: ivory; padding: 3px;}
-div#CODEXHELP table table {
+div.codexhelp table th { padding-right: 0.5ex;}
+div.codexhelp table th img {
+    background-color: ivory; padding: 3px;
+    height: 32px; width: auto;}
+}
+div.codexhelp table table {
     margin-left: 2%; margin-right: 2%;}
-div#CODEXHELP table td.icon { width: 32px;}
-div#CODEXHELP table td.icon img { width: 32px;}
-div#CODEXHELP table td.textleft { text-align: left;}
-div#CODEXHELP table td.textright { text-align: right;}
+div.codexhelp table td.icon { width: 32px;}
+div.codexhelp table td.icon img { width: 32px;}
+div.codexhelp table td.textleft { text-align: left;}
+div.codexhelp table td.textright { text-align: right;}
 
-div#CODEXHUD div#CODEXHELP.hudpanel {
+div#CODEXHUD div.codexhelp.hudpanel {
     position: absolute; text-align: center;
     top: 75px; left: 75px; right: 75px;
     height: auto; width: auto; padding-bottom: 1em;
@@ -306,7 +311,7 @@ div#CODEXHUD div#CODEXHELP.hudpanel {
     -khtml-opacity: 0.95;
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
-body.cxANIMATE div#CODEXHUD div#CODEXHELP.hudpanel {
+body.cxANIMATE div#CODEXHUD div.codexhelp.hudpanel {
     transition-property: opacity; transition-duration: 5s;
     -o-transition-property: opacity; -o-transition-duration: 5s;
     -moz-transition-property: opacity; -moz-transition-duration: 5s;
