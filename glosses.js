@@ -779,7 +779,10 @@
 
     function glossinput_onkeydown(evt){
         var ch=evt.keyCode, target=fdjtUI.T(evt);
-        if ((ch===9)||(ch===13)) {
+        if (ch===27) {
+            Codex.cancelGloss(); fdjtUI.cancel(evt);
+            return;}
+        else if ((ch===9)||(ch===13)) {
             var form=getParent(target,"FORM"), text=target.value;
             var pos=target.selectionStart||0, taginfo=findTag(text,pos,true);
             var cloud=((taginfo.prefix==="@")?(Codex.share_cloud):(Codex.gloss_cloud));

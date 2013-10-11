@@ -931,6 +931,7 @@
             if (Codex.previewing) {
                 Codex.stopPreview("escape_key",false);
                 fdjtUI.TapHold.clear();}
+            if (Codex.mode==="addgloss") Codex.cancelGloss();
             if (Codex.mode) {
                 Codex.last_mode=Codex.mode;
                 Codex.setMode(false);
