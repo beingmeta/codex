@@ -1232,7 +1232,7 @@ Codex.Startup=
                 cover=existing_cover;}
             else {
                 cover=fdjtDOM("div#CODEXCOVER");
-                cover.innerHTML=Codex.HTML.cover;
+                cover.innerHTML=fixStaticRefs(Codex.HTML.cover);
                 frame.appendChild(cover);}
 
             var coverpage=fdjtID("CODEXCOVERPAGE");
