@@ -587,14 +587,15 @@ div#CODEXHUD div#CODEXHUDTOP {
     position: absolute; top: 0px; height: 40px;
     text-align: center; left: 50px; right: 50px;}
 div#CODEXHUD #CODEXSHOWCOVER {
-    white-space: nowrap; background-color: black;
-    font-size: 1.5em; color: silver;
-    border-radius: 1ex; margin-top: 0.5ex;
-    opacity: 0.0;}
+    display: inline-block; white-space: nowrap;
+    background-color: rgba(0,0,0,0.5); color: white;
+    font-size: 1.25em; 
+    margin-top: 0.5ex; padding 0px 1ex 0px 1ex;
+    border-radius: 1ex; }
 div#CODEXHUDTOP:hover #CODEXSHOWCOVER {
-    opacity: 0.2;}
+    opacity: 0.5;}
 body.hudup div#CODEXHUDTOP #CODEXSHOWCOVER {
-    opacity: 0.3;}
+    opacity: 1.0;}
 body.cxPREVIEW div#CODEXHUDTOP #CODEXSHOWCOVER, 
 body.cxPREVIEW.hudup div#CODEXHUDTOP #CODEXSHOWCOVER {
     opacity: 0;}
