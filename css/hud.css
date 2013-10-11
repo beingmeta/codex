@@ -584,20 +584,19 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
 
 div#CODEXHUD div#CODEXHUDTOP {
-    position: absolute; top: 0px; left: 50px; right: 50px; height: 40px;}
-div#CODEXHUD div#CODEXSHOWCOVER {
-    position: absolute; top: 0px; left: 40%; right: 40%;
-    white-space: nowrap; text-align: center; overflow: visible;
-    background-color: black;
+    position: absolute; top: 0px; height: 40px;
+    text-align: center; left: 50px; right: 50px;}
+div#CODEXHUD #CODEXSHOWCOVER {
+    white-space: nowrap; background-color: black;
     font-size: 1.5em; color: silver;
     border-radius: 1ex; margin-top: 0.5ex;
     opacity: 0.0;}
-div#CODEXHUDTOP:hover div#CODEXSHOWCOVER {
+div#CODEXHUDTOP:hover #CODEXSHOWCOVER {
     opacity: 0.2;}
-body.hudup div#CODEXHUDTOP div#CODEXSHOWCOVER {
+body.hudup div#CODEXHUDTOP #CODEXSHOWCOVER {
     opacity: 0.3;}
-body.cxPREVIEW div#CODEXHUDTOP div#CODEXSHOWCOVER, 
-body.cxPREVIEW.hudup div#CODEXHUDTOP div#CODEXSHOWCOVER {
+body.cxPREVIEW div#CODEXHUDTOP #CODEXSHOWCOVER, 
+body.cxPREVIEW.hudup div#CODEXHUDTOP #CODEXSHOWCOVER {
     opacity: 0;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
