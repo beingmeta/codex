@@ -1362,6 +1362,10 @@ Codex.Startup=
             fdjtDOM.addListener(cover,"click",cover_clicked);
 
             addClass(document.body,"cxCOVER");
+
+            // Handle any adjustfont regions
+            fdjtUI.adjustFont.setup(cover);
+
             // Make the cover hidden by default
             Codex.CSS.hidecover=fdjtDOM.addCSSRule(
                 "div#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
