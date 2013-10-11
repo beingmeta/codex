@@ -262,6 +262,10 @@ body.cxTOUCH div.fortouch { display: block;}
 body.cxTOUCH p.fortouch { display: block;}
 body.cxTOUCH li.fortouch { display: list-item;}
 
+body.cxMOUSE.USESVG img.fortouch.svg,
+body.cxTOUCH.USESVG img.notouch.svg {
+    display: none !important;}
+
 body img.touchicon { display: none;}
 body img.mouseicon { display: inline;}
 body.cxTOUCH img.touchicon { display: inline;}
