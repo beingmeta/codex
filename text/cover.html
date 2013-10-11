@@ -42,31 +42,103 @@
   <iframe name="SBOOKSAPP" id="SBOOKSAPP" frameborder="0" scrolling="auto"></iframe>
 </div>
 <div id="CODEXCOVERCONTROLS">
-  <span class="control" data-mode="bookcover" title="see the cover">
+  <span class="control" data-mode="bookcover" title="see the cover"
+        tabindex="1">
     Cover</span>
   <span class="control" data-mode="titlepage"
-	title="this book's title page and other information">
+	title="this book's title page and other information"
+        tabindex="2">
     Title</span>
   <span class="control" data-mode="aboutbook"
-	title="learn more about this book and its background">
+	title="learn more about this book and its background"
+        tabindex="3">
     About</span>
   <span class="control" data-mode="overlays"
-	title="manage added layers of glosses for your sBook">
+	title="manage added layers of glosses for your sBook"
+        tabindex="3">
     Overlays</span>
   <span class="control" data-mode="console"
-	title="the debugging console (advanced)" >
+	title="the debugging console (advanced)"
+        tabindex="4">
     Console</span>
   <span class="control" data-mode="settings"
-	title="alter this e-reader's appearance and interactions">
+	title="alter this e-reader's appearance and interactions"
+        tabindex="5">
     Settings</span>
   <span class="control" data-mode="help"
-	title="simple help for using Codex" >
+	title="simple help for using Codex"
+        tabindex="6">
     Help</span>
   <div class="loginbox">
     <form action="https://auth.sbooks.net/auth" method="POST">
       <input TYPE="HIDDEN" NAME="FRESHLOGIN" VALUE="yes"/>
       <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
-      <input TYPE="TEXT" NAME="LOGIN" VALUE="" PLACEHOLDER="login email"/>
+      <input TYPE="TEXT" NAME="LOGIN" VALUE="" PLACEHOLDER="login with your email"
+             tabindex="7"/>
+      <span>or use</span>
+      <button name="AUTHORITY" TABINDEX="8"
+	      value=":FACEBOOK">
+	<img src="{{bmg}}sbooks/facebook64x64.png" class="nosvg"
+             alt="Facebook" class="noautoscale"/>
+	<img src="{{bmg}}sbooks/facebook.svgz" class="svg"
+             alt="Facebook" class="noautoscale"/>
+      </button>
+      <button NAME="AUTHORITY" TABINDEX="9"
+	      VALUE=":TWITTER">
+	<img src="{{bmg}}sbooks/twitter64x64.png"
+	     alt="Twitter" title="login with Twitter"
+	     class="nosvg"/>
+	<img src="{{bmg}}sbooks/twitter.svgz"
+	     alt="Twitter" title="login with Twitter"
+	     class="svg"/>
+      </button>
+      <button NAME="AUTHORITY" TABINDEX="10"
+	      VALUE="https://open.login.yahooapis.com/openid/op/auth">
+	<img src="{{bmg}}sbooks/yahoo64x64.png" class="nosvg"
+	     alt="Yahoo!" title="login using Yahoo!"/>
+	<img src="{{bmg}}sbooks/yahoo.svgz" class="svg"
+	     alt="Yahoo!" title="login using Yahoo!"/>
+      </button>
+      <button NAME="AUTHORITY" TABINDEX="11"
+	      VALUE=":GOOGLE">
+	<img src="{{bmg}}sbooks/google64x64.png"
+	     alt="Google" title="login using your Google account"
+	     class="nosvg"/>
+	<img src="{{bmg}}sbooks/google.svgz"
+	     alt="Google" title="login using your Google account"
+	     class="svg"/>
+      </button>
+      <button NAME="AUTHORITY" TABINDEX="12"
+	      VALUE=":GPLUS">
+	<img src="{{bmg}}sbooks/googleplus64x64.png"
+	     alt="Google" title="login using Google+"
+	     class="nosvg"/>
+	<img src="{{bmg}}sbooks/googleplus.svgz"
+	     alt="Google" title="login using Google+"
+	     class="svg"/>
+      </button>
+      <button NAME="AUTHORITY" VALUE=":LINKEDIN" TABINDEX="13">
+        <img src="{{bmg}}sbooks/linkedin64x64.png"
+	     alt="Linked In" title="login with Linked In"
+	     class="nosvg"/>
+        <img src="{{bmg}}sbooks/linkedin.svgz"
+	     alt="Linked In" title="login with Linked In"
+	     class="svg"/>
+      </button>
+      <!--
+      <button name="AUTHORITY" TABINDEX="14"
+	      value=":AMAZON">
+	<img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
+             alt="Amazon" title="login with Amazon"/>
+      </button>
+      <button name="AUTHORITY" TABINDEX="15"
+	      value=":PAYPAL">
+	<img src="{{bmg}}sbooks/paypalsquare64x64.png" class="nosvg"
+             alt="PayPal" title="login with PayPal"/>
+	<img src="{{bmg}}sbooks/paypalsquare.svgz" class="svg"
+             alt="PayPal" title="login with PayPal"/>
+      </button>
+      -->
     </form>
   </div>
 </div>

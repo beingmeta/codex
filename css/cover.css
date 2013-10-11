@@ -83,7 +83,13 @@ div#CODEXCOVER div.loginbox {
     margin: 0px; padding: 0px;
     height: 0px; overflow: hidden;}
 body.cxNOUSER div#CODEXCOVER div.loginbox {
-    margin-top: 1ex; padding-top: 0.5ex; height: auto;}
+    margin-top: 1ex; padding-top: 0.5ex; height: auto;
+    vertical-align: top; color: white;}
+div#CODEXCOVER div.loginbox button { padding: 1px;}
+div#CODEXCOVER div.loginbox button > img { height: 1.5em; width: auto;}
+div.loginbox form > button, div.loginbox form > input[TYPE="TEXT"],
+div.loginbox form > span {
+    vertical-align: top;}
 
 div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER { display: block;}
 div#CODEXCOVER.titlepage > div#CODEXTITLEPAGE { display: block;}
@@ -184,6 +190,11 @@ div#CODEXTITLEPAGE > div p {
 div#CODEXSETTINGS { padding: 1em; }
 
 div#CODEXSETTINGS h1 { margin-top: 0px; text-align: left;}
+div#CODEXSETTINGS h1 a.logout {
+    float: right; color: red; text-decoration: none;
+    font-size: 60%; font-variant: small-caps;}
+div#CODEXSETTINGS h1 a.logout:visited {color: red;}
+body.cxNOUSER div#CODEXSETTINGS h1 a.logout {display:none;}
 
 div#CODEXSETTINGS div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
