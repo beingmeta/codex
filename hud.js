@@ -98,6 +98,9 @@ Codex.setMode=
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);
+            // Fill in the HUD help
+            var helptext=fdjtID("CODEXHELPTEXT");
+            helptext.innerHTML=fixStaticRefs(Codex.HTML.help);
             // Setup heart
             var heart=fdjtID("CODEXHEART");
             heart.innerHTML=fixStaticRefs(Codex.HTML.heart);
@@ -448,6 +451,7 @@ Codex.setMode=
                     showCover();
                     return;}
                 else {
+                    dropClass(document.body,"cxCOVER");
                     if (codex_mode_foci[Codex.mode]) {
                         var modeinput=fdjtID(codex_mode_foci[Codex.mode]);
                         modeinput.blur();}
