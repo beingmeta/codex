@@ -15,6 +15,9 @@ body.hudup div#CODEXADDGLOSS div.codexglossform,
 div#CODEXADDGLOSS div.codexglossform.focused {
     min-height: 75px; max-height: 150px;}
 
+div.codexglossform.hiddenglossform {
+    opacity: 0.05;}
+
 div.codexglossform form div.inputbox { margin-top: 2px;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {

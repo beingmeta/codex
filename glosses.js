@@ -362,6 +362,17 @@
         return form;}
     Codex.setGlossTarget=setGlossTarget;
 
+    function hideGlossForm(form,flag){
+        var wrapper=getParent(form,".codexglossform");
+        if (typeof flag==="undefined") 
+            flag=(!(hasClass(wrapper,"hiddenglossform")));
+        if (flag) {
+            addClass(wrapper,"hiddenglossform");
+            Codex.setHUD(false);}
+        else {
+            dropClass(wrapper,"hiddenglossform");
+            Codex.setHUD(true);}}
+
     function updateExcerpt(form,sel){
         var info=sel.getInfo();
         if (!(info)) {
@@ -392,7 +403,8 @@
             if ((sel)&&(typeof info.off === "number")) {
                 var offinput=fdjtDOM.getInput(form,"EXOFF");
                 var newoff=sel.getOffset(real_target);
-                offinput.value=newoff;}}}
+                offinput.value=newoff;}}
+        hideGlossForm(form,false);}
     
     function selectText(passages){
         if (passages.nodeType) passages=[passages];
@@ -410,7 +422,11 @@
         if (Codex.mode!=="addgloss") {
             Codex.setMode("addgloss");
             fdjtUI.cancel(evt);}
-        else return selecting_ontap(evt);}
+        else {
+            var live_gloss=fdjt.ID("CODEXLIVEGLOSS");
+            hideGlossForm(live_gloss);
+            fdjtUI.cancel(evt);
+            return;}}
 
     function setGlossForm(form){
         var cur=fdjtID("CODEXLIVEGLOSS");
@@ -419,6 +435,7 @@
             Codex.glossform=false;
             return;}
         form.id="CODEXLIVEGLOSS";
+        hideGlossForm(form,false);
         if ((Codex.glossform)&&
             (Codex.glossform.className==="editdetail")) {
             var oldform=Codex.glossform;
