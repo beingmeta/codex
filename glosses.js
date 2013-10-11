@@ -411,7 +411,8 @@
         var dups=[];
         var i=0, lim=passages.length;
         while (i<lim) dups=dups.concat(Codex.getDups(passages[i++]));
-        return fdjt.UI.Selecting(
+        if (Codex.Trace.selection) fdjtLog("selectText %o",passages);
+        return new fdjt.UI.TextSelect(
             dups,{ontap: gloss_selecting_ontap,
                   fortouch: Codex.touch,
                   holdthresh: 250,
@@ -419,6 +420,10 @@
     Codex.UI.selectText=selectText;
     var selecting_ontap=fdjt.UI.Selecting.tap_handler;
     function gloss_selecting_ontap(evt){
+        evt=evt||event;
+        if (Codex.Trace.selection)
+            fdjtLog("gloss_selecting_ontap %o, mode=%o, livegloss=%o",
+                    evt,Codex.mode,fdjt.ID("CODEXLIVEGLOSS"));
         if (Codex.mode!=="addgloss") {
             Codex.setMode("addgloss");
             fdjtUI.cancel(evt);}
