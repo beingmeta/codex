@@ -355,8 +355,6 @@ Codex.Startup=
             if (fdjtID("CODEXSPLASH"))
                 fdjtID("CODEXSPLASH").style.display='none';
 
-            Codex.setMode("splash");
-
             fdjtDOM.adjustFonts(fdjtID("CODEXHUD"));
 
             var markdown_converter=new Markdown.Converter();
@@ -1320,21 +1318,12 @@ Codex.Startup=
             if (!(help)) {
                 help=fdjtDOM("div#CODEXAPPHELP");
                 cover.appendChild(help);}
-            help.innerHTML=fixStaticRefs(Codex.HTML.coverhelp);
+            var cover_help=fdjtID("CODEXCOVERHELP");
+            if (!(cover_help)) {
+                cover_help=fdjtDOM("div#CODEXCOVERHELP.codexhelp");
+                help.appendChild(cover_help);}
+            cover_help.innerHTML=fixStaticRefs(Codex.HTML.help);
 
-            var welcome=Codex.DOM.welcome=fdjtID("CODEXWELCOME");
-            if (!(welcome)) {
-                welcome=fdjtDOM("div#CODEXWELCOME");
-                cover.appendChild(welcome);}
-            welcome.innerHTML=fixStaticRefs(Codex.HTML.welcome);
-
-            var login=fdjtID("CODEXLOGIN");
-            if (!(login)) {
-                login=fdjtDOM("div#CODEXLOGIN");
-                cover.appendChild(login);}
-            Codex.DOM.sbookslogin=login;
-            login.innerHTML=fixStaticRefs(Codex.HTML.login);
-            
             var console=Codex.DOM.console=fdjtID("CODEXCONSOLE");
             if (!(console)) {
                 console=fdjtDOM("div#CODEXCONSOLE");
@@ -1393,7 +1382,7 @@ Codex.Startup=
             if ((mode)&&(cover.className===mode)) {
                 if (cover.getAttribute("data-defaultclass"))
                     cover.className=cover.getAttribute("data-defaultclass");
-                else cover.className="welcome";
+                else cover.className="bookcover";
                 fdjt.UI.cancel(evt);
                 return;}
             if ((mode==="overlays")&&
@@ -1401,8 +1390,7 @@ Codex.Startup=
                 (!(Codex.appinit)))
                 Codex.initIFrameApp();
 
-            if (!(mode))
-                dropClass(document.body,"cxCOVER");
+            if (!(mode)) dropClass(document.body,"cxCOVER");
             else fdjtID("CODEXCOVER").className=mode;
             fdjt.UI.cancel(evt);}
 
@@ -1734,7 +1722,7 @@ Codex.Startup=
                     if (fdjtState.getLocal("queued("+Codex.refuri+")"))
                         Codex.glossdb.load(
                             fdjtState.getLocal("queued("+Codex.refuri+")",true));
-                    fdjtID("CODEXCOVER").className="welcome";
+                    fdjtID("CODEXCOVER").className="bookcover";
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
             else if (info.wronguser) {
@@ -1905,7 +1893,6 @@ Codex.Startup=
             var i=0, lim;
             if (Codex._user_setup) return;
             if (!(Codex.user)) {
-                fdjtID("CODEXCOVER").className="welcome";
                 fdjtDOM.addClass(document.body,"cxNOUSER");
                 return;}
             fdjtDOM.dropClass(document.body,"cxNOUSER");
