@@ -1023,6 +1023,7 @@
         if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if ((ch===72)||(ch===104)) { // 'H' or 'h'
+            dropClass(document.body,"cxCOVER");
             fdjtDOM.toggleClass(document.body,'codexhelp');
             return false;}
         else if ((ch===67)||(ch===99)) { // 'C' or 'c'
