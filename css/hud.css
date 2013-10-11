@@ -590,7 +590,7 @@ div#CODEXHUD #CODEXSHOWCOVER {
     display: inline-block; white-space: nowrap;
     background-color: rgba(0,0,0,0.5); color: white;
     font-size: 1.25em; 
-    margin-top: 0.5ex; padding 0px 1ex 0px 1ex;
+    margin-top: 0.5ex; padding: 0px 1ex 0px 1ex;
     border-radius: 1ex; }
 div#CODEXHUDTOP:hover #CODEXSHOWCOVER {
     opacity: 0.5;}
