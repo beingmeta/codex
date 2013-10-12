@@ -99,7 +99,7 @@ Codex.setMode=
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);
             // Fill in the HUD help
-            var helptext=fdjtID("CODEXHELPTEXT");
+            var helptext=fdjtID("CODEXAPPHELP");
             helptext.innerHTML=fixStaticRefs(Codex.HTML.help);
             // Setup heart
             var heart=fdjtID("CODEXHEART");
