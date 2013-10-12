@@ -303,6 +303,11 @@
             cancel(evt);
             return;}
 
+        if (hasClass(document.body,"codexhelp")) {
+            dropClass(document.body,"codexhelp");
+            cancel(evt);
+            return;}
+
         if ((Codex.hudup)||(Codex.mode)) {
             Codex.setMode(false); Codex.setHUD(false);
             if (fdjtID("CODEXOPENGLOSSMARK")) {
