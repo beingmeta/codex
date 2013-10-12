@@ -576,6 +576,28 @@ div.codexglossform.glossreply form div.addglossmenu.expanded > img[alt="glossres
 div.codexglossform.glossadd form div.addglossmenu.expanded > img[alt="glossrespond"] {
     display: none;}
 
+#CODEXGLOSSMESSAGE {
+    position: absolute; top: 0px; height: 25px;
+    left: 50px; right: 50px; width: auto;
+    padding: 1ex; padding-top: 2px; padding-bottom: 2px;
+    background-color: ivory; font-style: italic;
+    font-size: 1em;}
+#CODEXGLOSSMESSAGE {
+    border-width: 2px; border-top-width: 0px;
+    border-top-left-radius: 0px;
+    -webkit-border-top-left-radius: 0px; 
+    -moz-border-radius-topleft: 0px;
+    -o-border-radius-topleft: 0px; 
+    border-top-right-radius: 0px;
+    -webkit-border-top-right-radius: 0px; 
+    -moz-border-radius-topright: 0px;
+    -o-border-radius-topright: 0px;}
+
+div.fdjtdialog#CODEXGLOSSMESSAGE img.closebutton {
+    top: 2px; height: 1.5ex; width: auto; vertical-align: top;}
+div.fdjtdialog#CODEXGLOSSMESSAGE .savemsg {
+    vertical-align: bottom;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***
