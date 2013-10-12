@@ -594,8 +594,12 @@
                     dx,dy,adx,ady,evt.startX,evt.startY,vw);
         if (adx>(ady*2)) {
             // Horizontal swipe
-            if (dx<-10) Codex.Forward(evt);
-            else if (dx>10) Codex.Backward(evt);}
+            if (dx<-10) {
+                if (Codex.scanning) Codex.scanForward(evt);
+                else Codex.Forward(evt);}
+            else if (dx>10) {
+                if (Codex.scanning) Codex.scanBackward(evt);
+                else Codex.Backward(evt);}}
         else if (ady>(adx*2)) {
             // Vertical swipe
             if (!(Codex.hudup)) {
