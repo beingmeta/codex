@@ -593,6 +593,7 @@ div#CODEXHUD div#CODEXHUDTOP {
     font-size: 1.25em; 
     margin-top: 0.5ex; padding: 0px 1ex 0px 1ex;
     border-radius: 1ex;
+    cursor: pointer;
     display: none;}
 body.hudup #CODEXSHOWCOVER, #CODEXHUDTOP:hover #CODEXSHOWCOVER {
     display: inline-block;}

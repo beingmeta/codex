@@ -42,7 +42,11 @@ div#CODEXCOVER > div {
     top: 50px; left: 50px; right: 50px;
     bottom: 120px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
-    display: none;}
+    transition-property: opacity; transition-duration: 2s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 2s;
+    -moz-transition-property: opacity; -moz-transition-duration: 2s;
+    -o-transition-property: opacity; -o-transition-duration: 2s;
+    opacity: 0.0;}
 
 div#CODEXCOVER > div > div.fdjtadjusted {
     height: 100%; width: 100%;}
@@ -61,7 +65,7 @@ div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     padding-left: 2em; padding-right: 2em;
     height: 100px; top: auto;
     font-family: Arial,Verdana,Helvetica,sans-serif;
-    display: block;}
+    opacity: 1; display: block;}
 div#CODEXCOVERCONTROLS > .username {
     float: left; vertical-align: top;}
 div#CODEXCOVERCONTROLS > .control > img {
@@ -91,14 +95,18 @@ div.loginbox form > button, div.loginbox form > input[TYPE="TEXT"],
 div.loginbox form > span {
     vertical-align: top;}
 
-div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER { display: block;}
-div#CODEXCOVER.titlepage > div#CODEXTITLEPAGE { display: block;}
-div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOK { display: block;}
-div#CODEXCOVER.help > div#CODEXAPPHELP { display: block;}
-div#CODEXCOVER.aboutsbooks > div#CODEXABOUTSBOOKS { display: block;}
-div#CODEXCOVER.console > div#CODEXCONSOLE { display: block;}
-div#CODEXCOVER.settings > div#CODEXSETTINGS { display: block;}
-div#CODEXCOVER.overlays > div#CODEXOVERLAYS { display: block;}
+div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER,
+div#CODEXCOVER.bookcover > div#CODEXBOOKCOVERHOLDER,
+div#CODEXCOVER.titlepage > div#CODEXTITLEPAGE,
+div#CODEXCOVER.titlepage > div#CODEXTITLEPAGEHOLDER,
+div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOK,
+div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOKHOLDER,
+div#CODEXCOVER.help > div#CODEXAPPHELP,
+div#CODEXCOVER.aboutsbooks > div#CODEXABOUTSBOOKS,
+div#CODEXCOVER.console > div#CODEXCONSOLE,
+div#CODEXCOVER.settings > div#CODEXSETTINGS, 
+div#CODEXCOVER.overlays > div#CODEXOVERLAYS {
+    opacity: 1.0; z-index: 20;}
 
 div#CODEXCOVER.bookcover .control[data-mode='bookcover'],
 div#CODEXCOVER.titlepage .control[data-mode='titlepage'],
@@ -159,29 +167,39 @@ body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
 /* Title page */
 
-div#CODEXTITLEPAGE { text-align: center;}
-/*
-div#CODEXTITLEPAGE .title {
-    position: absolute; top: 0px; right: 10%; left: 10%;
-    font-weight: bold; margin-top: 1em;}
-div#CODEXTITLEPAGE div.title {  font-size: 3em; }
-div#CODEXTITLEPAGE .byline, div#CODEXTITLEPAGE .credits,
-div#CODEXTITLEPAGE .author {
-    position: absolute; top: 50%; right: 5%; left: 5%;
-    font-style: italic;}
-div#CODEXTITLEPAGE .credits .author { position: static; }
-div#CODEXTITLEPAGE div.byline, div#CODEXTITLEPAGE div.credits {
-    font-size: 2em; }
-*/
+div#CODEXTITLEPAGE { display: none; }
+div#CODEXCOVER div#CODEXTITLEPAGE { display: block; }
 
-div#CODEXTITLEPAGE .pubinfo, div#CODEXTITLEPAGE .sbookbibinfo {
-    position: absolute; bottom: 0px; padding-bottom: 1em;
+.codextitlepage { text-align: center;}
+.codextitlepage > .title {
+    position: absolute; top: 2%; left: 10%; right: 10%;
+    margin-top: 1em; margin-bottom: 1em;
+    font-size: 3em; font-weight: bold;
+    clear: both;}
+.codextitlepage .connector {font-size: 50%;}
+.codextitlepage > .credits, .codextitlepage > .author,
+.codextitlepage > .byline {
+    position: absolute; top: 40%; left: 15%; right: 15%;
+    font-size: 2em; font-style: italic;}
+.codextitlepage .pubinfo, .codextitlepage .sbookbibinfo {
+    position: absolute; bottom: 0px; padding-bottom: 1ex;
     text-align: left; left: 20%; right: 20%; width: 60%;
-    font-size: 0.8em; margin-left: 3em; text-indent: -3em;}
-div#CODEXTITLEPAGE > div p {
-    margin-bottom: 2px; margin-top: 0px;
+    font-size: 0.8em;  line-height: 80%;
+    margin-left: 3em; text-indent: -3em;}
+.codextitlepage .pubinfo p, .codextitlepage .sbookbibinfo p {
+    margin-top: 0px; margin-bottom: 0px;}
+.codextitlepage .pubinfo p span.bibdate,
+.codextitlepage .sbookbibinfo p span.bibdate {
+    padding-left: 1em; float: right;}
+.codextitlepage .dedication, .codextitlepage .epigraph { 
+    text-align: left; font-size: 1em;
+    font-style: normal; font-weight: normal;
     margin-left: auto; margin-right: auto;
-    max-width: 40em;}
+    page-break-inside: avoid;
+    margin-top: 1em;
+    max-width: 70%;}
+
+.codexbibpage { text-align: left;}
 
 /* Settings */
 
