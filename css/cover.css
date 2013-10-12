@@ -168,18 +168,21 @@ body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 /* Title page */
 
 div#CODEXTITLEPAGE { display: none; }
-div#CODEXCOVER div#CODEXTITLEPAGE { display: block; }
+div#CODEXCOVER div#CODEXTITLEPAGE {
+  display: block;
+  padding: 2em;}
 
 .codextitlepage { text-align: center;}
 .codextitlepage > .title {
     position: absolute; top: 2%; left: 10%; right: 10%;
-    margin-top: 1em; margin-bottom: 1em;
+    margin-top: 1ex; margin-bottom: 1ex;
     font-size: 3em; font-weight: bold;
     clear: both;}
 .codextitlepage .connector {font-size: 50%;}
 .codextitlepage > .credits, .codextitlepage > .author,
 .codextitlepage > .byline {
     position: absolute; top: 40%; left: 15%; right: 15%;
+    margin-top: 1ex; margin-bottom: 1ex;
     font-size: 2em; font-style: italic;}
 .codextitlepage .pubinfo, .codextitlepage .sbookbibinfo,
 .codextitlepage .bibinfo {
