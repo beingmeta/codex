@@ -1268,7 +1268,7 @@ Codex.Startup=
                 if (titlepage) {
                     titlepage=titlepage.cloneNode(true);
                     fdjtDOM.stripIDs(titlepage);
-                    titlepage.style="";}
+                    titlepage.setAttribute("style","");}
                 else {
                     var info=getBookInfo();
                     titlepage=fdjtDOM("div#CODEXTITLEPAGE",
