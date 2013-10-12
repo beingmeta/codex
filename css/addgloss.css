@@ -293,8 +293,9 @@ span.linkedin_share, span.google_share { display: none;}
 
 div.codexglossform div.glossetc .networks .checkspan.postgloss {
     font-size: 80%; padding-right: 1ex;}
+div.codexglossform form div.checkspan.postgloss {
+    white-space: nowrap; font-size: 80%;}
 div.codexglossform.private .checkspan.postgloss {
-    white-space: nowrap; font-size: 80%;
     display: none;}
 div#CODEXHUD .codexglossform .checkspan.postgloss input[type='checkbox'] {
     display: inline; vertical-align: baseline;}
