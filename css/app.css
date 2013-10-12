@@ -1,4 +1,4 @@
- /* -*- Mode: CSS; character-encoding: utf-8; -*- */
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
    This file implements a Javascript/DHTML web application for reading
@@ -295,6 +295,10 @@ div.locbar hr {
     width: 50px; height: 50px;
     z-index: 50;}
 #CODEXPAGE .codexglossmark {margin-right: -50px;}
+div.fdjtselecting .codexglossmark {
+    width: 3px; z-index: -20; }
+div.fdjtselecting .codexglossmark > * {
+    visibility: hidden;}
 /* #CODEXCONTENT .codexglossmark { right: 5px;} */
 
 body .codexglossmark > * {
