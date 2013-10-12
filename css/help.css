@@ -78,7 +78,7 @@ body.hudup.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {
     background-color: silver; border-color: black;}
 
 div.helpbox {
-    position: fixed;
+    position: absolute;
     background-color: silver; color: black;
     padding: 1em; border: solid transparent 3px;
     border-radius: 1em; -webkit-border-radius: 1em;
@@ -186,6 +186,9 @@ body.codexhelp.cxPREVIEW div#CODEXHUD div#CODEXHUDHELP {
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
 
+body.codexhelp div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES {
+    opacity: 0;}
+
 div.helpbox p {
     /*
     display: block; text-align: left;
@@ -220,7 +223,7 @@ DIV#CODEXSTARTPAGE div.codexhelp p.checkspan { text-align: center; }
 /* Help HUD */
 
 div#CODEXHUD .helphud {
-    position: fixed; background-color: ivory; z-index: 100;
+    position: absolute; background-color: ivory; z-index: 100;
     border: solid black 1px; padding: 3px; border-radius: 6px;
     font-family: sans,sans-serif;
     border-radius: 6px; -o-border-radius: 6px; 
@@ -243,7 +246,7 @@ div#CODEXHUD .helphud.botcenter {
     text-align: center;}
 
 div#CODEXHUD div.helphud.leftmiddle {
-    position: fixed; max-width: 50px; padding-left: 3px;
+    position: absolute; max-width: 50px; padding-left: 3px;
     top: 40%; left: 0px; text-align: left; padding-right: 2px;
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
     -o-border-top-left-radius: 0px; -o-border-bottom-left-radius: 0px; 
@@ -251,7 +254,7 @@ div#CODEXHUD div.helphud.leftmiddle {
     -moz-border-radius-topleft: 0px; -moz-border-radius-bottomleft: 0px;}
 
 div#CODEXHUD div.helphud.rightmiddle {
-    position: fixed; max-width: 50px; padding-right: 3px;
+    position: absolute; max-width: 50px; padding-right: 3px;
     top: 40%; right: 0px; text-align: right; padding-left: 2px;
     border-top-right-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-top-right-radius: 0px; -o-border-bottom-right-radius: 0px; 
@@ -277,17 +280,23 @@ div.codexhelp h1 {
 
 div.codexhelp .action {
     color: darkblue;}
-div.codexhelp .result {}
+div.codexhelp .result {
+    color: rgba(0,0,0,1);}
 div.codexhelp td dfn {
     color: rgba(0,0,0,1);}
 div.codexhelp > table {
-    margin-left: 10%; margin-right: 10%; width: 80%;
+    margin-left: 2%; margin-right: 2%; width: 96%;
     margin-top: 1em;}
+div.codexhelp table th, div.codexhelp table td {
+    padding-bottom: 0px; padding-top: 0px;}
 div.codexhelp table th { padding-right: 0.5ex;}
 div.codexhelp table th img {
-    background-color: ivory; padding: 3px;
-    height: 32px; width: auto;}
-}
+    background-color: ivory; padding: 0px;
+    height: 32px; width: auto;
+    vertical-align: top;}
+div.codexhelp table tbody tr:first-child th,
+div.codexhelp table tbody tr:first-child td {
+    padding-top: 1ex; }
 div.codexhelp table table {
     margin-left: 2%; margin-right: 2%;}
 div.codexhelp table td.icon { width: 32px;}
@@ -297,7 +306,7 @@ div.codexhelp table td.textright { text-align: right;}
 
 div#CODEXHUD div.codexhelp.hudpanel {
     position: absolute; text-align: center;
-    top: 75px; left: 75px; right: 75px;
+    top: 50px; left: 50px; right: 50px;
     height: auto; width: auto; padding-bottom: 1em;
     font-family: helvetica,sans,sans-serif;
     background-color: lightgray; color: black; 
@@ -318,7 +327,7 @@ body.cxANIMATE div#CODEXHUD div.codexhelp.hudpanel {
     -webkit-transition-property: opacity; -webkit-transition-duration: 5s;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
-    position: fixed; text-align: center;
+    position: absolute; text-align: center;
     top: 150px; left: 75px; right: 75px;
     font-size: 120%; font-family: helvetica,sans,sans-serif;
     background-color: lightgray; color: black; 
@@ -381,6 +390,10 @@ div#CODEXKEYBOARDHELP {
 div#CODEXHUD div#CODEXKEYBOARDHELP kbd {
     font-family: verdana,helvetica,sans,sans-serif;
     font-size: 120%; font-weight: bold;}
+
+@media screen and (max-width: 800px) {
+    div#CODEXHUD .helphud { font-size: 0.7em; }
+    }
 
 /* Emacs local variables
 ;;;  Local variables: ***

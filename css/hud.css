@@ -506,13 +506,13 @@ div#CODEXNOTETEXT span.sbooknotelabel {
 
 div#CODEXHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px;
-    border: solid transparent 2px; opacity: 0.20;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    filter: alpha(opacity=20);
-    -webkit-opacity: 0.20;
-    -khtml-opacity: 0.20;
-    -moz-opacity: 0.20;
-    -o-opacity: 0.20;}
+    border: solid transparent 2px; opacity: 0.05;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=05)";
+    filter: alpha(opacity=05);
+    -webkit-opacity: 0.05;
+    -khtml-opacity: 0.05;
+    -moz-opacity: 0.05;
+    -o-opacity: 0.05;}
 .cxMOUSE div#CODEXHUD:hover img.hudbutton {
     opacity: 0.30;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
