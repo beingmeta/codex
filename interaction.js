@@ -305,8 +305,10 @@
 
         if ((Codex.hudup)||(Codex.mode)) {
             Codex.setMode(false); Codex.setHUD(false);
-            if (fdjtID("CODEXOPENGLOSSMARK")) 
-                fdjtID("CODEXOPENGLOSSMARK").id="";
+            if (fdjtID("CODEXOPENGLOSSMARK")) {
+                if (Codex.target)
+                    Codex.clearHighlights(Codex.target);
+                fdjtID("CODEXOPENGLOSSMARK").id="";}
             fdjtUI.cancel(evt); gesture_start=false;
             clicked=fdjtTime();
             // if (getTarget(target)) Codex.setTarget(false);
@@ -325,6 +327,7 @@
 
         if (fdjtID("CODEXOPENGLOSSMARK")) {
             fdjtID("CODEXOPENGLOSSMARK").id="";
+            if (Codex.target) Codex.clearHighlights(Codex.target);
             fdjtUI.cancel(evt); gesture_start=false;
             return;}
 
@@ -1391,7 +1394,6 @@
         if (held) clear_hold("glossmark_tapped");
         if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)||(evt.shiftKey))
             return;
-        if (Codex.select_target) return;
         var target=fdjtUI.T(evt);
         var glossmark=getParent(target,".codexglossmark");
         var passage=
@@ -1410,6 +1412,7 @@
             (Codex.target===passage)) {
             Codex.setMode(false);
             return;}
+        else if (Codex.select_target) return;
         else Codex.showGlossmark(passage,glossmark);}
 
     var animated_glossmark=false;

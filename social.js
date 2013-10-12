@@ -298,7 +298,10 @@
         else fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
         if (point) {
             var cur=fdjtID("CODEXOPENGLOSSMARK");
-            if (cur) cur.id="";
+            if (cur) {
+                if (Codex.target)
+                    Codex.clearHighlights(Codex.target);
+                cur.id="";}
             point.id="CODEXOPENGLOSSMARK";}
         Codex.setTarget(target);
         slice.update();

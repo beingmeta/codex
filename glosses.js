@@ -338,6 +338,8 @@
                 fdjtUI.alert("There was a problem adding a gloss");
                 return false;}}
         Codex.glosstarget=target;
+        // Reset this when we actually get a gloss
+        Codex.select_target=false;
         addClass(target,"codexglosstarget");
         Codex.GoTo(target,"addgloss",true);
         Codex.setCloudCuesFromTarget(Codex.gloss_cloud,target);
