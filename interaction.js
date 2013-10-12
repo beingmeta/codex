@@ -194,7 +194,7 @@
         var div=((form)&&(getParent(form,".codexglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));
         if (div) dropClass(div,"focused");
-        if (input) Codex.cleartFocus(input);
+        if (input) Codex.clearFocus(input);
         gloss_blurred=fdjtTime();
         Codex.freezelayout=false;
         // Restore this without removal of the gloss
@@ -505,6 +505,7 @@
                 clearTimeout(slip_timer); slip_timer=false;}
             return;}
         var selecting=Codex.UI.selectText(passage);
+        Codex.select_target=passage;
         selectors.push(selecting);
         selectors[passage.id]=selecting;
         fdjtUI.TapHold.clear();
@@ -517,7 +518,8 @@
         while (i<lim) {
             var sel=selectors[i++];
             if (sel!==except) sel.clear();}
-        selectors=[];}
+        selectors=[];
+        Codex.select_target=false;}
 
     function content_slipped(evt){
         evt=evt||event;
@@ -551,15 +553,18 @@
             if (Codex.mode==="addgloss") Codex.setHUD(true);
             else Codex.setMode("addgloss");
             return;}
+        startAddGloss(passage,((evt.shiftKey)&&("addtag")),evt);}
+
+    function startAddGloss(passage,mode,evt){
         var selecting=selectors[passage.id]; abortSelect(selecting);
         var form_div=Codex.setGlossTarget(
             passage,((Codex.mode==="addgloss")&&(Codex.glossform)),selecting);
         var form=getChild(form_div,"form");
         if (!(form)) return;
-        else fdjtUI.cancel(evt);
+        else if (evt) fdjtUI.cancel(evt);
         if (Codex.Trace.gestures)
-            fdjtLog("c_released/addgloss (%o) %o, p=%o f=%o/%o",
-                    evt,target,passage,form_div,form);
+            fdjtLog("startAddGloss (%o) %o f=%o/%o",
+                    evt,passage,form_div,form);
         var mode=((evt.shiftKey)&&("addtag"));
         Codex.setGlossForm(form_div);
         if (mode) form.className=mode;
@@ -1386,9 +1391,6 @@
         if (held) clear_hold("glossmark_tapped");
         if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)||(evt.shiftKey))
             return;
-        // If you're selecting, ignore glossmark actions, which might
-        // run over onto the glossmark.
-        if (Codex.selecting) return;
         var target=fdjtUI.T(evt);
         var glossmark=getParent(target,".codexglossmark");
         var passage=
@@ -2356,6 +2358,17 @@
         addClass(document.body,"cxCOVER");
         fdjtUI.cancel(evt);}
 
+    function global_mouseup(evt){
+        evt=evt||event;
+        if (Codex.page_turner) {
+            clearInterval(Codex.page_turner);
+            Codex.page_turner=false;
+            return;}
+        if (Codex.select_target) {
+            startAddGloss(Codex.select_target,
+                          ((evt.shiftKey)&&("addtag")),evt);
+            Codex.select_target=false;}}
+        
     function raiseHUD(evt){
         Codex.setHUD(true); return false;}
     Codex.raiseHUD=raiseHUD;
@@ -2369,7 +2382,7 @@
             keyup: onkeyup,
             keydown: onkeydown,
             keypress: onkeypress,
-            mouseup: stopPageTurner,
+            mouseup: global_mouseup,
             click: default_tap,
             focus: codexfocus,
             blur: codexblur},
