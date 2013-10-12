@@ -94,7 +94,6 @@ div.loginbox form > span {
 div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER { display: block;}
 div#CODEXCOVER.titlepage > div#CODEXTITLEPAGE { display: block;}
 div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOK { display: block;}
-div#CODEXCOVER.welcome > div#CODEXWELCOME { display: block;}
 div#CODEXCOVER.help > div#CODEXAPPHELP { display: block;}
 div#CODEXCOVER.aboutsbooks > div#CODEXABOUTSBOOKS { display: block;}
 div#CODEXCOVER.console > div#CODEXCONSOLE { display: block;}
@@ -103,7 +102,6 @@ div#CODEXCOVER.overlays > div#CODEXOVERLAYS { display: block;}
 
 div#CODEXCOVER.bookcover .control[data-mode='bookcover'],
 div#CODEXCOVER.titlepage .control[data-mode='titlepage'],
-div#CODEXCOVER.welcome .control[data-mode='welcome'],
 div#CODEXCOVER.overlays .control[data-mode='overlays'],
 div#CODEXCOVER.aboutbook .control[data-mode='aboutbook'],
 div#CODEXCOVER.settings .control[data-mode='settings'],
