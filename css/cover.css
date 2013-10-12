@@ -174,17 +174,17 @@ div#CODEXCOVER div#CODEXTITLEPAGE { display: block; }
 .codextitlepage > .title {
     position: absolute; top: 2%; left: 10%; right: 10%;
     margin-top: 1em; margin-bottom: 1em;
-    font-size: 3em; font-weight: bold;
+    font-weight: bold;
     clear: both;}
 .codextitlepage .connector {font-size: 50%;}
 .codextitlepage > .credits, .codextitlepage > .author,
 .codextitlepage > .byline {
     position: absolute; top: 40%; left: 15%; right: 15%;
-    font-size: 2em; font-style: italic;}
+    font-style: italic;}
 .codextitlepage .pubinfo, .codextitlepage .sbookbibinfo {
-    position: absolute; bottom: 0px; padding-bottom: 1ex;
-    text-align: left; left: 20%; right: 20%; width: 60%;
-    font-size: 0.8em;  line-height: 80%;
+    position: absolute; bottom: 0px; font-size: 50%;
+    left: 20%; right: 20%; width: 60%;
+    text-align: left; padding-bottom: 1ex;
     margin-left: 3em; text-indent: -3em;}
 .codextitlepage .pubinfo p, .codextitlepage .sbookbibinfo p {
     margin-top: 0px; margin-bottom: 0px;}
