@@ -533,6 +533,7 @@
         selectors=[];
         Codex.select_target=false;}
 
+    /*
     function content_slipped(evt){
         evt=evt||event;
         var rel=evt.relatedTarget;
@@ -545,6 +546,7 @@
                 if (Codex.Trace.gestures)
                     fdjtLog("content_slipped %o, aborting select",evt);
                 abortSelect();},2000);}}
+    */
     function content_slipped(evt){}
     
     function content_released(evt){
@@ -577,7 +579,6 @@
         if (Codex.Trace.gestures)
             fdjtLog("startAddGloss (%o) %o f=%o/%o",
                     evt,passage,form_div,form);
-        var mode=((evt.shiftKey)&&("addtag"));
         Codex.setGlossForm(form_div);
         if (mode) form.className=mode;
         Codex.setMode("addgloss",true);
