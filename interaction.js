@@ -2350,9 +2350,11 @@
     Codex.UI.highlightSetting=highlightSetting;
 
     function showcover_handler(evt){
+        evt=evt||event;
         if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
             fdjtID("CODEXCOVER").classname="bookcover";
-        addClass(document.body,"cxCOVER");}
+        addClass(document.body,"cxCOVER");
+        fdjtUI.cancel(evt);}
 
     function raiseHUD(evt){
         Codex.setHUD(true); return false;}
