@@ -524,11 +524,14 @@
         var rel=evt.relatedTarget;
         if ((rel)&&(!(hasParent(rel,".fdjtselecting")))) {
             if (slip_timer) return;
+            if (Codex.Trace.gestures)
+                fdjtLog("content_slipped %o, starting slip timer",evt);
             slip_timer=setTimeout(function(){
                 slip_timer=false;
                 if (Codex.Trace.gestures)
                     fdjtLog("content_slipped %o, aborting select",evt);
                 abortSelect();},2000);}}
+    function content_slipped(evt){}
     
     function content_released(evt){
         evt=evt||event;
@@ -1383,6 +1386,9 @@
         if (held) clear_hold("glossmark_tapped");
         if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)||(evt.shiftKey))
             return;
+        // If you're selecting, ignore glossmark actions, which might
+        // run over onto the glossmark.
+        if (Codex.selecting) return;
         var target=fdjtUI.T(evt);
         var glossmark=getParent(target,".codexglossmark");
         var passage=
