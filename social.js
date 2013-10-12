@@ -261,6 +261,7 @@
                 else hudwrapper.style.maxWidth=(w-100)+"px";
                 geom=fdjtDOM.getGeometry(slicediv);
                 wgeom=fdjtDOM.getGeometry(hudwrapper);}
+            if (geom.width>(w-50)) hudwrapper.style.left="10px";
             var wh=false;
             if ((geom.height+15)>h/2) wh=h/2;
             else wh=geom.height+10;
