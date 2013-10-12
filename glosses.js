@@ -307,9 +307,7 @@
             if (cur) cur.id=null;
             Codex.glosstarget=false;
             Codex.glossform=false;
-            if (Codex.selecting) {
-                Codex.selecting.clear();
-                Codex.selecting=false;}
+            setSelecting(false);
             return;}
         var gloss=false;
         // Identify when the target is a gloss
@@ -345,13 +343,10 @@
         Codex.setCloudCuesFromTarget(Codex.gloss_cloud,target);
         setGlossForm(form);
         // Clear current selection and set up new selection
-        if (Codex.selecting) {
-            Codex.selecting.clear();
-            Codex.selecting=false;}
+        setSelecting(false);
         Codex.clearHighlights(target);
-        if (selecting)
-            Codex.selecting=selecting;
-        else Codex.selecting=selectText(target);
+        if (selecting) setSelecting(selecting);
+        else setSelecting(selectText(target));
         if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
             Codex.selecting.setString(gloss.excerpt);
         else if (selecting) 
@@ -361,6 +356,17 @@
             updateExcerpt(form,this);};
         return form;}
     Codex.setGlossTarget=setGlossTarget;
+
+    function setSelecting(selecting){
+        if (Codex.selecting===selecting) return;
+        else if (Codex.selecting) {
+            if (Codex.Trace.selection)
+                fdjtLog("setSelecting, replacing %o with %o",
+                        Codex.selecting,selecting);
+            Codex.selecting.clear();}
+        else {}
+        Codex.selecting=selecting;}
+    Codex.setSelecting=setSelecting;
 
     function hideGlossForm(form,flag){
         var wrapper=getParent(form,".codexglossform");
@@ -932,6 +938,7 @@
     function addgloss_callback(req,form,keep){
         if (Codex.Trace.network)
             fdjtLog("Got AJAX gloss response %o from %o",req,req.uri);
+        glossMessage("gloss saved");
         if (Codex.Trace.savegloss)
             fdjtLog("Gloss %o successfully added (status %d) to %o",
                     getInput(form,"UUID").value,req.status,
@@ -1283,6 +1290,12 @@
                 catch (ex) {Codex.setConnected(false);}}}}
     Codex.writeQueuedGlosses=writeQueuedGlosses;
     
+    function glossMessage(message){
+        var box=fdjt.Dialog({spec: "div.fdjtdialog#CODEXGLOSSMESSAGE"},
+                            fdjtDOM("span.savemsg",message));
+        fdjt.Dialog.setCountdown(box,5);
+        fdjtID("CODEXHUDTOP").appendChild(box);}
+
 })();
 
 /* Emacs local variables
