@@ -252,7 +252,11 @@
             var pgeom=fdjtDOM.getGeometry(point);
             var tgeom=fdjtDOM.getGeometry(target);
             var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight();
-            if ((geom.height>h/2)||(w<500)) {
+            if (geom.width>w) {
+                hudwrapper.style.maxWidth=(w-20)+"px";
+                hudwrapper.style.minWidth=Math.floor(w/2)+"px";
+                hudwrapper.style.left="10px";}
+            else if ((geom.height>h/2)||(w<500)) {
                 // If the slice is big, drop the width constraint
                 if (w<500) {
                     hudwrapper.style.maxWidth=(w-20)+"px";

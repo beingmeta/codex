@@ -298,6 +298,10 @@
             fdjt.UI.cancel(evt);
             return false;}
 
+        if (hasParent(target,".codexglossmark")) {
+             cancel(evt);
+            return false;}
+
         if ((Codex.touch)&&(Codex.textinput)) {
             Codex.clearFocus(Codex.textinput);
             cancel(evt);
