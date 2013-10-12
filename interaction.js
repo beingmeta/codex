@@ -1391,6 +1391,7 @@
         if (held) clear_hold("glossmark_tapped");
         if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)||(evt.shiftKey))
             return;
+        if (Codex.select_target) return;
         var target=fdjtUI.T(evt);
         var glossmark=getParent(target,".codexglossmark");
         var passage=
