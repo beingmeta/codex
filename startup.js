@@ -1228,17 +1228,26 @@ Codex.Startup=
                 frame=fdjtDOM("div#CODEXFRAME");
                 fdjtDOM.prepend(document.body,frame);}
             if (existing_cover) {
-                fdjtLog("Updating existing book cover");
                 frame.appendChild(existing_cover);
                 cover=existing_cover;}
             else {
-                fdjtLog("Creating initial book cover");
                 cover=fdjtDOM("div#CODEXCOVER");
                 cover.innerHTML=fixStaticRefs(Codex.HTML.cover);
                 frame.appendChild(cover);}
 
+            // Remove any explicit style attributes set for on-load display
+            if (existing_cover) existing_cover.removeAttribute("style");
+            if (fdjtID("CODEXBOOKCOVERHOLDER"))
+                fdjtID("CODEXBOOKCOVERHOLDER").removeAttribute("style");
+            if (fdjtID("CODEXBOOKCOVERIMAGE"))
+                fdjtID("CODEXBOOKCOVERIMAGE").removeAttribute("style");
+            if (fdjtID("CODEXTITLEPAGEHOLDER"))
+                fdjtID("CODEXTITLEPAGEHOLDER").removeAttribute("style");
+
+
             var coverpage=fdjtID("CODEXCOVERPAGE");
-            if (coverpage) {}
+            if (coverpage) 
+                coverpage.id="CODEXBOOKCOVER";
             else if (fdjtID("SBOOKCOVERPAGE")) {
                 coverpage=fdjtID("SBOOKCOVERPAGE").cloneNode(true);
                 fdjtDOM.stripIDs(coverpage);
@@ -1254,6 +1263,10 @@ Codex.Startup=
                     fdjtDOM.replace(fdjtID("CODEXBOOKCOVERHOLDER"),
                                     coverpage);
                 else cover.appendChild(coverpage);}
+            else if (cover.className==="bookcover") {
+                // Use the provided book cover
+                var holder=fdjtID("CODEXBOOKCOVERHOLDER");
+                if (holder) holder.id="CODEXBOOKCOVER";}
             else {
                 cover.setAttribute("data-defaultclass","titlepage");
                 cover.className="titlepage";}
@@ -1263,6 +1276,9 @@ Codex.Startup=
                 fdjtDOM.scaleToFit(coverpage,0.9);
                 coverpage.style.opacity=null; coverpage.style.display=null;
                 coverpage.style.overflow=null;}
+            if (fdjtID("CODEXBOOKCOVERHOLDER")) fdjtDOM.remove("CODEXBOOKCOVERHOLDER");
+            if ((!(fdjtID("CODEXBOOKCOVER")))&&(fdjtID("CODEXCOVERCONTROLS")))
+                fdjtDOM.addClass("CODEXCOVERCONTROLS","nobookcover");
 
             var titlepage=fdjtID("CODEXTITLEPAGE");
             if (!(titlepage)) {
@@ -1292,6 +1308,8 @@ Codex.Startup=
                 fdjtDOM.scaleToFit(titlepage,0.9);
                 titlepage.style.opacity=null; titlepage.style.display=null;
                 titlepage.style.overflow=null;}
+            if ((fdjtID("CODEXTITLEPAGE"))&&(fdjtID("CODEXTITLEPAGEHOLDER")))
+                fdjtDOM.remove("CODEXTITLEPAGEHOLDER");
             
             var infopage=fdjtID("CODEXINFOPAGE");
             if (infopage)
@@ -1308,6 +1326,8 @@ Codex.Startup=
                 fdjtDOM.scaleToFit(infopage,0.9);
                 infopage.style.opacity=null; infopage.style.display=null;
                 infopage.style.overflow=null;}
+            if ((fdjtID("CODEXINFOPAGE"))&&(fdjtID("CODEXINFOPAGEHOLDER")))
+                fdjtDOM.remove("CODEXINFOPAGEHOLDER");
             
             var settings=fdjtID("CODEXSETTINGS");
             if (!(settings)) {
