@@ -126,6 +126,9 @@ body.cxUSER span.control[data-mode='overlays'] {
     display: inline;}
 body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
 
+div#CODEXCOVERCONTROLS.nobookcover .control[data-mode='bookcover'] {
+    display: none;}
+
 div#CODEXWELCOME, div#CODEXTITLEPAGE,
 div#CODEXABOUTBOOK, div#CODEXABOUTSBOOKS,
 div#CODEXAPPHELP {
