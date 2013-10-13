@@ -1228,9 +1228,11 @@ Codex.Startup=
                 frame=fdjtDOM("div#CODEXFRAME");
                 fdjtDOM.prepend(document.body,frame);}
             if (existing_cover) {
+                fdjtLog("Updating existing book cover");
                 frame.appendChild(existing_cover);
                 cover=existing_cover;}
             else {
+                fdjtLog("Creating initial book cover");
                 cover=fdjtDOM("div#CODEXCOVER");
                 cover.innerHTML=fixStaticRefs(Codex.HTML.cover);
                 frame.appendChild(cover);}
