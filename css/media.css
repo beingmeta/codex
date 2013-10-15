@@ -51,6 +51,26 @@
 }
 
 
+/* Handheld media rules */
+
+@media handheld and (orientation: portrait) {
+    #CODEXFOOT {left: 60px; right: 60px;}
+    div#CODEXFOOT div#CODEXPAGEINFO {
+        margin-left: 0px; margin-right: 0px;}
+    div#CODEXHUD .botleft {top: 0px; left: 60px;}
+    div#CODEXHUD .botright {top: 0px; right: 60px;}
+    div#CODEXPAGE {
+        height: 98%; top: 1%; bottom: 1%;
+        width: 98%; left: 1%; right: 1%;}
+}
+
+@media handheld and (orientation: landscape) {
+    #CODEXPAGE {
+        height: 98%; top: 1%; bottom: 1%;}
+    div#CODEXFOOT div#CODEXPAGEINFO {
+        margin-left: 0px; margin-right: 0px;}
+}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***

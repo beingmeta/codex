@@ -86,14 +86,6 @@ body.sbook { font-size: 62.5%; }
 
 #CODEXBODY .titlepage, #CODEXBODY .sbooktitlepage { text-align: center;}
 
-@media handheld {
-    #CODEXPAGE {
-        height: 98%; top: 1%; bottom: 1%;
-        width: 98%; left: 1%; right: 1%;}}
-@media handheld and (orientation: landscape) {
-    #CODEXPAGE {
-        height: 98%; top: 1%; bottom: 1%;}}
-
 body.codexpagesizedefault #CODEXPAGE {}
 body.codexpagesizefull #CODEXPAGE {
     height: 98%; top: 1%; bottom: 1%;
