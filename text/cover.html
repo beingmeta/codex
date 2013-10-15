@@ -87,7 +87,9 @@
     <form action="https://auth.sbooks.net/auth" method="POST">
       <input TYPE="HIDDEN" NAME="FRESHLOGIN" VALUE="yes"/>
       <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
-      <input TYPE="TEXT" NAME="LOGIN" VALUE="" PLACEHOLDER="login with your email"
+      <input TYPE="TEXT" NAME="LOGIN" VALUE=""
+             PLACEHOLDER="login with your email"
+	     ONKEYPRESS="fdjt.UI.submitOnEnter(event);"
              tabindex="7"/>
       <span>or use</span>
       <button name="AUTHORITY" TABINDEX="8"
