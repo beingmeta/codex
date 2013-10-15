@@ -53,15 +53,16 @@
 
 /* Handheld media rules */
 
-@media handheld and (orientation: portrait) {
-    #CODEXFOOT {left: 60px; right: 60px;}
+@media (max-device-width: 500px) {
+    div#CODEXHUD #CODEXHEAD, div#CODEXHUD #CODEXFOOT {
+        left: 0px; right: 0px; width: 100%;}
     div#CODEXFOOT div#CODEXPAGEINFO {
         margin-left: 0px; margin-right: 0px;}
     div#CODEXHUD .botleft {top: 0px; left: 60px;}
     div#CODEXHUD .botright {top: 0px; right: 60px;}
     div#CODEXPAGE {
-        height: 98%; top: 1%; bottom: 1%;
-        width: 98%; left: 1%; right: 1%;}
+        top: 0px; bottom: 0px;
+        left: 5px; right: 5px;}
 }
 
 @media handheld and (orientation: landscape) {

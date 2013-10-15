@@ -28,14 +28,15 @@
 /* Major HUD components, head and heart */
 
 #CODEXHEAD, #CODEXFOOT {
-    position: fixed; left: 60px; right: 60px; z-index: 100;
+    position: absolute; left: 60px; right: 60px; z-index: 100;
     max-height: 60px; border: solid transparent 4px;
     padding: 0px; padding-bottom: 0.5ex;}
 #CODEXSCANNER {
-    position: fixed; left: 60px; right: 60px; z-index: 100;
+    position: absolute; left: 60px; right: 60px; z-index: 100;
     background-color: white;
     border: solid steelblue 4px; padding: 0px;
     max-height: 50px;}
+#CODEXSCANNER.flash { background-color: silver;}
 #CODEXSCANNER.expanded { max-height: inherit; }
 body.cxANIMATE #CODEXSCANNER .tochead {
     transition-property: font-size; transition-duration: 1s;}
@@ -189,7 +190,7 @@ body #CODEXHUD.scanning #CODEXSCANNER.expanded {
     height: auto; max-height: 50%; overflow: visible;}
 
 #CODEXHEARTHOLDER {
-    position: fixed;
+    position: absolute;
     top: 50%; bottom: 50%; height: 0px;
     left: 50px; right: 50px;
     z-index: -100; 
@@ -752,11 +753,20 @@ div#CODEXPOINTGLOSSES div.codexcard { margin-left: 0px;}
 div#CODEXHUD div#CODEXPOINTGLOSSES.hudpanel {
     top: 100px; left: auto; right: 100px;
     max-width: 40em; min-width: 20em; min-height: 20px; 
-    background-color: rgb(255,255,240); opacity: 0.95;
+    background-color: rgb(255,255,240);
     border: solid blue 5px; overflow: auto;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;
-    position:fixed;}
+    position: absolute;}
+div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
+    opacity: 0.95;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
+
 div#CODEXHUD div#CODEXPOINTGLOSSES.hudpanel div.codexslice {
     overflow: hidden;}
 div#CODEXHUD div#CODEXPOINTGLOSSES.hudpanel {
@@ -940,13 +950,31 @@ div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
 body img.codexscanbutton {
     width: 50px; height: 100px;
     position: absolute; bottom: 50%; 
-    display: none; opacity: 0.5;
+    display: none;}
+body img.codexscanbutton {
+    transition-property: opacity;
+    -o-transition-property: -o-opacity;
+    -moz-transition-property: -moz-opacity;
+    -webkit-transition-property: -webkit-opacity; 
+    transition-duration: 0.5s; -o-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;
+    opacity: 0.50;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -webkit-opacity: 0.50;
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
+body img.codexscanbutton.flash  {
+    background-color: silver;
+    opacity: 0.90;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -webkit-opacity: 0.90;
+    -khtml-opacity: 0.90;
+    -moz-opacity: 0.90;
+    -o-opacity: 0.90;}
+    
 body img.codexpagebutton {
     width: 50px; height: 100px;
     position: absolute; bottom: 50%; opacity: 0.15;
@@ -1033,7 +1061,7 @@ div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
 
 /* SBOOKGLOSSES */
 
-div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: fixed; right: 50px;}
+div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
 div#CODEXHUD div#CODEXSOURCES.hudpanel {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
 
@@ -1088,7 +1116,7 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
 /* The start page */
 
 div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
-    position: fixed; text-align: left; padding: 1em;
+    position: absolute; text-align: left; padding: 1em;
     background-color: silver; color: black; opacity: 1.0;
     top: 75px; bottom: 75px; left: 75px; right: 75px; height: auto; width: auto;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -1243,7 +1271,7 @@ img.codexclosehud {
     vertical-align: top; margin-top: 2px;
     display: inline-block;}
 img.codexclosehud#CODEXSTOPSCAN {
-    position: fixed; top: 0px; right: 5px;
+    position: absolute; top: 0px; right: 5px;
     width: 40px; height: 40px;
     /* Let's try to do without this for now */
     display: none;}

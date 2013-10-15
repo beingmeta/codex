@@ -1668,13 +1668,7 @@ Codex.Startup=
             
             var pageright=fdjtDOM("div#CODEXPAGERIGHT");
             var pageleft=fdjtDOM("div#CODEXPAGELEFT");
-            /*
-            var pagehead=fdjtDOM("div.codexmargin#CODEXPAGEHEAD"," ");
-            var pagefoot=fdjtDOM("div.codexmargin#CODEXPAGEFOOT"," ");
-            pagehead.codexui=true; pagefoot.codexui=true;
-            Codex.pagehead=pagehead; Codex.pagefoot=pagefoot;
-            */
-
+            
             var scanleft=document.createDocumentFragment();
             var scanright=document.createDocumentFragment();
             var holder=fdjtDOM("div");
@@ -1692,7 +1686,6 @@ Codex.Startup=
 
             Codex.TapHold.pageleft=new fdjt.TapHold(pageleft);
             Codex.TapHold.pageright=new fdjt.TapHold(pageright);
-
             for (var pagelt in [pageright,pageleft]) { /* pagehead,pagefoot  */
                 fdjtDOM.addListeners(
                     pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}

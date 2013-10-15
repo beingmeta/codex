@@ -1712,6 +1712,12 @@
             return;}
         else if (Codex.scanning) Codex.setMode("scanning");
         else Codex.setMode("tocscan");
+        addClass("CODEXSCANNER","flash");
+        addClass("CODEXNEXTSCAN","flash");
+        setTimeout(function(){
+            dropClass("CODEXSCANNER","flash");
+            dropClass("CODEXNEXTSCAN","flash");},
+                   500);
         if (Codex.mode==="tocscan") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
@@ -1765,6 +1771,12 @@
             return;}
         else if (Codex.scanning) Codex.setMode("scanning");
         else Codex.setMode("tocscan");
+        addClass("CODEXPREVSCAN","flash");
+        addClass("CODEXSCANNER","flash");
+        setTimeout(function(){
+            dropClass("CODEXSCANNER","flash");
+            dropClass("CODEXPREVSCAN","flash");},
+                   500);
         if (Codex.mode==="tocscan") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;

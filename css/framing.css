@@ -68,7 +68,8 @@ body {
     font-family: Arial,Verdana,Helvetica,sans-serif;
     pointer-events: none;
     z-index: -50;}
-body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME {
+body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
+body.openhud #CODEXFRAME, body.codexscanning #CODEXFRAME {
     z-index: 50;}
 
 
@@ -114,7 +115,7 @@ div#CODEXCONTENT {}
 /* CODEXPAGE is the fixed position wrapper for paged layout.
    It's left and right styles are set based on the content width. */
 div#CODEXPAGE {
-    position: fixed; overflow: visible;
+    position: absolute; overflow: visible;
     padding: 0px; margin: 0px;
     left: 50px; right: 50px;
     top: 40px; bottom: 40px;

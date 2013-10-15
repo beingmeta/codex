@@ -71,7 +71,7 @@ Codex.setMode=
 
         var fixStaticRefs=Codex.fixStaticRefs;
 
-        var CodexHUD=false;
+        var CodexHUD=false, CodexFrame=false;
 
         // This will contain the interactive input console (for debugging)
         var hud=false, allglosses=false, sbooksapp=false;
@@ -92,7 +92,7 @@ Codex.setMode=
                                    fdjtDOM("div.indicator"),
                                    fdjtDOM("div.message")));
             if (fdjtID("CODEXFRAME")) {
-                var frame=fdjtID("CODEXFRAME");
+                var frame=CodexFrame=fdjtID("CODEXFRAME");
                 frame.appendChild(messages); frame.appendChild(hud);}
             else fdjtDOM.prepend(document.body,messages,hud);
             // Fill in the HUD help
@@ -373,6 +373,7 @@ Codex.setMode=
                     dropClass(document.body,"codexscanend");
                     Codex.mode=false;}
                 dropClass(document.body,"hudup");
+                dropClass(document.body,"hudopen");
                 document.body.focus();}}
         Codex.setHUD=setHUD;
 
@@ -487,7 +488,8 @@ Codex.setMode=
                         dropClass(CodexHUD,"openheart");
                         dropClass(CodexHUD,"full");
                         dropClass(document.body,"hudup");}}
-                else if ((mode==='addgloss')||(mode==="openglossmark")) {}
+                else if ((mode==='addgloss')||(mode==="openglossmark")) 
+                    addClass(document.body,"openhud");
                 else if (nohud) {}
                 // And if we're not scanning, we just raise the hud
                 else setHUD(true);

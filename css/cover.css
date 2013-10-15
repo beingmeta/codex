@@ -61,8 +61,9 @@ div#CODEXCOVER > div#CODEXTAPMESSAGE {
     z-index: 50;}
 
 div#CODEXCOVER > div#CODEXCOVERCONTROLS {
-    position: absolute; box-sizing: border-box;
-    width: 94%; bottom: 0px; left: 3%; right: 3%;
+    box-sizing: border-box; -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box; 
+    position: absolute; width: 94%; bottom: 0px; left: 3%; right: 3%;
     padding-left: 1ex; padding-right: 1ex;
     height: 120px; top: auto;
     font-family: Arial,Verdana,Helvetica,sans-serif;

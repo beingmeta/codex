@@ -1,4 +1,4 @@
- /* -*- Mode: CSS; character-encoding: utf-8; -*- */
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
    This file implements a Javascript/DHTML web application for reading
@@ -39,6 +39,9 @@ body.sbook { font-size: 62.5%; }
     margin-left: 3em; margin-right: 3em;}
 
 #CODEXPAGE { max-width: 40em;}
+#CODEXPAGE {
+    box-sizing: border-box; -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;}
 
 #CODEXBODY {
     font-size: 2em;}

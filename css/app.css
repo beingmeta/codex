@@ -85,12 +85,12 @@ body.cxANIMATE.cxPREVIEW div#CODEXPAGE .codexpage {
     -moz-transform: scale(0.98,0.98); -o-transform:scale(0.98,0.98);}
 
 div#CODEXPAGERIGHT {
-    position: fixed; overflow: visible;
+    position: absolute; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
     width: 50px; right: 0px;
     top: 60px; bottom: 60px;}
 div#CODEXPAGELEFT {
-    position: fixed; overflow: visible;
+    position: absolute; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
     width: 50px; left: 0px;
     top: 60px; bottom: 60px;}
@@ -148,11 +148,11 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
     -moz-column-break-before: always;}
 
 #CODEXASIDE {
-    position: fixed; z-index: -100;
+    position: absolute; z-index: -100;
     top: 60px; left: 60px; right: 60px; bottom: 60px;
     display: none;}
 #CODEXREF {
-    position: fixed; z-index: -100;
+    position: absolute; z-index: -100;
     top: 60px; left: 60px; right: 60px;
     display: none;}
 
@@ -636,6 +636,8 @@ div.codexglossform form table td textarea { width: 100%;}
 
 div.codexpage {
     position: absolute;
+    box-sizing: border-box; -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     display: none;}
 div.codexpage {
     padding: 2px;
@@ -762,7 +764,7 @@ section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
 /* Startup messages */
 
 div#CODEXSTARTUPMESSAGES {
-    position: fixed; z-index: -50;
+    position: absolute; z-index: -50;
     top: 0px; left: 100px; right: 100px; height: 50px;
     opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
