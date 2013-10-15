@@ -1922,20 +1922,21 @@ Codex.Startup=
                 fdjtDOM.addClass(document.body,"cxNOUSER");
                 return;}
             fdjtDOM.dropClass(document.body,"cxNOUSER");
-            var username=Codex.user.name;
-            if (fdjtID("CODEXUSERNAME"))
-                fdjtID("CODEXUSERNAME").innerHTML=username;
-            var names=document.getElementsByName("CODEXUSERNAME");
-            if (names) {
-                i=0, lim=names.length; while (i<lim)
-                    names[i++].innerHTML=username;}
-            var names=fdjtDOM.$(".codexusername");
-            if (names) {
-                i=0, lim=names.length; while (i<lim)
-                    names[i++].innerHTML=username;}
+            var username=Codex.user.name||Codex.user.handle||Codex.user.email;
+            if (username) {
+                if (fdjtID("CODEXUSERNAME"))
+                    fdjtID("CODEXUSERNAME").innerHTML=username;
+                var names=document.getElementsByName("CODEXUSERNAME");
+                if (names) {
+                    i=0, lim=names.length; while (i<lim)
+                        names[i++].innerHTML=username;}
+                var names=fdjtDOM.$(".codexusername");
+                if (names) {
+                    i=0, lim=names.length; while (i<lim)
+                        names[i++].innerHTML=username;}}
             if (fdjtID("SBOOKMARKUSER"))
                 fdjtID("SBOOKMARKUSER").value=Codex.user._id;
-
+        
             // Initialize the splashform, which provides easy login
             // and social features
             var splashform=fdjtID("CODEXSPLASHFORM");
