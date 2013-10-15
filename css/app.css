@@ -397,6 +397,8 @@ div.sbooksection.codexnewtarget > *:first-child {
    */
 body.codextarget { color: inherit;}
 
+/* body.codexscanning .codextarget {outline: dotted steelblue 2px;} */
+
 body.cxANIMATE .codexglossmark > * {
     transition-property: opacity;
     transition-duration: 0.5s;

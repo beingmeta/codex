@@ -220,7 +220,12 @@ Codex.setMode=
             
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);
-            fdjtUI.TapHold(Codex.DOM.foot,Codex.touch);
+            Codex.TapHold.foot=new fdjtUI.TapHold(Codex.DOM.foot,Codex.touch);
+            Codex.DOM.scanner=fdjtID("CODEXSCANNER");
+            if (Codex.Trace.startup>1)
+                fdjtLog("Setting up taphold for scanner %o",Codex.DOM.scanner);
+            Codex.TapHold.scanner=
+                new fdjtUI.TapHold(Codex.DOM.scanner,Codex.touch);
             
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=fixStaticRefs(Codex.HTML.help);
@@ -834,6 +839,9 @@ Codex.setMode=
                         searching,glossinfo.excerpt,glossinfo.exoff);
                     if (range) highlights=
                         fdjtUI.Highlight(range,"codexhighlightexcerpt");}
+                else if (src.about[0]==="#")
+                    addClass(Codex.getDups(src.about.slice(1)),
+                             "codexhighlightpassage");
                 else addClass(Codex.getDups(src.about),"codexhighlightpassage");}
             else if ((src)&&(getParent(src,".sbookresults"))) {
                 var about=src.about, target=fdjtID(about);

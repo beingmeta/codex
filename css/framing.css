@@ -71,7 +71,9 @@ body {
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
 body.openhud #CODEXFRAME, body.codexscanning #CODEXFRAME {
     z-index: 50;}
-
+body.hudup #CODEXFRAME #CODEXCOVER, body.openhud #CODEXFRAME #CODEXCOVER,
+body.codexscanning #CODEXFRAME #CODEXCOVER {
+    display: none;}
 
 /* The HUD is where all of the active interface elements for reading
    appear.  */

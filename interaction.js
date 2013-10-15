@@ -1846,6 +1846,13 @@
         fdjtUI.cancel(evt);
         return;}
 
+    function scanner_held(evt){
+        evt=evt||event;
+        Codex.stopScanning();
+        cancel(evt);
+        return;}
+
+
     /* Entering page numbers and locations */
 
     function enterPageNum(evt) {
@@ -2450,7 +2457,7 @@
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
-         "#CODEXSCANNER": {click: scanner_tapped},
+         "#CODEXSCANNER": {tap: scanner_tapped, hold: scanner_held},
          // Expanding/contracting the scanner
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
@@ -2550,7 +2557,7 @@
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
-         "#CODEXSCANNER": {touchstart: scanner_tapped},
+         "#CODEXSCANNER": {tap: scanner_tapped,hold: scanner_held},
          // Expanding/contracting the scanner
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
