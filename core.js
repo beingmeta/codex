@@ -116,9 +116,9 @@ var Codex={
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
         network: 0,       // How much to trace server interaction
-        savegloss: 1,     // When glosses are saved to the server
+        savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
-        addgloss: 1,      // Note whenever a gloss post completes
+        addgloss: 0,      // Note whenever a gloss post completes
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
         dosync: false,    // Whether to trace state saves
@@ -129,7 +129,7 @@ var Codex={
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
         highlight: 0,     // Whether to trace highlighting
         indexing: 0,      // How much to trace document indexing
-        gestures: 1}      // How much to trace gestures
+        gestures: 0}      // How much to trace gestures
 };
 
 (function(){
