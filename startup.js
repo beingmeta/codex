@@ -1636,7 +1636,9 @@ Codex.Startup=
             fdjtID("CODEXPAGELEFT").style.width=page_margin+"px";
             fdjtID("CODEXPAGERIGHT").style.width=page_margin+"px";
             var inner_width=geom.inner_width, inner_height=geom.inner_height;
-            var glossmark_offset=page_margin-(2+geom.right_border);
+            var glossmark_offset=page_margin+
+                geom.right_border+geom.right_padding;
+            // var glossmark_offset=page_margin;
             // The 2 here is for the right border of the glossmark,
             // which appears as a vertical mark on the margin.
             if (Codex.CSS.pagerule) {
@@ -1764,7 +1766,8 @@ Codex.Startup=
                 Codex.scandone=function(){loadInfo(info);};
                 return;}
             else if (info.loaded) return;
-            if (window._sbook_loadinfo) {
+            if ((window._sbook_loadinfo)&&
+                (window._sbook_loadinfo!==info)) {
                 // This means that we have more information from the gloss
                 // server before the local app has gotten around to
                 // processing  the app-cached loadinfo.js
