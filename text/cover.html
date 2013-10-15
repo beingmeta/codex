@@ -1,16 +1,16 @@
 <div id="CODEXTAPMESSAGE">
-  <span class="fortouch">Tap</span>
-  <span class="notouch">Click</span>
-  to read
+  <span class="fortouch">Tap to </span>
+  <span class="notouch">Click to </span>
+  read
 </div>
 <div id="CODEXBOOKCOVERHOLDER"
-     style="position: absolute; top: 0px; left: 0px; width: 100%; bottom: 120px;">
-  <img src="{{coverimage}}" alt="A display cover page"
+     style="position: absolute; top: 50px; left: 0px; width: 100%; bottom: 120px;">
+  <img src="{{coverimage|}}" alt="A display cover page"
        style="max-width: 90%; max-height: 90%; width: auto; height: auto;"
        id="CODEXBOOKCOVERIMAGE"/>
 </div>
 <div id="CODEXTITLEPAGEHOLDER" class="codextitlepage"
-     style="position: absolute; top: 0px; left: 0px; width: 100%; bottom: 120px;">
+     style="position: absolute; top: 50px; left: 0px; width: 100%; bottom: 120px;">
 </div>
 <div id="CODEXINFOPAGEHOLDER" class="codexbibpage"></div>
 <div id="CODEXAPPHELP" class="codexhelp">
@@ -58,7 +58,9 @@
   <span class="control" data-mode="overlays"
 	title="manage added layers of glosses for your sBook"
         tabindex="3">
-    Overlays</span>
+    <span class="whenloggedin">Overlays</span>
+    <span class="notloggedin">Login</span>
+  </span>
   <span class="control" data-mode="console"
 	title="the debugging console (advanced)"
         tabindex="4">
@@ -73,9 +75,13 @@
     Help</span>
   <div class="userbox">
     <span class="bookplate">
-      This <span class="sbooks"><em>s<em>Book</span> is personalized for
-      <a href="https://admin.sbooks.net/account/" class="codexusername">
-        user</a></span>
+      This <a class="sbooks" href="https://www.sbooks.net/" target="_blank"
+              title="Learn more about sBooks">
+        <em>s</em>Book</a> is personalized for
+      <a href="https://admin.sbooks.net/account/" class="codexusername"
+         title="Edit your profile, add social networks, etc"
+         target="_blank">
+        you</a></span>
   </div>
   <div class="loginbox">
     <form action="https://auth.sbooks.net/auth" method="POST">
@@ -134,19 +140,19 @@
 	     class="svg"/>
       </button>
       <!--
-      <button name="AUTHORITY" TABINDEX="14"
-	      value=":AMAZON">
-	<img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
-             alt="Amazon" title="login with Amazon"/>
-      </button>
-      <button name="AUTHORITY" TABINDEX="15"
-	      value=":PAYPAL">
-	<img src="{{bmg}}sbooks/paypalsquare64x64.png" class="nosvg"
-             alt="PayPal" title="login with PayPal"/>
-	<img src="{{bmg}}sbooks/paypalsquare.svgz" class="svg"
-             alt="PayPal" title="login with PayPal"/>
-      </button>
-      -->
+          <button name="AUTHORITY" TABINDEX="14"
+	          value=":AMAZON">
+	    <img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
+                 alt="Amazon" title="login with Amazon"/>
+          </button>
+          <button name="AUTHORITY" TABINDEX="15"
+	          value=":PAYPAL">
+	    <img src="{{bmg}}sbooks/paypalsquare64x64.png" class="nosvg"
+                 alt="PayPal" title="login with PayPal"/>
+	    <img src="{{bmg}}sbooks/paypalsquare.svgz" class="svg"
+                 alt="PayPal" title="login with PayPal"/>
+          </button>
+          -->
     </form>
   </div>
 </div>

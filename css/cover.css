@@ -1,4 +1,4 @@
- /* -*- Mode: CSS; character-encoding: utf-8; -*- */
+/* -*- Mode: CSS; character-encoding: utf-8; -*- */
 
 /* Copyright (C) 2009-2013 beingmeta, inc.
    This file implements a Javascript/DHTML web application for reading
@@ -42,11 +42,11 @@ div#CODEXCOVER > div {
     top: 50px; left: 50px; right: 50px;
     bottom: 120px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
-    transition-property: opacity; transition-duration: 2s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 2s;
-    -moz-transition-property: opacity; -moz-transition-duration: 2s;
-    -o-transition-property: opacity; -o-transition-duration: 2s;
-    opacity: 0.0;}
+    transition-property: opacity; transition-duration: 1s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
+    -moz-transition-property: opacity; -moz-transition-duration: 1s;
+    -o-transition-property: opacity; -o-transition-duration: 1s;
+    opacity: 0.0; z-index: -50;}
 
 div#CODEXCOVER > div > div.fdjtadjusted {
     height: 100%; width: 100%;}
@@ -57,13 +57,14 @@ div#CODEXCOVER > div#CODEXTAPMESSAGE {
     font-family: Arial,Verdana,Helvetica,sans-serif;
     top: 0px; left: 30%; right: 30%; bottom: auto;
     text-align: center; overflow: visible; color: silver;
-    cursor: pointer; display: block;}
+    cursor: pointer; display: block;
+    z-index: 50;}
 
 div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     position: absolute; box-sizing: border-box;
-    width: 90%; bottom: 0px; left: 5%; right: 5%;
-    padding-left: 2em; padding-right: 2em;
-    height: 100px; top: auto;
+    width: 94%; bottom: 0px; left: 3%; right: 3%;
+    padding-left: 1ex; padding-right: 1ex;
+    height: 120px; top: auto;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     opacity: 1; display: block;}
 div#CODEXCOVERCONTROLS > .username {
@@ -73,8 +74,11 @@ div#CODEXCOVERCONTROLS > .control > img {
 
 div#CODEXCOVERCONTROLS > span.control {
     font-size: 2em; color: silver; white-space: nowrap;
-    padding-left: 1ex; padding-right: 1ex;
+    padding-left: 0.5ex; padding-right: 0.5ex;
     cursor: pointer;}
+@media (max-width: 650px) {
+    div#CODEXCOVERCONTROLS > span.control { font-size: 1.5em;}}
+
 div#CODEXCOVERCONTROLS > span.control:hover {
     text-decoration: underline;}
 
@@ -84,7 +88,7 @@ div#CODEXCOVER div.loginbox {
     margin: 0px; padding: 0px;
     height: 0px; overflow: hidden;}
 body.cxNOUSER div#CODEXCOVER div.loginbox {
-    margin-top: 1ex; padding-top: 0.5ex; height: auto;
+    margin-top: 1em; padding-top: 0.5ex; height: auto;
     vertical-align: top; color: white;}
 div#CODEXCOVER div.loginbox button { padding: 1px;}
 div#CODEXCOVER div.loginbox button > img { height: 1.5em; width: auto;}
@@ -93,11 +97,17 @@ div.loginbox form > span {
     vertical-align: top;}
 
 div#CODEXCOVER div.userbox {
-    text-align: center; background-color: black; color: gold;}
+    background-color: black; color: gold;
+    text-align: center;
+    font-size: 1.5em;}
+div#CODEXCOVER div.userbox a, div#CODEXCOVER div.userbox a:visited {
+    color: silver;}
+div#CODEXCOVER div.userbox span.sbooks em { color: silver;}
+div#CODEXCOVER div.userbox a.sbooks em { color: lightblue;}
 div#CODEXCOVER div.userbox {
     position: absolute; bottom: 0px; width: 100%;
-    margin: 0px; padding: 0px;
-    height: 0px; overflow: hidden;}
+    margin: 0px; padding: 0px; height: 0px;
+    overflow: hidden;}
 body.cxUSER div#CODEXCOVER div.userbox {
     height: auto;}
 
@@ -130,12 +140,14 @@ div#CODEXCOVER.console .control[data-mode='console'],
 div#CODEXCOVER.login .control[data-mode='login'] {
     color: gold; border-color: blue;}
 
-.control[data-mode='console'], .control[data-mode='overlays'],
-.control[data-mode='aboutsbooks'] {
+.control[data-mode='console'], .control[data-mode='aboutsbooks'] {
     display: none;}
 body.cxSHOWCONSOLE span.control[data-mode='console'],
-body.cxUSER span.control[data-mode='overlays'] {
+span.control[data-mode='overlays'] .whenloggedin { display: none;}
+body.cxUSER span.control[data-mode='overlays'] .whenloggedin {
     display: inline;}
+body.cxUSER span.control[data-mode='overlays'] .notloggedin {
+    display: none;}
 body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
 
 div#CODEXCOVERCONTROLS.nobookcover .control[data-mode='bookcover'] {
@@ -146,11 +158,11 @@ div#CODEXABOUTBOOK, div#CODEXABOUTSBOOKS,
 div#CODEXAPPHELP {
     padding-top: 1ex;
     margin-left: auto; margin-right: auto;
-    background-color: ivory;
-    overflow: auto;}
-div#CODEXABOUTBOOK, div#CODEXAPPHELP {
+    background-color: ivory;}
+div#CODEXABOUTBOOK, div#CODEXAPPHELP, div#CODEXABOUTSBOOKS {
     padding-left: 2em; padding-right: 2em;
-    text-align: left;}
+    text-align: left;
+    overflow: auto;}
 
 /* The sBooks app for managing overlays */
 
@@ -184,8 +196,7 @@ body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
 div#CODEXTITLEPAGE { display: none; }
 div#CODEXCOVER div#CODEXTITLEPAGE {
-  display: block;
-  padding: 2em;}
+  display: block; padding: 2em; padding-top: 1ex;}
 
 .codextitlepage { text-align: center;}
 .codextitlepage > .title {

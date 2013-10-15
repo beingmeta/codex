@@ -519,12 +519,14 @@ h1[toclevel='1'],h2[toclevel='1'] { page-break-before: always;}
     -moz-page-break-inside: avoid;
     -webkit-page-break-inside: avoid;}
 
+/*
 div.codexpage .sbookpage {
     position: absolute;
     top: 0px; left: 0px; right: 0px;
     margin-left: auto; margin-right: auto;}
 div.codexpage .sbookpage.sbooktitlepage {
     left: 10%; right: 10%; margin-left: 10%; margin-right: 10%;}
+*/
 
 div.codexpage img.sbookpage {
     position: static; margin: auto;}
@@ -568,9 +570,7 @@ img.sbookfullpage, img.sbookcover {
     margin-left: auto; margin-right: auto;
     display: block;}
 
-.sbooktitlepage {
-    text-align: center;
-    font-size: 250%;}
+.sbooktitlepage {text-align: center;}
 
 /* HTML5ish elements */
 
