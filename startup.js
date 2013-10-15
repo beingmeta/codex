@@ -1929,6 +1929,10 @@ Codex.Startup=
             if (names) {
                 i=0, lim=names.length; while (i<lim)
                     names[i++].innerHTML=username;}
+            var names=fdjtDOM.$(".codexusername");
+            if (names) {
+                i=0, lim=names.length; while (i<lim)
+                    names[i++].innerHTML=username;}
             if (fdjtID("SBOOKMARKUSER"))
                 fdjtID("SBOOKMARKUSER").value=Codex.user._id;
 
