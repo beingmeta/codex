@@ -348,15 +348,18 @@ Codex.Startup=
             showMessage();
             userSetup();
 
-            if (Codex.Trace.startup)
-                fdjtLog("Done with synchronous startup");
-
             // Hide the loading splash page, if any
             if (fdjtID("CODEXSPLASH"))
                 fdjtID("CODEXSPLASH").style.display='none';
 
+            var adjstart=fdjt.Time();
             fdjtDOM.adjustFonts(fdjtID("CODEXHUD"));
+            if (Codex.Trace.startup)
+                fdjtLog("Adjusted HUD fonts in %fsecs",
+                        ((fdjt.Time()-adjstart)/1000));
 
+            if (Codex.Trace.startup>1)
+                fdjtLog("Initializing markup converter");
             var markdown_converter=new Markdown.Converter();
             Codex.markdown_converter=markdown_converter;
             Codex.md2HTML=function(mdstring){
@@ -433,6 +436,15 @@ Codex.Startup=
                 var images=fdjtDOM.$("img.codexbookimage");
                 var i=0, lim=images.length;
                 while (i<lim) images[i++].src=uri;}
+
+            if (Codex.refuri) {
+                var refuris=document.getElementsByName("REFURI");
+                if (refuris) {
+                    var j=0; var len=refuris.length;
+                    while (j<len) {
+                        if (refuris[j].value==='fillin')
+                            refuris[j++].value=Codex.refuri;
+                        else j++;}}}
 
             addConfig(
                 "keepdata",
@@ -576,7 +588,7 @@ Codex.Startup=
                         Codex.Trace[trace_name]=parseInt(trace_val,10);
                     else Codex.Trace[trace_name]=trace_val;}}}
 
-        function Startup(force){
+        function CodexStartup(force){
             var metadata=false;
             if (Codex._setup) return;
             if ((!force)&&(getQuery("nocodex"))) return;
@@ -664,7 +676,7 @@ Codex.Startup=
                         startupDone();
                     else Codex.layoutdone=startupDone;}],
              100,25);}
-        Codex.Startup=Startup;
+        Codex.Startup=CodexStartup;
         
         function scanDOM(){
             var scanmsg=fdjtID("CODEXSTARTUPSCAN");
@@ -1074,7 +1086,7 @@ Codex.Startup=
                     Codex.heartscroller.refresh();
                 if ((Codex.glossdb.allrefs.length)||
                     (Codex.sourcedb.allrefs.length))
-                    fdjtLog("Initialized %d glosses (%d sources) offline",
+                    fdjtLog("Initialized %d glosses (%d sources) from offline storage",
                             Codex.glossdb.allrefs.length,
                             Codex.sourcedb.allrefs.length);});}
 
@@ -1923,11 +1935,11 @@ Codex.Startup=
                 if (fdjtID("CODEXUSERNAME"))
                     fdjtID("CODEXUSERNAME").innerHTML=username;
                 var names=document.getElementsByName("CODEXUSERNAME");
-                if (names) {
+                if ((names)&&(names.length)) {
                     i=0, lim=names.length; while (i<lim)
                         names[i++].innerHTML=username;}
-                var names=fdjtDOM.$(".codexusername");
-                if (names) {
+                names=fdjtDOM.$(".codexusername");
+                if ((names)&&(names.length)) {
                     i=0, lim=names.length; while (i<lim)
                         names[i++].innerHTML=username;}}
             if (fdjtID("SBOOKMARKUSER"))
@@ -2473,7 +2485,7 @@ Codex.Startup=
         Codex.StartupHandler=function(){
             Codex.Startup();};
 
-        return Startup;})();
+        return CodexStartup;})();
 Codex.Setup=Codex.StartupHandler;
 /*
 sbookStartup=Codex.StartupHandler;

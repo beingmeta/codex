@@ -132,6 +132,8 @@
 
     function setupGestures(domnode){
         var mode=Codex.ui;
+        if (Codex.Trace.startup)
+            fdjtLog("Setting up basic handlers for %s UI",mode);
         if (!(mode)) Codex.ui=mode="mouse";
         if (!(domnode)) {
             addHandlers(false,'window');
@@ -166,7 +168,8 @@
                     var node=nodes[j++];
                     if (seen.indexOf(node)<0) { 
                         seen.push(node);
-                        fdjtDOM.addListeners(node,h);}}}}}
+                        fdjtDOM.addListeners(node,h);}}}}
+        if (Codex.Trace.startup) fdjtLog("Done with handler setup");}
     Codex.setupGestures=setupGestures;
 
     /* New simpler UI */

@@ -51,7 +51,6 @@ Codex.setMode=
     (function(){
         "use strict";
         var fdjtString=fdjt.String;
-        var fdjtState=fdjt.State;
         var fdjtTime=fdjt.Time;
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
@@ -71,7 +70,7 @@ Codex.setMode=
 
         var fixStaticRefs=Codex.fixStaticRefs;
 
-        var CodexHUD=false, CodexFrame=false;
+        var CodexHUD=false;
 
         // This will contain the interactive input console (for debugging)
         var hud=false, allglosses=false, sbooksapp=false;
@@ -92,7 +91,7 @@ Codex.setMode=
                                    fdjtDOM("div.indicator"),
                                    fdjtDOM("div.message")));
             if (fdjtID("CODEXFRAME")) {
-                var frame=CodexFrame=fdjtID("CODEXFRAME");
+                var frame=fdjtID("CODEXFRAME");
                 frame.appendChild(messages); frame.appendChild(hud);}
             else fdjtDOM.prepend(document.body,messages,hud);
             // Fill in the HUD help
@@ -230,9 +229,6 @@ Codex.setMode=
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=fixStaticRefs(Codex.HTML.help);
 
-            if (Codex.Trace.startup) fdjtLog("Filling in tabs");
-            fillinTabs();
-            
             /* Currently a no-op */
             resizeHUD();
 
@@ -679,82 +675,6 @@ Codex.setMode=
             else setHUD(true);};
         
         /* The App HUD */
-        
-        function fillinTabs(){
-            var hidehelp=fdjtID("SBOOKHIDEHELP");
-            var dohidehelp=fdjtState.getCookie("sbookhidehelp");
-            var i=0, elts=null, elt=false;
-            if (!(hidehelp)) {}
-            else if (dohidehelp==='no') hidehelp.checked=false;
-            else if (dohidehelp) hidehelp.checked=true;
-            else hidehelp.checked=false;
-            if (hidehelp)
-                hidehelp.onchange=function(){
-                    if (hidehelp.checked)
-                        fdjtState.setCookie("sbookhidehelp",true,false,"/");
-                    else fdjtState.setCookie("sbookhidehelp","no",false,"/");};
-            var refuris=document.getElementsByName("REFURI");
-            if (refuris) {
-                i=0; var len=refuris.length;
-                while (i<len)
-                    if (refuris[i].value==='fillin')
-                        refuris[i++].value=Codex.refuri;
-                else i++;}
-
-            /* Get various external APPLINK uris */
-            var offlineuri=fdjtDOM.getLink("Codex.offline")||altLink("offline");
-            var epuburi=fdjtDOM.getLink("Codex.epub")||altLink("ebub");
-            var mobiuri=fdjtDOM.getLink("Codex.mobi")||altLink("mobi");
-            var zipuri=fdjtDOM.getLink("Codex.mobi")||altLink("mobi");
-            if (offlineuri) {
-                elts=document.getElementsByName("SBOOKOFFLINELINK");
-                i=0; while (i<elts.length) {
-                    elt=elts[i++];
-                    if (offlineuri!=='none') elt.href=offlineuri;
-                    else {
-                        elt.href=false;
-                        addClass(elt,"deadlink");
-                        elt.title='this sBook is not available offline';}}}
-            if (epuburi) {
-                elts=document.getElementsByName("SBOOKEPUBLINK");
-                i=0; while (i<elts.length) {
-                    elt=elts[i++];
-                    if (epuburi!=='none') elt.href=epuburi;
-                    else {
-                        elt.href=false;
-                        addClass(elt,"deadlink");
-                        elt.title='this sBook is not available as an ePub';}}}
-            if (mobiuri) {
-                elts=document.getElementsByName("SBOOKMOBILINK");
-                i=0; while (i<elts.length) {
-                    elt=elts[i++];
-                    if (mobiuri!=='none') elt.href=mobiuri;
-                    else {
-                        elt.href=false;
-                        addClass(elt,"deadlink");
-                        elt.title=
-                            'this sBook is not available as a MOBIpocket format eBook';}}}
-            if (zipuri) {
-                elts=document.getElementsByName("SBOOKZIPLINK");
-                i=0; while (i<elts.length) {
-                    elt=elts[i++];
-                    if (zipuri!=='none') elt.href=zipuri;
-                    else {
-                        elt.href=false;
-                        addClass(elt,"deadlink");
-                        elt.title=
-                            'this sBook is not available as a ZIP bundle';}}}
-            /* If the book is offline, don't bother showing the link
-               to the offline version. */
-            if (Codex.keepdata) addClass(document.body,"sbookoffline");}
-
-        function altLink(type,uri){
-            uri=uri||Codex.refuri;
-            if (uri.search("http://")===0)
-                return "http://offline."+uri.slice(7);
-            else if (uri.search("https://")===0)
-                return "https://offline."+uri.slice(8);
-            else return false;}
 
         var iframe_app_init=false;
         function initIFrameApp(){
