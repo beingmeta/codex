@@ -945,6 +945,13 @@ body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic,
 body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
     max-height: inherit, height: inherit;}
 
+div#CODEXHUD div#CODEXSCANNER {
+    transition-property: background-color;
+    -o-transition-property: background-color;
+    -moz-transition-property: background-color;
+    -webkit-transition-property: background-color; 
+    transition-duration: 0.5s; -o-transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;}
 div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
     display: none;}
 body img.codexscanbutton {
@@ -952,10 +959,10 @@ body img.codexscanbutton {
     position: absolute; bottom: 50%; 
     display: none;}
 body img.codexscanbutton {
-    transition-property: opacity;
-    -o-transition-property: -o-opacity;
-    -moz-transition-property: -moz-opacity;
-    -webkit-transition-property: -webkit-opacity; 
+    transition-property: opacity,background-color;
+    -o-transition-property: -o-opacity,background-color;
+    -moz-transition-property: -moz-opacity,background-color;
+    -webkit-transition-property: -webkit-opacity,background-color; 
     transition-duration: 0.5s; -o-transition-duration: 0.5s;
     -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;
     opacity: 0.50;

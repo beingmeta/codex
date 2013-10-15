@@ -1717,7 +1717,7 @@
         setTimeout(function(){
             dropClass("CODEXSCANNER","flash");
             dropClass("CODEXNEXTSCAN","flash");},
-                   500);
+                   200);
         if (Codex.mode==="tocscan") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
@@ -1776,7 +1776,7 @@
         setTimeout(function(){
             dropClass("CODEXSCANNER","flash");
             dropClass("CODEXPREVSCAN","flash");},
-                   500);
+                   200);
         if (Codex.mode==="tocscan") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
