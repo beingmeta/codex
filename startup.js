@@ -1744,7 +1744,7 @@ Codex.Startup=
             if (Codex.nouser) {
                 Codex.setConnected(false);
                 return;}
-            if ((window._sbook_loadinfo!==info)&&(Codex.user))
+            if (window._sbook_loadinfo!==info)
                 Codex.setConnected(true);
             if (!((Codex.user)&&(Codex._user_setup))) {
                 if (info.userinfo)
