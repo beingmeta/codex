@@ -595,6 +595,23 @@ div.codexglossform.glossadd form div.addglossmenu.expanded > img[alt="glossrespo
 
 div.fdjtdialog#CODEXGLOSSMESSAGE img.closebutton {
     top: 2px; height: 1.5ex; width: auto; vertical-align: top;}
+div.fdjtdialog#CODEXGLOSSMESSAGE img.closebutton {
+    opacity: 0.25;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+    filter: alpha(opacity=25);
+    -webkit-opacity: 0.25;
+    -khtml-opacity: 0.25;
+    -moz-opacity: 0.25;
+    -o-opacity: 0.25;}
+div.fdjtdialog#CODEXGLOSSMESSAGE:hover img.closebutton {
+    opacity: 0.95;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
+
 div.fdjtdialog#CODEXGLOSSMESSAGE .savemsg {
     vertical-align: bottom;}
 
