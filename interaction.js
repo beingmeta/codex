@@ -132,9 +132,11 @@
 
     function setupGestures(domnode){
         var mode=Codex.ui;
-        if (Codex.Trace.startup)
-            fdjtLog("Setting up basic handlers for %s UI",mode);
         if (!(mode)) Codex.ui=mode="mouse";
+        if ((!(domnode))&&((Codex.Trace.startup)||(Codex.Trace.gestures)))
+            fdjtLog("Setting up basic handlers for %s UI",mode);
+        if ((domnode)&&(Codex.Trace.gestures))
+            fdjtLog("Setting up %s UI handlers for %o",mode,domnode);
         if (!(domnode)) {
             addHandlers(false,'window');
             addHandlers(document,'document');
@@ -147,7 +149,6 @@
             //   with scrolling
             fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch,
                            false,false,false,true);
-            fdjtUI.TapHold(Codex.pagefoot,Codex.touch);
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
