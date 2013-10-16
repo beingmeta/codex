@@ -110,7 +110,7 @@
 
         // Sort the tags before adding them
         tags=[].concat(tags);
-        sort_tags(tags,Codex.empty_query.tagfreqs);
+        sort_tags(tags);
 
         // Compute score sum to get value for the cue threshold
         var score_sum=0; while (i<n_terms) {
@@ -122,7 +122,7 @@
             var span=cloudSpan(completions,dterm,scores,freqs,score_sum/n_terms);
             dom.appendChild(span);
             dom.appendChild(document.createTextNode(" "));}
-        sizeCloud(completions,scores,freqs,n,false);
+        sizeCloud(completions,scores,true);
 
         var end=new Date();
         if (Codex.Trace.clouds)
@@ -135,21 +135,13 @@
         return completions;}
     Codex.makeCloud=makeCloud;
 
-    function cloudSpan(completions,dterm,scores,freqs,cuethresh){
+    function cloudSpan(completions,dterm,scores,freqs){
         var freq=freqs.get(dterm)||1;
         var score=scores.get(dterm);
         var span=cloudEntry(completions,dterm);
         span.title=((span.title)||(""))+((score)?("score="+score):("unscored"))+"; "+
             "count="+freq;
         if (freq===1) addClass(span,"singleton");        
-        if (typeof cuethresh !== "number") {
-            if (typeof dterm === "string") {}
-            else if (dterm.prime) addClass(span,"cue");
-            else {}}
-        else if ((score)&&(score>cuethresh))
-            addClass(span,"cue");
-        else if (dterm.prime) addClass(span,"cue");
-        else {}
         return span;}
     
     function cloudEntry(cloud,tag,lang){
@@ -378,21 +370,26 @@
         else if (xv>yv) return -1;
         else return 1;}
     Codex.tag_sorter=tag_sorter;
-    function sort_tags(tags,scores){
+    function sort_tags(tags){
+        // Sort alphabetically, sort of
         tags.sort(function(x,y){
+            var sx=x, sy=y;
             // Knodes go before Refs go before strings
             // Otherwise, use scores
             if (x instanceof KNode) {
-                if (y instanceof KNode) {} // Fall through
+                if (y instanceof KNode) {
+                    sx=x.dterm; sy=y.dterm;}
                 else return -1;}
             else if (y instanceof KNode) return 1;
             else if (x instanceof Ref) { 
-                if (y instanceof Ref) {} // Fall through
+                if (y instanceof Ref) {
+                    sx=x._qid; sy=y._qid;}
                 else return -1;}
             else if (y instanceof Ref) return 1;
             else if ((typeof x === "string")&&
-                     (typeof y === "string"))
-            {}
+                     (typeof y === "string")) {}
+            else if (typeof x === "string") return -1;
+            else if (typeof y === "string") return 1;
             // We should never reach these cases because tags should
             //  always be strings, Refs, or KNodes.
             else if  (typeof x === typeof y) {
@@ -404,31 +401,14 @@
                 if (xt<yt) return -1;
                 else if (xt>yt) return 1;
                 else return 0;}
-            var xv=scores.get(x), yv=scores.get(y);
-            if (typeof xv === "undefined") {
-                if (typeof yv === "undefined") {
-                    var xid, yid;
-                    if (typeof x === "string") {
-                        xid=x; yid=y;}
-                    else {
-                        xid=x._qid||x.getQID();
-                        yid=y._qid||y.getQID();}
-                    if (xid<yid) return -1;
-                    else if (yid>xid) return 1;
-                    else return 0;}
-                else return 1;}
-            else if (typeof yv === "undefined") return -1;
-            else if (xv===yv) {
-                if (x<y) return -1;
-                else if (x>y) return 1;
-                else return 0;}
-            else if (xv>yv) return -1;
-            else return 1;});}
+            if (sx<sy) return -1;
+            else if (sx>sy) return 1;
+            else return 0;});}
     Codex.sortTags=sort_tags;
     
     function sortCloud(cloud,scores){
         var values=[].concat(cloud.values);
-        sort_tags(values,scores);
+        sort_tags(values);
         var byvalue=cloud.byvalue;
         var holder=document.createDocumentFragment();
         var i=0, lim=values.length;
@@ -441,59 +421,31 @@
         cloud.dom.appendChild(holder);}
     Codex.sortCloud=sortCloud;
 
-    function sizeCloud(cloud,scores,freqs,n,cuethresh){
+    function sizeCloud(cloud,scores,cuethresh){
+        var sqrt=Math.sqrt;
         var values=cloud.values, byvalue=cloud.byvalue;
         var elts=new Array(values.length), vscores=new Array(values.length);
-        var i=0, lim=values.length, min_score=-1, max_score=0, score_sum=0;
-        if (cuethresh===true) {
-            while (i<lim) {
-                var sc=scores.get(values[i++]);
-                if (sc) score_sum=score_sum+sc;}
-            cuethresh=score_sum/values.length;}
-        var global_scores=Codex.empty_query.tagscores;
-        var total_results=Codex.empty_query.results.length;
-        var tagweights=Codex.tagweights;
-        i=0; while (i<lim) {
-            var value=values[i], score=scores.get(value);
-            var elt=elts[i]=byvalue.get(value);
-            if ((value.prime)||
-                ((typeof cuethresh === "number")&&(score>cuethresh)))
-                addClass(elt,"cue");
-            if (score) {
-                if (scores!==global_scores) 
-                    score=(score/n)/(global_scores.get(value)/total_results);
-                else if (typeof value === "string") {
-                    if (Codex.tagweights.get(value))
-                        score=((freqs.get(value)/total_results)/
-                               (tagweights.get(value)));
-                    else score=0.01;}
-                else {
-                    var tw=((value.dterm)&&(tagweights.get(value.dterm)))||
-                        ((value.norm)&&(tagweights.get(value.norm)));
-                    if ((!(tw))&&(value.EN)) {
-                        var synonyms=value.EN;
-                        if (!(synonyms instanceof Array)) synonyms=[synonyms];
-                        var s=0, slim=synonyms.length;
-                        while (s<slim) {
-                            if ((tw=tagweights.get(synonyms[s++]))) break;}}
-                    if (tw) 
-                        score=((score/total_results)/tw);
-                    else score=0.01;}
-                vscores[i]=score;
-                if (score>max_score) max_score=score;
-                if (min_score<0) min_score=score;
-                else if (score<min_score) min_score=score;
-                else {}}
+        var i=0, lim=values.length;
+        var min_score=-1, max_score=-1, sum=0, count=0;
+        while (i<lim) {
+            var vscore=scores.get(values[i]);
+            if (typeof vscore === "number") {
+                vscores[i]=vscore=sqrt(vscore); sum=sum+vscore; count++;
+                if ((min_score<0)||(vscore<min_score)) min_score=vscore;
+                if ((max_score<0)||(vscore>max_score)) max_score=vscore;}
+            else vscores[i]=vscore;
             i++;}
-        var sqrt=Math.sqrt; var minv=sqrt(min_score), maxv=sqrt(max_score);
+        if (cuethresh===true) cuethresh=min_score+((max_score-min_score)/3);
         i=0; while (i<lim) {
-            if (vscores[i]) {
-                // var factor=((vscores[i]-min_score)/(max_score-min_score));
-                // var factor=cloudWeight(vscores[i],min_score,max_score);
-                var factor=sqrt(vscores[i])/(maxv-minv);
-                var pct=50+150*factor;
-                var node=elts[i];
-                node.style.fontSize=pct+"%";}
+            var value=values[i], score=vscores[i];
+            var elt=byvalue.get(value);
+            if (!(score)) {
+                if (value.prime) addClass(elt,"cue");
+                elt.style.fontSize=""; i++; continue;}
+            if ((value.prime)||((cuethresh)&&(score>cuethresh)))
+                addClass(elt,"cue");
+            var factor=(score-min_score)/(max_score-min_score);
+            elt.style.fontSize=(50+(150*factor))+"%";
             i++;}}
     Codex.sizeCloud=sizeCloud;
 

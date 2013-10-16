@@ -2192,7 +2192,7 @@ Codex.Startup=
             addClass(document.body,"cxINDEXING");
             fdjtTime.slowmap(function(tag){
                 addTag2Cloud(tag,empty_cloud,Codex.knodule,
-                             tagscores,tagfreqs,false);
+                             Codex.tagweights,tagfreqs,false);
                 if ((tag instanceof KNode)||
                     ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                     addTag2Cloud(tag,gloss_cloud);},
@@ -2226,14 +2226,10 @@ Codex.Startup=
                                          Codex.UI.getShowAll(
                                              true,empty_cloud.values.length));
                                  Codex.sortCloud(empty_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud
-                                 (empty_cloud,eq.tagscores,eq.tagfreqs,
-                                  eq.results.length,false);
+                                 Codex.sizeCloud(empty_cloud,Codex.tagweights,true);
                                  Codex.sortCloud(gloss_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud(
-                                     gloss_cloud,eq.tagscores,eq.tagfreqs,
-                                     eq.results.length,false);},
-                            200,5);}
+                                 Codex.sizeCloud(gloss_cloud,Codex.tagweights,true);},
+                             200,5);}
         
         var addTags=Codex.addTags;
         
@@ -2477,7 +2473,7 @@ Codex.Startup=
             if (Codex.user) {
                 // For now, we clear layouts, because they might
                 //  contain personalized information
-                fdjt.CodexLayouts.clearLayouts();}}
+                fdjt.CodexLayout.clearLayouts();}}
         Codex.clearOffline=clearOffline;
 
         /* Other setup */
