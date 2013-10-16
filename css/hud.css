@@ -596,14 +596,22 @@ div#CODEXHUD div#CODEXHUDTOP {
     border-radius: 1ex;
     cursor: pointer;
     display: none;}
+#CODEXSHOWCOVER {
+    transition-property: opacity;
+    -o-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -webkit-transition-property: -webkit-opacity; 
+    transition-duration: 1.0s; -o-transition-duration: 1.0s;
+    -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
 body.hudup #CODEXSHOWCOVER, #CODEXHUDTOP:hover #CODEXSHOWCOVER {
     display: inline-block;}
-div#CODEXHUDTOP:hover #CODEXSHOWCOVER {
-    opacity: 0.5;}
-body.hudup div#CODEXHUDTOP #CODEXSHOWCOVER {
+div#CODEXHUDTOP:hover #CODEXSHOWCOVER {opacity: 0.5;}
+body.hudup #CODEXSHOWCOVER,
+body.hudup div#CODEXHUDTOP:hover #CODEXSHOWCOVER {
     opacity: 1.0;}
-body.cxPREVIEW div#CODEXHUDTOP #CODEXSHOWCOVER, 
-body.cxPREVIEW.hudup div#CODEXHUDTOP #CODEXSHOWCOVER {
+body.cxPREVIEW #CODEXSHOWCOVER, 
+body.cxPREVIEW.hudup #CODEXSHOWCOVER,
+body.hudup div#CODEXHUD.openhead #CODEXSHOWCOVER {
     opacity: 0;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
