@@ -1053,11 +1053,11 @@
         if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if ((ch===72)||(ch===104)) { // 'H' or 'h'
-            dropClass(document.body,"cxCOVER");
+            Codex.hideCover();
             fdjtDOM.toggleClass(document.body,'codexhelp');
             return false;}
         else if ((ch===67)||(ch===99)) { // 'C' or 'c'
-            fdjtDOM.toggleClass(document.body,'cxCOVER');
+            Codex.toggleCover();
             return false;}
         else modearg=modechars[ch];
         if (modearg==="openheart")
@@ -2396,7 +2396,7 @@
         evt=evt||event;
         if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
             fdjtID("CODEXCOVER").classname="bookcover";
-        addClass(document.body,"cxCOVER");
+        Codex.showCover();
         fdjtUI.cancel(evt);}
 
     function global_mouseup(evt){

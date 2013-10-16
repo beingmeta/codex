@@ -332,9 +332,10 @@ Codex.Startup=
             fdjtLog.console="CODEXCONSOLELOG";
             fdjtLog.consoletoo=true;
             if (!(Codex._setup_start)) Codex._setup_start=new Date();
-            fdjtLog("This is Codex version %s, built %s on %s, launched %s",
+            fdjtLog("This is Codex version %s, built %s on %s, launched %s, from %s",
                     Codex.version,Codex.buildtime,Codex.buildhost,
-                    Codex._setup_start.toString());
+                    Codex._setup_start.toString(),
+                    Codex.root||"somewhere");
             if (navigator.appVersion)
                 fdjtLog("Navigator App version: %s (%s)",
                         navigator.appVersion,navigator.userAgent);
@@ -825,7 +826,11 @@ Codex.Startup=
                 fdjtState.clearCookie("APPMESSAGE","sbooks.net","/");}
             if ((msg=getCookie("SBOOKSMESSAGE"))) {
                 fdjtUI.alertFor(10,msg);
-                fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}}
+                fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}
+            if ((!(mode))&&(Codex.user)) {
+                var opened=fdjtState.getLocal("Codex.opened("+Codex.refuri+")",true);
+                if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
+                    Codex.hideCover();}}
         
         /* Application settings */
 
@@ -1395,7 +1400,7 @@ Codex.Startup=
             
             fdjtDOM.addListener(cover,"click",cover_clicked);
 
-            addClass(document.body,"cxCOVER");
+            Codex.showCover();
 
             // Handle any adjustfont regions
             fdjtUI.adjustFont.setup(cover);
@@ -1410,7 +1415,7 @@ Codex.Startup=
             var target=fdjtUI.T(evt);
             if (fdjt.UI.isClickable(target)) return;
             if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS"))))
-                dropClass(document.body,"cxCOVER");
+                Codex.hideCover();
             var scan=target;
             while (scan) {
                 if (scan===document.body) break;
@@ -1428,7 +1433,7 @@ Codex.Startup=
                 (!(Codex.appinit)))
                 Codex.initIFrameApp();
 
-            if (!(mode)) dropClass(document.body,"cxCOVER");
+            if (!(mode)) Codex.hideCover();
             else fdjtID("CODEXCOVER").className=mode;
             fdjt.UI.cancel(evt);}
 
@@ -2183,7 +2188,6 @@ Codex.Startup=
                 [].concat(Codex.glossdb.allrefs).concat(Codex.docdb.allrefs);
             var searchtags=Codex.searchtags=Codex.empty_query.getCoTags();
             var empty_query=Codex.empty_query;
-            var tagscores=empty_query.tagscores;
             var tagfreqs=empty_query.tagfreqs;
             var max_freq=empty_query.max_freq;
             if (tracelevel)

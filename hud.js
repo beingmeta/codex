@@ -52,6 +52,7 @@ Codex.setMode=
         "use strict";
         var fdjtString=fdjt.String;
         var fdjtTime=fdjt.Time;
+        var fdjtState=fdjt.State;
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
@@ -381,11 +382,19 @@ Codex.setMode=
         /* Opening and closing the cover */
 
         function showCover(){
+            if (Codex._setup)
+                fdjtState.dropLocal("Codex.opened("+Codex.refuri+")");
             addClass(document.body,"cxCOVER");}
         Codex.showCover=showCover;
         function hideCover(){
+            if (Codex._setup)
+                fdjtState.setLocal("Codex.opened("+Codex.refuri+")",fdjtTime());
             dropClass(document.body,"cxCOVER");}
         Codex.hideCover=hideCover;
+        function toggleCover(){
+            if (hasClass(document.body,"cxCOVER")) hideCover();
+            else showCover();}
+        Codex.toggleCover=toggleCover;
         
         /* Mode controls */
         
@@ -453,7 +462,7 @@ Codex.setMode=
                     showCover();
                     return;}
                 else {
-                    dropClass(document.body,"cxCOVER");
+                    Codex.hideCover();
                     if (codex_mode_foci[Codex.mode]) {
                         var modeinput=fdjtID(codex_mode_foci[Codex.mode]);
                         modeinput.blur();}
