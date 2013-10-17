@@ -933,7 +933,7 @@
         var j=0; var jlim=words.length;
         while (j<jlim) {
             var word=words[j++];
-            var pattern=new RegExp(word.replace(/\s+/g,"(\\s+)"),"gim");
+            var pattern=new RegExp(fdjtDOM.textRegExp(word),"gim");
             var dups=Codex.getDups(target);
             var ranges=fdjtDOM.findMatches(dups,pattern);
             if (Codex.Trace.highlight)
@@ -2264,6 +2264,8 @@
     function back_to_reading(evt){
         evt=evt||event;
         fdjtUI.cancel(evt);
+        if (Codex.mode==="addgloss") 
+            Codex.cancelGloss();
         Codex.setMode(false);
         fdjtDOM.dropClass(document.body,"codexhelp");}
 

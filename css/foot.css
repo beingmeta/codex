@@ -147,6 +147,54 @@ div#CODEXHUD  .codexgoto#CODEXGOTOLOC {
     right: 0px; left: auto; min-width: 4em;}
 div#CODEXHUD  .codexgoto#CODEXGOTOPAGE {
     right: 40%; left: 40%; min-width: 4em;}
+
+/* SHOWTEXT rules */
+
+div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    position: absolute; z-index: 500; opacity: 0.8;
+    bottom: 30px; left: 100px; right: 100px; height: 20px;
+    text-align: center;
+    font-size: 125%; font-weight: bold;
+    padding: 0px;
+    cursor: pointer;
+    display: none;}
+div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
+    border: solid black 1px; 
+    padding-left: 1em; padding-right: 1em;
+    padding-top: 0px; padding-bottom: 0px;
+    border-radius: 1em; -o-border-radius: 1em;
+    -moz-border-radius: 1em; -webkit-border-radius: 1em;
+    background-color: ivory; opacity: 0.70;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+    filter: alpha(opacity=70);
+    -webkit-opacity: 0.70;
+    -khtml-opacity: 0.70;
+    -moz-opacity: 0.70;
+    -o-opacity: 0.70;}
+#CODEXHUD #CODEXSHOWTEXT span.cancelgloss,
+#CODEXHUD #CODEXSHOWTEXT span.cancelchanges {
+    display: none;}
+#CODEXHUD.addgloss #CODEXSHOWTEXT { color: red; }
+
+#CODEXHUD.addgloss #CODEXSHOWTEXT span.justreading { display: none;}
+
+#CODEXHUD.addgloss #CODEXSHOWTEXT span.cancelgloss,
+#CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelchanges {
+    display: inline;}
+#CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelgloss {
+    display: none;}
+
+body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    display: block;}
+body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
+body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    display: none;}
+
+body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT,
+body div#CODEXHUD.gotopage #CODEXFOOT #CODEXSHOWTEXT,
+body div#CODEXHUD.gotoloc #CODEXFOOT #CODEXSHOWTEXT {
+    display: none;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***

@@ -171,7 +171,9 @@
         else form=getChildren(div,"form")[0];
         if (gloss) {
             if (response) addClass(div,"glossreply");
-            else addClass(div,"glossedit");}
+            else {
+                addClass(div,"glossedit");
+                addClass(Codex.HUD,"glossediting");}}
         else addClass(div,"glossadd");
         if (form) return div; else return false;}
     Codex.getGlossForm=getGlossForm;
