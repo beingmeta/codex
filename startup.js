@@ -827,8 +827,10 @@ Codex.Startup=
             if ((msg=getCookie("SBOOKSMESSAGE"))) {
                 fdjtUI.alertFor(10,msg);
                 fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}
-            if ((!(mode))&&(Codex.user)) {
-                var opened=fdjtState.getLocal("Codex.opened("+Codex.refuri+")",true);
+            if ((!(mode))&&(location.hash)) Codex.hideCover();
+            else if ((!(mode))&&(Codex.user)) {
+                var opened=fdjtState.getLocal(
+                    "Codex.opened("+Codex.refuri+")",true);
                 if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
                     Codex.hideCover();}}
         
