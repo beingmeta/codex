@@ -401,7 +401,7 @@ Codex.setMode=
         var CodexModes=/\b((scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
         var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossdetail))\b/g;
         var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(scanning)|(tocscan)|(shownote))\b/g;
-        var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail))\b/g;
+        var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail)|(glossediting))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
         var CodexCoverModes=/\b((welcome)|(help)|(overlays)|(login)|(settings)|(cover)|(aboutsbooks)|(console)(aboutbook)|(titlepage))\b/g;
@@ -525,6 +525,8 @@ Codex.setMode=
                 //  setHUD clears most of the classes when it brings
                 //  the HUD down.
                 Codex.last_mode=Codex.mode;
+                if ((Codex.mode="openglossmark")&&(fdjtID("CODEXOPENGLOSSMARK")))
+                    fdjtID("CODEXOPENGLOSSMARK").id="";
                 if (Codex.textinput) {
                     Codex.setFocus(false);}
                 document.body.focus();
