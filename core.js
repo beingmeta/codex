@@ -706,8 +706,8 @@ var Codex={
         var found=fdjtDOM.findString(node,excerpt,off||0);
         if (found) return found;
         var trimmed=fdjtString.trim(excerpt);
-        var regex_string=trimmed.replace(/\s+/g,"(\\s+)");
-        var pattern=new RegExp("(\\s*)"+regex_string+"(\\s*)","g");
+        var regex_string=fdjtDOM.textRegExp(trimmed);
+        var pattern=new RegExp("(\\s*)"+regex_string+"(\\s*)","gm");
         var matches=fdjtDOM.findMatches(node,pattern,off||0,1);
         if ((matches)&&(matches.length)) return matches[0];
         // We could do this more intelligently
