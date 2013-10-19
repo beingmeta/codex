@@ -728,13 +728,14 @@ body #CODEXBODY #CODEXPAGE .codexpage .codexdup {
     margin-top: 0px;
     padding-bottom: 0px;
     border-bottom-width: 0px;
-    margin-bottom: 0px;
-    text-indent: 0px;}
+    margin-bottom: 0px;}
+body #CODEXBODY #CODEXPAGE .codexpage p.codexdup,
+body #CODEXBODY #CODEXPAGE .codexpage p.codexdupend {
+  text-indent: 0px;}
 body #CODEXBODY #CODEXPAGE .codexpage .codexdupend {
     padding-top: 0px;
     border-top-width: 0px;
-    margin-top: 0px;
-    text-indent: 0px;}
+    margin-top: 0px;}
 
 div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
 
