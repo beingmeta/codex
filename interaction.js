@@ -2397,7 +2397,7 @@
     function showcover_handler(evt){
         evt=evt||event;
         if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
-            fdjtID("CODEXCOVER").classname="bookcover";
+            fdjtID("CODEXCOVER").className="bookcover";
         Codex.showCover();
         fdjtUI.cancel(evt);}
 

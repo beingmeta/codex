@@ -74,6 +74,14 @@ body.openhud #CODEXFRAME, body.codexscanning #CODEXFRAME {
 body.hudup #CODEXFRAME #CODEXCOVER, body.openhud #CODEXFRAME #CODEXCOVER,
 body.codexscanning #CODEXFRAME #CODEXCOVER {
     display: none;}
+body.hudup.cxCOVER #CODEXFRAME #CODEXCOVER,
+body.openhud.cxCOVER #CODEXFRAME #CODEXCOVER,
+body.codexscanning.cxCOVER #CODEXFRAME #CODEXCOVER {
+    display: block;}
+body.hudup.cxCOVER #CODEXFRAME #CODEXHUD,
+body.openhud.cxCOVER #CODEXFRAME #CODEXHUD,
+body.codexscanning.cxCOVER #CODEXFRAME #CODEXHUD {
+    display: none;}
 
 /* The HUD is where all of the active interface elements for reading
    appear.  */

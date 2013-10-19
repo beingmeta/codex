@@ -558,10 +558,11 @@ div#CODEXHUD div#CODEXHUDTOP {
 #CODEXSHOWCOVER {
     white-space: nowrap;
     background-color: rgba(0,0,0,0.5); color: white;
-    font-size: 1.25em; 
-    margin-top: 0.5ex; padding: 0px 1ex 0px 1ex;
+    font-size: 1.5em; 
+    margin-top: 4px; padding: 0px 4em 0px 4em;
     border-radius: 1ex;
     cursor: pointer;
+    font-variant: small-caps;
     display: none;}
 #CODEXSHOWCOVER {
     transition-property: opacity;
