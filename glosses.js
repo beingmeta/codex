@@ -428,7 +428,7 @@
                   holdthresh: 250,
                   movethresh: 250});}
     Codex.UI.selectText=selectText;
-    var selecting_ontap=fdjt.UI.Selecting.tap_handler;
+
     function gloss_selecting_ontap(evt){
         evt=evt||event;
         if (Codex.Trace.selection)

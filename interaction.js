@@ -551,7 +551,7 @@
                     fdjtLog("content_slipped %o, aborting select",evt);
                 abortSelect();},2000);}}
     */
-    function content_slipped(evt){}
+    function content_slipped(evt){evt=evt||event;}
     
     function content_released(evt){
         evt=evt||event;
@@ -2413,10 +2413,16 @@
             Codex.select_target=false;}}
         
     function raiseHUD(evt){
-        Codex.setHUD(true); return false;}
+        evt=evt||event;
+        Codex.setHUD(true);
+        fdjt.UI.cancel(evt);
+        fdjt.UI.cancel(evt);return false;}
     Codex.raiseHUD=raiseHUD;
     function lowerHUD(evt){
-        Codex.setHUD(false); return false;}
+        evt=evt||event;
+        Codex.setHUD(false);
+        fdjt.UI.cancel(evt);
+        return false;}
     Codex.lowerHUD=lowerHUD;
 
     fdjt.DOM.defListeners(

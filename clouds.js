@@ -406,7 +406,7 @@
             else return 0;});}
     Codex.sortTags=sort_tags;
     
-    function sortCloud(cloud,scores){
+    function sortCloud(cloud){
         var values=[].concat(cloud.values);
         sort_tags(values);
         var byvalue=cloud.byvalue;
@@ -424,7 +424,7 @@
     function sizeCloud(cloud,scores,cuethresh){
         var sqrt=Math.sqrt;
         var values=cloud.values, byvalue=cloud.byvalue;
-        var elts=new Array(values.length), vscores=new Array(values.length);
+        var vscores=new Array(values.length);
         var i=0, lim=values.length;
         var min_score=-1, max_score=-1, sum=0, count=0;
         while (i<lim) {

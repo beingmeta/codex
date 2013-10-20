@@ -2231,10 +2231,12 @@ Codex.Startup=
                                          empty_cloud.dom,
                                          Codex.UI.getShowAll(
                                              true,empty_cloud.values.length));
-                                 Codex.sortCloud(empty_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud(empty_cloud,Codex.tagweights,true);
-                                 Codex.sortCloud(gloss_cloud,eq.tagfreqs);
-                                 Codex.sizeCloud(gloss_cloud,Codex.tagweights,true);},
+                                 Codex.sortCloud(empty_cloud);
+                                 Codex.sizeCloud(
+                                     empty_cloud,Codex.tagweights,true);
+                                 Codex.sortCloud(gloss_cloud);
+                                 Codex.sizeCloud(
+                                     gloss_cloud,Codex.tagweights,true);},
                              200,5);}
         
         var addTags=Codex.addTags;
