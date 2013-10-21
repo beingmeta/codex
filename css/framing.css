@@ -90,6 +90,15 @@ body.codexscanning.cxCOVER #CODEXFRAME #CODEXHUD {
     width: 100%; height: 100%;}
 #CODEXFRAME > #CODEXHUD > * {
     pointer-events: all;}
+body.cxTOUCH #CODEXFRAME > #CODEXHUD > * {
+    pointer-events: none;}
+body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > * {
+    pointer-events: all;}
+
+body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHUDTOP,
+body.cxTOUCH #CODEXFRAME > #CODEXHUD #CODEXPAGEINFO {
+    pointer-events: all;}
+
 
 /* The COVER contains the usual wrapping elements for the book
    (coverpage, title, blurbs, etc) and also contains elements which

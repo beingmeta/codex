@@ -271,6 +271,9 @@ body img.mouseicon { display: inline;}
 body.cxTOUCH img.touchicon { display: inline;}
 body.cxTOUCH img.mouseicon { display: none;}
 
+body.cxTOUCH div#CODEXHUD img.hudbutton { opacity: 0;}
+body.hudup.cxTOUCH div#CODEXHUD img.hudbutton { opacity: 0.60;}
+
 div.locbar {
     background-color: ivory;
     width: 100%; clear: both;
