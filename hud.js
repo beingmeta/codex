@@ -404,7 +404,7 @@ Codex.setMode=
         var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail)|(glossediting))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
-        var CodexCoverModes=/\b((welcome)|(help)|(overlays)|(login)|(settings)|(cover)|(aboutsbooks)|(console)(aboutbook)|(titlepage))\b/g;
+        var CodexCoverModes=/\b((welcome)|(help)|(overlays)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
