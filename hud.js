@@ -405,6 +405,8 @@ Codex.setMode=
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
         var CodexCoverModes=/\b((welcome)|(help)|(overlays)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
+        var CodexSearchModes=/((refinesearch)|(searchresults)|(expandsearch))/;
+        Codex.searchModes=CodexSearchModes;
         var codex_mode_scrollers=
             {allglosses: "CODEXALLGLOSSES",
              searchresults: "CODEXSEARCHRESULTS",
@@ -525,7 +527,8 @@ Codex.setMode=
                 //  setHUD clears most of the classes when it brings
                 //  the HUD down.
                 Codex.last_mode=Codex.mode;
-                if ((Codex.mode="openglossmark")&&(fdjtID("CODEXOPENGLOSSMARK")))
+                if ((Codex.mode==="openglossmark")&&
+                    (fdjtID("CODEXOPENGLOSSMARK")))
                     fdjtID("CODEXOPENGLOSSMARK").id="";
                 if (Codex.textinput) {
                     Codex.setFocus(false);}
@@ -538,7 +541,8 @@ Codex.setMode=
                 dropClass(document.body,"cxSHRINK");
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
-                if (CodexBodyModes.test(oldmode)) {
+                if (nohud) {}
+                else if (CodexBodyModes.test(oldmode)) {
                     dropClass(CodexHUD,CodexSubModes);
                     setHUD(false);}
                 else setTimeout(function(){

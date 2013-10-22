@@ -286,7 +286,7 @@
             else if (!(double_touch)) {}
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
-        else if (Codex.Trace.gestures)
+        if (Codex.Trace.gestures)
             fdjtLog("content_tapped %o s=%d,%d c=%d,%d dt=%o now=%o p=%o",
                     evt,sX,sY,cX,cY,now,Codex.previewing);
         
@@ -1320,10 +1320,11 @@
                     Codex.setMode("searchresults"); return;}
                 else if (mode==="allglosses") {
                     Codex.setMode("allglosses"); return;}}
-            if (fdjtDOM.hasClass(Codex.HUD,mode)) Codex.setMode(false);
+            if (fdjtDOM.hasClass(Codex.HUD,mode))
+                Codex.setMode(false,true);
             else if ((mode==="search")&&
-                     (fdjtDOM.hasClass(Codex.HUD,/((refinesearch)|(searchresults)|(expandsearch))/)))
-                Codex.setMode(false);
+                     (fdjtDOM.hasClass(Codex.HUD,Codex.searchModes)))
+                Codex.setMode(false,true);
             else Codex.setMode(mode);}
         else if ((evt.type==='mouseover')&&(Codex.mode))
             return;
@@ -1392,6 +1393,14 @@
     /* Default click/tap */
     function default_tap(evt){
         var target=fdjtUI.T(evt);
+        if (Codex.Trace.gestures)
+            fdjtLog("default_tap %o (%o) %s%s%s",evt,target,
+                    ((fdjtUI.isClickable(target))?(" clickable"):("")),
+                    (((hasParent(target,Codex.HUD))||
+                      (hasParent(target,Codex.uiclasses)))?
+                     (" inhud"):("")),
+                    ((Codex.mode)?(" "+Codex.mode):
+                     (Codex.hudup)?(" hudup"):""));
         if (fdjtUI.isClickable(target)) return;
         else if ((hasParent(target,Codex.HUD))||
                  (hasParent(target,Codex.uiclasses)))
@@ -1982,6 +1991,10 @@
             clearTimeout(preview_timer);
             preview_timer=false;}
         if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
+            if (Codex.Trace.gestures)
+                fdjtLog("clearHUD %s %s %s",Codex.mode,
+                        ((Codex.hudup)?"hudup":""),
+                        ((Codex.cxthelp)?"hudup":""));
             fdjtUI.cancel(evt);
             Codex.setMode(false);
             return;}
