@@ -144,7 +144,7 @@ div#CODEXCOVER.login .control[data-mode='login'] {
 
 .control[data-mode='console'], .control[data-mode='aboutsbooks'] {
     display: none;}
-body.cxSHOWCONSOLE span.control[data-mode='console'],
+body.cxSHOWCONSOLE span.control[data-mode='console'] { display: inline;}
 span.control[data-mode='overlays'] .whenloggedin { display: none;}
 body.cxUSER span.control[data-mode='overlays'] .whenloggedin {
     display: inline;}
