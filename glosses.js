@@ -1298,7 +1298,7 @@
         var box=fdjt.Dialog({spec: "div.fdjtdialog#CODEXGLOSSMESSAGE"},
                             fdjtDOM("span.savemsg",message));
         fdjt.Dialog.setCountdown(box,5);
-        fdjtID("CODEXHUDTOP").appendChild(box);}
+        fdjtID("CODEXHEAD").appendChild(box);}
 
 })();
 

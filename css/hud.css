@@ -18,7 +18,7 @@
 #CODEXHUD.codexuifontsmall { font-size: 1em; }
 
 #CODEXHUD .codexhelp, #CODEXHUD .helpbox { font-size: 80%;}
-#CODEXHUD #CODEXRIBBON, #CODEXHUD #CODEXHEAD, #CODEXHUD #CODEXFOOT {
+#CODEXHUD #CODEXRIBBON, #CODEXHUD #CODEXTOP, #CODEXHUD #CODEXFOOT {
     font-size: 80%;}
 #CODEXHUD .codexslice { font-size: 90%;}
 #CODEXHUD .codexslice .tochead, #CODEXHUD .codexslice .idhead {
@@ -27,10 +27,13 @@
 
 /* Major HUD components, head and heart */
 
-#CODEXHEAD, #CODEXFOOT {
+#CODEXTOP {
     position: absolute; left: 60px; right: 60px; z-index: 100;
     max-height: 60px; border: solid transparent 4px;
     padding: 0px; padding-bottom: 0.5ex;}
+#CODEXFOOT {
+    position: absolute; left: 0px; right: 0px; z-index: 100;
+    max-height: 60px; padding: 0px; padding-top: 0.5ex;}
 #CODEXSCANNER {
     position: absolute; left: 60px; right: 60px; z-index: 100;
     background-color: white;
@@ -48,19 +51,19 @@ body.cxANIMATE #CODEXSCANNER .tochead {
 #CODEXSCANNER .tochead a { color: white;}
 #CODEXSCANNER .tochead hr {
     color: rgb(33, 106, 129); background-color: rgb(33, 106, 129);}
-#CODEXHEAD {background-color: transparent;}
-body.hudup #CODEXHEAD {
+#CODEXTOP {background-color: transparent;}
+body.hudup #CODEXTOP {
     background-color: rgba(255,255,240,0.6);
     min-height: 40px;}
-body.hudup #CODEXHEAD .hudpanel {
+body.hudup #CODEXTOP .hudpanel {
     background-color: rgba(255,255,240,0.6);}
 
-#CODEXHEAD, #CODEXSCANNER {top: 0px; border-top: 0px;}
+#CODEXTOP, #CODEXSCANNER {top: 0px; border-top: 0px;}
 #CODEXFOOT {bottom: 0px; border-bottom: 0px;}
 
-#CODEXHUD #CODEXHEAD,
+#CODEXHUD #CODEXTOP,
 #CODEXHUD.openfoot #CODEXFOOT,
-#CODEXHUD.openhead.openheart #CODEXHEAD {
+#CODEXHUD.openhead.openheart #CODEXTOP {
     opacity: 0.99;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
     filter: alpha(opacity=99);
@@ -68,7 +71,7 @@ body.hudup #CODEXHEAD .hudpanel {
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-#CODEXHUD.openheart #CODEXHEAD {
+#CODEXHUD.openheart #CODEXTOP {
     opacity: 0.33;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
     filter: alpha(opacity=33);
@@ -95,7 +98,7 @@ body.hudup #CODEXHEAD .hudpanel {
 
 #CODEXSCANNER { display: none; }
 
-#CODEXHEAD, #CODEXHEAD .hudpanel, #CODEXSCANNER,
+#CODEXTOP, #CODEXTOP .hudpanel, #CODEXSCANNER,
 #CODEXSCANNER .codexcard, #CODEXSCANNER .codexcardbody {
     border-radius: 1em; -webkit-border-radius: 1em;
     -o-border-radius: 1em; -moz-border-radius: 1em;
@@ -121,7 +124,7 @@ body.hudup #CODEXHEAD .hudpanel {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
-body.cxANIMATE #CODEXHEAD {
+body.cxANIMATE #CODEXTOP {
     transition-property: top;
     transition-duration: 0.75s;
     -o-transition-property: top;
@@ -132,12 +135,12 @@ body.cxANIMATE #CODEXHEAD {
     -webkit-transition-duration: 0.75s;
     display: block;
     top: -100px;}
-body.cxANIMATE #CODEXHUD.openhead #CODEXHEAD,
-#CODEXHUD.openhead #CODEXHEAD {
+body.cxANIMATE #CODEXHUD.openhead #CODEXTOP,
+#CODEXHUD.openhead #CODEXTOP {
     top: 0px;}
-body.hudup #CODEXHEAD {display: block;}
+body.hudup #CODEXTOP {display: block;}
 body.hudup #CODEXHUDBUTTONS {display: block;}
-body.hudup #CODEXHUD.openhead #CODEXHEAD,
+body.hudup #CODEXHUD.openhead #CODEXTOP,
 body #CODEXHUD.scanning #CODEXSCANNER {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -145,16 +148,16 @@ body #CODEXHUD.scanning #CODEXSCANNER {
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     border-color: transparent;
     height: auto;}
-body.hudup #CODEXHUD.openhead #CODEXHEAD {
+body.hudup #CODEXHUD.openhead #CODEXTOP {
     border-color: rgba(0, 0, 255, 0.52);
     background-color: rgba(255, 255, 240, 0.52);}
-body.hudup #CODEXHUD.openhead.overtoc #CODEXHEAD {
+body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
     background-color: rgb(255,255,255,0.75);
     border-color: transparent;
     box-shadow: none; -webkit-box-shadow: none;
     -moz-box-shadow: none; -o-box-shadow: none;}
     
-body.hudup #CODEXHUD.openhead #CODEXHEAD .hudpanel {
+body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}
 body.hudup #CODEXHUD.openhead #CODEXHUDBUTTONS,
 body.hudup #CODEXHUD.overtoc #CODEXHUDBUTTONS,
@@ -162,12 +165,12 @@ body.hudup #CODEXHUD.refinesearch #CODEXHUDBUTTONS,
 body.hudup #CODEXHUD.searchresults #CODEXHUDBUTTONS,
 body.hudup #CODEXHUD.addgloss #CODEXHUDBUTTONS {
     display: none; position: absolute;}
-body #CODEXHUD.tocscan #CODEXHEAD,
+body #CODEXHUD.tocscan #CODEXTOP,
 body #CODEXHUD.openglossmark #CODEXSCANNER,
 body #CODEXHUD.scanning #CODEXSCANNER,
 body #CODEXHUD.allglosses #CODEXSCANNER {
     overflow: hidden;}
-body #CODEXHUD.addgloss #CODEXHEAD {
+body #CODEXHUD.addgloss #CODEXTOP {
     overflow: visible;
     z-index: 500;}
 
@@ -182,7 +185,7 @@ body #CODEXHUD.openfoot #CODEXFOOT
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     height: auto; max-height: 50%;}
 
-body #CODEXHUD.openhead #CODEXHEAD {max-height: 50%;}
+body #CODEXHUD.openhead #CODEXTOP {max-height: 50%;}
 body #CODEXHUD.openglossmark #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded,
 body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
@@ -497,9 +500,14 @@ div#CODEXHUD img.hudbutton {
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
+.cxMOUSE div#CODEXHUD img.hudbutton:hover,
+div#CODEXHUD img.hudbutton.tapholdtarget {
+    border-color: blue;}
 
 body.hudup div#CODEXHUD img.hudbutton  {}
-body.cxMOUSE div#CODEXHUD img.hudbutton:hover {
+body.cxMOUSE div#CODEXHUD img.hudbutton:hover,
+body div#CODEXHUD #CODEXFOOT.tapholding img.hudbutton,
+body div#CODEXHUD #CODEXHEAD.tapholding img.hudbutton {
     opacity: 0.45;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
     filter: alpha(opacity=45);
@@ -507,6 +515,7 @@ body.cxMOUSE div#CODEXHUD img.hudbutton:hover {
     -khtml-opacity: 0.45;
     -moz-opacity: 0.45;
     -o-opacity: 0.45;}
+
 div#CODEXHUD .topleft {top: 0px; left: 0px;}
 div#CODEXHUD .topright {top: 0px; right: 0px;}
 div#CODEXHUD .botleft {bottom: 0px; left: 0px;}
@@ -552,9 +561,9 @@ body div#CODEXHUD.login div#CODEXHEART .tabcontent#CODEXLOGIN {
 div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
 
-div#CODEXHUD div#CODEXHUDTOP {
-    position: absolute; top: 0px; height: 40px;
-    text-align: center; left: 50px; right: 50px;}
+div#CODEXHUD div#CODEXHEAD {
+    position: absolute; top: 0px; height: 50px;
+    text-align: center; left: 0px; right: 0px;}
 #CODEXSHOWCOVER {
     white-space: nowrap;
     background-color: rgba(0,0,0,0.5); color: white;
@@ -563,7 +572,7 @@ div#CODEXHUD div#CODEXHUDTOP {
     border-radius: 1ex;
     cursor: pointer;
     font-variant: small-caps;
-    display: none;}
+    display: inline-block;}
 #CODEXSHOWCOVER {
     transition-property: opacity;
     -o-transition-property: opacity;
@@ -571,11 +580,20 @@ div#CODEXHUD div#CODEXHUDTOP {
     -webkit-transition-property: -webkit-opacity; 
     transition-duration: 1.0s; -o-transition-duration: 1.0s;
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
-body.hudup #CODEXSHOWCOVER, #CODEXHUDTOP:hover #CODEXSHOWCOVER {
-    display: inline-block;}
-div#CODEXHUDTOP:hover #CODEXSHOWCOVER {opacity: 0.5;}
-body.hudup #CODEXSHOWCOVER,
-body.hudup div#CODEXHUDTOP:hover #CODEXSHOWCOVER {
+#CODEXSHOWCOVER {
+    opacity: 0.00;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=00)";
+    filter: alpha(opacity=00);
+    -webkit-opacity: 0.00;
+    -khtml-opacity: 0.00;
+    -moz-opacity: 0.00;
+    -o-opacity: 0.00;}
+div#CODEXHEAD:hover #CODEXSHOWCOVER,
+div#CODEXHEAD.tapholding #CODEXSHOWCOVER,
+body.cxTOUCH div#CODEXHEAD.tapholding:hover #CODEXSHOWCOVER {
+    opacity: 0.5;}
+body.cxTOUCH div#CODEXHEAD:hover #CODEXSHOWCOVER {opacity: 0;}
+body.hudup #CODEXSHOWCOVER, body.hudup div#CODEXHEAD:hover #CODEXSHOWCOVER {
     opacity: 1.0;}
 body.cxPREVIEW #CODEXSHOWCOVER, 
 body.cxPREVIEW.hudup #CODEXSHOWCOVER,
@@ -776,7 +794,7 @@ body div#CODEXHUD.scanning div#CODEXSCANNER {
     -o-opacity: 0.90;}
 
 div#CODEXHUD div#CODEXSCANNER.expanded, body.hudup div#CODEXSCANNER.expanded,
-div#CODEXHEAD div#CODEXSCANNER.expanded {
+div#CODEXTOP div#CODEXSCANNER.expanded {
     height: inherit; max-height: inherit; overflow: auto;}
 
 div#CODEXSCANNER .ellipsis.expanded .elided {display: none;}
@@ -807,7 +825,7 @@ div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 div#CODEXPOINTGLOSSES div.tochead { display: none; }
 
-body div#CODEXHUD.overtoc div#CODEXHEAD {
+body div#CODEXHUD.overtoc div#CODEXTOP {
     background-color: rgba(255,255,255,0.5);}
 body div#CODEXHUD div.hudpanel#CODEXTOC {
     background-color: rgba(255,255,255,0.5);
@@ -1264,9 +1282,9 @@ img.codexclosehud#CODEXSTOPSCAN {
 
 /* Full height/width rules */
 
-body.cxFULLHEIGHT #CODEXHEAD, body.cxFULLHEIGHT #CODEXFOOT {
+body.cxFULLHEIGHT #CODEXTOP, body.cxFULLHEIGHT #CODEXFOOT {
     display: none;}
-body.cxFULLHEIGHT.hudup #CODEXHEAD, body.cxFULLHEIGHT.hudup #CODEXFOOT {
+body.cxFULLHEIGHT.hudup #CODEXTOP, body.cxFULLHEIGHT.hudup #CODEXFOOT {
     display: block;}
 
 body.cxFULLHEIGHT.cxFULLWIDTH #CODEXHUD {display: none;}

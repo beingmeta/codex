@@ -1,7 +1,19 @@
-<div id="CODEXHUDTOP">
-  <span id="CODEXSHOWCOVER">Cover</span>
-</div>
 <div id="CODEXHEAD">
+  <img svg="{{bmg}}codex/tocicon.svgz"
+       src="{{bmg}}codex/tocicon50x50.png"
+       alt="toc" title="navigate sections"
+       class="hudbutton hudmodebutton topleft"
+       id="CODEXTOCBUTTON"
+       hudmode="statictoc"/>
+  <span id="CODEXSHOWCOVER">Cover</span>
+  <img svg="{{bmg}}codex/tagsearch.svgz"
+       src="{{bmg}}codex/tagsearch50x50.png"
+       alt="search" title="search tags"
+       class="hudbutton hudmodebutton topright"
+       id="CODEXSEARCHBUTTON"
+       hudmode="search"/>
+</div>
+<div id="CODEXTOP">
   <div id="CODEXTOC" class="hudpanel"></div>
   <div id="CODEXSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from searchbox.html -->
@@ -108,18 +120,6 @@
     Show keyboard help
   </div>
 </div>
-<img svg="{{bmg}}codex/tocicon.svgz"
-     src="{{bmg}}codex/tocicon50x50.png"
-     alt="toc" title="navigate sections"
-     class="hudbutton hudmodebutton topleft clickable"
-     id="CODEXTOCBUTTON"
-     hudmode="statictoc"/>
-<img svg="{{bmg}}codex/tagsearch.svgz"
-     src="{{bmg}}codex/tagsearch50x50.png"
-     alt="search" title="search tags"
-     class="hudbutton hudmodebutton topright clickable"
-     id="CODEXSEARCHBUTTON"
-     hudmode="search"/>
 <div class="helphud topcenter">
   <span class="fortouch">Tap</span><span class="notouch">Click</span>
   at the top of the page to see the <em>interface</em> or the <em>cover</em>
@@ -137,7 +137,7 @@
 <div class="helphud rightmiddle">
   next page
 </div>
-<div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff">
+<div id="CODEXFOOT" data-touchable="span.pagespan,span.pageno,span.locoff,img.hudbutton">
   <div id="CODEXSHOWTEXT">
     <span class="adjustfont" data-maxfont="150%">
       <span>
@@ -174,23 +174,23 @@
                onkeypress="Codex.UI.goto_keypress(event);"/>/
         <span id="CODEXGOTOPAGEMAX"></span>
       </div>
-      
     </div>
     <div class="pagespans" id="CODEXPAGESPANS">
     </div>
   </div>
+  <img svg="{{bmg}}codex/allglosses.svgz"
+       src="{{bmg}}codex/allglosses50x50.png"
+       alt="allglosses" title="show all glosses"
+       class="hudbutton hudmodebutton botright"
+       id="CODEXALLGLOSSESBUTTON"
+       hudmode="allglosses"/>
+  <img svg="{{bmg}}codex/helpicon.svgz"
+       src="{{bmg}}codex/helpicon50x50.png"
+       alt="help" title="show contextual help"
+       class="hudbutton hudmodebutton botleft"
+       id="CODEXHELPBUTTON"
+       hudmode="help"/>
 </div>
-<img svg="{{bmg}}codex/allglosses.svgz"
-     src="{{bmg}}codex/allglosses50x50.png"
-     alt="allglosses" title="show all glosses"
-     class="hudbutton hudmodebutton botright clickable"
-     id="CODEXALLGLOSSESBUTTON"
-     hudmode="allglosses"/>
-<img svg="{{bmg}}codex/helpicon.svgz"
-     src="{{bmg}}codex/helpicon50x50.png"
-     alt="help" title="show contextual help"
-     class="hudbutton hudmodebutton botleft clickable"
-     id="CODEXHELPBUTTON"/>
 <div class="helphud botright" data-hudmode="toc">
   <span class="nobreak">browse</span><br/>
   <span class="nobreak">glosses<span class="arrow">&#x2192;</span></span></div>

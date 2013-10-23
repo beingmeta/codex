@@ -106,8 +106,9 @@ Codex.setMode=
             heart.innerHTML=fixStaticRefs(Codex.HTML.heart);
             Codex.DOM.heart=heart;
             // Other HUD parts
-            Codex.DOM.head=fdjtID("CODEXHEAD");
+            Codex.DOM.top=fdjtID("CODEXTOP");
             Codex.DOM.heart=fdjtID("CODEXHEART");
+            Codex.DOM.head=fdjtID("CODEXHEAD");
             Codex.DOM.foot=fdjtID("CODEXFOOT");
             Codex.DOM.tabs=fdjtID("CODEXTABS");
 
@@ -221,6 +222,7 @@ Codex.setMode=
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);
             Codex.TapHold.foot=new fdjtUI.TapHold(Codex.DOM.foot,Codex.touch);
+            Codex.TapHold.head=new fdjtUI.TapHold(Codex.DOM.head,Codex.touch);
             Codex.DOM.scanner=fdjtID("CODEXSCANNER");
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up taphold for scanner %o",Codex.DOM.scanner);
@@ -541,14 +543,15 @@ Codex.setMode=
                 dropClass(document.body,"cxSHRINK");
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
-                if (nohud) {}
+                if (nohud) Codex.setHUD(false);
                 else if (CodexBodyModes.test(oldmode)) {
                     dropClass(CodexHUD,CodexSubModes);
                     setHUD(false);}
                 else setTimeout(function(){
                     if (Codex.mode===oldmode) {
                         dropClass(CodexHUD,CodexSubModes);
-                        setHUD(false);}},500);}}
+                        setHUD(false);}},
+                                500);}}
         
         function changeMode(mode){      
             fdjtDOM.dropClass(CodexHUD,CodexModes);

@@ -13,19 +13,19 @@ body.cxPREVIEW, body.cxPREVIEW div.codexslice {
 
 body.cxPREVIEW { cursor: crosshair; }
 
-body.cxPREVIEW #CODEXHEAD { display: none; }
-body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD { display: none; }
+body.cxPREVIEW #CODEXTOP { display: none; }
+body.cxPREVIEW #CODEXHUD.openhead #CODEXTOP { display: none; }
 
 body.cxPREVIEW .hudbutton { display: none; }
 
-body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXHEAD,
-body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD {
+body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.tocscan #CODEXTOP {
     display: block; }
 
-body.cxPREVIEW #CODEXHUD.overtoc #CODEXHEAD, body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP, body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
     background-color: transparent;
     border-color: transparent;}
-body.cxPREVIEW #CODEXHUD.overtoc #CODEXHEAD .hudpanel {
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP .hudpanel {
     background-color: transparent;}
 
 body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER,
@@ -88,14 +88,14 @@ body.cxPREVIEW div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
 body.cxPREVIEW div#CODEXHUD div#CODEXHUDBUTTONS {
     display: none;}
 
-body.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD,
+body.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.openfoot #CODEXFOOT,
-body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXHEAD {
+body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXTOP {
     background-color: transparent;}
 
-body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXHEAD,
-body.cxPREVIEW #CODEXHUD.tocscan #CODEXHEAD,
-body.cxPREVIEW #CODEXHUD.addgloss #CODEXHEAD,
+body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.tocscan #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.addgloss #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.openglossmark #CODEXSCANNER,
 body.cxPREVIEW #CODEXHUD.scanning #CODEXSCANNER,
 body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {

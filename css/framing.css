@@ -69,7 +69,8 @@ body {
     pointer-events: none;
     z-index: -50;}
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
-body.openhud #CODEXFRAME, body.codexscanning #CODEXFRAME {
+body.openhud #CODEXFRAME, body.codexscanning #CODEXFRAME,
+body.codexhelp #CODEXFRAME {
     z-index: 50;}
 body.hudup #CODEXFRAME #CODEXCOVER, body.openhud #CODEXFRAME #CODEXCOVER,
 body.codexscanning #CODEXFRAME #CODEXCOVER {
@@ -95,8 +96,8 @@ body.cxTOUCH #CODEXFRAME > #CODEXHUD > * {
 body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > * {
     pointer-events: all;}
 
-body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHUDTOP,
-body.cxTOUCH #CODEXFRAME > #CODEXHUD #CODEXPAGEINFO {
+body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHEAD,
+body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXFOOT {
     pointer-events: all;}
 
 

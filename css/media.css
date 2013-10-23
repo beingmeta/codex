@@ -10,17 +10,17 @@
     div#CODEXHUD #CODEXHEART { font-size: 80%; }
     div#CODEXHUD div.sbookplate { display: none;}
 }
-@media screen and (max-width: 800px) {
-    #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
-    div#CODEXHEAD div#CODEXHUDBUTTONS {
+@media screen and (max-width: 600px) {
+    #CODEXTOP, #CODEXSCANNER { left: 0px; right: 0px; }
+    div#CODEXTOP div#CODEXHUDBUTTONS {
         margin-left: 60px; margin-right: 60px;}
-    #CODEXHEAD, #CODEXSCANNER { left: 0px; right: 0px; }
+    #CODEXTOP, #CODEXSCANNER { left: 0px; right: 0px; }
     img.codexclosehud#CODEXSTOPSCAN {
         bottom: 50px; top: auto;}
-    body.hudup #CODEXHUD.openhead #CODEXHEAD,
-    body #CODEXHUD.openhead.addgloss #CODEXHEAD {
+    body.hudup #CODEXHUD.openhead #CODEXTOP,
+    body #CODEXHUD.openhead.addgloss #CODEXTOP {
         left: 0px; right: 0px; }
-    #CODEXHUD.openhead.tocscan #CODEXHEAD {
+    #CODEXHUD.openhead.tocscan #CODEXTOP {
         left: 50px; right: 50px;}
 
     #CODEXHUD.addgloss img.hudbutton[alt="toc"],
@@ -54,7 +54,7 @@
 /* Handheld media rules */
 
 @media (max-device-width: 500px) {
-    div#CODEXHUD #CODEXHEAD, div#CODEXHUD #CODEXFOOT {
+    div#CODEXHUD #CODEXTOP, div#CODEXHUD #CODEXFOOT {
         left: 0px; right: 0px; width: 100%;}
     div#CODEXFOOT div#CODEXPAGEINFO {
         margin-left: 0px; margin-right: 0px;}

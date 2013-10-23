@@ -39,7 +39,8 @@
 
 div.helpbox p {
     margin-top: 1ex; margin-bottom: 1ex;
-    margin-left: 2em; text-indent: -2em;}
+    margin-left: 2em; margin-right: 2em;
+    text-indent: -2em;}
 div.helpbox div.helpblock {
     max-width: 40em; margin-left: auto; margin-right: auto;
     margin-bottom: 1em;}

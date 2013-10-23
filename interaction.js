@@ -1292,18 +1292,12 @@
         "searching": "CODEXSEARCH",
         "allglosses": "CODEXSOURCES"};
     
-    function hudbutton(evt){
+    function hudmodebutton(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var mode=target.getAttribute("hudmode");
-        if ((Codex.Trace.gestures)&&
-            ((evt.type==='tap')||
-             (evt.type==='click')||
-             (evt.type==='touchend')||
-             (evt.type==='touchstart')||
-             (evt.type==='release')||
-             (Codex.Trace.gestures>1)))
-            fdjtLog("hudbutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
+        if (Codex.Trace.gestures)
+            fdjtLog("hudmodebutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
                     evt,mode,(isClickable(target)),
                     Codex.scanning,Codex.hudup,Codex.setMode());
         if (reticle.live) reticle.flash();
@@ -1311,10 +1305,9 @@
         if (!(mode)) return;
         var hudid=((mode)&&(mode_hud_map[mode]));
         var hud=fdjtID(hudid);
-        if ((evt.type==='click')||(evt.type==='tap')||
-            (evt.type==='touchstart')||(evt.type==='touchend')||
+        if ((evt.type==='click')||
+            ((evt.type==='tap')&&((Codex.hudup)||(!(Codex.touch))))||
             (evt.type==='release')) {
-            if (hud) dropClass(hud,"hover");
             if ((Codex.scanning)&&(!(Codex.hudup))) {
                 if (mode==="refinesearch") {
                     Codex.setMode("searchresults"); return;}
@@ -1326,16 +1319,8 @@
                      (fdjtDOM.hasClass(Codex.HUD,Codex.searchModes)))
                 Codex.setMode(false,true);
             else Codex.setMode(mode);}
-        else if ((evt.type==='mouseover')&&(Codex.mode))
-            return;
-        else {
-            if (!(hud)) {}
-            else if (evt.type==='mouseover')
-                addClass(hud,"hover");
-            else if (evt.type==='mouseout')
-                dropClass(hud,"hover");
-            else {}}}
-    Codex.UI.hudbutton=hudbutton;
+        else {}}
+    Codex.UI.hudmodebutton=hudmodebutton;
 
     Codex.UI.dropHUD=function(evt){
         var target=fdjtUI.T(evt);
@@ -2364,6 +2349,16 @@
             ((fdjtTime()-(Codex._setup.getTime()))<30000))
             Codex.setMode(false);}
 
+    function setHelp(flag){
+        if (flag) {
+            fdjtDOM.addClass(document.body,"codexhelp");
+            Codex.cxthelp=true;}
+        else {
+            fdjtDOM.dropClass(document.body,"codexhelp");
+            Codex.cxthelp=false;}
+        return false;}
+    Codex.setHelp=setHelp;
+    
     function toggleHelp(evt){
         evt=evt||event;
         fdjtUI.cancel(evt);
@@ -2468,8 +2463,8 @@
                    slip: slice_slipped},
          hud: {click: handleXTarget, tap: handleXTarget},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
-         "#CODEXHUDTOP": {click: raiseHUD},
-         "#CODEXSHOWCOVER": {click: showcover_handler},
+         "#CODEXHEAD": {tap: raiseHUD},
+         "#CODEXSHOWCOVER": {tap: showcover_handler},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
          ".codexheart": {tap: flyleaf_tap},
@@ -2487,7 +2482,7 @@
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
          "#CODEXTABS": {click: head_tap},
-         "#CODEXHEAD": {click: head_tap},
+         "#CODEXTOP": {click: head_tap},
          "#CODEXPAGEFOOT": {tap: foot_tap},
          // Forward and backwards
          "#CODEXPAGELEFT": {tap: left_margin_tap,
@@ -2509,7 +2504,10 @@
          "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXHELPBUTTON": {
-             click: toggleHelp, mousedown: cancel,mouseup: cancel},
+             tap: toggleHelp,
+             hold: function(evt){setHelp(true); cancel(evt);},
+             release: function(evt){setHelp(false); cancel(evt);},
+             slip: function(evt){setHelp(false); cancel(evt);}},
          "#CODEXHELP": {
              click: toggleHelp, mousedown: cancel,mouseup: cancel},
          "#CODEXNEXTPAGE": {click: function(evt){
@@ -2524,7 +2522,8 @@
          "#CODEXWELCOME": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          "#CODEXNOTETEXT": {click: jumpToNote},
-         ".hudmodebutton": {click:hudbutton,mouseup:cancel,mousedown:cancel},
+         ".hudmodebutton": {
+             tap: hudmodebutton,release: hudmodebutton,slip: hudmodebutton},
          // GLOSSFORM rules
          "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
          // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
@@ -2568,8 +2567,8 @@
                    slip: slice_slipped},
          "#CODEXHEART": {touchstart: heart_touched},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
-         "#CODEXHUDTOP": {touchstart: raiseHUD},
-         "#CODEXSHOWCOVER": {touchstart: showcover_handler},
+         "#CODEXHEAD": {tap: raiseHUD},
+         "#CODEXSHOWCOVER": {tap: showcover_handler},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
          "#CODEXPAGEFOOT": {},
@@ -2587,7 +2586,7 @@
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
          "#CODEXTABS": {touchstart: head_tap},
-         "#CODEXHEAD": {click: head_tap},
+         "#CODEXTOP": {click: head_tap},
          "#CODEXFOOT": {tap: foot_tap},
          // Forward and backwards
          "#CODEXPAGELEFT": {tap: left_margin_tap,
@@ -2618,7 +2617,11 @@
              Codex.scanForward(evt); cancel(evt);}},
          "#CODEXPREVSCAN": {touchstart: function(evt){
              Codex.scanBackward(evt); cancel(evt);}},
-         "#CODEXHELPBUTTON": {touchstart: toggleHelp},
+         "#CODEXHELPBUTTON": {
+             tap: toggleHelp,
+             hold: function(evt){setHelp(true); cancel(evt);},
+             release: function(evt){setHelp(false); cancel(evt);},
+             slip: function(evt){setHelp(false); cancel(evt);}},
          "#CODEXHELP": {touchstart: toggleHelp},
          "#CODEXNOTETEXT": {click: jumpToNote},
          "#CODEXSHOWTEXT": {
@@ -2627,11 +2630,9 @@
              touchend: cancel},
          "#CODEXWELCOME": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
-         /* ".hudbutton": {mouseover:hudbutton,mouseout:hudbutton}, */
          ".hudmodebutton": {
-             touchstart: hudbutton,
-             touchmove: cancel,
-             touchend: cancel},
+             tap: hudmodebutton,hold: hudmodebutton,release: hudmodebutton,
+             slip: hudmodebutton},
          // GLOSSFORM rules
          "span.codexsharegloss": {click: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {

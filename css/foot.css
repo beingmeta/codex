@@ -8,8 +8,8 @@
 
 div#CODEXFOOT div#CODEXPAGEINFO {
     vertical-align: bottom; text-align: center; height: 40px; 
-    position: absolute; left: 0px; right: 0px; bottom: 0px; z-index: 100;
-    margin-left: 40px; margin-right: 40px; border: 0px;
+    position: absolute; left: 50px; right: 50px; bottom: 0px; z-index: 100;
+    margin-left: 20px; margin-right: 20px; border: 0px;
     cursor: crosshair;
     display: none;}
 body.cxBYPAGE div#CODEXFOOT div#CODEXPAGEINFO {
