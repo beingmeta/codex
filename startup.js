@@ -1652,11 +1652,20 @@ Codex.Startup=
             if (Codex.fullheight) addClass(document.body,"cxFULLHEIGHT");
             else dropClass(document.body,"cxFULLHEIGHT");
             geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
+            var fakepage=fdjtDOM("DIV.codexpage");
+            page.appendChild(fakepage);
+            // There might be a better way to get the .codexpage settings,
+            //  but this seems to work.
+            var fakepage_geom=fdjtDOM.getGeometry(fakepage,page,true);
             fdjtID("CODEXPAGELEFT").style.width=page_margin+"px";
             fdjtID("CODEXPAGERIGHT").style.width=page_margin+"px";
             var inner_width=geom.inner_width, inner_height=geom.inner_height;
-            var glossmark_offset=page_margin+
-                geom.right_border+geom.right_padding;
+            // The (-2) is for the two pixel wide border on the right side of
+            //  the glossmark
+            var glossmark_offset=page_margin+(-2)+
+                geom.right_border+geom.right_padding+
+                fakepage_geom.right_border+fakepage_geom.right_padding;
+            fdjtDOM.remove(fakepage);
             // var glossmark_offset=page_margin;
             // The 2 here is for the right border of the glossmark,
             // which appears as a vertical mark on the margin.
