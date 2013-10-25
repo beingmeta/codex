@@ -84,9 +84,7 @@ Codex.TOC=
             if ((back_button)&&(headinfo.prev))
                 back_button.frag=headinfo.prev.frag;
             var head_div=((head)&&(fdjtDOM("DIV.head",progressbar,sizebar,head)));
-            var toc=fdjtDOM(spec,
-                            next_button,back_button,
-                            head_div,
+            var toc=fdjtDOM(spec,next_button,back_button,head_div,
                             generate_spanbar(headinfo),
                             generate_subsections(headinfo));
             var sub=headinfo.sub;
@@ -112,7 +110,8 @@ Codex.TOC=
             while (i<n) {
                 toc.appendChild(new CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
             if (depth===0) {
-                fdjtUI.TapHold(toc,Codex.touch);
+                if (prefix) Codex.TapHold[prefix]=fdjtUI.TapHold(toc);
+                else fdjtUI.TapHold(toc);
                 Codex.UI.addHandlers(toc,'toc');}
             return toc;}
         

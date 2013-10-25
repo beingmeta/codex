@@ -66,10 +66,6 @@ var Codex={
     freezelayout: false,
     // Whether to store glosses, etc for offline/faster access
     keepdata: false,
-    // Whether to use native scrolling for body content
-    nativescroll: true,
-    // Whether to use native scrolling for embedded DIVs
-    scrolldivs: true,
     // Dominant interaction mode
     mouse: true,touch: false,kbd: false,
     // Restrictions on excerpts
@@ -761,9 +757,6 @@ var Codex={
         
     /* Navigation */
 
-    Codex.viewTop=function(){
-        if (Codex.nativescroll) return fdjtDOM.viewTop();
-        else return -(fdjtDOM.parsePX(Codex.pages.style.top));};
     var sbookUIclasses=
         /(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bcodexmargin\b)/;
 

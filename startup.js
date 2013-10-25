@@ -322,9 +322,10 @@ Codex.Startup=
 
         Codex.addConfig("holdmsecs",function(name,value){
             Codex.holdmsecs=value;
-            fdjtUI.TapHold.interval=value;});
+            fdjtUI.TapHold.default_opts.holdthresh=value;});
         Codex.addConfig("taptapmsecs",function(name,value){
-            Codex.taptapmsecs=value;});
+            Codex.taptapmsecs=value;
+            fdjtUI.TapHold.default_opts.taptapthresh=value;});
 
         function syncStartup(){
             // This is the startup code which is run
@@ -958,16 +959,19 @@ Codex.Startup=
             var isTouch = isiPhone || isiPad || isAndroid ||
                 isTouchPad || fdjtState.getQuery("touch");
 
+            // Don't bubble from TapHold regions (by default)
+            fdjt.TapHold.default_opts.nobubble=true;
+            
             if (isTouch) {
                 fdjtDOM.addClass(body,"cxTOUCH");
-                viewportSetup();
+                fdjt.TapHold.default_opts.touch=true;
                 Codex.ui="touch";
-                Codex.touch=true;}
+                Codex.touch=true;
+                viewportSetup();}
             if ((useragent.search("Safari/")>0)&&
                 (useragent.search("Mobile/")>0)) { 
                 hide_mobile_safari_address_bar();
-                Codex.nativescroll=false;
-                Codex.scrolldivs=false;
+                Codex.iscroll=false;
                 Codex.updatehash=false;
                 // Animation seems to increase crashes in iOS
                 // Codex.dontanimate=true;
@@ -977,13 +981,12 @@ Codex.Startup=
                 fdjtLog.doformat=true;}
             else if (useragent.search(/Android/gi)>0) {
                 default_config.keyboardhelp=false;
-                Codex.nativescroll=false;
-                Codex.updatehash=false;
-                Codex.scrolldivs=false;}
+                Codex.iscroll=true;
+                Codex.updatehash=false;}
             else {
                 fdjtDOM.addClass(body,"cxMOUSE");
                 Codex.ui="mouse";}
-            if (!(Codex.nativescroll)) fdjtDOM.addClass(body,"cxISCROLL");
+            if (Codex.iscroll) fdjtDOM.addClass(body,"cxISCROLL");
             var opt_string=
                 fdjtString.stdspace(
                     ((isiPhone)?(" iPhone"):(""))+
@@ -993,12 +996,9 @@ Codex.Startup=
                         ((isWebKit)?(" WebKit"):(""))+
                         ((isTouch)?(" touch"):(""))+
                         ((!(isTouch))?(" mouse"):(""))+
-                        ((Codex.nativescroll)?(" nativescroll"):
-                         (" iscroll"))+
+                        ((Codex.iscroll)?(" iscroll"):(""))+
                         ((Codex.updatehash)?(" updatehash"):
-                         (" leavehash"))+
-                        ((Codex.scrolldivs)?(" scrolldivs"):
-                         (" noscrolldivs")));
+                         (" leavehash")));
             fdjtLog("Device: %s %dx%d ui=%s, body=\"%s\"",
                     opt_string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
                     Codex.ui,body.className);}

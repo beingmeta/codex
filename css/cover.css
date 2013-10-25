@@ -162,8 +162,8 @@ div#CODEXAPPHELP {
     margin-left: auto; margin-right: auto;
     background-color: ivory;}
 div#CODEXABOUTBOOK, div#CODEXAPPHELP, div#CODEXABOUTSBOOKS {
-    padding-left: 2em; padding-right: 2em;
-    text-align: left;
+    padding-left: 2em; padding-right: 2em; text-align: left;
+    -webkit-overflow-scrolling: touch;
     overflow: auto;}
 
 /* The sBooks app for managing overlays */

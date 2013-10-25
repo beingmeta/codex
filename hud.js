@@ -221,13 +221,12 @@ Codex.setMode=
             
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);
-            Codex.TapHold.foot=new fdjtUI.TapHold(Codex.DOM.foot,Codex.touch);
-            Codex.TapHold.head=new fdjtUI.TapHold(Codex.DOM.head,Codex.touch);
+            Codex.TapHold.foot=new fdjtUI.TapHold(Codex.DOM.foot);
+            Codex.TapHold.head=new fdjtUI.TapHold(Codex.DOM.head);
             Codex.DOM.scanner=fdjtID("CODEXSCANNER");
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up taphold for scanner %o",Codex.DOM.scanner);
-            Codex.TapHold.scanner=
-                new fdjtUI.TapHold(Codex.DOM.scanner,Codex.touch);
+            Codex.TapHold.scanner=new fdjtUI.TapHold(Codex.DOM.scanner);
             
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=fixStaticRefs(Codex.HTML.help);
@@ -618,7 +617,7 @@ Codex.setMode=
             // This updates scroller dimensions, we delay it
             //  because apparently, on some browsers, the DOM
             //  needs to catch up with CSS
-            if ((Codex.scrolling)&&(!(Codex.scrolldivs))) {
+            if ((Codex.scrolling)&&(Codex.iscroll)) {
                 var scroller=fdjtID(Codex.scrolling);
                 if (Codex.Trace.iscroll)
                     fdjtLog("Updating scroller for #%s s=%o",
@@ -659,7 +658,7 @@ Codex.setMode=
 
         function updateScroller(elt){
             /* jshint newcap: false */
-            if (Codex.scrolldivs) return;
+            if (!(Codex.iscroll)) return;
             if ((elt)&&(Codex.Trace.scrolling))
                 fdjtLog("Updating scroller for %o",elt);
             if (Codex.heartscroller) Codex.heartscroller.refresh();

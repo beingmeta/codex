@@ -147,8 +147,7 @@
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             // Last arg is docancel, since we don't need to worry about conflicts
             //   with scrolling
-            fdjtUI.TapHold(fdjt.ID("CODEXBODY"),Codex.touch,
-                           false,false,false,true);
+            Codex.TapHold.body=fdjtUI.TapHold(fdjt.ID("CODEXBODY"));
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
@@ -294,10 +293,7 @@
         //  previewing (which was touched)
         if (Codex.previewing) {
             var jumpto=getTarget(target);
-            if (!(jumpto)) jumpto=getParent(target,".codexpage");
-            if (jumpto) 
-                Codex.stopPreview("content_tapped/stop_preview",jumpto);
-            else Codex.stopPreview("content_tapped/stop_preview",true);
+            Codex.stopPreview("content_tapped/stop_preview",jumpto||true);
             fdjtUI.TapHold.clear();
             fdjt.UI.cancel(evt);
             return false;}
@@ -783,6 +779,12 @@
         var target=fdjtUI.T(evt);
         if (Codex.Trace.gestures)
             fdjtLog("slice_tapped %o: %o",evt,target);
+        if (Codex.previewing) {
+            // Because we're previewing, this slice is invisible, so the user really
+            //  meant to tap on the body underneath, so we stop previewing and jump there
+            // We might try to figure out exactly which element was tapped somehow
+            Codex.stopPreview("slice_tapped",true);
+            return;}
         if (getParent(target,".ellipsis")) {
             fdjtUI.Ellipsis.toggle(target);
             fdjtUI.cancel(evt);
@@ -1287,11 +1289,6 @@
 
     /* HUD button handling */
 
-    var mode_hud_map={
-        "overtoc": "CODEXTOC",
-        "searching": "CODEXSEARCH",
-        "allglosses": "CODEXSOURCES"};
-    
     function hudmodebutton(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -1303,8 +1300,6 @@
         if (reticle.live) reticle.flash();
         fdjtUI.cancel(evt);
         if (!(mode)) return;
-        var hudid=((mode)&&(mode_hud_map[mode]));
-        var hud=fdjtID(hudid);
         if ((evt.type==='click')||
             ((evt.type==='tap')&&((Codex.hudup)||(!(Codex.touch))))||
             (evt.type==='release')) {
@@ -1390,8 +1385,13 @@
         else if ((hasParent(target,Codex.HUD))||
                  (hasParent(target,Codex.uiclasses)))
             return;
+        else if (Codex.previewing) {
+            Codex.stopPreview("default_tap",Codex.previewing);
+            cancel(evt);
+            return;}
         else if (((Codex.hudup)||(Codex.mode))) {
-            Codex.setMode(false);}
+            Codex.setMode(false);
+            cancel(evt);}
         else {
             var cx=evt.clientX, cy=evt.clientY;
             var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight();
@@ -1528,6 +1528,9 @@
             Codex.page_turner=false;}
         if (Codex.previewing) {
             Codex.stopPreview("right_margin_tap",true);
+            if (Codex.hudup) {
+                Codex.setHUD(false);
+                Codex.setMode(false);}
             cancel(evt);
             return;}
         if ((Codex.hudup)&&
@@ -1597,6 +1600,9 @@
             Codex.page_turner=false;}
         if (Codex.previewing) {
             Codex.stopPreview("left_margin_tap",true);
+            if (Codex.hudup) {
+                Codex.setHUD(false);
+                Codex.setMode(false);}
             cancel(evt);
             return;}
         if ((Codex.hudup)&&
@@ -1609,7 +1615,7 @@
         else backward(evt);
         cancel(evt);}
     function left_margin_hold(evt){
-        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (Codex.Trace.gestures) tracetouch("left_margin",evt);
         if ((Codex.hudup)&&
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan"))
@@ -1620,7 +1626,7 @@
         Codex.page_turner=setInterval(function(){backward();},800);
         cancel(evt);}
     function left_margin_release(evt){
-        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (Codex.Trace.gestures) tracetouch("left_margin",evt);
         if (Codex.page_turner) {
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;}
@@ -2318,6 +2324,7 @@
 
     /* Rules */
 
+    var noDefault=fdjt.UI.noDefault;
     var cancel=fdjtUI.cancel;
     
     function generic_cancel(evt){
@@ -2404,6 +2411,7 @@
 
     function showcover_handler(evt){
         evt=evt||event;
+        if ((Codex.touch)&&(!(Codex.hudup))) return;
         if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
             fdjtID("CODEXCOVER").className="bookcover";
         Codex.showCover();
@@ -2545,8 +2553,8 @@
             keyup: onkeyup,
             keydown: onkeydown,
             keypress: onkeypress,
-            touchstart: default_tap,
-            touchmove: fdjt.UI.noDefault,
+            // touchstart: default_tap,
+            // touchmove: noDefault,
             touchend: stopPageTurner,
             focus: codexfocus,
             blur: codexblur},
@@ -2555,6 +2563,8 @@
                    slip: content_slipped,
                    release: content_released,
                    swipe: content_swiped,
+                   touchstart: default_tap,
+                   touchmove: noDefault,
                    click: content_click},
          hud: {click: handleXTarget, tap: handleXTarget},
          toc: {tap: toc_tapped,hold: toc_held,
@@ -2565,7 +2575,7 @@
                    hold: slice_held,
                    release: slice_released,
                    slip: slice_slipped},
-         "#CODEXHEART": {touchstart: heart_touched},
+         // "#CODEXHEART": {touchstart: heart_touched},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHEAD": {tap: raiseHUD},
          "#CODEXSHOWCOVER": {tap: showcover_handler},

@@ -247,7 +247,10 @@ div#CODEXHUD #CODEXHEART div.hudpanel {
     background-color: transparent;
     padding-bottom: 20px;}
 
-div#CODEXHUD #CODEXHEART { overflow: auto;}
+div#CODEXHUD #CODEXHEART {
+    overflow: auto; -webkit-overflow-scrolling: touch;}
+div#CODEXHUD #CODEXHEART > * {
+    overflow: visible;}
 div#CODEXHUD #CODEXHEART div.hudpanel h1 {
     margin-top: 3px; margin-bottom: 1ex;}
 
@@ -281,8 +284,6 @@ div#CODEXHUD.searchresults div#CODEXHEART,
 div#CODEXHUD.glossaddtag div#CODEXHEART,
 div#CODEXHUD.glossaddoutlet div#CODEXHEART {
     top: 37px; margin-top: 0px;}
-
-div#CODEXHUD div#CODEXHEART .hudpanel { overflow: auto;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,

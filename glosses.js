@@ -208,7 +208,7 @@
         if (Codex.syncstamp)
             getInput(form,"SYNC").value=(Codex.syncstamp+1);
         var menu=getChild(form,".addglossmenu");
-        fdjt.UI.TapHold(menu,Codex.touch,false,false,false,true);
+        fdjt.UI.TapHold(menu,{nodefault: true});
         var loc=getInput(form,"LOCATION");
         var loclen=getInput(form,"LOCLEN");
         var tagline_elt=getInput(form,"TAGLINE");
