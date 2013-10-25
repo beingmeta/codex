@@ -42,7 +42,7 @@ body.cxPREVIEW #CODEXHUD {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
-body.hudup.cxPREVIEW #CODEXHEARTHOLDER {
+body.hudup.cxPREVIEW #CODEXHEARTFRAME {
     background-color: transparent; border-color: transparent; opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -50,7 +50,7 @@ body.hudup.cxPREVIEW #CODEXHEARTHOLDER {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body.hudup.cxPREVIEW #CODEXHUD.openheart #CODEXHEARTHOLDER {
+body.hudup.cxPREVIEW #CODEXHUD.openheart #CODEXHEARTFRAME {
     background-color: transparent; border-color: transparent; opacity: 0.0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);

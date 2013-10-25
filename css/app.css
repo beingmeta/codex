@@ -829,9 +829,9 @@ div.startupmessage.running {
 /* Media rules */
 
 @media screen and (min-width: 300px) and (max-width: 500px) {
-    body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER  {
+    body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME  {
         top: 75px; bottom: 75px;}
-    #CODEXHEARTHOLDER  {
+    #CODEXHEARTFRAME  {
         left: 15px; right: 15px;}
     div#CODEXHUD div#CODEXHELP.hudpanel {
         left: 15px; right: 15px; top: 60px; bottom: 60px;}

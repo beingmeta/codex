@@ -767,14 +767,6 @@
                 (getParent(target,".codexcard")))||
             getChild(target,".codexcard");}
 
-    function heart_touched(evt){
-        var target=fdjtUI.T(evt);
-        if (fdjt.UI.isClickable(target)) return;
-        if (target===Codex.DOM.heart) {
-            cancel(evt);
-            Codex.setMode(false);}
-        else fdjt.UI.cancel(evt);}
-
     function slice_tapped(evt){
         var target=fdjtUI.T(evt);
         if (Codex.Trace.gestures)

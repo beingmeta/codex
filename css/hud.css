@@ -192,7 +192,7 @@ body #CODEXHUD.tocscan #CODEXSCANNER.expanded,
 body #CODEXHUD.scanning #CODEXSCANNER.expanded {
     height: auto; max-height: 50%; overflow: visible;}
 
-#CODEXHEARTHOLDER {
+#CODEXHEARTFRAME {
     position: absolute;
     top: 50%; bottom: 50%; height: 0px;
     left: 50px; right: 50px;
@@ -206,10 +206,10 @@ body #CODEXHUD.scanning #CODEXSCANNER.expanded {
     border-radius: 1em; -o-border-radius: 1em;
     -moz-border-radius: 1em; -webkit-border-radius: 1em;
     display: none;}
-#CODEXHEARTHOLDER {
+#CODEXHEARTFRAME {
     border-color: rgba(70, 130, 180, 0.54);
     background-color: steelblue;}
-body.hudup #CODEXHEARTHOLDER {
+body.hudup #CODEXHEARTFRAME {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
@@ -218,7 +218,7 @@ body.hudup #CODEXHEARTHOLDER {
     -moz-opacity: 1;
     -o-opacity: 1;}
 
-body.cxANIMATE #CODEXHUD #CODEXHEARTHOLDER {
+body.cxANIMATE #CODEXHUD #CODEXHEARTFRAME {
     transition-property: height,top,bottom;
     transition-duration: 1.5s;
     -o-transition-property: height,top,bottom;
@@ -228,14 +228,14 @@ body.cxANIMATE #CODEXHUD #CODEXHEARTHOLDER {
     -webkit-transition-property: height,top,bottom;
     -webkit-transition-duration: 1.5s;}
 
-#CODEXHEARTHOLDER #CODEXRIBBON {
+#CODEXHEARTFRAME #CODEXRIBBON {
     border-radius: 0px; -o-border-radius: 0px;
     -moz-border-radius: 0px; -webkit-border-radius: 0px;
     border-top-left-radius: 1em; -o-border-top-left-radius: 1em;
     -moz-border-radius-topleft: 1em; -webkit-border-top-left-radius: 1em;
     border-top-right-radius: 1em; -o-border-top-right-radius: 1em;
     -moz-border-radius-topright: 1em; -webkit-border-top-right-radius: 1em;}
-#CODEXHEARTHOLDER #CODEXHEART {}
+#CODEXHEARTFRAME #CODEXHEART {}
 
 #CODEXHUD #CODEXRIBBON {
     position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;
@@ -254,13 +254,13 @@ div#CODEXHUD #CODEXHEART > * {
 div#CODEXHUD #CODEXHEART div.hudpanel h1 {
     margin-top: 3px; margin-bottom: 1ex;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
+body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTFRAME {
     border: solid transparent 3px;
     z-index: 100; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -327,19 +327,19 @@ body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART #CODEXHEARTCONTENT {
 
 #CODEXHEART div.hudpanel > h1:first-child { margin-top: 0px;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEARTHOLDER {
+body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME {
     height: auto; top: 100px; bottom: 100px;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
-body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glosstagging #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTHOLDER,
-body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTHOLDER {
+body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME {
     top: 150px; bottom: 50px; height: auto;}
-body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTHOLDER {
+body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTFRAME {
     top: 150px; height: auto; min-height: 100px;}
 
 div#CODEXHUD #CODEXFOOT {
