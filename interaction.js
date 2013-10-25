@@ -286,8 +286,8 @@
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
         if (Codex.Trace.gestures)
-            fdjtLog("content_tapped %o s=%d,%d c=%d,%d dt=%o now=%o p=%o",
-                    evt,sX,sY,cX,cY,now,Codex.previewing);
+            fdjtLog("content_tapped %o c=%d,%d now=%o p=%o",
+                    evt,cX,cY,now,Codex.previewing);
         
         // If we're previewing, stop it and go to the page we're
         //  previewing (which was touched)
