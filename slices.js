@@ -584,9 +584,10 @@ Codex.Slice=(function () {
             else named_slices[container.id]=container;}
         else if ((container.nodeType)&&(container.nodeType===1))  {}
         else return false;
+        var settings=((Codex.iscroll)?({override: true,bubble: true}):({}));
         if (container.id)
-            Codex.TapHold[container.id]=new fdjtUI.TapHold(container);
-        else fdjtUI.TapHold(container);
+            Codex.TapHold[container.id]=new fdjtUI.TapHold(container,settings);
+        else fdjtUI.TapHold(container,settings);
         Codex.UI.addHandlers(container,'summary');
         this.container=container; this.cards=[];
         if (sortfn) this.sortfn=sortfn;
