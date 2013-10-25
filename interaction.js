@@ -147,7 +147,7 @@
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             // Last arg is docancel, since we don't need to worry about conflicts
             //   with scrolling
-            Codex.TapHold.body=fdjtUI.TapHold(fdjt.ID("CODEXBODY"));
+            Codex.TapHold.body=fdjtUI.TapHold(fdjt.ID("CODEXBODY"),{override: true});
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
@@ -2554,7 +2554,6 @@
                    slip: content_slipped,
                    release: content_released,
                    swipe: content_swiped,
-                   touchstart: default_tap,
                    touchmove: noDefault,
                    click: content_click},
          hud: {click: handleXTarget, tap: handleXTarget},

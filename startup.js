@@ -960,7 +960,7 @@ Codex.Startup=
                 isTouchPad || fdjtState.getQuery("touch");
 
             // Don't bubble from TapHold regions (by default)
-            fdjt.TapHold.default_opts.nobubble=true;
+            fdjt.TapHold.default_opts.bubble=false;
             
             if (isTouch) {
                 fdjtDOM.addClass(body,"cxTOUCH");
@@ -1712,8 +1712,8 @@ Codex.Startup=
                             scanleft,scanright,
                             pageleft,pageright);
 
-            Codex.TapHold.pageleft=new fdjt.TapHold(pageleft);
-            Codex.TapHold.pageright=new fdjt.TapHold(pageright);
+            Codex.TapHold.pageleft=new fdjt.TapHold(pageleft,{override:true});
+            Codex.TapHold.pageright=new fdjt.TapHold(pageright,{override:true});
             for (var pagelt in [pageright,pageleft]) { /* pagehead,pagefoot  */
                 fdjtDOM.addListeners(
                     pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
