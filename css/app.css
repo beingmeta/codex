@@ -665,11 +665,11 @@ body.cxANIMATE.cxPREVIEW div.codexpage {
     -moz-transition-property: none !important;
     -webkit-transition-property: none !important;}
 
-body.cxANIMATE div.codexpage {
-    transition-duration: 0.25s;
-    -o-transition-duration: 0.25s;
-    -moz-transition-duration: 0.25s;
-    -webkit-transition-duration: 0.25s;}
+body.cxANIMATE div#CODEXPAGE div.codexpage {
+    transition-duration: 0.15s;
+    -o-transition-duration: 0.15s;
+    -moz-transition-duration: 0.15s;
+    -webkit-transition-duration: 0.15s;}
 
 body.cxANIMATE div.codexpage {
     transition-property: opacity,transform;
