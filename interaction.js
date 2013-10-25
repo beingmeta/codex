@@ -1305,6 +1305,8 @@
                      (fdjtDOM.hasClass(Codex.HUD,Codex.searchModes)))
                 Codex.setMode(false,true);
             else Codex.setMode(mode);}
+        else if (evt.type==="tap")
+            Codex.setHUD(true);
         else {}}
     Codex.UI.hudmodebutton=hudmodebutton;
 
