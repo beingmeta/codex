@@ -68,6 +68,8 @@ var Codex={
     keepdata: false,
     // Dominant interaction mode
     mouse: true,touch: false,kbd: false,
+    // This is a table for iScroll scrollers, when used
+    scrollers: {},
     // Restrictions on excerpts
     min_excerpt: 3, max_excerpt: false,
     // These are the UUIDs of locally stored glosses which are queued

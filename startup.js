@@ -1239,6 +1239,15 @@ Codex.Startup=
                     console_eval();
                     if (evt.shiftKey) input_console.value="";}}}
 
+        function setupScroller(div){
+            var c=fdjtDOM("div");
+            var children=div.childNodes; var cnodes=[];
+            var i=0, lim=children.length; while (i<lim)
+                cnodes.push(children[i++]);
+            i=0; while (i<lim) c.appendChild(cnodes[i++]);
+            div.appendChild(c);
+            return new iScroll(div);}
+
         // Cover setup
         function coverSetup(){
             var frame=fdjtID("CODEXFRAME");
@@ -1399,8 +1408,15 @@ Codex.Startup=
             else if (fdjtID("CODEXABOUTBOOKHOLDER")) 
                 fdjtDOM.replace(fdjtID("CODEXABOUTBOOKHOLDER"),about);
             else cover.appendChild(about);
+            if (Codex.iscroll) {}
             
             fdjtDOM.addListener(cover,"click",cover_clicked);
+
+            if (Codex.iscroll) {
+                Codex.scrollers.about=setupScroller(about);
+                Codex.scrollers.help=setupScroller(help);
+                Codex.scrollers.console=setupScroller(console);
+                Codex.scrollers.settings=setupScroller(settings);}
 
             Codex.showCover();
 
