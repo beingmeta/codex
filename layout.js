@@ -637,7 +637,7 @@ Codex.Paginate=
         
         function GoToPage(spec,caller,savestate,skiphist){
             if (typeof savestate === 'undefined') savestate=true;
-            if (Codex.previewing) stopPreview("GoToPage",false);
+            if (Codex.previewing) Codex.stopPreview("GoToPage",false);
             dropClass(document.body,"codexhelp");
             var page=(Codex.layout)&&
                 (Codex.layout.getPage(spec)||Codex.layout.getPage(1));
@@ -695,7 +695,7 @@ Codex.Paginate=
         /** Previewing **/
 
         var previewing=false;
-        function startPreview(spec,caller){
+        function startPagePreview(spec,caller){
             var page=((spec.nodeType)&&(getParent(spec,".codexpage")))||
                 Codex.layout.getPage(spec)||
                 Codex.layout.getPage(1);
@@ -715,7 +715,8 @@ Codex.Paginate=
             Codex.previewing=previewing=page;
             addClass(document.body,"cxPREVIEW");
             updatePageDisplay(pagenum,pageloc,"preview");}
-        function stopPreview(caller,target){
+        Codex.startPagePreview=startPagePreview;
+        function stopPagePreview(caller,target){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"),10);
             if ((Codex.Trace.flips)||(Codex.Trace.gestures))
                 fdjtLog("stopPagePreview/%s from %o to %o (%d)",
@@ -743,24 +744,23 @@ Codex.Paginate=
                                   "current");}
             else updatePageDisplay(pagenum,Codex.location,"current");
             if (typeof newpage === "number") Codex.GoToPage(newpage);}
-        Codex.startPagePreview=startPreview;
-        Codex.stopPagePreview=stopPreview;
-
-        function getPage(arg){
-            if (!(Codex.layout)) return -1;
-            var page=Codex.layout.getPage(arg)||Codex.layout.getPage(1);
-            return parseInt(page.getAttribute("data-pagenum"),10);}
-        Codex.getPage=getPage;
+        Codex.stopPagePreview=stopPagePreview;
         
-        function displaySync(){
-            if ((Codex.pagecount)&&(Codex.curpage))
-                Codex.GoToPage(Codex.curpage,"displaySync");}
-        Codex.displaySync=displaySync;
+            function getPage(arg){
+                if (!(Codex.layout)) return -1;
+                var page=Codex.layout.getPage(arg)||Codex.layout.getPage(1);
+                return parseInt(page.getAttribute("data-pagenum"),10);}
+            Codex.getPage=getPage;
+            
+            function displaySync(){
+                if ((Codex.pagecount)&&(Codex.curpage))
+                    Codex.GoToPage(Codex.curpage,"displaySync");}
+            Codex.displaySync=displaySync;
 
-        // We handle this ourselves
-        fdjt.UI.adjustFont.onresize=false;
+            // We handle this ourselves
+            fdjt.UI.adjustFont.onresize=false;
 
-        return Paginate;})();
+            return Paginate;})();
 
 /* Emacs local variables
    ;;;  Local variables: ***

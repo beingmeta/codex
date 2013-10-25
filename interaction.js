@@ -725,11 +725,11 @@
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
-            Codex.stopPreview("toc_released",false);}
+            Codex.stopPreview("toc_released");}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
         else {
-            Codex.stopPreview("toc_released",false);}
+            Codex.stopPreview("toc_released");}
         fdjtUI.cancel(evt);}
     function toc_slipped(evt){
         evt=evt||event;
@@ -757,7 +757,7 @@
             slip_timer=setTimeout(function(){
                 slip_timer=false;
                 if (Codex.Trace.gestures) fdjtLog("toc_slipped/timeout %o",evt);
-                Codex.stopPreview("toc_slipped",false);},
+                Codex.stopPreview("toc_slipped");},
                                   500);}}
 
     /* Slice handlers */
@@ -864,7 +864,7 @@
         var card=getCard(fdjtUI.T(evt||event));
         if (Codex.Trace.gestures) {
             fdjtLog("slice_released %o: %o, scanning=%o",evt,card);}
-        Codex.stopPreview("slice_released",false);}
+        Codex.stopPreview("slice_released");}
     function slice_slipped(evt){
         evt=evt||event;
         var rel=evt.relatedTarget||fdjtUI.T(evt);
@@ -874,7 +874,7 @@
                 slip_timer=false;
                 if (Codex.Trace.gestures)
                     fdjtLog("slice_slipped/timeout %o",evt);
-                Codex.stopPreview("slice_slipped",false);},
+                Codex.stopPreview("slice_slipped");},
                                   500);}}
 
 
@@ -952,7 +952,7 @@
         // fdjtLog("sbook_onkeydown %o",evt);
         if (evt.keyCode===27) { /* Escape works anywhere */
             if (Codex.previewing) {
-                Codex.stopPreview("escape_key",false);
+                Codex.stopPreview("escape_key");
                 fdjtUI.TapHold.clear();}
             if (Codex.mode==="addgloss") Codex.cancelGloss();
             if (Codex.mode) {
@@ -967,8 +967,7 @@
             return;
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
-            var preview_target=Codex.previewTarget||Codex.previewing;
-            Codex.stopPreview("onkeydown",preview_target);
+            Codex.stopPreview("onkeydown",true);
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
@@ -1378,7 +1377,7 @@
                  (hasParent(target,Codex.uiclasses)))
             return;
         else if (Codex.previewing) {
-            Codex.stopPreview("default_tap",Codex.previewing);
+            Codex.stopPreview("default_tap",true);
             cancel(evt);
             return;}
         else if (((Codex.hudup)||(Codex.mode))) {
@@ -1965,7 +1964,7 @@
              ("Release to return to page %d, tap a key to settle here (page %d)")),
             Codex.curpage,gopage);
         previewing_page=gopage;
-        Codex.startPreview(gopage,"pageinfo_span_hold");}
+        Codex.startPreview("CODEXPAGE"+gopage,"pageinfo_span_hold");}
     function pageinfo_tap(evt){
         var pageinfo=fdjtID("CODEXPAGEINFO");
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))

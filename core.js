@@ -930,7 +930,7 @@ var Codex={
     Codex.resolveLocation=resolveLocation;
 
     // This moves within the document in a persistent way
-    function CodexGoTo(arg,caller,istarget,savestate,skiphist){
+    function codexGoTo(arg,caller,istarget,savestate,skiphist){
         if (typeof istarget === 'undefined') istarget=true;
         if (typeof savestate === 'undefined') savestate=true;
         var target, location, locinfo;
@@ -947,7 +947,7 @@ var Codex={
             locinfo=getLocInfo(arg);
             location=locinfo.start;}
         else {
-            fdjtLog.warn("Bad CodexGoTo %o",arg);
+            fdjtLog.warn("Bad codexGoTo %o",arg);
             return;}
         if (istarget.nodeType) target=istarget;
         else if ((typeof istarget === "string")&&(fdjtID(istarget)))
@@ -994,7 +994,7 @@ var Codex={
                              npages: Codex.pagecount});
         else {}
         if (page)
-            Codex.GoToPage(target,caller||"CodexGoTo",false);
+            Codex.GoToPage(target,caller||"codexGoTo",false);
         else {
             if (Codex.previewing)
                 Codex.stopPreview(((caller)?("goto/"+caller):("goto")),target);
@@ -1003,7 +1003,7 @@ var Codex={
             if (use_top<0) use_top=0;
             window.scrollTo(0,use_top);}
         Codex.location=location;}
-    Codex.GoTo=CodexGoTo;
+    Codex.GoTo=codexGoTo;
 
     function anchorFn(evt){
         var target=fdjtUI.T(evt);
@@ -1031,67 +1031,78 @@ var Codex={
     Codex.ScanTo=CodexScanTo;
 
     // Preview functions
-    var oldscroll=false;
-    function CodexStartPreview(spec,caller){
-        var target=((spec.nodeType)?(spec):(fdjtID(spec)));
-        if (Codex.Trace.flips)
-            fdjtLog("startPreview %o (%s)",target,caller);
-        if (Codex.layout instanceof fdjt.CodexLayout) 
-            Codex.startPagePreview(spec,caller);
-        else {
-            // This is the scrolling-based version
-            var yoff=window.scrollTop||0;
+    var oldscroll=false, preview_elt=false;
+    function scrollPreview(elt,caller){
+        var xoff=window.scrollLeft||0, yoff=window.scrollTop||0;
+        if (elt) {
+            if (elt.frag) elt=elt.frag;
+            if (typeof elt==="string") elt=fdjtID(elt);
+            if (!(elt)) return;
+            else preview_elt=elt;
             if (!(oldscroll)) oldscroll={x: 0,y: yoff};
-            var offinfo=fdjtDOM.getGeometry(target,Codex.content);
+            var offinfo=fdjtDOM.getGeometry(elt,Codex.content);
             if (Codex.Trace.flips)
-                fdjtLog("startPreview/%s to %d for %o",
-                        caller||"nocaller",offinfo.top-100,spec);
+                fdjtLog("startScrollPreview/%s to %d for %o",
+                        caller||"nocaller",offinfo.top-100,elt);
             // Codex.content.style.top=(-offinfo.top)+"px";
             var use_top=offinfo.top-((fdjtDOM.viewHeight()-50)/2);
             if (use_top<0) use_top=0;
-            window.scrollTo(0,use_top);
-            Codex.previewing=target;}
-        if (Codex.previewTarget) {
-            var drop=Codex.getDups(Codex.previewTarget);
-            dropClass(drop,"codexpreviewtarget");}
-        Codex.previewTarget=target;
+            window.scrollTo(0,use_top);}
+        else if (oldscroll) {
+            if (Codex.Trace.flips)
+                fdjtLog("stopScrollPreview/%s to %j from %d,%d(%o)",
+                        caller||"nocaller",oldscroll,xoff,yoff,
+                        preview_elt);
+            preview_elt=false;
+            window.scrollTo(oldscroll.x,oldscroll.y);
+            oldscroll=false;}
+        else {
+            if (Codex.Trace.flips)
+                fdjtLog("stopScrollPreview/%s to %j from %d,%d(%o)",
+                        caller||"nocaller",oldscroll,xoff,yoff,
+                        preview_elt);
+            preview_elt=false; oldscroll=false;}}
+    
+    function clearPreview(){
+        var current=fdjtDOM.$(".codexpreviewtarget");
+        var i=0, lim=current.length; while (i<lim) {
+            var p=current[i++];
+            dropClass(p,"codexpreviewtarget");
+            Codex.clearHighlights(p);}}
+
+    function startPreview(spec,caller){
+        var target=((spec.nodeType)?(spec):(fdjtID(spec)));
+        if (Codex.Trace.flips)
+            fdjtLog("startPreview %o (%s)",target,caller);
+        if (target===Codex.previewing) {}
+        else if (Codex.layout instanceof fdjt.CodexLayout) {
+            var dups=((getTarget(target))&&(Codex.getDups(target)));
+            Codex.startPagePreview(target,caller);
+            if (dups) addClass(dups,"codexpreviewtarget");}
+        else {
+            scrollPreview(target,caller);
+            addClass(target,"codexpreviewtarget");}
+        Codex.previewing=target;
         addClass(document.body,"cxPREVIEW");
-        var dups=Codex.getDups(target);
-        addClass(dups,"codexpreviewtarget");
         return target;}
-    Codex.startPreview=CodexStartPreview;
-    function CodexStopPreview(caller,target){
-        if ((target)&&(!(target.nodeType))) {
-            target=Codex.previewTarget||Codex.previewing;
-            if (!(target)) {
-                fdjtLog("Can't get target to go to");}
-            if (Codex.Trace.gestures)
-                fdjtLog("StopPreview/%s staying at %o",target);}
-        if (Codex.bypage) 
-            Codex.stopPagePreview(caller,target);
-        else if (!(target)) {
-            if ((Codex.Trace.flips)&&(oldscroll))
-                fdjtLog("stopPreview/%s returning to %d",
-                        caller||"nocaller",oldscroll.x,oldscroll.y);
-            else if (Codex.Trace.flips)
-                fdjtLog("stopPreview/%s, no saved position",
-                        caller||"nocaller");
-            // if (oldscroll) Codex.content.style.top=oldscroll.y+"px";
-            window.scrollTo(0,oldscroll.y);}
-        dropClass(document.body,"cxPREVIEW");
+    Codex.startPreview=startPreview;
+    function stopPreview(caller,jumpto){
+        clearPreview();
+        if ((jumpto)&&(!(jumpto.nodeType)))
+            jumpto=Codex.previewing;
+        if (Codex.Trace.flips)
+            fdjtLog("stopPreview/%s jump to %o",caller||"nocaller",jumpto);
+        if (Codex.layout instanceof fdjt.CodexLayout) {
+            Codex.stopPagePreview(caller,jumpto);}
+        else if (!(jumpto)) scrollPreview(false,caller);
+        else if (jumpto===Codex.previewing) {
+            oldscroll=false; scrollPreview(false,caller);}
+        else scrollPreview(false,caller);
         Codex.previewing=false;
-        if (Codex.previewTarget) {
-            var targets=getDups(Codex.previewTarget);
-            dropClass(targets,"codexpreviewtarget");
-            dropClass(targets,"codexhighlightpassage");
-            Codex.clearHighlights(targets);}
-        oldscroll=false;
-        if (!(target)) Codex.previewTarget=false;
-        else if (target===true) {
-            var t=Codex.previewTarget; Codex.previewTarget=false;
-            Codex.GoTo(t);}
-        else Codex.GoTo(target);}
-    Codex.stopPreview=CodexStopPreview;
+        dropClass(document.body,"cxPREVIEW");
+        if (jumpto) codexGoTo(jumpto);
+        return false;}
+    Codex.stopPreview=stopPreview;
 
     function getLevel(elt){
         if (elt.toclevel) {
