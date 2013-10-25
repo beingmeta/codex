@@ -164,7 +164,6 @@ div.idhead div {
     -moz-opacity: 0.75;
     -o-opacity: 0.75;}
 
-
 div.codexslice div.codexcard div.tochead { display: none; }
 div.codexslice div.codexcard div.idhead { display: none; }
 div.codexslice div.codexcard.slicenewhead div.tochead { display: block; }
@@ -176,6 +175,15 @@ div#CODEXSCANNER div.codexcard div.codexcardbody {
 div#CODEXSCANNER div.codexcard div.idhead {
     border-bottom: 0px;}
 
+body.cxISCROLL div.codexslice {
+    transition-property: transform;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    transition-duration: 0.3s; 
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -moz-duration: 0.3s;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

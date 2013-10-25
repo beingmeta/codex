@@ -248,7 +248,8 @@ div#CODEXHUD #CODEXHEART div.hudpanel {
     padding-bottom: 20px;}
 
 div#CODEXHUD #CODEXHEART {
-    overflow: auto; -webkit-overflow-scrolling: touch;}
+    overflow: auto; -webkit-overflow-scrolling: touch;
+    background-color: ivory;}
 div#CODEXHUD #CODEXHEART > * {
     overflow: visible;}
 div#CODEXHUD #CODEXHEART div.hudpanel h1 {
@@ -357,7 +358,7 @@ div#CODEXHUD.overtoc div.hudpanel, div#CODEXHUD.tocscan div.hudpanel {
 /* Being on top */
 div#CODEXHUD .hudpanel {
     position: absolute; left: 0px; right: 0px;
-    text-align: center; overflow: hidden;}
+    text-align: center; overflow: visible;}
 /* Being invisible */
 div#CODEXHUD .hudpanel {
     display: none; opacity: 0.001; 
