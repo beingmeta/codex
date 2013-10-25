@@ -607,7 +607,12 @@ Codex.setMode=
                     if (loc) loc=parseInt(loc,10);
                     if (loc>curloc) break;}
                 if (i>=lim) card=lastcard=false;
-                if ((lastcard)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {
+                if ((lastcard)&&(lasthead)&&(Codex.iscroll)) {
+                    Codex.heartscroller.scrollToElement(lasthead,0);
+                    Codex.heartscroller.scrollToElement(lastcard,0);}
+                else if ((lastcard)&&(Codex.iscroll)) {
+                    Codex.heartscroller.scrollToElement(lastcard,0);}
+                else if ((lastcard)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {
                     lasthead.scrollIntoView();
                     lastcard.scrollIntoViewIfNeeded();}
                 else if ((lastcard)&&(lastcard.scrollIntoView))

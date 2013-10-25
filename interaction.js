@@ -2568,6 +2568,7 @@
                    release: slice_released,
                    slip: slice_slipped},
          // "#CODEXHEART": {touchstart: heart_touched},
+         // "#CODEXFRAME": {touchstart: noDefault,touchmove: noDefault,touchend: noDefault},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHEAD": {tap: raiseHUD},
          "#CODEXSHOWCOVER": {tap: showcover_handler},

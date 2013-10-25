@@ -548,16 +548,17 @@ Codex.Slice=(function () {
     /* Scrolling slices */
 
     function scrollGlosses(elt,slice,top){
-        var container=slice.container;
-        var cardinfo=slice.getCard(elt);
-        if (cardinfo) {
-            var scrollto=cardinfo.dom;
-            if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
-                if ((Codex.scrollers)&&(container.id)&&
-                    (Codex.scrollers[container.id])) {
-                    var scroller=Codex.scrollers[container.id];
-                    scroller.scrollToElement(scrollto);}
-                else scrollto.scrollIntoView(true);}}}
+        if (Codex.iscroll) {
+            var scroller=Codex.scrollers[elt.id]||
+                ((elt.parentNode)&&(Codex.scrollers[elt.parentNode.id]));
+            if (scroller) scroller.scrollToElement(elt,0);}
+        else {
+            var container=slice.container;
+            var cardinfo=slice.getCard(elt);
+            if (cardinfo) {
+                var scrollto=cardinfo.dom;
+                if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
+                    scrollto.scrollIntoView(true);}}}}
     Codex.UI.scrollGlosses=scrollGlosses;
     
     /* Results handlers */
