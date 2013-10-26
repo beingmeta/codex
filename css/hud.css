@@ -207,8 +207,9 @@ body #CODEXHUD.scanning #CODEXSCANNER.expanded {
     -moz-border-radius: 1em; -webkit-border-radius: 1em;
     display: none;}
 #CODEXHEARTFRAME {
-    border-color: rgba(70, 130, 180, 0.54);
-    background-color: steelblue;}
+    /* background-color: steelblue; */
+    background-color: ivory;
+    border-color: rgba(70, 130, 180, 0.54);}
 body.hudup #CODEXHEARTFRAME {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -248,8 +249,9 @@ div#CODEXHUD #CODEXHEART div.hudpanel {
     padding-bottom: 20px;}
 
 div#CODEXHUD #CODEXHEART {
-    overflow: auto; -webkit-overflow-scrolling: touch; zindex: 0;
-    background-color: ivory;}
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: ivory; z-index: 0px;}
 div#CODEXHUD #CODEXHEART > * {
     overflow: visible;}
 div#CODEXHUD #CODEXHEART div.hudpanel h1 {
@@ -262,7 +264,7 @@ body #CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTFRAME {
-    border: solid transparent 3px;
+    border: solid rgba(0,0,255,0.52) 3px;
     z-index: 100; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
