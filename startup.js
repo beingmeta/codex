@@ -94,6 +94,10 @@ Codex.Startup=
                 fdjtLog.apply(null,arguments);}
         Codex.startupMessage=startupMessage;
 
+        /* Save local */
+
+        var saveLocal=Codex.saveLocal;
+
         /* Configuration information */
 
         var config_handlers={};
@@ -207,6 +211,7 @@ Codex.Startup=
                     req.withCredentials=true;
                     req.send(); }
                 catch (ex) {}}
+            fdjtDOM.dropClass("CODEXSETTINGS","changed");
             saved_config=saved;}
         Codex.saveConfig=saveConfig;
 
@@ -237,6 +242,8 @@ Codex.Startup=
             Codex.postconfig=false;
             var i=0; var lim=dopost.length;
             while (i<lim) dopost[i++]();
+            
+            fdjtDOM.addClass("CODEXSETTINGS","changed");
             
             var devicename=current_config.devicename;
             if ((devicename)&&(!(fdjtString.isEmpty(devicename))))
@@ -464,12 +471,11 @@ Codex.Startup=
                         var props=saveprops, i=0, lim=props.length;
                         while (i<lim) {
                             var prop=saveprops[i++];
-                            if (Codex[prop]) setLocal(
+                            if (Codex[prop]) saveLocal(
                                 "codex."+prop+"("+refuri+")",Codex[prop],true);}
                         Codex.glossdb.save(true);
                         Codex.sourcedb.save(true);
-                        Codex.queued=fdjtState.getLocal(
-                            "queued("+Codex.refuri+")",true)||[];}
+                        Codex.queued=getLocal("queued("+Codex.refuri+")",true)||[];}
                     else if (!(value)) {
                         clearOffline();
                         fdjtState.dropLocal("queued("+Codex.refuri+")");
@@ -511,7 +517,7 @@ Codex.Startup=
             if ((cur)&&(cur>val)) return cur;
             Codex.sync=val;
             if (Codex.keepdata)
-                setLocal("codex.sync("+Codex.refuri+")",val);
+                saveLocal("codex.sync("+Codex.refuri+")",val);
             return val;};
 
         function userSetup(){
@@ -811,7 +817,7 @@ Codex.Startup=
                 if ((msg.slice(0,2)==="#{")&&
                     ((uuid_end=msg.indexOf('}'))>0)) {
                     msgid="MSG_"+msg.slice(2,uuid_end);
-                    if (fdjtState.getLocal(msgid)) {}
+                    if (getLocal(msgid)) {}
                     else {
                         fdjtState.setLocal(msgid,"seen");
                         fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
@@ -820,7 +826,7 @@ Codex.Startup=
                 if ((msg.slice(0,2)==="#{")&&
                     ((uuid_end=msg.indexOf('}'))>0)) {
                     msgid="MSG_"+msg.slice(2,uuid_end);
-                    if (fdjtState.getLocal(msgid)) {}
+                    if (getLocal(msgid)) {}
                     else {
                         fdjtState.setLocal(msgid,"seen");
                         fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
@@ -833,8 +839,7 @@ Codex.Startup=
                 fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}
             if ((!(mode))&&(location.hash)) Codex.hideCover();
             else if ((!(mode))&&(Codex.user)) {
-                var opened=fdjtState.getLocal(
-                    "Codex.opened("+Codex.refuri+")",true);
+                var opened=getLocal("Codex.opened("+Codex.refuri+")",true);
                 if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
                     Codex.hideCover();}}
         
@@ -948,18 +953,16 @@ Codex.Startup=
                 Codex.mycopyid=getMeta("SBOOKS.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
                     false;}
-            if (Codex.keepdata) setLocal("codex.refuris",refuris,true);}
-
-        var getMatch=fdjtString.getMatch;
+            if (Codex.keepdata) saveLocal("codex.refuris",refuris,true);}
 
         function deviceSetup(){
             var useragent=navigator.userAgent;
-            var appversion=navigator.appVersion;
             var device=fdjt.device;
             var body=document.body;
 
-            var istouch=device.touch||fdjtState.getQuery("touch");
-
+            if ((!(device.touch))&&(fdjtState.getQuery("touch")))
+                device.touch=fdjtState.getQuery("touch");
+            
             // Don't bubble from TapHold regions (by default)
             fdjt.TapHold.default_opts.bubble=false;
             
@@ -1066,10 +1069,8 @@ Codex.Startup=
             if (Codex.Trace.startup)
                 fdjtLog("initOffline userinfo=%j",userinfo);
             // Should these really be refs in sourcedb?
-            var outlets=Codex.outlets=
-                getLocal("codex.outlets("+refuri+")",true)||[];
-            var overlays=Codex.overlays=
-                getLocal("codex.overlays("+refuri+")",true)||[];
+            var outlets=Codex.outlets=getLocal("codex.outlets("+refuri+")",true)||[];
+            var overlays=Codex.overlays=getLocal("codex.overlays("+refuri+")",true)||[];
             if (userinfo) setUser(userinfo,outlets,overlays,sync);
             if (nodeid) setNodeID(nodeid);}
 
@@ -1781,9 +1782,8 @@ Codex.Startup=
                             info.outlets,info.overlays,
                             info.sync);
                 else {
-                    if (fdjtState.getLocal("queued("+Codex.refuri+")"))
-                        Codex.glossdb.load(
-                            fdjtState.getLocal("queued("+Codex.refuri+")",true));
+                    if (getLocal("queued("+Codex.refuri+")"))
+                        Codex.glossdb.load(getLocal("queued("+Codex.refuri+")",true));
                     fdjtID("CODEXCOVER").className="bookcover";
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
@@ -1927,8 +1927,7 @@ Codex.Startup=
                 fdjtLog.warn(
                     "Cached user information is newer (%o) than loaded (%o)",
                     cursync,sync);}
-            if ((navigator.onLine)&&
-                (fdjtState.getLocal("queued("+Codex.refuri+")")))
+            if ((navigator.onLine)&&(getLocal("queued("+Codex.refuri+")")))
                 Codex.writeQueuedGlosses();
             Codex.user=Codex.sourcedb.Import(
                 userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
@@ -2072,7 +2071,7 @@ Codex.Startup=
                         RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
                     if (persist) ref.save();
                     Codex[name]=ref._id;
-                    if (persist) setLocal(
+                    if (persist) saveLocal(
                         "codex."+name+"("+refuri+")",ref._id,true);}}}
 
         function initGlosses(glosses,etc){
@@ -2489,26 +2488,30 @@ Codex.Startup=
         
         /* Clearing offline data */
 
-        function clearOffline(){
+        function clearOffline(refuri){
             var dropLocal=fdjtState.dropLocal;
-            Codex.sync=false;
-            dropLocal("codex.user");
-            dropLocal("codex.sync("+Codex.refuri+")");
-            dropLocal("codex.sourceid("+Codex.refuri+")");
-            dropLocal("codex.sources("+Codex.refuri+")");
-            dropLocal("codex.outlets("+Codex.refuri+")");
-            dropLocal("codex.overlays("+Codex.refuri+")");
-            dropLocal("codex.state("+Codex.refuri+")");
-            dropLocal("codex.etc("+Codex.refuri+")");
-            Codex.sourcedb.clearOffline(function(){
-                Codex.glossdb.clearOffline(function(){
-                    fdjtState.dropLocal("codex.sync("+Codex.refuri+")");});});
-            if (Codex.user) {
-                // For now, we clear layouts, because they might
-                //  contain personalized information
-                fdjt.CodexLayout.clearLayouts();}}
+            if (!(refuri)) {
+                dropLocal("codex.user");
+                if (Codex.user) {
+                    // For now, we clear layouts, because they might
+                    //  contain personalized information
+                    fdjt.CodexLayout.clearLayouts();}
+                fdjtState.clearLocal();}
+            else {
+                if (typeof refuri !== "string") refuri=Codex.refuri;
+                Codex.sync=false;
+                dropLocal("codex.sync("+refuri+")");
+                dropLocal("codex.sourceid("+refuri+")");
+                dropLocal("codex.sources("+refuri+")");
+                dropLocal("codex.outlets("+refuri+")");
+                dropLocal("codex.overlays("+refuri+")");
+                dropLocal("codex.state("+refuri+")");
+                dropLocal("codex.etc("+refuri+")");
+                Codex.sourcedb.clearOffline(function(){
+                    Codex.glossdb.clearOffline(function(){
+                        fdjtState.dropLocal("codex.sync("+refuri+")");});});}}
         Codex.clearOffline=clearOffline;
-
+        
         /* Other setup */
         
         Codex.StartupHandler=function(){

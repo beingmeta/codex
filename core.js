@@ -148,10 +148,15 @@ var Codex={
     var dropClass=fdjtDOM.dropClass;
     var hasParent=fdjtDOM.hasParent;
 
-    var getLocal=fdjt.State.getLocal;
+    var getLocal=fdjtState.getLocal;
+    var setLocal=fdjtState.setLocal;
     
     Codex.tagweights=new ObjectMap();
 
+    function saveLocal(key,value){
+        if (Codex.keepdata) setLocal(key,value);}
+    Codex.saveLocal=saveLocal;
+    
     function initDB() {
         if (Codex.Trace.start>1) fdjtLog("Initializing DB");
         var refuri=(Codex.refuri||document.location.href);
@@ -804,7 +809,7 @@ var Codex={
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
         var href=window.location.href;
-        fdjtState.setLocal("codex.state("+uri+")",statestring);
+        saveLocal("codex.state("+uri+")",statestring);
         if ((frag)&&(href.indexOf('#')>=0)) href=href.slice(0,href.indexOf('#'));
         if ((!(skiphist))&&(window.history)&&(window.history.pushState)) {
             if (frag) {
@@ -845,7 +850,7 @@ var Codex={
             if (syncing) return;
             if (!(state)) {
                 var uri=Codex.docuri||Codex.refuri;
-                var statestring=fdjtState.getLocal("codex.state("+uri+")");
+                var statestring=getLocal("codex.state("+uri+")");
                 if (statestring) Codex.state=state=JSON.parse(statestring);
                 else state={};}
             if ((synced)&&
