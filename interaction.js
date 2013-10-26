@@ -1476,7 +1476,7 @@
     function clearOfflineAction(evt){
         evt=evt||event;
         fdjtUI.cancel(evt);
-        Codex.clearOffline();
+        Codex.clearOffline(true);
         // We change this here, so we don't save what's cached in
         //  memory now, but it doesn't change the saved setting (so we
         //  might still be persisting).
