@@ -537,6 +537,10 @@ Codex.setMode=
                 if (Codex.textinput) {
                     Codex.setFocus(false);}
                 document.body.focus();
+                if (Codex.scanning) {
+                    var dups=Codex.getDups(Codex.target);
+                    Codex.clearHighlights(dups);
+                    dropClass(dups,"codexhighlightpassage");}
                 dropClass(CodexHUD,"openheart");
                 dropClass(CodexHUD,"openhead");
                 dropClass(document.body,"dimmed");
@@ -650,19 +654,6 @@ Codex.setMode=
                     Codex.UI.scrollGlosses(Codex.scanning||Codex.point,Codex.query.listing);}
             else {}
             if (display_sync) Codex.displaySync();}
-
-        function fadeUpHUD(){
-            fdjtLog("Setting properties");
-            CodexHUD.style.opacity=0.001;
-            setTimeout(function(){
-                fdjtLog("Changing opacity");
-                CodexHUD.style.opacity=1.00;
-                setTimeout(function(){
-                    fdjtLog("Clearing setup");
-                    CodexHUD.style.opacity='';},
-                           1500);},
-                       1500);}
-        Codex.fadeUpHUD=fadeUpHUD;
 
         function updateScroller(elt){
             /* jshint newcap: false */

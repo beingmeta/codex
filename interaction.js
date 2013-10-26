@@ -596,10 +596,12 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (dx<-10) {
-                if (Codex.scanning) Codex.scanForward(evt);
+                if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
+                    Codex.scanForward(evt);
                 else Codex.Forward(evt);}
             else if (dx>10) {
-                if (Codex.scanning) Codex.scanBackward(evt);
+                if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
+                    Codex.scanBackward(evt);
                 else Codex.Backward(evt);}}
         else if (ady>(adx*2)) {
             // Vertical swipe
