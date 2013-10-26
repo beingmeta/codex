@@ -501,6 +501,8 @@ Codex.Startup=
             // Set up what the user sees during setup
             appSplash();
 
+            fdjtLog("Body: %s",document.body.className);
+
             if (Codex.Trace.startup) fdjtLog("Done with app setup");}
         
         Codex.setSync=function setSync(val){
@@ -994,9 +996,8 @@ Codex.Startup=
                 device.iscroll=true;}
             device.string=device.string+" "+
                 ((Codex.iscroll)?("iScroll"):("nativescroll"));
-            fdjtLog("Device: %s %dx%d ui=%s body=\"%s\"",
-                    device.string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
-                    Codex.ui,body.className);}
+            fdjtLog("Device: %s/%dx%d %s",
+                    Codex.ui,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),device.string);}
 
         function bookSetup(){
             if (Codex.bookinfo) return;
