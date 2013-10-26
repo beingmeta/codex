@@ -248,7 +248,7 @@ div#CODEXHUD #CODEXHEART div.hudpanel {
     padding-bottom: 20px;}
 
 div#CODEXHUD #CODEXHEART {
-    overflow: auto; -webkit-overflow-scrolling: touch;
+    overflow: auto; -webkit-overflow-scrolling: touch; zindex: 0;
     background-color: ivory;}
 div#CODEXHUD #CODEXHEART > * {
     overflow: visible;}
