@@ -277,7 +277,10 @@ Codex.setMode=
 
         /* Various UI methods */
         function addGloss2UI(item){
-            if (document.getElementById(item.frag)) {
+            if (!(item.frag)) {
+                fdjtLog.warn("Warning: skipping gloss %o with no fragment identifier",
+                             item.uuid);}
+            else if (document.getElementById(item.frag)) {
                 var addGlossmark=Codex.UI.addGlossmark;
                 allglosses.addCards(item);
                 var nodes=Codex.getDups(item.frag);
