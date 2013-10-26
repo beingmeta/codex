@@ -515,7 +515,6 @@ Codex.Startup=
             return val;};
 
         function userSetup(){
-            if (Codex.Trace.startup) fdjtLog("Starting user setup");
             // Start JSONP call to get initial or updated glosses, etc
             var sync=Codex.sync=getLocal("codex.sync("+Codex.refuri+")",true);
 
@@ -568,7 +567,9 @@ Codex.Startup=
                 else if (Codex.user)
                     fdjtLog("Requesting glosses from %s for %s (%s)",
                             Codex.server,Codex.user._id,Codex.user.name);
-                else fdjtLog("Requesting glosses from %s",Codex.server);
+                else fdjtLog(
+                    "No user, requesting glosses and user info from %s",
+                    Codex.server);
                 updateInfo();
                 setInterval(updateInfo,300000);
                 return;}
@@ -1912,6 +1913,9 @@ Codex.Startup=
 
         function setUser(userinfo,outlets,overlays,sync){
             var keepdata=((Codex.keepdata)&&(navigator.onLine));
+            if (Codex.Trace.startup)
+                fdjtLog("Setting up user %s (%s)",userinfo._id,
+                       userinfo.name||userinfo.email);
             if (userinfo) {
                 fdjtDOM.dropClass(document.body,"cxNOUSER");
                 fdjtDOM.addClass(document.body,"cxUSER");}
