@@ -947,28 +947,34 @@ Codex.Startup=
                     false;}
             if (Codex.keepdata) setLocal("codex.refuris",refuris,true);}
 
+        var getMatch=fdjtString.getMatch;
+
         function deviceSetup(){
             var useragent=navigator.userAgent;
+            var appversion=navigator.appVersion;
+            var device=fdjt.device;
             var body=document.body;
 
-            var isiPhone = (/iphone/gi).test(navigator.appVersion);
-            var isTouchPad = (/Touchpad/gi).test(navigator.appVersion);
-            var isiPad = (/ipad/gi).test(navigator.appVersion);
-            var isAndroid = (/android/gi).test(navigator.appVersion);
-            var isWebKit = navigator.appVersion.search("WebKit")>=0;
-            var isTouch = isiPhone || isiPad || isAndroid ||
-                isTouchPad || fdjtState.getQuery("touch");
+            var istouch=device.touch||fdjtState.getQuery("touch");
 
             // Don't bubble from TapHold regions (by default)
             fdjt.TapHold.default_opts.bubble=false;
             
-            if (isTouch) {
+            if (device.touch) {
                 fdjtDOM.addClass(body,"cxTOUCH");
                 fdjt.TapHold.default_opts.touch=true;
                 Codex.ui="touch";
                 Codex.touch=true;
                 viewportSetup();}
-            if ((useragent.search("Safari/")>0)&&
+            if ((device.android)&&(device.android>=3)) {
+                default_config.keyboardhelp=false;
+                Codex.updatehash=false;
+                Codex.iscroll=false;}
+            else if (device.android) {
+                default_config.keyboardhelp=false;
+                Codex.updatehash=false;
+                Codex.iscroll=true;}
+            else if ((useragent.search("Safari/")>0)&&
                 (useragent.search("Mobile/")>0)) { 
                 hide_mobile_safari_address_bar();
                 Codex.iscroll=false;
@@ -979,28 +985,17 @@ Codex.Startup=
                 default_config.keyboardhelp=false;
                 // Have fdjtLog do it's own format conversion for the log
                 fdjtLog.doformat=true;}
-            else if (useragent.search(/Android/gi)>0) {
-                default_config.keyboardhelp=false;
-                Codex.iscroll=true;
-                Codex.updatehash=false;}
             else {
+                // Assume desktop or laptop
                 fdjtDOM.addClass(body,"cxMOUSE");
                 Codex.ui="mouse";}
-            if (Codex.iscroll) fdjtDOM.addClass(body,"cxISCROLL");
-            var opt_string=
-                fdjtString.stdspace(
-                    ((isiPhone)?(" iPhone"):(""))+
-                        ((isTouchPad)?(" TouchPad"):(""))+
-                        ((isiPad)?(" iPad"):(""))+
-                        ((isAndroid)?(" Android"):(""))+
-                        ((isWebKit)?(" WebKit"):(""))+
-                        ((isTouch)?(" touch"):(""))+
-                        ((!(isTouch))?(" mouse"):(""))+
-                        ((Codex.iscroll)?(" iscroll"):(""))+
-                        ((Codex.updatehash)?(" updatehash"):
-                         (" leavehash")));
-            fdjtLog("Device: %s %dx%d ui=%s, body=\"%s\"",
-                    opt_string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
+            if (Codex.iscroll) {
+                fdjtDOM.addClass(body,"cxISCROLL");
+                device.iscroll=true;}
+            device.string=device.string+" "+
+                ((Codex.iscroll)?("iScroll"):("nativescroll"));
+            fdjtLog("Device: %s %dx%d ui=%s body=\"%s\"",
+                    device.string,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
                     Codex.ui,body.className);}
 
         function bookSetup(){
