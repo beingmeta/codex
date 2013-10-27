@@ -152,7 +152,7 @@ body.hudup #CODEXHUD.openhead #CODEXTOP {
     border-color: rgba(0, 0, 255, 0.52);
     background-color: rgba(255, 255, 240, 0.52);}
 body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
-    background-color: rgb(255,255,255,0.75);
+    background-color: rgba(255,255,255,0.75);
     border-color: transparent;
     box-shadow: none; -webkit-box-shadow: none;
     -moz-box-shadow: none; -o-box-shadow: none;}
@@ -253,7 +253,7 @@ div#CODEXHUD #CODEXHEART div.hudpanel {
 div#CODEXHUD #CODEXHEART {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    background-color: ivory; z-index: 0px;}
+    background-color: ivory; z-index: 0;}
 div#CODEXHUD #CODEXHEART > * {
     overflow: visible;}
 div#CODEXHUD #CODEXHEART div.hudpanel h1 {
@@ -943,7 +943,7 @@ div#CODEXHUD div#CODEXSCANNER.expanded #CODEXSCAN img.button {
 
 body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic,
 body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
-    max-height: inherit, height: inherit;}
+    max-height: inherit; height: inherit;}
 
 div#CODEXHUD div#CODEXSCANNER {
     transition-property: background-color;

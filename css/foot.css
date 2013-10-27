@@ -120,7 +120,7 @@ body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
   overflow: visible; visibility: visible; z-index: 60; color: black;
   opacity: 1.0;
-  ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   filter: alpha(opacity=100);
   -webkit-opacity: 1.00;
   -khtml-opacity: 1.00;

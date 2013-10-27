@@ -132,7 +132,7 @@ div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.spanbar div.spans {
 div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.head.codexlivehead {
     border-bottom: solid red 1px;}
 
-div.codextoc .sectname.cohi, {
+div.codextoc .sectname.cohi {
     background-color: silver;}
 div.codextoc .sectname { color: darkblue; cursor: crosshair;}
 div.codextoc div.sub a.sectname { 

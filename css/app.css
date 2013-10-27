@@ -60,7 +60,7 @@ body.cxANIMATE.hudup div#CODEXPAGE {
 body.cxPREVIEW div#CODEXPAGE, body.cxSHRINK div#CODEXPAGE  {
     border-color: rgba(48, 60, 97, 0.54);}
 
-# This is for page shrinking when appropriate
+/* This is for page shrinking when appropriate */
 body.cxANIMATE div#CODEXPAGE {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
@@ -740,7 +740,7 @@ body #CODEXBODY #CODEXPAGE .codexpage .codexdupend {
     border-top-width: 0px;
     margin-top: 0px;}
 
-div#CODEXPAGE.codexpaginating div.codexpage { visiblity: hidden;}
+div#CODEXPAGE.codexpaginating div.codexpage { visibility: hidden;}
 
 img.codexcoverpage {
     display: block;

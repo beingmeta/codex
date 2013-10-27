@@ -341,7 +341,7 @@ div.codexglossform form .button {
 
 div.codexglossform form div.glossetc > .button,
 div.codexglossform form div.glossetc span > .button {
-    border: darkblue silver 2px; cursor: pointer;
+    border: darkblue solid 2px; cursor: pointer;
     border-radius: 3px; -webkit-border-radius: 3px;
     -moz-border-radius: 3px; -o-border-radius: 3px;}
 
