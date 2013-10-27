@@ -200,7 +200,8 @@ Codex.Paginate=
                         layout_progress(layout);
                         if (Codex.cachelayouts) {
                             var elapsed=layout.done-layout.started;
-                            if (elapsed>(Codex.layoutcachethresh||5000)) {
+                            if ((typeof Codex.cachelayouts === "number")?
+                                (elapsed>Codex.cachelayouts):(elapsed>5000)) {
                                 layout.saveLayout();}}
                         getPageTops(layout.pages);
                         fdjtID("CODEXPAGE").style.visibility='';

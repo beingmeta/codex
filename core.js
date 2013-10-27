@@ -60,8 +60,11 @@ var Codex={
     // Various device properties which can effect behaviors
     fullheight: false, fullwidth: false, handheld: false,
     updatehash: true, iscroll: false,
-    // Whether to cache layouts locally
-    cachelayouts: true,
+    // Whether to cache layouts locally; the value is a threshold
+    // (in milliseconds) for when to cache
+    cachelayouts: 2500,
+    // Whether to force new layouts
+    forcelayout: false,
     // Whether we're freezing layouts (during text input, etc)
     freezelayout: false,
     // Whether to store glosses, etc for offline/faster access
