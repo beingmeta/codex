@@ -2197,6 +2197,7 @@
     function addgloss_cancel(menu,form,div){
         if (!(form)) form=getParent(menu,"FORM");
         if (!(div)) div=getParent(form,".codexglossform");
+        Codex.cancelGloss();
         Codex.setMode(false);
         fdjtDOM.remove(div);
         Codex.setGlossTarget(false);
