@@ -507,7 +507,7 @@ div#CODEXHUD img.hudbutton {
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
 .cxMOUSE div#CODEXHUD img.hudbutton:hover,
-div#CODEXHUD img.hudbutton.tapholdtarget {
+div#CODEXHUD .hudbutton.tapholdtarget {
     border-color: blue;}
 
 body.hudup div#CODEXHUD img.hudbutton  {}
