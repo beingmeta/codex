@@ -362,7 +362,7 @@ Codex.Startup=
                 fdjtID("CODEXSPLASH").style.display='none';
 
             var adjstart=fdjt.Time();
-            fdjtDOM.adjustFonts(fdjtID("CODEXHUD"));
+            fdjtDOM.tweakFonts(fdjtID("CODEXHUD"));
             if (Codex.Trace.startup)
                 fdjtLog("Adjusted HUD fonts in %fsecs",
                         ((fdjt.Time()-adjstart)/1000));
@@ -1371,7 +1371,7 @@ Codex.Startup=
                 cover_help=fdjtDOM("div#CODEXCOVERHELP.codexhelp");
                 help.appendChild(cover_help);}
             cover_help.innerHTML=fixStaticRefs(Codex.HTML.help);
-
+            
             var console=Codex.DOM.console=fdjtID("CODEXCONSOLE");
             if (!(console)) {
                 console=fdjtDOM("div#CODEXCONSOLE");
@@ -1424,6 +1424,7 @@ Codex.Startup=
             // Make the cover hidden by default
             Codex.CSS.hidecover=fdjtDOM.addCSSRule(
                 "div#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
+            fdjtDOM.tweakFonts(cover);
             return cover;}
 
         function cover_clicked(evt){

@@ -285,7 +285,7 @@ div.codexhelp .result {
     color: rgba(0,0,0,1);}
 div.codexhelp td dfn {
     color: rgba(0,0,0,1);}
-div.codexhelp > table {
+div.codexhelp > table, div.codexhelp > div > table {
     margin-left: 2%; margin-right: 2%; width: 96%;
     margin-top: 1em;}
 div.codexhelp table th, div.codexhelp table td {
@@ -293,7 +293,7 @@ div.codexhelp table th, div.codexhelp table td {
 div.codexhelp table th { padding-right: 0.5ex;}
 div.codexhelp table th img {
     background-color: ivory; padding: 0px;
-    height: 32px; width: auto;
+    height: 2em; width: auto;
     vertical-align: top;}
 div.codexhelp table tbody tr:first-child th,
 div.codexhelp table tbody tr:first-child td {
@@ -307,7 +307,7 @@ div.codexhelp table td.textright { text-align: right;}
 
 div#CODEXHUD div.codexhelp.hudpanel {
     position: absolute; text-align: center;
-    top: 50px; left: 50px; right: 50px;
+    top: 100px; bottom: 100px; left: 80px; right: 80px; 
     height: auto; width: auto; padding-bottom: 1em;
     font-family: helvetica,sans,sans-serif;
     background-color: lightgray; color: black; 

@@ -575,6 +575,7 @@ div#CODEXHUD div#CODEXHEAD {
     background-color: rgba(0,0,0,0.5); color: white;
     font-size: 1.5em; 
     margin-top: 4px; padding: 0px 4em 0px 4em;
+    border: solid transparent 2px;
     border-radius: 1ex;
     cursor: pointer;
     font-variant: small-caps;
@@ -605,6 +606,9 @@ body.cxPREVIEW #CODEXSHOWCOVER,
 body.cxPREVIEW.hudup #CODEXSHOWCOVER,
 body.hudup div#CODEXHUD.openhead #CODEXSHOWCOVER {
     opacity: 0;}
+
+body.cxMOUSE #CODEXSHOWCOVER:hover {
+    border: solid blue 2px;}
 
 div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
     float: left; margin: 0px; padding: 0px; border: 0px;}
