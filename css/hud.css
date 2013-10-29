@@ -606,6 +606,10 @@ body.cxPREVIEW #CODEXSHOWCOVER,
 body.cxPREVIEW.hudup #CODEXSHOWCOVER,
 body.hudup div#CODEXHUD.openhead #CODEXSHOWCOVER {
     opacity: 0;}
+#CODEXSHOWCOVER { pointer-events: none; }
+body.hudup #CODEXSHOWCOVER, #CODEXHEAD.tapholding #CODEXSHOWCOVER,
+body.cxMOUSE #CODEXHEAD:hover #CODEXSHOWCOVER {
+    pointer-events: all; }
 
 body.cxMOUSE #CODEXSHOWCOVER:hover {
     border: solid blue 2px;}

@@ -298,6 +298,8 @@ div#CODEXSETTINGS span.button {
 div#CODEXSETTINGS p.codexsettingschanged { color: red; display: none;}
 div#CODEXSETTINGS.changed p.codexsettingschanged { display: block;}
 
+div#CODEXSETTINGS tr.codexlayoutsettings { display: none; }
+
 table.settings td { padding-bottom: 0.5ex;}
 
 table.settings td .checkspan {

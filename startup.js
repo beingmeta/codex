@@ -359,6 +359,7 @@ Codex.Startup=
                 updateInfo();}
             bookSetup();
             deviceSetup();
+            coverSetup();
             appSetup();
             showMessage();
             userSetup();
@@ -428,9 +429,6 @@ Codex.Startup=
             var style=fdjtDOM("STYLE");
             fdjtDOM(document.head,style);
             Codex.stylesheet=style.sheet;
-
-            // Setup the cover as soon as you can
-            coverSetup();
 
             // Initialize the databases
             Codex.initDB();
@@ -806,6 +804,7 @@ Codex.Startup=
                 Codex.setMode(false);
             else {}
             if (mode) Codex.setMode(mode);
+            else mode=Codex.mode;
             Codex._setup=new Date();
             if (Codex.onsetup) {
                 var onsetup=Codex.onsetup;
@@ -1268,6 +1267,10 @@ Codex.Startup=
                 cover=fdjtDOM("div#CODEXCOVER");
                 cover.innerHTML=fixStaticRefs(Codex.HTML.cover);
                 frame.appendChild(cover);}
+            if (Codex.Trace.startup) {
+                if (existing_cover)
+                    fdjtLog("Setting up existing cover");
+                else fdjtLog("Setting up new cover");}
 
             // Remove any explicit style attributes set for on-load display
             if (existing_cover) existing_cover.removeAttribute("style");
@@ -1414,9 +1417,10 @@ Codex.Startup=
             else if (fdjtID("CODEXABOUTBOOKHOLDER")) 
                 fdjtDOM.replace(fdjtID("CODEXABOUTBOOKHOLDER"),about);
             else cover.appendChild(about);
-            if (Codex.iscroll) {}
             
-            fdjtDOM.addListener(cover,"click",cover_clicked);
+            if (Codex.touch)
+                fdjtDOM.addListener(cover,"touchstart",cover_clicked);
+            else fdjtDOM.addListener(cover,"click",cover_clicked);
 
             if (Codex.iscroll) {
                 Codex.scrollers.about=setupScroller(about);
@@ -1439,27 +1443,32 @@ Codex.Startup=
             var cover=fdjtID("CODEXCOVER");
             var target=fdjtUI.T(evt);
             if (fdjt.UI.isClickable(target)) return;
-            if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS"))))
+            if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS")))) {
                 Codex.hideCover();
+                fdjtUI.cancel(evt);
+                return;}
             var scan=target;
             while (scan) {
                 if (scan===document.body) break;
                 else if (scan.getAttribute("data-mode")) break;
                 else scan=scan.parentNode;}
             var mode=scan.getAttribute("data-mode");
+            // No longer have cover buttons be toggles
+            /* 
             if ((mode)&&(cover.className===mode)) {
                 if (cover.getAttribute("data-defaultclass"))
                     cover.className=cover.getAttribute("data-defaultclass");
                 else cover.className="bookcover";
                 fdjt.UI.cancel(evt);
                 return;}
+            */
             if ((mode==="overlays")&&
                 (!(fdjtID("SBOOKSAPP").src))&&
                 (!(Codex.appinit)))
                 Codex.initIFrameApp();
 
-            if (!(mode)) Codex.hideCover();
-            else fdjtID("CODEXCOVER").className=mode;
+            fdjtID("CODEXCOVER").className=mode;
+            Codex.mode=mode;
             fdjt.UI.cancel(evt);}
 
         Codex.addConfig("showconsole",function(name,value){
