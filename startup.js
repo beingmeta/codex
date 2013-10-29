@@ -351,6 +351,12 @@ Codex.Startup=
             // arguments, for handy debugging.
             if (getQuery("cxtrace")) readTraceSettings();
 
+            readSettings();
+
+            // First thing, if we can't get a user, we start the requests
+            if (!((Codex.user)||(window._sbook_loadinfo)||(getLocal("codex.user")))) {
+                if (Codex.Trace.startup) fdjtLog("No user, requesting user info, etc");
+                updateInfo();}
             bookSetup();
             deviceSetup();
             appSetup();
@@ -396,11 +402,7 @@ Codex.Startup=
             fdjt.State.clearCookie("SBOOKSPOPUP","/","sbooks.net");
             fdjt.State.clearCookie("SBOOKSMESSAGE","/","sbooks.net");}
 
-        function appSetup() {
-
-            var body=document.body;
-
-            if (Codex.Trace.startup) fdjtLog("Starting app setup");
+        function envSetup() {
 
             // Initialize domain and origin for browsers which care
             try {document.domain="sbooks.net";}
@@ -411,17 +413,16 @@ Codex.Startup=
             // Execute any FDJT initializations
             fdjt.Init();
 
-            fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
-            fdjtDOM.addAppSchema("SBOOKS","http://sbooks.net/");
-            fdjtDOM.addAppSchema("Codex","http://codex.sbooks.net/");
-            fdjtDOM.addAppSchema("DC","http://purl.org/dc/elements/1.1/");
-            fdjtDOM.addAppSchema("DCTERMS","http://purl.org/dc/terms/");
-            fdjtDOM.addAppSchema("OLIB","http://openlibrary.org/");
-            
             // Get various settings for the sBook from the HTML (META
             // tags, etc), including settings or guidance for
             // scanning, graphics, layout, glosses, etc.
-            readSettings();
+            readSettings();}
+
+        function appSetup() {
+
+            var body=document.body;
+
+            if (Codex.Trace.startup) fdjtLog("Starting app setup");
 
             // Create a custom stylesheet for the app
             var style=fdjtDOM("STYLE");
@@ -529,8 +530,7 @@ Codex.Startup=
             if ((Codex.sync)&&(!(Codex.keepdata))) clearOffline();
 
             if (Codex.nologin) {}
-            else if ((Codex.keepdata)&&(Codex.sync)&&
-                     (getLocal("codex.user"))) {
+            else if ((Codex.keepdata)&&(Codex.sync)&&(getLocal("codex.user"))) {
                 initUserOffline();
                 if (Codex.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
@@ -574,10 +574,9 @@ Codex.Startup=
                     fdjtLog("Requesting glosses from %s for %s (%s)",
                             Codex.server,Codex.user._id,Codex.user.name);
                 else fdjtLog(
-                    "No user, requesting glosses and user info from %s",
+                    "No user, requesting user info and glosses from %s",
                     Codex.server);
                 updateInfo();
-                setInterval(updateInfo,300000);
                 return;}
             else return;}
         Codex.userSetup=userSetup;
@@ -859,6 +858,15 @@ Codex.Startup=
             else return false;}
         
         function readSettings(){
+
+            // First, define common schemas
+            fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
+            fdjtDOM.addAppSchema("SBOOKS","http://sbooks.net/");
+            fdjtDOM.addAppSchema("Codex","http://codex.sbooks.net/");
+            fdjtDOM.addAppSchema("DC","http://purl.org/dc/elements/1.1/");
+            fdjtDOM.addAppSchema("DCTERMS","http://purl.org/dc/terms/");
+            fdjtDOM.addAppSchema("OLIB","http://openlibrary.org/");
+            
             // Basic stuff
             var refuri=_getsbookrefuri();
             var locuri=window.location.href;
@@ -1831,7 +1839,7 @@ Codex.Startup=
                         ((info.outlets)?(info.outlets.length):(0)),
                         ((info.overlays)?(info.overlays.length):(0)));}
             if ((info.glosses)||(info.etc))
-                initGlosses(info.glosses,info.etc);
+                initGlosses(info.glosses||[],info.etc||[]);
             if (info.etc) gotInfo("etc",info.etc,keepdata);
             if (info.sources) gotInfo("sources",info.sources,keepdata);
             if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
@@ -1854,6 +1862,8 @@ Codex.Startup=
         Codex.loadInfo=loadInfo;
 
         var updating=false;
+        var ticktock=false;
+        var noajax=false;
         Codex.updatedInfo=function(data){
             loadInfo(data);
             updating=false;};
@@ -1875,16 +1885,26 @@ Codex.Startup=
                 uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
             if (Codex.sync) uri=uri+"&SYNC="+(Codex.sync+1);
             if (Codex.user) uri=uri+"&SYNCUSER="+Codex.user._id;
-            var ajax_uri=uri+"&CALLBACK=return";
+            var user=Codex.user;
+            var ajax_uri=uri+"&CALLBACK=return"+((user)?(""):("&JUSTUSER=yes"));
+            if (noajax) {
+                if (Codex.user) updateInfoJSONP(ajax_uri);
+                return;}
             try { fdjtAjax(function(req){
-                Codex.updatedInfo(JSON.parse(req.responseText));},
+                Codex.updatedInfo(JSON.parse(req.responseText));
+                if (user) {
+                    if (!(ticktock))
+                        Codex.ticktock=ticktock=setInterval(updateInfo,300000);}
+                else if (Codex.user) setTimeout(updateInfo,50);
+                else {fdjtLog.warn("Couldn't determine user!");}},
                            ajax_uri,[],
                            function (req){
                                if (req.readyState===4) {
                                    if (req.status>=400) {
                                        fdjtLog.warn("Ajax call to %s failed on callback, falling back to JSONP",
                                                     uri);
-                                       updateInfoJSONP(uri);}}},
+                                       noajax=true;
+                                       updateInfoJSONP(ajax_uri);}}},
                            ((Codex.sync)?
                             ({"If-Modified-Since": (new Date(Codex.sync*1000)).toString()}):
                             (false)));}
