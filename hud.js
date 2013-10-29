@@ -221,7 +221,7 @@ Codex.setMode=
             
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);
-            Codex.TapHold.foot=new fdjtUI.TapHold(Codex.DOM.foot,{override: true});
+            Codex.TapHold.foot=new fdjtUI.TapHold(Codex.DOM.foot,{override: true,holdfast: true});
             Codex.TapHold.head=new fdjtUI.TapHold(Codex.DOM.head,{override: true});
             Codex.DOM.scanner=fdjtID("CODEXSCANNER");
             if (Codex.Trace.startup>1)

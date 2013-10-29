@@ -2035,6 +2035,13 @@
             Codex.stopPagePreview("pageinfo_slip");},
                                       400);
         previewing_page=false;}
+    function pageinfo_touchtoo(evt){
+        if (Codex.previewing) {
+            Codex.stopPreview("touchtoo",true);
+            fdjtUI.TapHold.clear();
+            Codex.setHUD(false);
+            fdjt.UI.cancel(evt);
+            return false;}}
     
     /* Gloss form handlers */
 
@@ -2582,6 +2589,7 @@
                             hold: pageinfo_hold,
                             release: pageinfo_release,
                             slip: pageinfo_slip,
+                            touchtoo: pageinfo_touchtoo,
                             click: cancel},
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCPCT": {tap: enterPercentage},
