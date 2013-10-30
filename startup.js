@@ -351,7 +351,7 @@ Codex.Startup=
             // arguments, for handy debugging.
             if (getQuery("cxtrace")) readTraceSettings();
 
-            readSettings();
+            envSetup();
 
             // First thing, if we can't get a user, we start the requests
             if (!((Codex.user)||(window._sbook_loadinfo)||(getLocal("codex.user")))) {
@@ -1440,7 +1440,6 @@ Codex.Startup=
             return cover;}
 
         function cover_clicked(evt){
-            var cover=fdjtID("CODEXCOVER");
             var target=fdjtUI.T(evt);
             if (fdjt.UI.isClickable(target)) return;
             if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS")))) {
