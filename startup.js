@@ -1280,7 +1280,8 @@ Codex.Startup=
                 fdjtID("CODEXBOOKCOVERIMAGE").removeAttribute("style");
             if (fdjtID("CODEXTITLEPAGEHOLDER"))
                 fdjtID("CODEXTITLEPAGEHOLDER").removeAttribute("style");
-
+            if (fdjtID("CODEXCREDITSPAGEHOLDER"))
+                fdjtID("CODEXCREDITSPAGEHOLDER").removeAttribute("style");
 
             var coverpage=fdjtID("CODEXCOVERPAGE");
             if (coverpage) 
@@ -1347,6 +1348,23 @@ Codex.Startup=
                 titlepage.style.overflow=null;}
             if ((fdjtID("CODEXTITLEPAGE"))&&(fdjtID("CODEXTITLEPAGEHOLDER")))
                 fdjtDOM.remove("CODEXTITLEPAGEHOLDER");
+            
+            var creditspage=fdjtID("CODEXCREDITSPAGE");
+            if (!(creditspage)) {
+                creditspage=fdjtID("SBOOKSCREDITSPAGE")||fdjtID("CREDITSPAGE");
+                if (creditspage) {
+                    creditspage=creditspage.cloneNode(true);
+                    fdjtDOM.stripIDs(creditspage);
+                    creditspage.setAttribute("style","");}}
+            if (creditspage) {
+                addClass(cover,"withcreditspage");
+                if (fdjtID("CODEXCREDITSPAGEHOLDER")) {
+                    fdjtDOM.replace(fdjtID("CODEXCREDITSPAGEHOLDER"),creditspage);
+                    creditspage.id="CODEXCREDITSPAGE";}
+                else if (hasParent(creditspage,cover)) {}
+                else cover.appendChild(creditspage);
+                if ((fdjtID("CODEXCREDITSPAGE"))&&(fdjtID("CODEXCREDITSPAGEHOLDER")))
+                    fdjtDOM.remove("CODEXCREDITSPAGEHOLDER");}
             
             var infopage=fdjtID("CODEXINFOPAGE");
             if (infopage)
@@ -1439,8 +1457,17 @@ Codex.Startup=
             fdjtDOM.tweakFonts(cover);
             return cover;}
 
+        var coverids={"bookcover": "CODEXBOOKCOVER",
+                      "titlepage": "CODEXTITLEPAGE",
+                      "bookcredits": "CODEXCREDITSPAGE",
+                      "aboutbook": "CODEXABOUTBOOK",
+                      "help": "CODEXAPPHELP",
+                      "settings": "CODEXSETTINGS",
+                      "overlays": "CODEXOVERLAYS"};
+
         function cover_clicked(evt){
             var target=fdjtUI.T(evt);
+            var cover=fdjtID("CODEXCOVER");
             if (fdjt.UI.isClickable(target)) return;
             if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS")))) {
                 Codex.hideCover();
@@ -1466,8 +1493,21 @@ Codex.Startup=
                 (!(Codex.appinit)))
                 Codex.initIFrameApp();
 
-            fdjtID("CODEXCOVER").className=mode;
-            Codex.mode=mode;
+            var curclass=cover.className;
+            var cur=((curclass)&&(coverids[curclass])&&(fdjtID(coverids[curclass])));
+            var nxt=((mode)&&(coverids[mode])&&(fdjtID(coverids[mode])));
+            fdjtLog("cur=%o, nxt=%o",cur,nxt);
+            if ((cur)&&(nxt)) {
+                cur.style.display='block';
+                nxt.style.display='block';
+                setTimeout(function(){
+                    cur.style.display="";
+                    nxt.style.display="";},
+                           3000);}
+            setTimeout(function(){
+                cover.className=mode;
+                Codex.mode=mode;},
+                       20);
             fdjt.UI.cancel(evt);}
 
         Codex.addConfig("showconsole",function(name,value){

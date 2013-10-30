@@ -12,6 +12,9 @@
 <div id="CODEXTITLEPAGEHOLDER" class="codextitlepage"
      style="position: absolute; top: 50px; left: 0px; width: 100%; bottom: 120px;">
 </div>
+<div id="CODEXCREDITSPAGEHOLDER"
+     style="position: absolute; top: 50px; left: 0px; width: 100%; bottom: 120px;">
+</div>
 <div id="CODEXINFOPAGEHOLDER" class="codexbibpage"></div>
 <div id="CODEXAPPHELP" class="codexhelp">
   <h1><span class="adjustfont">Welcome to Codex,
@@ -51,36 +54,40 @@
 	title="this book's title page and other information"
         tabindex="2">
     Title</span>
+  <span class="control" data-mode="creditspage"
+	title="Credits to people and organizations contributing to this book"
+        tabindex="3">
+    Credits</span>
   <span class="control" data-mode="aboutbook"
 	title="learn more about this book and its background"
-        tabindex="3">
+        tabindex="4">
     About</span>
   <span class="control" data-mode="overlays"
 	title="manage added layers of glosses for your sBook"
-        tabindex="3">
+        tabindex="5">
     <span class="whenloggedin">Overlays</span>
     <span class="notloggedin">Login</span>
   </span>
   <span class="control" data-mode="console"
 	title="the debugging console (advanced)"
-        tabindex="4">
+        tabindex="6">
     Console</span>
   <span class="control" data-mode="settings"
 	title="alter this e-reader's appearance and interactions"
-        tabindex="5">
+        tabindex="7">
     Settings</span>
   <span class="control" data-mode="help"
 	title="simple help for using Codex"
-        tabindex="6">
+        tabindex="8">
     Help</span>
   <div class="userbox">
     <span class="bookplate">
       This <a class="sbooks" href="https://www.sbooks.net/" target="_blank"
-              title="Learn more about sBooks">
+              title="Learn more about sBooks" tabindex="9">
         <em>s</em>Book</a> is personalized for
       <a href="https://admin.sbooks.net/account/" class="codexusername"
          title="Edit your profile, add social networks, etc"
-         target="_blank">
+         target="_blank" tabindex="10">
         you</a></span>
   </div>
   <div class="loginbox">
@@ -90,16 +97,16 @@
       <input TYPE="TEXT" NAME="LOGIN" VALUE=""
              PLACEHOLDER="login with your email"
 	     ONKEYPRESS="fdjt.UI.submitOnEnter(event);"
-             tabindex="7"/>
+             tabindex="9"/>
       <span>or use</span>
-      <button name="AUTHORITY" TABINDEX="8"
+      <button name="AUTHORITY" TABINDEX="11"
 	      value=":FACEBOOK">
 	<img src="{{bmg}}sbooks/facebook64x64.png" class="nosvg"
              alt="Facebook" class="noautoscale"/>
 	<img src="{{bmg}}sbooks/facebook.svgz" class="svg"
              alt="Facebook" class="noautoscale"/>
       </button>
-      <button NAME="AUTHORITY" TABINDEX="9"
+      <button NAME="AUTHORITY" TABINDEX="12"
 	      VALUE=":TWITTER">
 	<img src="{{bmg}}sbooks/twitter64x64.png"
 	     alt="Twitter" title="login with Twitter"
@@ -108,14 +115,14 @@
 	     alt="Twitter" title="login with Twitter"
 	     class="svg"/>
       </button>
-      <button NAME="AUTHORITY" TABINDEX="10"
+      <button NAME="AUTHORITY" TABINDEX="13"
 	      VALUE="https://open.login.yahooapis.com/openid/op/auth">
 	<img src="{{bmg}}sbooks/yahoo64x64.png" class="nosvg"
 	     alt="Yahoo!" title="login using Yahoo!"/>
 	<img src="{{bmg}}sbooks/yahoo.svgz" class="svg"
 	     alt="Yahoo!" title="login using Yahoo!"/>
       </button>
-      <button NAME="AUTHORITY" TABINDEX="11"
+      <button NAME="AUTHORITY" TABINDEX="14"
 	      VALUE=":GOOGLE">
 	<img src="{{bmg}}sbooks/google64x64.png"
 	     alt="Google" title="login using your Google account"
@@ -124,7 +131,7 @@
 	     alt="Google" title="login using your Google account"
 	     class="svg"/>
       </button>
-      <button NAME="AUTHORITY" TABINDEX="12"
+      <button NAME="AUTHORITY" TABINDEX="15"
 	      VALUE=":GPLUS">
 	<img src="{{bmg}}sbooks/googleplus64x64.png"
 	     alt="Google" title="login using Google+"
@@ -133,7 +140,7 @@
 	     alt="Google" title="login using Google+"
 	     class="svg"/>
       </button>
-      <button NAME="AUTHORITY" VALUE=":LINKEDIN" TABINDEX="13">
+      <button NAME="AUTHORITY" VALUE=":LINKEDIN" TABINDEX="16">
         <img src="{{bmg}}sbooks/linkedin64x64.png"
 	     alt="Linked In" title="login with Linked In"
 	     class="nosvg"/>
@@ -141,13 +148,13 @@
 	     alt="Linked In" title="login with Linked In"
 	     class="svg"/>
       </button>
+      <button name="AUTHORITY" TABINDEX="17"
+	      value=":AMAZON">
+	<img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
+             alt="Amazon" title="login with your Amazon account"/>
+      </button>
       <!--
-          <button name="AUTHORITY" TABINDEX="14"
-	          value=":AMAZON">
-	    <img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
-                 alt="Amazon" title="login with Amazon"/>
-          </button>
-          <button name="AUTHORITY" TABINDEX="15"
+          <button name="AUTHORITY" TABINDEX="18"
 	          value=":PAYPAL">
 	    <img src="{{bmg}}sbooks/paypalsquare64x64.png" class="nosvg"
                  alt="PayPal" title="login with PayPal"/>
