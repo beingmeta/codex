@@ -1941,10 +1941,18 @@ Codex.Startup=
             try { fdjtAjax(function(req){
                 Codex.updatedInfo(JSON.parse(req.responseText));
                 if (user) {
+                    // If there was already a user, just startup regular
+                    //  updates
                     if (!(ticktock))
                         Codex.ticktock=ticktock=setInterval(updateInfo,300000);}
-                else if (Codex.user) setTimeout(updateInfo,50);
-                else {fdjtLog.warn("Couldn't determine user!");}},
+                else if (Codex.user)
+                    // If this response gave us a user, do a second request to
+                    //  get glosses.  This request will set up the interval
+                    //  timer
+                    setTimeout(updateInfo,50);
+                else {
+                    // The response back didn't give us any user information
+                    fdjtLog.warn("Couldn't determine user!");}},
                            ajax_uri,[],
                            function (req){
                                if (req.readyState===4) {
