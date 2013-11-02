@@ -73,6 +73,12 @@ body.sbook { font-size: 62.5%; }
 #CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4, #CODEXBODY h5,
 #CODEXBODY h6, #CODEXBODY h7 {
     line-height: 125%;}
+ #CODEXBODY .codexoversize div,  #CODEXBODY .codexoversize p,
+ #CODEXBODY .codexoversize li,  #CODEXBODY .codexoversize dt,  #CODEXBODY .codexoversize dd,
+ #CODEXBODY .codexoversize h1,  #CODEXBODY .codexoversize h2,  #CODEXBODY .codexoversize h3,
+ #CODEXBODY .codexoversize h4,  #CODEXBODY .codexoversize h5,  #CODEXBODY .codexoversize h6,
+ #CODEXBODY .codexoversize h7 {
+    line-height: 115%;}
 
 #CODEXBODY.codexbodysizexlarge p, #CODEXBODY.codexbodysizexlarge li,
 #CODEXBODY.codexbodysizexlarge dt, #CODEXBODY.codexbodysizexlarge dd {
