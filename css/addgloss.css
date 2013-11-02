@@ -18,7 +18,13 @@ div#CODEXADDGLOSS div.codexglossform.focused {
 div.codexglossform.hiddenglossform {
     opacity: 0.05;}
 
-div.codexglossform form div.inputbox { margin-top: 2px;}
+div.codexglossform form div.textbox,
+div.codexglossform form div.glossetc {
+    clear: left; text-align: left;
+    margin-left: 0.5em; margin-right: 60px;}
+div.codexglossform form div.textbox { margin-top: 2px;}
+div.codexglossform form div.glossetc {
+    overflow: hidden;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {
     min-height: 1em; padding: 2px;}
@@ -100,10 +106,6 @@ div.codexglossform form .bracketbutton strong {
 div.codexglossform.focused form div.inputhelp { display: block;}
 div.codexglossform.focused form span.inputhelp { display: inline;}
 
-div.codexglossform form div.inputbox {
-    margin-right: 60px;}
-div.codexglossform form div.textbox {
-    margin-left: 0.5em;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[TYPE='TEXT'] {
     overflow: hidden; font-size: 12px;
@@ -166,27 +168,12 @@ div.codexglossform div.textbox input[name='OUTLET'] {
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/sbookspeople24x24.png);}
 
-div.codexglossform form div.inputhelp {
-    margin-left: 1px; margin-top: 0px; padding-top: 0px;}
-div.codexglossform form div.glossetc {
-    display: block; text-align: left; font-size: 12px;
-    line-height: 16px; text-overflow: ellipsis;
-    padding: 0.5ex; padding-top: 0px; padding-right: 5px;
-    margin-top: 0.4ex; margin-left: 1px;
-    overflow: hidden;
-    clear: left;}
-div.codexglossform form div.glossetc {
-    display: none;}
-body.hudup div.codexglossform form div.glossetc,
-div.codexglossform.focused form div.glossetc {
-    display: block;}
-
 div.codexglossform form .glossetc .glossdate {
     padding: 0px; padding-bottom: 1ex; padding-left: 1ex;
     float: right;
     display: none;}
 div.codexglossform .glossetc .glossdate {
-  font-variant: small-caps; color: purple;}
+    font-size: 80%; font-variant: small-caps; color: purple;}
 
 div.codexglossform form .glossexposure {
     position: absolute; top: 50px; right: 0px;
@@ -501,8 +488,10 @@ div#CODEXSHARECLOUD #CODEXNETWORKBUTTONS img {
 
 div#CODEXRIBBON > div.inputbox {
     text-align: center; margin-bottom: 1ex;}
-div.inputbox img.label { float: right; height: 2em; width: auto;}
-div.inputbox span.head {color: black; font-weight: bold;}
+div#CODEXRIBBON > div.inputbox img.label {
+    float: right; height: 2em; width: auto;}
+div#CODEXRIBBON > div.inputbox span.head {
+    color: black; font-weight: bold;}
 div#CODEXRIBBON div.inputbox input[type="TEXT"] {
     background-position: right top;
     background-position-x: right; background-position-y: top;

@@ -152,7 +152,7 @@ div#CODEXHUD  .codexgoto#CODEXGOTOPAGE {
 
 div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     position: absolute; z-index: 500; opacity: 0.8;
-    bottom: 30px; left: 100px; right: 100px; height: 20px;
+    bottom: 30px; left: 100px; right: 100px;
     text-align: center;
     font-size: 125%; font-weight: bold;
     padding: 0px;

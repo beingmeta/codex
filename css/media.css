@@ -12,8 +12,6 @@
 }
 @media screen and (max-width: 600px) {
     #CODEXTOP, #CODEXSCANNER { left: 0px; right: 0px; }
-    div#CODEXTOP div#CODEXHUDBUTTONS {
-        margin-left: 60px; margin-right: 60px;}
     #CODEXTOP, #CODEXSCANNER { left: 0px; right: 0px; }
     img.codexclosehud#CODEXSTOPSCAN {
         bottom: 50px; top: auto;}

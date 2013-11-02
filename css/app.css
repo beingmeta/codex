@@ -828,7 +828,7 @@ div.startupmessage.running {
 
 /* Media rules */
 
-@media screen and (min-width: 300px) and (max-width: 500px) {
+@media screen and (min-width: 300px) and (max-width: 600px) {
     body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME  {
         top: 75px; bottom: 75px;}
     #CODEXHEARTFRAME  {
@@ -847,32 +847,15 @@ div.startupmessage.running {
 
 @media screen and (min-height: 300px) and (max-height: 500px) {
     div#CODEXPAGE {
-        top: 25px; bottom: 25px;}
+        top: 15px; bottom: 15px;}
     body div.codexmargin#CODEXPAGEHEAD, body div.codexmargin#CODEXPAGEFOOT {
-        height: 25px;}
-    body div#CODEXHUD div#CODEXHUDBUTTONS {
-        opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-        filter: alpha(opacity=0);
-        -webkit-opacity: 0.00;
-        -khtml-opacity: 0.00;
-        -moz-opacity: 0.00;
-        -o-opacity: 0.00;}
-
+        height: 15px;}
     }
 @media screen and (max-height: 300px) {
     div#CODEXPAGE {
         top: 10px; bottom: 10px;}
     body div.codexmargin#CODEXPAGEHEAD, body div.codexmargin#CODEXPAGEFOOT {
         height: 10px;}
-    body div#CODEXHUD div#CODEXHUDBUTTONS {
-        opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-        filter: alpha(opacity=0);
-        -webkit-opacity: 0.00;
-        -khtml-opacity: 0.00;
-        -moz-opacity: 0.00;
-        -o-opacity: 0.00;}
     }
 
 /* Emacs local variables

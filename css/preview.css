@@ -85,9 +85,6 @@ body.cxPREVIEW div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
 
-body.cxPREVIEW div#CODEXHUD div#CODEXHUDBUTTONS {
-    display: none;}
-
 body.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.openfoot #CODEXFOOT,
 body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXTOP {

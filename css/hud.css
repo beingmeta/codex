@@ -31,9 +31,12 @@
     position: absolute; left: 60px; right: 60px; z-index: 100;
     max-height: 60px; border: solid transparent 4px;
     padding: 0px; padding-bottom: 0.5ex;}
+#CODEXHEAD {
+    position: absolute; left: 0px; right: 0px; top: 0px; z-index: 100;
+    text-align: center; padding: 0px; max-height: 50px;}
 #CODEXFOOT {
-    position: absolute; left: 0px; right: 0px; z-index: 100;
-    max-height: 60px; padding: 0px; padding-top: 0.5ex;}
+    position: absolute; left: 0px; right: 0px; bottom: 0px; z-index: 100;
+    text-align: center; padding: 0px; max-height: 50px;}
 #CODEXSCANNER {
     position: absolute; left: 60px; right: 60px; z-index: 100;
     background-color: white;
@@ -139,7 +142,6 @@ body.cxANIMATE #CODEXHUD.openhead #CODEXTOP,
 #CODEXHUD.openhead #CODEXTOP {
     top: 0px;}
 body.hudup #CODEXTOP {display: block;}
-body.hudup #CODEXHUDBUTTONS {display: block;}
 body.hudup #CODEXHUD.openhead #CODEXTOP,
 body #CODEXHUD.scanning #CODEXSCANNER {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -159,12 +161,6 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
     
 body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}
-body.hudup #CODEXHUD.openhead #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.overtoc #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.refinesearch #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.searchresults #CODEXHUDBUTTONS,
-body.hudup #CODEXHUD.addgloss #CODEXHUDBUTTONS {
-    display: none; position: absolute;}
 body #CODEXHUD.tocscan #CODEXTOP,
 body #CODEXHUD.openglossmark #CODEXSCANNER,
 body #CODEXHUD.scanning #CODEXSCANNER,
@@ -174,8 +170,7 @@ body #CODEXHUD.addgloss #CODEXTOP {
     overflow: visible;
     z-index: 500;}
 
-body.hudup #CODEXHUD #CODEXFOOT {
-    height: auto; max-height: 50%;}
+body.hudup #CODEXHUD #CODEXFOOT { height: 50px;}
 body #CODEXHUD.openfoot #CODEXFOOT
 {
     background-color: ivory; border-color: darkblue;
@@ -183,7 +178,7 @@ body #CODEXHUD.openfoot #CODEXFOOT
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
-    height: auto; max-height: 50%;}
+    height: 50px;}
 
 body #CODEXHUD.openhead #CODEXTOP {max-height: 50%;}
 body #CODEXHUD.openglossmark #CODEXSCANNER.expanded,
@@ -567,9 +562,6 @@ body div#CODEXHUD.login div#CODEXHEART .tabcontent#CODEXLOGIN {
 div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
 
-div#CODEXHUD div#CODEXHEAD {
-    position: absolute; top: 0px; height: 50px;
-    text-align: center; left: 0px; right: 0px;}
 #CODEXSHOWCOVER {
     white-space: nowrap;
     background-color: rgba(0,0,0,0.5); color: white;
@@ -614,110 +606,8 @@ body.cxMOUSE #CODEXHEAD:hover #CODEXSHOWCOVER {
 body.cxMOUSE #CODEXSHOWCOVER:hover {
     border: solid blue 2px;}
 
-div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
-    float: left; margin: 0px; padding: 0px; border: 0px;}
-div#CODEXHUD div#CODEXHUDBUTTONS #HELPBUTTON {
-    float: right; margin: 0px; padding: 0px; border: 0px;}
-div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON img {
-  margin: 0px; border: 0px; padding: 0px; max-height: 48px;}
-body.cxNOUSER div#CODEXHUD div#CODEXHUDBUTTONS #IDBUTTON {
-    display: none;}
-div#CODEXHUD div#CODEXHUDBUTTONS .sbookplate .applinks {
-    color: blue; font-size: 80%;
-    font-weight: normal; font-variant: small-caps;}
-
-div#CODEXHUD div#CODEXHUDBUTTONS a.logout {
-    position: absolute; right: 0px;
-    vertical-align: top; padding-right: 2px;
-    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
-    display: none;
-    color: red;}
-div#CODEXHUD div#CODEXHUDBUTTONS a.logout:visited {
-    color: red;}
-div#CODEXHUD div#CODEXHUDBUTTONS a.username {
-    position: absolute; left: 0px;
-    vertical-align: top; padding-right: 2px;
-    font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
-    display: none;
-    color: blue;}
-
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS a.logout,
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS a.username {
-    display: inline;}
-.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover a.logout,
-.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover a.username {
-    display: inline;}
-
 body.cxNOUSER a.logout {
     display: none !important;}
-
-div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
-    top: 0px; left: 60px; right: 60px; z-index: 100;
-    max-height: 50px; display: block;}
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS.hudpanel {
-    max-height: 60px;}
-div#CODEXHUD.openhead div#CODEXHUDBUTTONS.hudpanel {
-    display: none;}
-
-div#CODEXHUD div#CODEXHUDBUTTONS {
-    margin: 0px; padding: 0px; border-bottom-width: 0px;
-    font-family: verdana,helvetica,times,serif; font-variant: small-caps;
-    text-align: center;}
-
-div#CODEXHUD div#CODEXHUDBUTTONS div.sbookplate {
-    margin: 0px; padding: 0px; border: 0px;
-    margin-left: 0px; margin-right: 0px;
-    clear: both; text-align: left;
-    /* background-color: gold; */
-    color: black;}
-div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar {
-    margin: 0px; padding: 0px; border: 0px;
-    font-variant: small-caps;}
-div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab {
-    font-variant: small-caps;
-    border-bottom-right-radius: 6px;
-    -o-border-bottom-right-radius: 6px; 
-    -webkit-border-bottom-right-radius: 6px; 
-    -moz-border-radius-bottomright: 6px;
-    border-bottom-left-radius: 6px;
-    -o-border-bottom-left-radius: 6px; 
-    -webkit-border-bottom-left-radius: 6px; 
-    -moz-border-radius-bottomleft: 6px;
-    box-shadow: 2px 2px 2px #cccccc;
-    -webkit-box-shadow: 2px 2px 2px #cccccc;
-    -moz-box-shadow: 2px 2px 2px #cccccc;
-    -o-box-shadow: 2px 2px 2px #cccccc;}
-div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar .tab  {
-    border: transparent solid 3px;}
-div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
-    transition-property: height;
-    -o-transition-property: height;
-    -moz-transition-property: height;
-    -webkit-transition-property: height; 
-    transition-duration: 1.0s; -o-transition-duration: 1.0s;
-    -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;
-    height: 40px; width: auto;}
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS div.tabbar img.tab {
-    height: 50px; width: auto;}
-
-div#CODEXHUD.about div#CODEXHUDBUTTONS div.tabbar .tab[alt='About'],
-div#CODEXHUD.statictoc div#CODEXHUDBUTTONS div.tabbar .tab[alt='ToC'],
-div#CODEXHUD.device div#CODEXHUDBUTTONS div.tabbar .tab[alt='Device'],
-div#CODEXHUD.login div#CODEXHUDBUTTONS div.tabbar .tab[alt='Login'],
-div#CODEXHUD.console div#CODEXHUDBUTTONS div.tabbar .tab[alt='Console'],
-div#CODEXHUD.allglosses div#CODEXHUDBUTTONS div.tabbar .tab[alt='Glosses'],
-div#CODEXHUD.help div#CODEXHUDBUTTONS div.tabbar .tab[alt='Help']{
-    border: gold solid 3px; background-color: gold;
-    /* border-top: transparent solid 3px; */
-    box-shadow: 6px 6px 6px #cccccc;
-    -webkit-box-shadow: 6px 6px 6px #cccccc;
-    -moz-box-shadow: 6px 6px 6px #cccccc;
-    -o-box-shadow: 6px 6px 6px #cccccc;}
-
-div#CODEXHUD.tocscan div#CODEXHUDBUTTONS,
-div#CODEXHUD.scanning div#CODEXHUDBUTTONS,
-div#CODEXHUD.addgloss div#CODEXHUDBUTTONS {
-    display: none;}
 
 div#CODEXHUD div#CODEXBUTTON.toc img[alt='toc'],
 div#CODEXHUD div#CODEXBUTTON.search img[alt='search'],
@@ -1081,49 +971,6 @@ div#CODEXHUD div#CODEXSOURCES.hudpanel {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
 
 /* Buttons */
-
-body div#CODEXHUD div#CODEXHUDBUTTONS {
-    background-color: white;}
-body div#CODEXHUD div#CODEXHUDBUTTONS {
-    clear: none; z-index: 100; text-align: center; opacity: 0.01;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
-    filter: alpha(opacity=01);
-    -webkit-opacity: 0.01;
-    -khtml-opacity: 0.01;
-    -moz-opacity: 0.01;
-    -o-opacity: 0.01;}
-body.cxSCROLL div#CODEXHUD div#CODEXHUDBUTTONS {
-    clear: none; z-index: 150; text-align: center; opacity: 0.00;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=00)";
-    filter: alpha(opacity=00);
-    -webkit-opacity: 0.00;
-    -khtml-opacity: 0.00;
-    -moz-opacity: 0.00;
-    -o-opacity: 0.00;}
-body.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover {
-    opacity: 0.70;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-    filter: alpha(opacity=70);
-    -webkit-opacity: 0.70;
-    -khtml-opacity: 0.70;
-    -moz-opacity: 0.70;
-    -o-opacity: 0.70;}
-body.hudup.cxMOUSE div#CODEXHUD div#CODEXHUDBUTTONS:hover,
-body.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
-    display: block; opacity: 0.90;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-    filter: alpha(opacity=90);
-    -webkit-opacity: 0.90;
-    -khtml-opacity: 0.90;
-    -moz-opacity: 0.90;
-    -o-opacity: 0.90;}
-body.cxANIMATE.hudup div#CODEXHUD div#CODEXHUDBUTTONS {
-    transition-property: opacity;
-    -o-transition-property: opacity;
-    -moz-transition-property: opacity;
-    -webkit-transition-property: opacity; 
-    transition-duration: 1.0s; -o-transition-duration: 1.0s;
-    -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
 
 div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
