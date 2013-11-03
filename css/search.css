@@ -7,11 +7,11 @@
 /* The SEARCHBOX */
 
 div#CODEXHUD.emptysearch div.searchbox div.tags { display: none;}
-div.searchbox { text-align: center; }
+div.searchbox { text-align: center;}
 
 div.searchbox div.query {
     width: 100%; text-align: left; margin-top: 2px;
-    font-size: 18px;}
+    font-size: 16px;}
 div.searchbox div.query span#CODEXSEARCHPROMPT {
     padding-left: 1em; padding-right: 0.5em;
     font-style: italic; display: none;}
@@ -32,7 +32,7 @@ div.searchbox div.query .clearsearch { margin: 0.5ex;}
 
 div.searchbox div.query input[type='TEXT'] {
     max-width: 50%; min-width: 33%;
-    font-size: 20px;}
+    font-size: 150%;}
 div.searchbox div.query input[type='TEXT'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
@@ -40,9 +40,9 @@ div.searchbox div.query input[type='TEXT'] {
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon24x24.png);}
 div.searchbox div.query img.clearsearch {
-    height: 30px; width: auto;}
+    height: 2em; width: auto;}
 div.searchbox div.query span.ampersand {
-    font-weight: bold; font-size: 150%;}
+    font-weight: bold; font-size: 120%;}
 div#CODEXHUD.emptysearch div.searchbox div.query span.ampersand { display: none;}
 
 div.searchbox div.query span.dterm {
@@ -64,7 +64,7 @@ div.searchbox div.tags img.clearsearch { float: right; color: red;}
 
 div.searchbox div.input { }
 div.searchbox div.input input[type='TEXT'] {
-    width: 100%; font-size: 150%;}
+    width: 100%; font-size: 120%;}
 
 div.resultinfo .noresults { display: none;}
 div.resultinfo.noresults div.noresults { display: block;}

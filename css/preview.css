@@ -142,6 +142,9 @@ body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
     display: none;}
     */
 
+div#CODEXSKIMMERHELP, div#CODEXSEETHRUHELP {
+    pointer-events: none; opacity: 0.0;
+    display: none;}
 div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
     top: 0px; left: 40px; right: 40px; max-height: 70px;
     border-top: 0px; padding: 1ex; padding-top: 0px; padding-bottom: 0px;
@@ -156,9 +159,6 @@ div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
     -webkit-border-bottom-right-radius: 1ex; 
     -moz-border-radius-bottomright: 1ex;
     -o-border-radius-bottomright: 1ex;}
-div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
-    pointer-events: none;
-    display: block;}
 div#CODEXSKIMMERHELP.helpbox p, div#CODEXSEETHRUHELP.helpbox p {
     margin: 0px; padding: 0px;}
 div#CODEXSKIMMERHELP.helpbox dfn, div#CODEXSEETHRUHELP.helpbox dfn {

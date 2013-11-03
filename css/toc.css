@@ -9,11 +9,11 @@
 div.codextoc { display: none;}
 div.codextoc div.spanbar { height: 20px;}
 div.codextoc > div, div.codextoc > div.head {
-    margin-left: 32px; margin-right: 32px;}
+    margin-left: 1em; margin-right: 1em;}
 div.codextoc div.head {
   position: relative; margin: 0px; padding: 0px; border: 0px;
   left: 0px; right: 0px; margin: 0px;
-  margin-left: 32px; margin-right: 32px;
+  margin-left: 1em; margin-right: 1em;
   display: none;}
 div.codextoc > div.spanbar {
   margin-left: 0px; margin-right: 0px;}
@@ -303,7 +303,7 @@ div.spanbar div.codexhudspan[even] {}
 div.spanbar div.codexhudspan.current {
     color: yellow; background-color: transparent;}
 div#CODEXHUD div.codextoc { 
-  margin-left: 16px; margin-right: 16px;}
+  margin-left: 1em; margin-right: 1em;}
 div#CODEXHUD div#CODEXTOC div.codextoc { 
   margin-left: 0.5em; margin-right: 0.5em;}
 div#CODEXHUD div#CODEXTOC div.codextoc.toc0 { 

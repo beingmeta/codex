@@ -104,7 +104,7 @@ div.helpbox img.closebutton, div.codexhelp img.closebutton {
     color: red;}
 
 div.helpbox.atfoot {
-    bottom: 0px; max-height: 75%; height: auto;
+    bottom: 0px; max-height: 35%; height: auto;
     border-bottom: 0px;
     border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 

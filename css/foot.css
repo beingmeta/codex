@@ -184,7 +184,8 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
 #CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelgloss {
     display: none;}
 
-body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
+body.codexscanning div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
 body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {

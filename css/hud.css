@@ -189,7 +189,7 @@ body #CODEXHUD.scanning #CODEXSCANNER.expanded {
 
 #CODEXHEARTFRAME {
     position: absolute;
-    top: 50%; bottom: 50%; height: 0px;
+    top: 50%; bottom: 50%; height: auto;
     left: 50px; right: 50px;
     z-index: -100; 
     overflow: hidden;
@@ -205,6 +205,8 @@ body #CODEXHUD.scanning #CODEXSCANNER.expanded {
     /* background-color: steelblue; */
     background-color: ivory;
     border-color: rgba(70, 130, 180, 0.54);}
+#CODEXHUD.openheart #CODEXHEARTFRAME {
+    top: 100px; bottom: 100px;}
 body.hudup #CODEXHEARTFRAME {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -327,7 +329,6 @@ body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART #CODEXHEARTCONTENT {
 #CODEXHEART div.hudpanel > h1:first-child { margin-top: 0px;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME {
-    height: auto; top: 100px; bottom: 100px;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
@@ -504,11 +505,26 @@ div#CODEXHUD img.hudbutton {
 div#CODEXHUD .hudbutton.tapholdtarget {
     border-color: blue;}
 
+body.codexscanning div#CODEXHUD img.hudbutton {
+    opacity: 0.80;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+    -webkit-opacity: 0.80;
+    -khtml-opacity: 0.80;
+    -moz-opacity: 0.80;
+    -o-opacity: 0.80;}
+
 div#CODEXHEAD img.hudbutton[hudmode="allglosses"],
 div#CODEXHEAD img.hudbutton[hudmode="help"] {
     top: 0px; display: none;}
 div#CODEXHEAD img.hudbutton[hudmode="allglosses"] {right: 60px;}
 div#CODEXHEAD img.hudbutton[hudmode="help"] {left: 60px;}
+
+div#CODEXFOOT img.hudbutton[hudmode="searchresults"] { display: none; }
+body.codexscanning div#CODEXHUD.searchresults img.hudbutton[hudmode="searchresults"] {
+    display: inline-block; }
+body.codexscanning div#CODEXHUD.searchresults img.hudbutton[hudmode="allglosses"] {
+    display: none; }
 
 body.hudup div#CODEXHUD img.hudbutton  {}
 body.cxMOUSE div#CODEXHUD img.hudbutton:hover,

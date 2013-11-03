@@ -6,43 +6,47 @@
 
 @charset "UTF-8";
 
-@media screen and (max-device-width: 700px) {
-    #CODEXSHOWCOVER { padding: 0px; }
-}
-
-@media screen and (max-device-width: 600px) {
+@media screen and (max-width: 600px) {
     div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
         left: auto; right: auto; width: 100%;}
-    div#CODEXHUD #CODEXHEART { font-size: 80%; }
-}
-@media screen and (max-device-width: 600px) {
     #CODEXTOP, #CODEXSCANNER {
-        border-left: 0px; border-right: 0px; border-radius: 0px;
+        border-width: 2px;
+        border-bottom-left-radius: 1ex;
+        border-bottom-right-radius: 1ex;
         padding-bottom: 0px;
-        left: 0px; right: 0px; }
+        left: 5px; right: 5px; }
     img.codexclosehud#CODEXSTOPSCAN {
         bottom: 50px; top: auto;}
-    body.hudup #CODEXHUD.openhead #CODEXTOP,
-    body #CODEXHUD.openhead.addgloss #CODEXTOP {
-        left: 0px; right: 0px; }
-    #CODEXHUD.openhead.tocscan #CODEXTOP {
-        left: 50px; right: 50px;}
 
     #CODEXHUD.addgloss img.hudbutton[alt="toc"],
     #CODEXHUD.addgloss img.hudbutton[alt="search"] {
         display: none;}
 
-    body.hudup #CODEXHUD.openhead img.hudbutton[alt="toc"],
-    body.hudup #CODEXHUD.openhead img.hudbutton[alt="search"],
-    body.hudup #CODEXHUD.openhead img.hudbutton[alt="searchresults"] {
+    #CODEXHUD.openhead img.hudbutton[alt="toc"],
+    #CODEXHUD.openhead img.hudbutton[alt="search"],
+    #CODEXHUD.openhead img.hudbutton[alt="searchresults"] {
         display: none;}
 
-    #CODEXHEARTFRAME { border-radius: 0px; }
-    #CODEXHEART {
-        border-radius: 0px;
-        padding-bottom: 0px;
-        margin-bottom: 2px; margin-top: 2px;
+    #CODEXHUD.openheart #CODEXHEARTFRAME {
+        top: 60px; bottom: 60px;}
+
+    #CODEXHEARTFRAME {
+        border-radius: 1ex;
         left: 5px; right: 5px;}
+    #CODEXHEART {
+        border-radius: 1ex; padding-bottom: 0px;
+        margin-bottom: 2px; margin-top: 2px;
+        left: 5px; right: 5px;
+        font-size: 75%;}
+    div#CODEXHUD div.codexhelp.hudpanel {
+        left: 5px; right: 5px; top: 60px; bottom: 60px;}
+    div.helpbox blockquote {
+        margin-left: 2px; margin-right: 2px;}
+    div.helpbox blockquote p {
+        margin-right: 0px; margin-left: 1ex; text-indent: -1ex;}
+
+    div#CODEXHEART div#CODEXSTATICTOC {
+        margin-left: 0.5em; margin-right: 0.5em;}
 
     div.fdjtprogress#CODEXLAYOUTMESSAGE {
         left: 50px; right: 50px;}
@@ -50,11 +54,7 @@
     div#CODEXPAGE { left: 1.5em; right: 1.5em;}
     body.cxBYPAGE .codexglossmark {margin-right: 0em;}
 
-    /*
-    .codexglossmark {margin-right: -2em; margin-top: -1ex;}
-    body .codexglossmark:hover, body .codexglossmark.hover {
-        margin-right: -8px; }
-        */
+    div.searchbox div.query { font-size: 12px; }
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
     div#CODEXHUD div#CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
@@ -65,8 +65,6 @@
 /* Handheld media rules */
 
 @media (max-device-width: 500px) {
-    div#CODEXHUD #CODEXTOP, div#CODEXHUD #CODEXFOOT {
-        left: 0px; right: 0px; width: 100%;}
     div#CODEXFOOT div#CODEXPAGEINFO {
         margin-left: 0px; margin-right: 0px;}
 
