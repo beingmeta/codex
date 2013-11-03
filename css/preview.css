@@ -102,22 +102,23 @@ body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
     -o-box-shadow: none;
     border-color: transparent;}
 
-div#CODEXPREVIEWHELP.helpbox {
+/*
+  div#CODEXPREVIEWHELP.helpbox {
     padding-top: 0px; padding-bottom: 0px;
     text-align: center; overflow: hidden;
     pointer-events: none;}
-div#CODEXPREVIEWHELP.helpbox em { color: purple; }
-div#CODEXPREVIEWHELP.helpbox span.inhead {
+    div#CODEXPREVIEWHELP.helpbox em { color: purple; }
+    div#CODEXPREVIEWHELP.helpbox span.inhead {
     color: purple; font-size: 120%;}
-div#CODEXPREVIEWHELP.helpbox p {
+    div#CODEXPREVIEWHELP.helpbox p {
     margin: 0px; text-indent: 0px;}
-
-body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
+    
+    body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
     left: 40px; right: 40px; max-height: 70px;
     border-radius: 0px; -webkit-border-radius: 0px;
     -moz-border-radius: 0px; -o-border-radius: 0px; 
     display: block;}
-body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
+    body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
     opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -125,7 +126,7 @@ body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
     -khtml-opacity: 0.90;
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
-body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
+    body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
     top: 0px; border-top: 0px;
     border-bottom-left-radius: 1ex;
     -webkit-border-bottom-left-radius: 1ex; 
@@ -135,9 +136,41 @@ body.cxPREVIEW div#CODEXPREVIEWHELP.helpbox {
     -webkit-border-bottom-right-radius: 1ex; 
     -moz-border-radius-bottomright: 1ex;
     -o-border-radius-bottomright: 1ex;}
+    
+    body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXPREVIEWHELP.helpbox,
+    body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXPREVIEWHELP.helpbox {
+    display: none;}
+    */
 
-body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXPREVIEWHELP.helpbox,
-body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXPREVIEWHELP.helpbox {
+div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
+    top: 0px; left: 40px; right: 40px; max-height: 70px;
+    border-top: 0px; padding: 1ex; padding-top: 0px; padding-bottom: 0px;
+    text-align: center; overflow: hidden;
+    border-radius: 0px; -webkit-border-radius: 0px;
+    -moz-border-radius: 0px; -o-border-radius: 0px; 
+    border-bottom-left-radius: 1ex;
+    -webkit-border-bottom-left-radius: 1ex; 
+    -moz-border-radius-bottomleft: 1ex;
+    -o-border-radius-bottomleft: 1ex; 
+    border-bottom-right-radius: 1ex;
+    -webkit-border-bottom-right-radius: 1ex; 
+    -moz-border-radius-bottomright: 1ex;
+    -o-border-radius-bottomright: 1ex;}
+div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
+    pointer-events: none;
+    display: block;}
+div#CODEXSKIMMERHELP.helpbox p, div#CODEXSEETHRUHELP.helpbox p {
+    margin: 0px; padding: 0px;}
+div#CODEXSKIMMERHELP.helpbox dfn, div#CODEXSEETHRUHELP.helpbox dfn {
+    font-size: 125%;}
+
+body.cxPREVIEW div#CODEXSKIMMERHELP,
+body.cxPREVIEW.hudup div#CODEXSEETHRUHELP {
+    display: block; opacity: 0.9;}
+body.cxPREVIEW.hudup div#CODEXSKIMMERHELP { display: none;}
+
+body.cxPREVIEW.hudup div#CODEXHUD.searchresults div#CODEXSEETHRUHELP,
+body.cxPREVIEW.hudup div#CODEXHUD.allglosses div#CODEXSEETHRUHELP {
     display: none;}
 
 /* Emacs local variables

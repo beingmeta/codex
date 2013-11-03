@@ -282,7 +282,7 @@ div.codexhelp h1 {
 div.codexhelp .action {
     color: darkblue;}
 div.codexhelp .result {
-    color: rgba(0,0,0,1);}
+    font-style: italic; color: rgba(0,0,0,1);}
 div.codexhelp td dfn {
     color: rgba(0,0,0,1);}
 div.codexhelp > table, div.codexhelp > div > table {

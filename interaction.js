@@ -293,7 +293,7 @@
         //  previewing (which was touched)
         if (Codex.previewing) {
             var jumpto=getTarget(target);
-            Codex.stopPreview("content_tapped/stop_preview",jumpto||true);
+            Codex.stopPreview("content_tapped/stop_preview",jumpto);
             fdjtUI.TapHold.clear();
             fdjt.UI.cancel(evt);
             return false;}
@@ -969,7 +969,7 @@
             return;
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
-            Codex.stopPreview("onkeydown",true);
+            Codex.stopPreview("onkeydown",Codex.hudup);
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
@@ -1381,7 +1381,7 @@
                  (hasParent(target,Codex.uiclasses)))
             return;
         else if (Codex.previewing) {
-            Codex.stopPreview("default_tap",true);
+            Codex.stopPreview("default_tap",Codex.hudup);
             cancel(evt);
             return;}
         else if (((Codex.hudup)||(Codex.mode))) {
@@ -1522,7 +1522,7 @@
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;}
         if (Codex.previewing) {
-            Codex.stopPreview("right_margin_tap",true);
+            Codex.stopPreview("right_margin_tap",Codex.hudup);
             if (Codex.hudup) {
                 Codex.setHUD(false);
                 Codex.setMode(false);}
@@ -1594,7 +1594,7 @@
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;}
         if (Codex.previewing) {
-            Codex.stopPreview("left_margin_tap",true);
+            Codex.stopPreview("left_margin_tap",Codex.hudup);
             if (Codex.hudup) {
                 Codex.setHUD(false);
                 Codex.setMode(false);}
@@ -1893,7 +1893,7 @@
         var target=fdjtUI.T(evt);
         if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
         if (Codex.previewing) {
-            Codex.stopPreview("head_tap",true);
+            Codex.stopPreview("head_tap",Codex.hudup);
             cancel(evt);
             return;}
         if (fdjtUI.isClickable(target)) return;
@@ -1915,7 +1915,7 @@
     function foot_tap(evt){
         if (Codex.Trace.gestures) fdjtLog("foot_tap %o",evt);
         if (Codex.previewing) {
-            Codex.stopPreview("foot_tap",true);
+            Codex.stopPreview("foot_tap",Codex.hudup);
             cancel(evt);
             return;}
         if (isClickable(evt)) return;
@@ -2009,7 +2009,7 @@
         if (target.nodeType===3) target=target.parentNode;
         if (!(Codex.previewing)) {preview_start_page=false; return;}
         dropClass(target,"preview");
-        Codex.stopPagePreview("pageinfo_release");
+        Codex.stopPreview("pageinfo_release",true);
         preview_start_page=false;
         previewing_page=false;
         if (((hasParent(target,pageinfo))&&(target.tagName==="span"))) {
@@ -2037,7 +2037,7 @@
         previewing_page=false;}
     function pageinfo_touchtoo(evt){
         if (Codex.previewing) {
-            Codex.stopPreview("touchtoo",true);
+            Codex.stopPreview("touchtoo",Codex.hudup);
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
