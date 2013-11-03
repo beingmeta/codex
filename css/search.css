@@ -83,13 +83,11 @@ div#CODEXHUD div.resultinfo {
 div#CODEXHUD div.resultinfo span.resultcount,
 div#CODEXHUD div.resultinfo span.refinecount,
 div#CODEXHUD div.resultinfo span.showalltags {
-    cursor: pointer;}
-div#CODEXHUD.refinesearch div.resultinfo span.refinecount {
-    font-weight: bold;}
-div#CODEXHUD.expandsearch div.resultinfo span.showalltags {
-    font-weight: bold;}
+    cursor: pointer; text-decoration: underline;}
+div#CODEXHUD.refinesearch div.resultinfo span.refinecount, 
+div#CODEXHUD.expandsearch div.resultinfo span.showalltags,
 div#CODEXHUD.searchresults div.resultinfo span.resultcount {
-    font-weight: bold;}
+    font-weight: bold; text-decoration: none;}
 
 div#CODEXHUD div#CODEXSEARCHINFO { display: none;}
 div#CODEXHUD.refinesearch div#CODEXSEARCHINFO,

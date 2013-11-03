@@ -1099,7 +1099,7 @@ var Codex={
     function stopPreview(caller,jumpto){
         clearPreview();
         if ((jumpto)&&(!(jumpto.nodeType)))
-            jumpto=Codex.previewing;
+            jumpto=Codex.previewTarget||Codex.previewing;
         if (Codex.Trace.flips)
             fdjtLog("stopPreview/%s jump to %o",caller||"nocaller",jumpto);
         if (Codex.layout instanceof fdjt.CodexLayout) {
@@ -1110,7 +1110,9 @@ var Codex={
         else scrollPreview(false,caller);
         Codex.previewing=false;
         dropClass(document.body,"cxPREVIEW");
-        if (jumpto) codexGoTo(jumpto);
+        if (jumpto) {
+            if (Codex.hudup) Codex.setHUD(false);
+            codexGoTo(jumpto);}
         return false;}
     Codex.stopPreview=stopPreview;
 
