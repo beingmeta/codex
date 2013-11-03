@@ -163,8 +163,7 @@ div#CODEXCOVERCONTROLS.nobookcover .control[data-mode='bookcover'] {
 div#CODEXCOVERCONTROLS.havecreditspage .control[data-mode='creditspage'] {
     display: inline;}
 
-div#CODEXWELCOME, div#CODEXTITLEPAGE,
-div#CODEXABOUTBOOK, div#CODEXBOOKCREDITS,
+div#CODEXTITLEPAGE, div#CODEXABOUTBOOK, div#CODEXBOOKCREDITS,
 div#CODEXABOUTSBOOKS, div#CODEXAPPHELP {
     padding-top: 1ex; padding-bottom: 1ex;
     margin-left: auto; margin-right: auto;

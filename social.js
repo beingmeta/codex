@@ -252,7 +252,13 @@
             var pgeom=fdjtDOM.getGeometry(point);
             var tgeom=fdjtDOM.getGeometry(target);
             var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight();
-            if (geom.width>w) {
+            if (Codex.fullwidth) {
+                var wspec=(w-30)+"px";
+                hudwrapper.style.left="10px";
+                hudwrapper.style.width=
+                    hudwrapper.style.maxWidth=
+                    hudwrapper.style.minWidth=wspec;}
+            else if (geom.width>w) {
                 hudwrapper.style.maxWidth=(w-20)+"px";
                 hudwrapper.style.minWidth=Math.floor(w/2)+"px";
                 hudwrapper.style.left="10px";}
@@ -265,11 +271,13 @@
                 else hudwrapper.style.maxWidth=(w-100)+"px";
                 geom=fdjtDOM.getGeometry(slicediv);
                 wgeom=fdjtDOM.getGeometry(hudwrapper);}
-            if (geom.width>(w-50)) hudwrapper.style.left="10px";
+            if ((!(Codex.fullwidth))&&(geom.width>(w-50)))
+                hudwrapper.style.left="10px";
             var wh=false;
             if ((geom.height+15)>h/2) wh=h/2;
             else wh=geom.height+10;
-            hudwrapper.style.height=wh+'px';
+            if ((!(Codex.fullwidth))&&(wh>50))
+                hudwrapper.style.height=wh+'px';
             slicediv.style.overflow='hidden';
             var above_point=pgeom.top-60, below_point=(h-60)-pgeom.bottom;
             var below_passage=(h-60)-tgeom.bottom;
@@ -284,8 +292,9 @@
                 hudwrapper.style.top=(pgeom.bottom+15)+'px';
             else {
                 // Now, we're scrolling
-                hudwrapper.style.right=(w-pgeom.left+10)+'px';
-                hudwrapper.style.left='50px';
+                if (!(Codex.fullwidth)) {
+                    hudwrapper.style.right=(w-pgeom.left+10)+'px';
+                    hudwrapper.style.left='50px';}
                 if (pgeom.top-(h/4)<50) {
                     hudwrapper.style.top='50px';
                     hudwrapper.style.bottom='auto';
@@ -295,7 +304,8 @@
                     hudwrapper.style.bottom='auto';
                     hudwrapper.style.height=(h/2)+'px';}}
             // fdjtLog("geom=%j, pgeom=%j, wgeom=%j ph=%j",geom,pgeom,wgeom,fdjtDOM.viewHeight());
-            if (fdjtDOM.viewWidth()<300)
+            if (Codex.fullwidth) {}
+            else if (fdjtDOM.viewWidth()<300)
                 hudwrapper.style.minWidth=((fdjtDOM.viewWidth())-10)+"px";
             hudwrapper.style.display='';
             hudwrapper.style.opacity='';}

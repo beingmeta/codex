@@ -6,13 +6,20 @@
 
 @charset "UTF-8";
 
-@media screen and (max-width: 600px) {
-    div#CODEXHUD #CODEXHEART { font-size: 80%; }
-    div#CODEXHUD div.sbookplate { display: none;}
+@media screen and (max-device-width: 700px) {
+    #CODEXSHOWCOVER { padding: 0px; }
 }
-@media screen and (max-width: 600px) {
-    #CODEXTOP, #CODEXSCANNER { left: 0px; right: 0px; }
-    #CODEXTOP, #CODEXSCANNER { left: 0px; right: 0px; }
+
+@media screen and (max-device-width: 600px) {
+    div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+        left: auto; right: auto; width: 100%;}
+    div#CODEXHUD #CODEXHEART { font-size: 80%; }
+}
+@media screen and (max-device-width: 600px) {
+    #CODEXTOP, #CODEXSCANNER {
+        border-left: 0px; border-right: 0px; border-radius: 0px;
+        padding-bottom: 0px;
+        left: 0px; right: 0px; }
     img.codexclosehud#CODEXSTOPSCAN {
         bottom: 50px; top: auto;}
     body.hudup #CODEXHUD.openhead #CODEXTOP,
@@ -30,7 +37,12 @@
     body.hudup #CODEXHUD.openhead img.hudbutton[alt="searchresults"] {
         display: none;}
 
-    #CODEXHEART {left: 20px; right: 20px;}
+    #CODEXHEARTFRAME { border-radius: 0px; }
+    #CODEXHEART {
+        border-radius: 0px;
+        padding-bottom: 0px;
+        margin-bottom: 2px; margin-top: 2px;
+        left: 5px; right: 5px;}
 
     div.fdjtprogress#CODEXLAYOUTMESSAGE {
         left: 50px; right: 50px;}
@@ -46,6 +58,7 @@
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
     div#CODEXHUD div#CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
+
 }
 
 
@@ -56,8 +69,14 @@
         left: 0px; right: 0px; width: 100%;}
     div#CODEXFOOT div#CODEXPAGEINFO {
         margin-left: 0px; margin-right: 0px;}
-    div#CODEXHUD .botleft {top: 0px; left: 60px;}
-    div#CODEXHUD .botright {top: 0px; right: 60px;}
+
+    div#CODEXHEAD img.hudbutton[hudmode="allglosses"],
+    div#CODEXHEAD img.hudbutton[hudmode="help"] {
+        display: inline-block;}
+    div#CODEXFOOT img.hudbutton[hudmode="allglosses"],
+    div#CODEXFOOT img.hudbutton[hudmode="help"] {
+        display: none;}
+    
     div#CODEXPAGE {
         top: 0px; bottom: 0px;
         left: 5px; right: 5px;}

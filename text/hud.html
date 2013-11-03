@@ -5,12 +5,22 @@
        class="hudbutton hudmodebutton topleft"
        id="CODEXTOCBUTTON"
        hudmode="statictoc"/>
+  <img svg="{{bmg}}codex/helpicon.svgz"
+       src="{{bmg}}codex/helpicon50x50.png"
+       alt="help" title="show contextual help"
+       class="hudbutton hudmodebutton"
+       id="CODEXHELPBUTTON"
+       hudmode="help"/>
   <span class="hudbutton" id="CODEXSHOWCOVER">Cover</span>
+  <img svg="{{bmg}}codex/allglosses.svgz"
+       src="{{bmg}}codex/allglosses50x50.png"
+       alt="allglosses" title="show all glosses"
+       class="hudbutton hudmodebutton"
+       hudmode="allglosses"/>
   <img svg="{{bmg}}codex/tagsearch.svgz"
        src="{{bmg}}codex/tagsearch50x50.png"
        alt="search" title="search tags"
        class="hudbutton hudmodebutton topright"
-       id="CODEXSEARCHBUTTON"
        hudmode="search"/>
 </div>
 <div id="CODEXTOP">
@@ -190,13 +200,13 @@
        class="hudbutton hudmodebutton botleft"
        id="CODEXHELPBUTTON"
        hudmode="help"/>
+  <div class="helphud botright" data-hudmode="toc">
+    <span class="nobreak">browse</span><br/>
+    <span class="nobreak">glosses<span class="arrow">&#x2192;</span></span></div>
+  <div class="helphud botleft">
+    <span class="nobreak">toggle</span><br/>
+    <span class="nobreak"><span class="arrow">&#x2190;</span>help</span></div>
 </div>
-<div class="helphud botright" data-hudmode="toc">
-  <span class="nobreak">browse</span><br/>
-  <span class="nobreak">glosses<span class="arrow">&#x2192;</span></span></div>
-<div class="helphud botleft">
-  <span class="nobreak">toggle</span><br/>
-  <span class="nobreak"><span class="arrow">&#x2190;</span>help</span></div>
 <!--
     <audio src="{{bmg}}page-flip.mp3" muted preload id="CODEXPAGEFLIPAUDIO">
     </audio>

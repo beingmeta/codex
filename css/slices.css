@@ -87,11 +87,13 @@ div.codexslice div.codexcard.codexscanpoint .fdjtclearfloats {
 
 div.codexsources {}
 div.codexsources img.button {
-    height: 50px; width: auto; max-width: 50px; border-radius: 10%;}
+    height: 50px; width: auto; max-width: 50px; border-radius: 10%;
+    box-sizing: border-box;}
 div.codexsources img.button.everyone {}
 div.codexsources img.button.everyone.selected { background-color: silver; }
 div.codexsources .button {
-    border: solid transparent 4px; margin: 2px;}
+    border: solid transparent 4px;
+    margin: 0px; margin-left: 2px; margin-right: 2px;}
 div.codexsources img.button.source.selected,
 div.codexsources div.button.source.selected {
     border-color: blue;}

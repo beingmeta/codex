@@ -2536,7 +2536,6 @@
          "#CODEXPREVSCAN": {click: function(evt){
              Codex.scanBackward(evt); cancel(evt);}},
          "#CODEXSHOWTEXT": {click: back_to_reading},
-         "#CODEXWELCOME": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          "#CODEXNOTETEXT": {click: jumpToNote},
          ".hudmodebutton": {
@@ -2648,7 +2647,6 @@
              touchstart: back_to_reading,
              touchmove: cancel,
              touchend: cancel},
-         "#CODEXWELCOME": {click: hideSplash},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          ".hudmodebutton": {
              tap: hudmodebutton,hold: hudmodebutton,release: hudmodebutton,

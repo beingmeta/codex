@@ -285,7 +285,6 @@ div#CODEXHUD.glossaddtag div#CODEXHEART,
 div#CODEXHUD.glossaddoutlet div#CODEXHEART {
     top: 37px; margin-top: 0px;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
@@ -504,6 +503,12 @@ div#CODEXHUD img.hudbutton {
 .cxMOUSE div#CODEXHUD img.hudbutton:hover,
 div#CODEXHUD .hudbutton.tapholdtarget {
     border-color: blue;}
+
+div#CODEXHEAD img.hudbutton[hudmode="allglosses"],
+div#CODEXHEAD img.hudbutton[hudmode="help"] {
+    top: 0px; display: none;}
+div#CODEXHEAD img.hudbutton[hudmode="allglosses"] {right: 60px;}
+div#CODEXHEAD img.hudbutton[hudmode="help"] {left: 60px;}
 
 body.hudup div#CODEXHUD img.hudbutton  {}
 body.cxMOUSE div#CODEXHUD img.hudbutton:hover,
@@ -1148,7 +1153,29 @@ body.cxFULLHEIGHT.hudup #CODEXTOP, body.cxFULLHEIGHT.hudup #CODEXFOOT {
     display: block;}
 
 body.cxFULLHEIGHT.cxFULLWIDTH #CODEXHUD {display: none;}
-body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {display: block;}
+
+body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.openhud #CODEXHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.openglossmark #CODEXHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.codexscanning #CODEXHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {
+    display: block;}
+
+body.cxFULLHEIGHT.hudup div#CODEXHEAD {
+    background-color: ivory;
+    padding-bottom: 2px;
+    border-bottom: solid black 2px;
+    height: 54px; max-height: inherit;}
+body.cxFULLHEIGHT #CODEXSHOWCOVER {
+    padding: 0px; }
+body.cxFULLHEIGHT.hudup div#CODEXFOOT {
+    background-color: ivory;
+    padding-top: 2px;
+    border-radius: 0px;}
+body.cxFULLHEIGHT div#CODEXFOOT div#CODEXPAGEINFO {
+    left: 0px; right: 0px;}
+body.cxFULLHEIGHT div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    left: auto; right: auto; width: 100%;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

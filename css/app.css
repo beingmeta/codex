@@ -830,13 +830,11 @@ div.startupmessage.running {
 
 @media screen and (min-width: 300px) and (max-width: 600px) {
     body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME  {
-        top: 75px; bottom: 75px;}
+        top: 60px; bottom: 60px;}
     #CODEXHEARTFRAME  {
-        left: 15px; right: 15px;}
+        left: 0px; right: 0px;}
     div#CODEXHUD div#CODEXHELP.hudpanel {
-        left: 15px; right: 15px; top: 60px; bottom: 60px;}
-    div#CODEXHUD div.hudpanel#CODEXWELCOME {
-        left: 15px; right: 15px; top: 60px; bottom: 60px;}
+        left: 0px; right: 0px; top: 60px; bottom: 60px;}
     div#CODEXPAGE {
         left: 10px; right: 10px;}
     }
