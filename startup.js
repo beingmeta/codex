@@ -107,7 +107,7 @@ Codex.Startup=
              uisize: 'normal',showconsole: false,
              animatecontent: true,animatehud: true,
              hidesplash: false,keyboardhelp: true,
-             holdmsecs: 400};
+             holdmsecs: 400,wandermsecs: 1500};
         var current_config={};
         var saved_config={};
 
@@ -330,6 +330,9 @@ Codex.Startup=
         Codex.addConfig("holdmsecs",function(name,value){
             Codex.holdmsecs=value;
             fdjtUI.TapHold.default_opts.holdthresh=value;});
+        Codex.addConfig("wandermsecs",function(name,value){
+            Codex.wandermsecs=value;
+            fdjtUI.TapHold.default_opts.wanderthresh=value;});
         Codex.addConfig("taptapmsecs",function(name,value){
             Codex.taptapmsecs=value;
             fdjtUI.TapHold.default_opts.taptapthresh=value;});
