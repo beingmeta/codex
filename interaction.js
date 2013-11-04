@@ -667,7 +667,15 @@
    function toc_tapped(evt){
        evt=evt||event;
         var tap_target=fdjtUI.T(evt);
-        var about=getAbout(tap_target);
+        if (Codex.previewing) {
+            // Because we're previewing, this slice is invisible, so
+            //  the user really meant to tap on the body underneath,
+            //  so we stop previewing and jump there We might try to
+            //  figure out exactly which element was tapped somehow
+            Codex.stopPreview("toc_tapped",true);
+            fdjtUI.cancel(evt);
+            return;}
+       var about=getAbout(tap_target);
         if (about) {
             var name=about.name||about.getAttribute("name");
             var ref=name.slice(3);
@@ -774,10 +782,12 @@
         if (Codex.Trace.gestures)
             fdjtLog("slice_tapped %o: %o",evt,target);
         if (Codex.previewing) {
-            // Because we're previewing, this slice is invisible, so the user really
-            //  meant to tap on the body underneath, so we stop previewing and jump there
-            // We might try to figure out exactly which element was tapped somehow
+            // Because we're previewing, this slice is invisible, so
+            //  the user really meant to tap on the body underneath,
+            //  so we stop previewing and jump there We might try to
+            //  figure out exactly which element was tapped somehow
             Codex.stopPreview("slice_tapped",true);
+            fdjtUI.cancel(evt);
             return;}
         if (getParent(target,".ellipsis")) {
             fdjtUI.Ellipsis.toggle(target);
