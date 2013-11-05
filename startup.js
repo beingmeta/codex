@@ -308,16 +308,6 @@ Codex.Startup=
             else setConfig(name,elt.value,save);}
         Codex.updateConfig=updateConfig;
 
-        Codex.addConfig("hidesplash",function(name,value){
-            var doitnow=false;
-            if ((value)&&(!(Codex.hidesplash))&&(Codex._setup)&&
-                (Codex.mode==="splash")&&(Codex.user))
-                doitnow=true;
-            Codex.hidesplash=value;
-            fdjtUI.CheckSpan.set(
-                document.getElementsByName("CODEXHIDESPLASH"),
-                value);
-            if (doitnow) Codex.setMode(false);});
         Codex.addConfig("keyboardhelp",function(name,value){
             Codex.keyboardhelp=value;
             fdjtUI.CheckSpan.set(
@@ -803,8 +793,6 @@ Codex.Startup=
             if (mode) {}
             else if (getQuery("startmode"))
                 mode=getQuery("startmode");
-            else if ((Codex.hidesplash)&&(Codex.user)) 
-                Codex.setMode(false);
             else {}
             if (mode) Codex.setMode(mode);
             else mode=Codex.mode;
@@ -2021,8 +2009,6 @@ Codex.Startup=
                 // We also save it locally so we can get it synchronously
                 setLocal(Codex.user._id,Codex.user.Export(),true);}
             setupUI4User();
-            if ((Codex.mode==="splash")&&(Codex._setup)&&(Codex.hidesplash))
-                Codex.setMode(false);
             return Codex.user;}
         Codex.setUser=setUser;
         

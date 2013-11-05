@@ -984,6 +984,10 @@
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
             return false;}
+        else if (hasClass(document.body,"cxCOVER")) {
+            Codex.hideCover();
+            fdjt.UI.cancel(evt);
+            return false;}
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (kc===34) Codex.pageForward(evt);   /* page down */
         else if (kc===33) Codex.pageBackward(evt);  /* page up */
@@ -2346,29 +2350,6 @@
         if (fdjtUI.isClickable(target)) return;
         else cancel(evt);}
 
-    function hideSplash(evt){
-        evt=evt||event;
-        var target=fdjtUI.T(evt);
-        if (fdjtUI.isClickable(target)) return;
-        else Codex.setMode(false);}
-
-    function hideSplashToggle(evt) {
-        evt=evt||event;
-        var target=fdjtUI.T(evt);
-        var newval=(!(Codex.hidesplash));
-        var input=getParent(target,"input");
-        if (input)
-            setTimeout(function(){
-                Codex.setConfig("hidesplash",input.checked);
-                Codex.saveConfig();},
-                       100);
-        else {
-            Codex.setConfig("hidesplash",newval);
-            Codex.saveConfig();}
-        if ((newval)&&(Codex._setup)&&
-            ((fdjtTime()-(Codex._setup.getTime()))<30000))
-            Codex.setMode(false);}
-
     function setHelp(flag){
         if (flag) {
             fdjtDOM.addClass(document.body,"codexhelp");
@@ -2518,7 +2499,6 @@
          "#CODEXPAGERIGHT": {tap: right_margin_tap,
                             hold: right_margin_hold,
                             release: right_margin_release},
-         "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
          "#CODEXATTACHFORM": {submit: addlink_submit},
@@ -2637,7 +2617,6 @@
          "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSHARECLOUD": {click: outlet_tapped},
-         "#HIDESPLASHCHECKSPAN" : {click: hideSplashToggle},
          "#CODEXNEXTPAGE": {touchstart: function(evt){
              Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {touchstart: function(evt){
