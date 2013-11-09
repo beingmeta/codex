@@ -93,6 +93,8 @@ var Codex={
     mycopyid: false, 
     // This is the time of the last update
     syncstamp: false,
+    // Number of milliseconds between gloss updates
+    update_interval: 5*60*1000,
     // Various handlers, settings, and status information for the
     // Codex interface
     UI: {
@@ -105,6 +107,9 @@ var Codex={
     DOM: {}, CSS: {}, TapHold: {},
     /* XTARGETS are procedures linked to fragment ids */
     xtargets: {},
+    // Where various event timestamps are stored
+    Timeline: {},
+    // What to trace, for debugging
     Trace: {
         startup: 1,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc

@@ -80,7 +80,7 @@ Codex.setMode=
             if (fdjtID("CODEXHUD")) return;
             var messages=fdjtDOM("div#CODEXSTARTUPMESSAGES.startupmessages");
             messages.innerHTML=fixStaticRefs(Codex.HTML.messages);
-            if (Codex.Trace.startup) fdjtLog("Initializing HUD layout");
+            if (Codex.Trace.startup>2) fdjtLog("Initializing HUD layout");
             Codex.HUD=CodexHUD=hud=fdjtDOM("div#CODEXHUD");
             hud.codexui=true;
             hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
@@ -129,7 +129,7 @@ Codex.setMode=
 
             Codex.UI.addHandlers(hud,"hud");
 
-            if (Codex.Trace.startup) fdjtLog("Done with static HUD init");
+            if (Codex.Trace.startup>2) fdjtLog("Done with HUD initialization");
 
             if (!(Codex.svg)) {
                 var images=fdjtDOM.getChildren(hud,"img");
@@ -265,7 +265,6 @@ Codex.setMode=
             Codex.DOM.share_cloud=dom_share_cloud;
             updateScroller("CODEXSHARECLOUD");
 
-            if (Codex.Trace.startup) fdjtLog("Updating scrollers");
             fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
 
             if (Codex.Trace.startup)

@@ -76,7 +76,6 @@ Codex.Paginate=
         var atoi=parseInt;
 
         function Paginate(why,init){
-            var initial=(!(Codex.layout));
             if (((Codex.layout)&&(!(Codex.layout.done)))) return;
             if (!(why)) why="because";
             dropClass(document.body,"cxSCROLL");
@@ -87,7 +86,7 @@ Codex.Paginate=
             var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
             if ((!(Codex.layout))&&(Codex.Trace.startup))
-                fdjtLog("Starting intial page layout into %dx%d %s %s pages",
+                fdjtLog("Intial page layout requires %dx%d %s %s pages",
                        width,height,bodysize,bodyfamily);
             if (Codex.layout) {
                 var current=Codex.layout;
@@ -161,8 +160,6 @@ Codex.Paginate=
                 return false;}
             
             function new_layout(){
-                if ((!(Codex.layout))&&(Codex.Trace.startup))
-                    fdjtLog("Starting new initial layout");
 
                 // Prepare to do the layout
                 dropClass(document.body,"cxSCROLL");
@@ -365,11 +362,8 @@ Codex.Paginate=
                         page.setAttribute("data-sbookloc",running);}}}
 
             if ((Codex.cachelayouts)&&(!((Codex.forcelayout)))) {
-                if ((initial)&&(Codex.Trace.startup))
-                    fdjtLog("Checking layout cache");
                 CodexLayout.fetchLayout(layout_id,function(content){
-                    if (content)
-                        restore_layout(content,layout_id);
+                    if (content) restore_layout(content,layout_id);
                     else new_layout();});}
             else {
                 setTimeout(new_layout,10);}}

@@ -428,7 +428,7 @@ Codex.DOMScan=(function(){
             scaninfo=scaninfo.head;}
         var done=new Date();
         if ((Codex.Trace.startup)||(Codex.Trace.scan))
-            fdjtLog('Gathered metadata in %f secs over %d/%d heads/nodes',
+            fdjtLog('Gathered metadata in %f secs over %d heads, %d nodes',
                     (done.getTime()-start.getTime())/1000,
                     scanstate.headcount,scanstate.eltcount);
         docinfo.addContent=function(node){

@@ -169,7 +169,7 @@
                     if (seen.indexOf(node)<0) { 
                         seen.push(node);
                         fdjtDOM.addListeners(node,h);}}}}
-        if (Codex.Trace.startup) fdjtLog("Done with handler setup");}
+        if (Codex.Trace.startup>2) fdjtLog("Done with handler setup");}
     Codex.setupGestures=setupGestures;
 
     /* New simpler UI */
