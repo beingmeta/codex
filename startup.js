@@ -97,7 +97,11 @@ Codex.Startup=
         /* Save local */
 
         var saveLocal=Codex.saveLocal;
+        var readLocal=Codex.readLocal;
 
+        /* Interval timers */
+        var ticktock=false;
+        
         /* Configuration information */
 
         var config_handlers={};
@@ -356,7 +360,10 @@ Codex.Startup=
             // This reads settings
             envSetup();
 
-            // If we don't know who the user is, get started
+            // Initialize the book state (location, targets, etc)
+            initState(); Codex.syncState();
+
+            // If we don't know who the user is, ask ASAP
             if (!((Codex.user)||(window._sbook_loadinfo)||
                   (Codex.userinfo)||(window._userinfo)||
                   (getLocal("codex.user")))) {
@@ -516,9 +523,6 @@ Codex.Startup=
                  (fdjtState.getCookie("sbooksdemo"))||
                  (getQuery("demo")))) {
                 fdjtUI.Reticle.setup();}
-
-            // Initialize page information, etc
-            initState();
 
             fdjtLog("Body: %s",document.body.className);
 
@@ -754,7 +758,6 @@ Codex.Startup=
             if (fdjtID("CODEXREADYSPLASH"))
                 fdjtID("CODEXREADYSPLASH").style.display='none';
             Codex.displaySync();
-            setInterval(Codex.serverSync,60000);
             fdjtDOM.dropClass(document.body,"codexstartup");
             if (mode) {}
             else if (getQuery("startmode"))
@@ -1867,7 +1870,6 @@ Codex.Startup=
         Codex.loadInfo=loadInfo;
 
         var updating=false;
-        var ticktock=false;
         var noajax=false;
         function updatedInfo(data,source,start){
             var user=Codex.user;
@@ -1921,12 +1923,12 @@ Codex.Startup=
                     else {
                         try {
                             fdjtLog.warn(
-                                "Ajax call to %s returnd status %d %j, taking a break",
+                                "Ajax call to %s returned status %d %j, taking a break",
                                 uri,req.status,JSON.parse(req.responseText));}
                         catch (ex) {
                             fdjtLog.warn(
                                 "Ajax call to %s returned status %d, taking a break",
-                                req.status,uri);}
+                                uri,req.status);}
                         if (ticktock) {
                             clearInterval(Codex.ticktock);
                             Codex.ticktock=ticktock=false;}
@@ -2178,23 +2180,17 @@ Codex.Startup=
 
         function initState() {
             var uri=Codex.docuri||Codex.refuri;
-            var statestring=getLocal("codex.state("+uri+")");
+            var statestring=readLocal("codex.state("+uri+")");
             if (statestring)
-                Codex.state=JSON.parse(statestring);}
+                Codex.state=JSON.parse(statestring);
+            var syncstatestring=readLocal("codex.syncstate("+uri+")");
+            if (syncstatestring)
+                Codex.syncstate=JSON.parse(syncstatestring);}
         
         /* This initializes the sbook state to the initial location with the
            document, using the hash value if there is one. */ 
         function initLocation() {
-            var state=Codex.state;
-            if (!(state)) {
-                var uri=Codex.docuri||Codex.refuri;
-                var statestring=getLocal("codex.state("+uri+")");
-                if (statestring) {
-                    Codex.state=state=JSON.parse(statestring);
-                    if (Codex.Trace.state)
-                        fdjtLog("Got state from local storage: %j",
-                                state);}
-                else state={};}
+            var state=Codex.state, synced=Codex.syncstate;
             var hash=window.location.hash; var target=false;
             if ((typeof hash === "string") && (hash.length>0)) {
                 if ((hash[0]==='#') && (hash.length>1))
@@ -2203,67 +2199,34 @@ Codex.Startup=
                 if (Codex.Trace.startup>1)
                     fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
             if (target) Codex.GoTo(target,"initLocation/hash",true,true,true);
-            else if ((state)&&(state.location)) {
-                Codex.GoTo(state.location,"initLocation/state.location",
-                           false,false,true);
-                if (state.target) Codex.setTarget(state.target);}
-            else if ((state)&&(state.target)&&(fdjtID(state.target)))
-                Codex.GoTo(state.target,"initLocation/state.target",
-                           true,true,true);
-            else if (Codex.start||Codex.cover||Codex.titlepage)
-                Codex.GoTo((Codex.start||Codex.cover||Codex.titlepage),
-                           "initLocation/start/cover/titlepage",
-                           false,false,true);
-            if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine))
-                syncLocation();}
-        
-        function syncLocation() {
-            if (!(Codex.user)) return;
-            var uri="https://"+Codex.server+"/v1/sync"+
-                "?DOCURI="+encodeURIComponent(Codex.docuri)+
-                "&REFURI="+encodeURIComponent(Codex.refuri);
-            if (Codex.Trace.dosync)
-                fdjtLog("syncLocation(call) %s",uri);
-            try {
-                fdjt.Ajax(function(req){
-                    if (req.readyState!==4) return;
-                    else if (req.status>=300) {
-                        Codex.setConnected(false);
-                        return;}
-                    var d=JSON.parse(req.responseText);
-                    Codex.setConnected(true);
-                    Codex.syncstart=true;
-                    if (Codex.Trace.dosync)
-                        fdjtLog("syncLocation(callback) %s: %j",uri,d);
-                    if ((!(d))||(!(d.location))) {
-                        if (!(Codex.state))
-                            Codex.GoTo(Codex.start||Codex.docroot||Codex.body,
-                                       "syncLocation",false,false);
-                        return;}
-                    else if ((!(Codex.state))||(Codex.state.tstamp<d.tstamp)) {
-                        if ((d.location)&&(d.location<=Codex.location)) return;
-                        if (d.page===Codex.curpage) return;
-                        var msg1="Sync to L"+Codex.location2pct(d.location);
-                        var msg2=((d.page)&&("(page "+d.page+")"));
-                        fdjtUI.choose([
-                            {label: "No"},
-                            {label: "Yes, sync",selected: true,
-                             handler: function() {
-                                 if ((d.location)||(d.target)) {
-                                     if (d.location)
-                                         Codex.GoTo(d.location,"sync",
-                                                    d.target,true);
-                                     else Codex.GoTo(d.target,"sync",
-                                                     d.target,true);
-                                     Codex.saveState(d);}}}],
-                                      fdjtDOM("div",msg1),
-                                      fdjtDOM("div.smaller",msg2));}},
-                          uri,false,
-                          function(req){
-                              if ((req.readyState===4)&&(navigator.onLine))
-                                  Codex.setConnected(false);});}
-            catch (ex) {Codex.dosync=false;}}
-        Codex.syncLocation=syncLocation;
+            else if ((!(state))&&(synced))
+                Codex.restoreState(synced);
+            else if ((!(synced))&&(state))
+                Codex.restoreState(state);
+            else if (!((synced)||(state))) {
+                Codex.GoTo(1);}
+            else if (state.deviceid===synced.deviceid)
+                Codex.restoreState(state);
+            else {
+                var msg1="You're currently "+Codex.location2pct(state.location)+" into this book";
+                var choices=[{label: "Stay here"}];
+                if (state.maxloc!==state.location) 
+                    choices.push({label: "Jump to "+Codex.location2pct(state.maxloc)+
+                                  ", your furthest location on this device",
+                                  handler: function(){Codex.GoTo(state.maxloc,"sync");}});
+                if ((synced.location!==state.location)&&(synced.location!==state.maxloc))
+                    choices.push({label: "Jump to "+Codex.location2pct(state.maxloc)+
+                                  ", your most recent location on any device",
+                                  handler: function(){
+                                      Codex.GoTo(synced.location,"sync");
+                                      Codex.GoTo(synced.location,"sync");}});
+                if ((synced.maxloc!==synced.location)&&(synced.maxloc!==state.maxloc)&&
+                    ((synced.maxloc!==state.location)))
+                    choices.push({label: "Jump to "+Codex.location2pct(state.maxloc)+
+                                  ", your furthest location on any device",
+                                  handler: function(){Codex.GoTo(synced.maxloc,"sync");}});
+                if (choices.length===1) Codex.restoreState(state);
+                else fdjtUI.choose(choices,fdjtDOM("div",msg1));}}
 
         /* Indexing tags */
         

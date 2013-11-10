@@ -95,6 +95,8 @@ var Codex={
     syncstamp: false,
     // Number of milliseconds between gloss updates
     update_interval: 5*60*1000,
+    // Number of milliseconds between location sync
+    sync_interval: 2*60*1000,
     // Various handlers, settings, and status information for the
     // Codex interface
     UI: {
@@ -127,8 +129,8 @@ var Codex={
         addgloss: 0,      // Note whenever a gloss post completes
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
-        dosync: false,    // Whether to trace state saves
-        state: false,     // Whether to trace set state
+        dosync: true,     // Whether to trace state saves
+        state: true,      // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
         selection: false, // Whether to trace inter-window messages
@@ -162,8 +164,13 @@ var Codex={
     Codex.tagweights=new ObjectMap();
 
     function saveLocal(key,value){
-        if (Codex.keepdata) setLocal(key,value);}
+        if (Codex.keepdata) setLocal(key,value);
+        else fdjtState.setSession(key,value);}
     Codex.saveLocal=saveLocal;
+    function readLocal(key){
+        if (Codex.keepdata) return getLocal(key)||fdjtState.getSession(key);
+        else return fdjtState.getSession(key)||getLocal(key);}
+    Codex.readLocal=readLocal;
     
     function initDB() {
         if (Codex.Trace.start>1) fdjtLog("Initializing DB");
@@ -804,35 +811,46 @@ var Codex={
              (Codex.state.location===state.location)&&
              (Codex.state.page===state.page)))
             return;
-        if (syncing) return;
-        if (!(Codex.dosync)) return;
-        if (!(state.tstamp)) state.tstamp=fdjtTime.tick();
+        if (!(state.changed)) state.changed=fdjtTime.tick();
         if (!(state.refuri)) state.refuri=Codex.refuri;
         var title=state.title, frag=state.target;
         if ((!(title))&&(frag)&&(Codex.docinfo[frag])) {
             state.title=title=Codex.docinfo[frag].title||
                 Codex.docinfo[frag].head.title;}
-        Codex.state=state;
         if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
+        Codex.state=state;
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
         var href=window.location.href;
         saveLocal("codex.state("+uri+")",statestring);
         if ((frag)&&(href.indexOf('#')>=0)) href=href.slice(0,href.indexOf('#'));
-        if ((!(skiphist))&&(window.history)&&(window.history.pushState)) {
-            if (frag) {
-                state.uri=uri=Codex.locuri+"#"+frag;
-                state.href=href=href+"#"+frag;}
-            if (Codex.Trace.state)
-                fdjtLog("Pushing history %j %s %s",state,((uri)||("")),((title)||("")));
-            window.history.pushState(state,title,href);}}
+        if ((!(skiphist))&&(window.history)&&(window.history.pushState))
+            setHistory(state,href,frag,title);
+        if ((!(syncing))&&(Codex.dosync)) syncState();}
     Codex.saveState=saveState;
-    
+
+    function setHistory(state){
+        if (!((window.history)&&(window.history.pushState))) return;
+        var title=state.title, frag=state.target;
+        var uri=Codex.docuri||Codex.refuri;
+        var href=window.location.href;
+        if ((!(title))&&(frag)&&(Codex.docinfo[frag])) {
+            state.title=title=Codex.docinfo[frag].title||
+                Codex.docinfo[frag].head.title;}
+        if (frag) {
+            if (href.indexOf('#')>=0) href=href.slice(0,href.indexOf('#'));
+            if (Codex.locuri.indexOf('#')>=0)
+                state.uri=uri=(Codex.locuri.slice(0,Codex.locuri.indexOf('#')))+"#"+frag;
+            else state.uri=uri=Codex.locuri+"#"+frag;
+            state.href=href=href+"#"+frag;}
+        if (Codex.Trace.state)
+            fdjtLog("Pushing history %j %s (%s) '%s'",
+                    state,href,((uri)||("")),((title)||("")));
+        window.history.pushState(state,title,href);}
+
     function restoreState(state){
         if (Codex.Trace.state) fdjtLog("Restoring state %j",state);
-        if (state.target)
-            Codex.GoTo(state.target,"restoreState",true,false);
-        if (state.location) Codex.setLocation(state.location);}
+        Codex.GoTo(state.location,"restoreState",state.target,false);}
     Codex.restoreState=restoreState;
 
     function setConnected(val){
@@ -851,26 +869,32 @@ var Codex={
         Codex.connected=val;}
     Codex.setConnected=setConnected;
 
-    function serverSync(){
+    function syncState(){
+        if ((syncing)||(!(Codex.dosync))) return;
         if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine)) {
+            var uri=Codex.docuri||Codex.refuri;
             var state=Codex.state; var synced=Codex.syncstate;
-            // Warning when syncing doesn't return?
-            if (syncing) return;
             if (!(state)) {
-                var uri=Codex.docuri||Codex.refuri;
-                var statestring=getLocal("codex.state("+uri+")");
+                var statestring=readLocal("codex.state("+uri+")");
                 if (statestring) Codex.state=state=JSON.parse(statestring);
                 else state={};}
-            if ((synced)&&
-                (synced.target===state.target)&&
-                (synced.location===state.location)&&
-                (synced.page===state.page))
+            if (!(synced)) {
+                var syncstatestring=readLocal("codex.state("+uri+")");
+                if (syncstatestring)
+                    Codex.syncstate=synced=JSON.parse(syncstatestring);
+                else synced=false;}
+            if ((state===synced)||
+                ((synced)&&
+                 (synced.target===state.target)&&
+                 (synced.location===state.location)&&
+                 (synced.page===state.page)))
                 return;
             var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
                 (Codex.refuri);
             var sync_uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
                 "&DOCURI="+encodeURIComponent(Codex.docuri)+
-                "&REFURI="+encodeURIComponent(refuri);
+                "&REFURI="+encodeURIComponent(refuri)+
+                "&NOW="+fdjtTime.tick();
             if (Codex.user)
                 sync_uri=sync_uri+"&SYNCUSER="+encodeURIComponent(Codex.user._id);
             if (Codex.deviceName)
@@ -884,29 +908,45 @@ var Codex={
             if ((state.page)||(state.hasOwnProperty('page')))
                 sync_uri=sync_uri+"&page="+encodeURIComponent(state.page);
             if (typeof Codex.pagecount === 'number')
-                sync_uri=sync_uri+"&maxpage="+encodeURIComponent(Codex.pagecount);
+                sync_uri=sync_uri+"&pagelen="+encodeURIComponent(Codex.pagecount);
             if ((Codex.Trace.dosync)||(Codex.Trace.state))
                 fdjtLog("syncState(call) %s: %j",sync_uri,state);
             var req=new XMLHttpRequest();
             syncing=state;
             req.onreadystatechange=function(evt){
                 if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
-                    Codex.syncstate=syncing;
+                    var newstate=JSON.parse(req.responseText);
+                    if (newstate.changed) {
+                        var uri=Codex.docuri||Codex.refuri;
+                        var newstatestring=JSON.stringify(state);
+                        Codex.syncstate=newstate;
+                        if (!(Codex.state)) saveState(newstate);
+                        saveLocal("codex.syncstate("+uri+")",newstatestring);}
                     setConnected(true);
                     syncing=false;}
                 else if ((req.readyState===4)&&(navigator.onLine))
                     setConnected(false);
                 else {}
                 if ((Codex.Trace.dosync)||(Codex.Trace.state))
-                    fdjtLog("serverSync(callback) %o ready=%o status=%o %j",
+                    fdjtLog("syncState(callback) %o ready=%o status=%o %j",
                             evt,req.readyState,((req.readyState===4)&&(req.status)),
                             syncing);};
             req.withCredentials=true;
             try {
                 req.open("GET",sync_uri,true);
                 req.send();}
-            catch (ex) {Codex.dosync=false;}}}
-    Codex.serverSync=serverSync;
+            catch (ex) {
+                try {
+                    fdjtLog.warn(
+                        "Location sync request %s returned status %d %j, taking a break",
+                        uri,req.status,JSON.parse(req.responseText));}
+                catch (err) {
+                    fdjtLog.warn(
+                        "Location sync request %s returned status %d, taking a break",
+                        uri,req.status);}
+                Codex.dosync=false;
+                setTimeout(function(){Codex.dosync=true;},15*60*1000);}}}
+    Codex.syncState=syncState;
 
     function forceSync(){
         if (Codex.connected) Codex.update();
@@ -914,7 +954,7 @@ var Codex={
             Codex._onconnect.push(function(){Codex.update();});
         else Codex._onconnect=[function(){Codex.update();}];
         if (!(Codex.syncstart)) Codex.syncLocation();
-        else serverSync();}
+        else syncState();}
     Codex.forceSync=forceSync;
 
     function getLocInfo(elt){
@@ -1003,12 +1043,23 @@ var Codex={
         if ((savestate)&&(istarget))
             Codex.saveState({
                 target: (target.getAttribute("data-baseid")||target.id),
-                location: location,page: page,npages: Codex.pagecount});
+                location: location,page: page,npages: Codex.pagecount},
+                           skiphist);
         else if (savestate)
             Codex.saveState({location: location,page: page,
-                             npages: Codex.pagecount});
-        else {}
+                             npages: Codex.pagecount},
+                           skiphist);
+        else if (skiphist) {}
+        else if (istarget)
+            setHistory({
+                target: (target.getAttribute("data-baseid")||target.id),
+                location: location,page: page,npages: Codex.pagecount});
+        else setHistory({
+            target: (target.getAttribute("data-baseid")||target.id),
+            location: location,page: page,npages: Codex.pagecount});
         if (page)
+            // Need to incorporate numeric location for targets
+            //  which may be split across pages
             Codex.GoToPage(target,caller||"codexGoTo",false);
         else {
             if (Codex.previewing)
