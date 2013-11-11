@@ -87,7 +87,7 @@ Codex.Paginate=
             var bodyfamily=Codex.bodyfamily||"serif";
             if ((!(Codex.layout))&&(Codex.Trace.startup))
                 fdjtLog("Intial page layout requires %dx%d %s %s pages",
-                       width,height,bodysize,bodyfamily);
+                        width,height,bodysize,bodyfamily);
             if (Codex.layout) {
                 var current=Codex.layout;
                 if ((!(forced))&&
@@ -150,11 +150,8 @@ Codex.Paginate=
                     var fn=Codex.layoutdone;
                     Codex.layoutdone=false;
                     fn();}
-                Codex.GoTo(
-                    Codex.location||Codex.target||
-                        Codex.cover||Codex.titlepage||
-                        fdjtID("CODEXPAGE1"),
-                    "endLayout",false,false);
+                if (Codex.state)
+                    Codex.restoreState(Codex.state,"layoutRestored");
                 Codex.layout.running=false;
 
                 return false;}
@@ -211,11 +208,8 @@ Codex.Paginate=
                             var fn=Codex.layoutdone;
                             Codex.layoutdone=false;
                             fn();}
-                        Codex.GoTo(
-                            Codex.location||Codex.target||
-                                Codex.cover||Codex.titlepage||
-                                fdjtID("CODEXPAGE1"),
-                            "endLayout",false,false);
+                        if (Codex.state)
+                            Codex.restoreState(Codex.state,"layoutDone");
                         Codex.layout.running=false;
                         return false;}
                     else {
@@ -375,7 +369,7 @@ Codex.Paginate=
             if (Codex.bypage) Codex.Paginate("resize");
             else fdjt.DOM.adjustFonts(Codex.content);
             fdjt.DOM.adjustFonts(Codex.HUD);};
-       
+        
         Codex.addConfig(
             "layout",
             function(name,val){
@@ -741,21 +735,30 @@ Codex.Paginate=
             if (typeof newpage === "number") Codex.GoToPage(newpage);}
         Codex.stopPagePreview=stopPagePreview;
         
-            function getPage(arg){
-                if (!(Codex.layout)) return -1;
-                var page=Codex.layout.getPage(arg)||Codex.layout.getPage(1);
-                return parseInt(page.getAttribute("data-pagenum"),10);}
-            Codex.getPage=getPage;
-            
-            function displaySync(){
-                if ((Codex.pagecount)&&(Codex.curpage))
-                    Codex.GoToPage(Codex.curpage,"displaySync");}
-            Codex.displaySync=displaySync;
+        function getPage(arg,location){
+            var node=((arg.nodeType)?(arg):
+                      (typeof arg === "string")?(fdjtID(arg)):
+                      (false));
+            var page=((node)&&(getParent(node,".codexpage")));
+            if (!(location)) return page;
+            var layout=Codex.layout, pages=layout.pages, npages=pages.length;
+            var i=((page)?(parseInt(page.getAttribute("data-pagenum"),10)):(1));
+            while (i<npages) {
+                var probe=pages[i], loc=parseInt(probe.getAttribute("data-sbookloc"),10);
+                if (loc===location) return probe;
+                else if (loc>location) return pages[i-1];
+                else i++;}}
+        Codex.getPage=getPage;
+        
+        function displaySync(){
+            if ((Codex.pagecount)&&(Codex.curpage))
+                Codex.GoToPage(Codex.curpage,"displaySync");}
+        Codex.displaySync=displaySync;
 
-            // We handle this ourselves
-            fdjt.UI.adjustFont.onresize=false;
+        // We handle this ourselves
+        fdjt.UI.adjustFont.onresize=false;
 
-            return Paginate;})();
+        return Paginate;})();
 
 /* Emacs local variables
    ;;;  Local variables: ***
