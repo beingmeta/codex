@@ -753,7 +753,7 @@ Codex.Startup=
                 else initLocation();}
             else initLocation();
             window.onpopstate=function onpopstate(evt){
-                if (evt.state) Codex.restoreState(evt.state);};
+                if (evt.state) Codex.restoreState(evt.state,"popstate");};
             fdjtLog("Startup done");
             if (fdjtID("CODEXREADYSPLASH"))
                 fdjtID("CODEXREADYSPLASH").style.display='none';
@@ -2200,32 +2200,41 @@ Codex.Startup=
                     fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
             if (target) Codex.GoTo(target,"initLocation/hash",true,true,true);
             else if ((!(state))&&(synced))
-                Codex.restoreState(synced);
+                Codex.restoreState(synced,"initLocation/synced",true);
             else if ((!(synced))&&(state))
-                Codex.restoreState(state);
+                Codex.restoreState(state,"initLocation/state",true);
             else if (!((synced)||(state))) {
                 Codex.GoTo(1);}
-            else if (state.deviceid===synced.deviceid)
-                Codex.restoreState(state);
+            else if ((state.device)&&(state.device===synced.device))
+                Codex.restoreState(state,"initLocation/samedevice",true);
             else {
-                var msg1="You're currently "+Codex.location2pct(state.location)+" into this book";
+                var msg1="You're currently "+
+                    Codex.location2pct(state.location)+" into this book";
                 var choices=[{label: "Stay here"}];
                 if (state.maxloc!==state.location) 
-                    choices.push({label: "Jump to "+Codex.location2pct(state.maxloc)+
-                                  ", your furthest location on this device",
-                                  handler: function(){Codex.GoTo(state.maxloc,"sync");}});
-                if ((synced.location!==state.location)&&(synced.location!==state.maxloc))
-                    choices.push({label: "Jump to "+Codex.location2pct(state.maxloc)+
-                                  ", your most recent location on any device",
-                                  handler: function(){
-                                      Codex.GoTo(synced.location,"sync");
-                                      Codex.GoTo(synced.location,"sync");}});
-                if ((synced.maxloc!==synced.location)&&(synced.maxloc!==state.maxloc)&&
+                    choices.push(
+                        {label: "Jump to "+Codex.location2pct(state.maxloc)+
+                         ", your furthest location on this device",
+                         handler: function(){
+                             Codex.GoTo(state.maxloc,"sync");}});
+                if ((synced.location!==state.location)&&
+                    (synced.location!==state.maxloc))
+                    choices.push(
+                        {label: "Jump to "+Codex.location2pct(state.maxloc)+
+                         ", your most recent location on any device",
+                         handler: function(){
+                             Codex.GoTo(synced.location,"sync");
+                             Codex.GoTo(synced.location,"sync");}});
+                if ((synced.maxloc!==synced.location)&&
+                    (synced.maxloc!==state.maxloc)&&
                     ((synced.maxloc!==state.location)))
-                    choices.push({label: "Jump to "+Codex.location2pct(state.maxloc)+
-                                  ", your furthest location on any device",
-                                  handler: function(){Codex.GoTo(synced.maxloc,"sync");}});
-                if (choices.length===1) Codex.restoreState(state);
+                    choices.push(
+                        {label: "Jump to "+Codex.location2pct(state.maxloc)+
+                         ", your furthest location on any device",
+                         handler: function(){
+                             Codex.GoTo(synced.maxloc,"sync");}});
+                if (choices.length===1)
+                    Codex.restoreState(state,"initLocation/nochoices");
                 else fdjtUI.choose(choices,fdjtDOM("div",msg1));}}
 
         /* Indexing tags */
