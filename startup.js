@@ -2210,32 +2210,37 @@ Codex.Startup=
             else {
                 var msg1="You're currently "+
                     Codex.location2pct(state.location)+" into this book";
-                var choices=[{label: "Stay here"}];
-                if (state.maxloc!==state.location) 
+                var choices=[{label: "Stay here",handler: Codex.hideCover}];
+                if (synced.location!==state.location)
                     choices.push(
-                        {label: "Jump to "+Codex.location2pct(state.maxloc)+
-                         ", your furthest location on this device",
+                        {label: Codex.location2pct(synced.location)+": "+
+                         ((synced.maxloc>synced.location)?("latest"):
+                          ("latest and farthest")),
+                         title: "the most recent location you moved to on any device/app",
                          handler: function(){
-                             Codex.GoTo(state.maxloc,"sync");}});
-                if ((synced.location!==state.location)&&
-                    (synced.location!==state.maxloc))
+                             Codex.restoreState(synced);
+                             Codex.hideCover();}});
+                if ((synced.maxloc>state.location)&&(synced.maxloc!==synced.location))
                     choices.push(
-                        {label: "Jump to "+Codex.location2pct(state.maxloc)+
-                         ", your most recent location on any device",
+                        {label: Codex.location2pct(synced.maxloc)+": farthest",
+                         title: "the farthest location you've read on any device/app",
                          handler: function(){
-                             Codex.GoTo(synced.location,"sync");
-                             Codex.GoTo(synced.location,"sync");}});
-                if ((synced.maxloc!==synced.location)&&
-                    (synced.maxloc!==state.maxloc)&&
-                    ((synced.maxloc!==state.location)))
+                             Codex.GoTo(state.maxloc,"sync");
+                             Codex.hideCover();}});
+                if ((state.maxloc)&&
+                    (state.maxloc>state.location)&&
+                    (state.maxloc!==synced.location)&&
+                    (state.maxloc!==synced.maxloc))
                     choices.push(
-                        {label: "Jump to "+Codex.location2pct(state.maxloc)+
-                         ", your furthest location on any device",
+                        {label: Codex.location2pct(state.maxloc)+": farthest `here`",
+                         title: "the farthest location you've read on this device/app",
                          handler: function(){
-                             Codex.GoTo(synced.maxloc,"sync");}});
+                             Codex.GoTo(state.maxloc,"sync");
+                             Codex.hideCover();}});
                 if (choices.length===1)
                     Codex.restoreState(state,"initLocation/nochoices");
-                else fdjtUI.choose(choices,fdjtDOM("div",msg1));}}
+                else fdjtUI.choose({cancel: true,choices: choices},
+                                   fdjtDOM("div",msg1));}}
 
         /* Indexing tags */
         

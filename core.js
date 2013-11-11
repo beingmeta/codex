@@ -171,6 +171,11 @@ var Codex={
         if (Codex.keepdata) return getLocal(key)||fdjtState.getSession(key);
         else return fdjtState.getSession(key)||getLocal(key);}
     Codex.readLocal=readLocal;
+    function clearLocal(key){
+        fdjtState.dropLocal(key);
+        fdjtState.dropSession(key);}
+    Codex.clearLocal=clearLocal;
+
     
     function initDB() {
         if (Codex.Trace.start>1) fdjtLog("Initializing DB");
@@ -828,6 +833,9 @@ var Codex={
             state.title=title=Codex.docinfo[frag].title||
                 Codex.docinfo[frag].head.title;}
         if (Codex.Trace.state) fdjtLog("Setting state to %j",state);
+        if ((state.maxloc)&&(state.maxloc<state.location))
+            state.maxloc=state.location;
+        else if (!(state.maxloc)) state.maxloc=state.location;
         Codex.state=state;
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
@@ -863,6 +871,15 @@ var Codex={
         Codex.state=state;
         if (!(state.refuri)) state.refuri=Codex.refuri;
     } Codex.restoreState=restoreState;
+
+    function clearState(syncedtoo){
+        var uri=Codex.docuri||Codex.refuri;
+        Codex.state=false;
+        clearLocal("codex.state("+uri+")");
+        if (syncedtoo) {
+            Codex.syncedstate=false;
+            clearLocal("codex.syncstate("+uri+")");}
+    } Codex.clearState=clearState;
 
     // Assert whether we're connected and update body classes
     //  to reflect the state. Also, run run any delayed thunks
