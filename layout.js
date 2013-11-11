@@ -736,9 +736,10 @@ Codex.Paginate=
         Codex.stopPagePreview=stopPagePreview;
         
         function getPage(arg,location){
-            var node=((arg.nodeType)?(arg):
-                      (typeof arg === "string")?(fdjtID(arg)):
-                      (false));
+            var node=((arg)&&
+                      ((arg.nodeType)?(arg):
+                       (typeof arg === "string")?(fdjtID(arg)):
+                       (false)));
             var page=((node)&&(getParent(node,".codexpage")));
             if (!(location)) return page;
             var layout=Codex.layout, pages=layout.pages, npages=pages.length;

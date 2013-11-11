@@ -658,11 +658,14 @@ var Codex={
     function location2pct(location) {
         var max_loc=Codex.ends_at;
         var pct=(100*location)/max_loc;
+        if (pct>100) pct=100;
         // This is (very roughly) intended to be the precision needed
         //  for line level (40 character) accuracy.
         var prec=Math.round(Math.log(max_loc/40)/Math.log(10))-2;
         if (prec<0) prec=0;
-        return fdjtString.precString(pct,prec)+"%";}
+        if (Math.floor(pct)===pct)
+            return Math.floor(pct)+"%";
+        else return fdjtString.precString(pct,prec)+"%";}
     Codex.location2pct=location2pct;
 
     function setTarget(target){
@@ -855,11 +858,11 @@ var Codex={
         if ((!(title))&&(hash)&&(Codex.docinfo[hash])) {
             state.title=title=Codex.docinfo[hash].title||
                 Codex.docinfo[hash].head.title;}
-        if (!(hash)) hash="SBOOKLOC"+state.locaion;
+        if (!(hash)) hash="SBOOKLOC"+state.location;
         if (Codex.Trace.state)
             fdjtLog("Pushing history %j %s (%s) '%s'",
                     state,href,title);
-        window.history.pushState(state,title,href);
+        window.history.pushState(state,title,href+"#"+hash);
     }
 
     function restoreState(state,reason,savehist){
@@ -868,8 +871,8 @@ var Codex={
                    ((state.target)&&(fdjtID(state.target))),
                    // Don't save the state since we've already got one
                    false,(!(savehist)));
-        Codex.state=state;
         if (!(state.refuri)) state.refuri=Codex.refuri;
+        saveState(state);
     } Codex.restoreState=restoreState;
 
     function clearState(syncedtoo){
@@ -948,7 +951,7 @@ var Codex={
                             var uri=Codex.docuri||Codex.refuri;
                             if (traced)
                                 fdjtLog("syncState(callback) %o %j",
-                                        evt,newstatestring);
+                                        evt,newstate);
                             var newstatestring=JSON.stringify(state);
                             Codex.syncstate=newstate;
                             if (!(Codex.state)) saveState(newstate);
@@ -1024,8 +1027,9 @@ var Codex={
             location=locinfo.start;}
         else if (typeof arg === 'number') {
             location=arg;
-            target=(((istarget.nodeType)&&(istarget.id))?(istarget):
-                    (resolveLocation(arg)));}
+            target=((istarget)&&
+                    (((istarget.nodeType)&&(istarget.id))?(istarget):
+                     (resolveLocation(arg))));}
         else if (arg.nodeType) {
             target=getTarget(arg);
             locinfo=getLocInfo(arg);
@@ -1033,7 +1037,7 @@ var Codex={
         else {
             fdjtLog.warn("Bad codexGoTo %o",arg);
             return;}
-        if (istarget.nodeType) target=istarget;
+        if ((istarget)&&(istarget.nodeType)) target=istarget;
         else if ((typeof istarget === "string")&&(fdjtID(istarget)))
             target=fdjtID(istarget);
         else {}
