@@ -735,7 +735,8 @@
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             dropClass(spanbar,"codexvisible");
             dropClass(toc,"codexheld");
-            Codex.stopPreview("toc_released");}
+            if (Codex.previewing)
+                Codex.stopPreview("toc_released");}
         else if (Codex.Trace.gestures)
             fdjtLog("toc_released %o noabout",evt);
         else {
