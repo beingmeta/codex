@@ -123,14 +123,14 @@ var Codex={
         target: false,    // Whether to trace target changes
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
-        network: 1,       // How much to trace server interaction
+        network: 0,       // How much to trace server interaction
         savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
         addgloss: 0,      // Note whenever a gloss post completes
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
-        dosync: true,     // Whether to trace state saves
-        state: true,      // Whether to trace set state
+        dosync: false,    // Whether to trace state saves
+        state: false,     // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
         selection: false, // Whether to trace inter-window messages
