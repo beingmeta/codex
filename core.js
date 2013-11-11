@@ -123,7 +123,7 @@ var Codex={
         target: false,    // Whether to trace target changes
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
-        network: 0,       // How much to trace server interaction
+        network: 1,       // How much to trace server interaction
         savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
         addgloss: 0,      // Note whenever a gloss post completes
@@ -833,8 +833,7 @@ var Codex={
         var uri=Codex.docuri||Codex.refuri;
         saveLocal("codex.state("+uri+")",statestring);
         if ((!(syncing))&&(Codex.dosync)&&
-            ((!(Codex.syncstate))||
-             (state.changed>Codex.syncstate.changed)))
+            ((!(Codex.syncstate))||(state.changed>Codex.syncstate.changed)))
             syncState();
         if ((!(skiphist))&&(window.history)&&(window.history.pushState))
             setHistory(state,frag,title);
@@ -849,11 +848,11 @@ var Codex={
             state.title=title=Codex.docinfo[hash].title||
                 Codex.docinfo[hash].head.title;}
         if (!(hash)) hash="SBOOKLOC"+state.locaion;
-        setHistory(state,href+"#"+hash,hash,title);
         if (Codex.Trace.state)
             fdjtLog("Pushing history %j %s (%s) '%s'",
                     state,href,title);
-        window.history.pushState(state,title,href);}
+        window.history.pushState(state,title,href);
+    }
 
     function restoreState(state,reason,savehist){
         if (Codex.Trace.state) fdjtLog("Restoring (%s) state %j",reason,state);
@@ -862,8 +861,8 @@ var Codex={
                    // Don't save the state since we've already got one
                    false,(!(savehist)));
         Codex.state=state;
-        if (!(state.refuri)) state.refuri=Codex.refuri;}
-    Codex.restoreState=restoreState;
+        if (!(state.refuri)) state.refuri=Codex.refuri;
+    } Codex.restoreState=restoreState;
 
     // Assert whether we're connected and update body classes
     //  to reflect the state. Also, run run any delayed thunks
@@ -881,8 +880,8 @@ var Codex={
             ((!(val))&&(Codex.connected)))
             fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
                               ((val)?("cxCONN"):("cxDISCONN")));
-        Codex.connected=val;}
-    Codex.setConnected=setConnected;
+        Codex.connected=val;
+    } Codex.setConnected=setConnected;
 
     // Post the current state and update synced state from what's
     // returned
@@ -958,8 +957,8 @@ var Codex={
                         "Sync request %s returned status %d, pausing",
                         uri,req.status);}
                 Codex.dosync=false;
-                setTimeout(function(){Codex.dosync=true;},15*60*1000);}}}
-    Codex.syncState=syncState;
+                setTimeout(function(){Codex.dosync=true;},15*60*1000);}}
+    } Codex.syncState=syncState;
 
     function forceSync(){
         if (Codex.connected) Codex.update();
@@ -967,8 +966,8 @@ var Codex={
             Codex._onconnect.push(function(){Codex.update();});
         else Codex._onconnect=[function(){Codex.update();}];
         if (!(Codex.syncstart)) Codex.syncLocation();
-        else syncState();}
-    Codex.forceSync=forceSync;
+        else syncState();
+    } Codex.forceSync=forceSync;
 
     function getLocInfo(elt){
         var eltid=false;
@@ -982,8 +981,8 @@ var Codex={
             var info=Codex.docinfo[eltid];
             return {start: info.starts_at,end: info.ends_at,
                     len: info.ends_at-info.starts_at};}
-        else return false;}
-    Codex.getLocInfo=getLocInfo;
+        else return false;
+    } Codex.getLocInfo=getLocInfo;
 
     function resolveLocation(loc){
         var allinfo=Codex.docinfo._allinfo;
@@ -994,8 +993,8 @@ var Codex={
         while (i<lim)  {
             if (allinfo[i].starts_at>loc) break;
             else i++;}
-        return fdjtID(allinfo[i-1].frag);}
-    Codex.resolveLocation=resolveLocation;
+        return fdjtID(allinfo[i-1].frag);
+    } Codex.resolveLocation=resolveLocation;
 
     // This moves within the document in a persistent way
     function codexGoTo(arg,caller,istarget,savestate,skiphist){
@@ -1080,8 +1079,8 @@ var Codex={
             var use_top=offinfo.top-((fdjtDOM.viewHeight()-50)/2);
             if (use_top<0) use_top=0;
             window.scrollTo(0,use_top);}
-        Codex.location=location;}
-    Codex.GoTo=codexGoTo;
+        Codex.location=location;
+    } Codex.GoTo=codexGoTo;
 
     function anchorFn(evt){
         var target=fdjtUI.T(evt);
