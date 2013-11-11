@@ -804,6 +804,16 @@ var Codex={
 
     var syncing=false;
     
+    // This records the current state of the app, bundled into an
+    //  object and primarily consisting of target and location.
+    // It also includes other information, including the time the
+    //  state was last changed.
+    // Mechanically, this fills things out and stores the object
+    //  in Codex.state as well as in local storage.  If the changed
+    //  date is later than the current syncstate, it also does
+    //  an Ajax call to update the server.
+    // Finally, unless skiphist is true, it updates the browser
+    //  history.
     function saveState(state,skiphist){
         if ((Codex.state===state)||
             ((Codex.state)&&
@@ -821,38 +831,43 @@ var Codex={
         Codex.state=state;
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
-        var href=window.location.href;
         saveLocal("codex.state("+uri+")",statestring);
-        if ((frag)&&(href.indexOf('#')>=0)) href=href.slice(0,href.indexOf('#'));
+        if ((!(syncing))&&(Codex.dosync)&&
+            ((!(Codex.syncstate))||
+             (state.changed>Codex.syncstate.changed)))
+            syncState();
         if ((!(skiphist))&&(window.history)&&(window.history.pushState))
-            setHistory(state,href,frag,title);
-        if ((!(syncing))&&(Codex.dosync)) syncState();}
-    Codex.saveState=saveState;
+            setHistory(state,frag,title);
+    } Codex.saveState=saveState;
 
-    function setHistory(state){
+    function setHistory(state,hash,title){
         if (!((window.history)&&(window.history.pushState))) return;
-        var title=state.title, frag=state.target;
-        var uri=Codex.docuri||Codex.refuri;
-        var href=window.location.href;
-        if ((!(title))&&(frag)&&(Codex.docinfo[frag])) {
-            state.title=title=Codex.docinfo[frag].title||
-                Codex.docinfo[frag].head.title;}
-        if (frag) {
-            if (href.indexOf('#')>=0) href=href.slice(0,href.indexOf('#'));
-            if (Codex.locuri.indexOf('#')>=0)
-                state.uri=uri=(Codex.locuri.slice(0,Codex.locuri.indexOf('#')))+"#"+frag;
-            else state.uri=uri=Codex.locuri+"#"+frag;
-            state.href=href=href+"#"+frag;}
+        if (!(hash)) hash=state.target;
+        if (!(title)) title=state.title;
+        var href=fdjtState.getURL();
+        if ((!(title))&&(hash)&&(Codex.docinfo[hash])) {
+            state.title=title=Codex.docinfo[hash].title||
+                Codex.docinfo[hash].head.title;}
+        if (!(hash)) hash="SBOOKLOC"+state.locaion;
+        setHistory(state,href+"#"+hash,hash,title);
         if (Codex.Trace.state)
             fdjtLog("Pushing history %j %s (%s) '%s'",
-                    state,href,((uri)||("")),((title)||("")));
+                    state,href,title);
         window.history.pushState(state,title,href);}
 
-    function restoreState(state){
-        if (Codex.Trace.state) fdjtLog("Restoring state %j",state);
-        Codex.GoTo(state.location,"restoreState",state.target,false);}
+    function restoreState(state,reason,savehist){
+        if (Codex.Trace.state) fdjtLog("Restoring (%s) state %j",reason,state);
+        Codex.GoTo(state.location,reason||"restoreState",
+                   ((state.target)&&(fdjtID(state.target))),
+                   // Don't save the state since we've already got one
+                   false,(!(savehist)));
+        Codex.state=state;
+        if (!(state.refuri)) state.refuri=Codex.refuri;}
     Codex.restoreState=restoreState;
 
+    // Assert whether we're connected and update body classes
+    //  to reflect the state. Also, run run any delayed thunks
+    //  queued for connection.
     function setConnected(val){
         if ((val)&&(!(Codex.connected))) {
             var onconnect=Codex._onconnect;
@@ -869,80 +884,78 @@ var Codex={
         Codex.connected=val;}
     Codex.setConnected=setConnected;
 
+    // Post the current state and update synced state from what's
+    // returned
     function syncState(){
         if ((syncing)||(!(Codex.dosync))) return;
-        if ((Codex.user)&&(Codex.dosync)&&(navigator.onLine)) {
+        if ((Codex.dosync)&&(navigator.onLine)) {
             var uri=Codex.docuri||Codex.refuri;
             var state=Codex.state; var synced=Codex.syncstate;
+            var traced=(Codex.Trace.dosync)||(Codex.Trace.state)||
+                (Codex.Trace.network);
             if (!(state)) {
                 var statestring=readLocal("codex.state("+uri+")");
                 if (statestring) Codex.state=state=JSON.parse(statestring);
                 else state={};}
             if (!(synced)) {
-                var syncstatestring=readLocal("codex.state("+uri+")");
+                var syncstatestring=readLocal("codex.syncstate("+uri+")");
                 if (syncstatestring)
                     Codex.syncstate=synced=JSON.parse(syncstatestring);
                 else synced=false;}
-            if ((state===synced)||
-                ((synced)&&
-                 (synced.target===state.target)&&
-                 (synced.location===state.location)&&
-                 (synced.page===state.page)))
-                return;
+            if (state===synced) return;
             var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
                 (Codex.refuri);
             var sync_uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
                 "&DOCURI="+encodeURIComponent(Codex.docuri)+
                 "&REFURI="+encodeURIComponent(refuri)+
                 "&NOW="+fdjtTime.tick();
-            if (Codex.user)
-                sync_uri=sync_uri+"&SYNCUSER="+encodeURIComponent(Codex.user._id);
-            if (Codex.deviceName)
-                sync_uri=sync_uri+"&devicename="+encodeURIComponent(Codex.deviceName);
-            if (state.target)
-                sync_uri=sync_uri+"&target="+encodeURIComponent(state.target);
+            if (Codex.user) sync_uri=sync_uri+
+                "&SYNCUSER="+encodeURIComponent(Codex.user._id);
+            if (Codex.deviceName) sync_uri=sync_uri+
+                "&DEVICE="+encodeURIComponent(Codex.deviceName);
+            if (state.target) sync_uri=sync_uri+
+                "&TARGET="+encodeURIComponent(state.target);
             if ((state.location)||(state.hasOwnProperty('location')))
-                sync_uri=sync_uri+"&location="+encodeURIComponent(state.location);
-            if (Codex.ends_at)
-                sync_uri=sync_uri+"&maxloc="+encodeURIComponent(Codex.ends_at);
-            if ((state.page)||(state.hasOwnProperty('page')))
-                sync_uri=sync_uri+"&page="+encodeURIComponent(state.page);
-            if (typeof Codex.pagecount === 'number')
-                sync_uri=sync_uri+"&pagelen="+encodeURIComponent(Codex.pagecount);
-            if ((Codex.Trace.dosync)||(Codex.Trace.state))
-                fdjtLog("syncState(call) %s: %j",sync_uri,state);
+                sync_uri=sync_uri+
+                "&LOCATION="+encodeURIComponent(state.location);
+            if (state.changed) sync_uri=sync_uri+
+                "&CHANGED="+encodeURIComponent(state.changed);
+            if (Codex.ends_at) sync_uri=sync_uri+
+                "&LOCLEN="+encodeURIComponent(Codex.ends_at);
             var req=new XMLHttpRequest();
             syncing=state;
             req.onreadystatechange=function(evt){
-                if ((req.readyState===4)&&(req.status>=200)&&(req.status<300)) {
-                    var newstate=JSON.parse(req.responseText);
-                    if (newstate.changed) {
-                        var uri=Codex.docuri||Codex.refuri;
-                        var newstatestring=JSON.stringify(state);
-                        Codex.syncstate=newstate;
-                        if (!(Codex.state)) saveState(newstate);
-                        saveLocal("codex.syncstate("+uri+")",newstatestring);}
-                    setConnected(true);
-                    syncing=false;}
-                else if ((req.readyState===4)&&(navigator.onLine))
-                    setConnected(false);
-                else {}
-                if ((Codex.Trace.dosync)||(Codex.Trace.state))
-                    fdjtLog("syncState(callback) %o ready=%o status=%o %j",
-                            evt,req.readyState,((req.readyState===4)&&(req.status)),
-                            syncing);};
+                if (req.readyState===4) {
+                    if ((req.status>=200)&&(req.status<300)) {
+                        var newstate=JSON.parse(req.responseText);
+                        if (newstate.changed) {
+                            var uri=Codex.docuri||Codex.refuri;
+                            if (traced)
+                                fdjtLog("syncState(callback) %o %j",
+                                        evt,newstatestring);
+                            var newstatestring=JSON.stringify(state);
+                            Codex.syncstate=newstate;
+                            if (!(Codex.state)) saveState(newstate);
+                            saveLocal("codex.syncstate("+uri+")",
+                                      newstatestring);}
+                        else if (traced)
+                            fdjtLog("syncState(callback/error) %o %d %s",
+                                    evt,req.status,req.responseText);}
+                    if (navigator.onLine) setConnected(true);
+                    syncing=false;}};
             req.withCredentials=true;
+            if (traced) fdjtLog("syncState(call) %s",sync_uri);
             try {
                 req.open("GET",sync_uri,true);
                 req.send();}
             catch (ex) {
                 try {
                     fdjtLog.warn(
-                        "Location sync request %s returned status %d %j, taking a break",
+                        "Sync request %s returned status %d %j, pausing",
                         uri,req.status,JSON.parse(req.responseText));}
                 catch (err) {
                     fdjtLog.warn(
-                        "Location sync request %s returned status %d, taking a break",
+                        "Sync request %s returned status %d, pausing",
                         uri,req.status);}
                 Codex.dosync=false;
                 setTimeout(function(){Codex.dosync=true;},15*60*1000);}}}
@@ -1010,6 +1023,9 @@ var Codex={
         else {}
         var info=(target)&&
             Codex.docinfo[target.getAttribute("data-baseid")||target.id];
+        var page=((Codex.bypage)&&(Codex.layout)&&
+                  (Codex.pagecount)&&(Codex.getPage(target,location)));
+        var pageno=(page)&&(parseInt(page.getAttribute("data-pagenum"),10));
         if (!(target)) {
             if (Codex.layout instanceof fdjt.CodexLayout)
                 Codex.GoToPage(arg,caller,savestate);
@@ -1027,12 +1043,10 @@ var Codex={
                           true);
             else saveState({location: Codex.location},true);
             return;}
-        var page=((Codex.bypage)&&(Codex.layout)&&
-                  (Codex.pagecount)&&(Codex.getPage(target)));
         var targetid=target.codexbaseid||target.id;
         if (Codex.Trace.nav)
             fdjtLog("Codex.GoTo%s() #%o@P%o/L%o %o",
-                    ((caller)?("/"+caller):""),targetid,page,
+                    ((caller)?("/"+caller):""),targetid,pageno,
                     ((info)&&(info.starts_at)),target);
         if (info) {
             Codex.point=target;
@@ -1043,24 +1057,22 @@ var Codex={
         if ((savestate)&&(istarget))
             Codex.saveState({
                 target: (target.getAttribute("data-baseid")||target.id),
-                location: location,page: page,npages: Codex.pagecount},
+                location: location,page: pageno,npages: Codex.pagecount},
                            skiphist);
         else if (savestate)
-            Codex.saveState({location: location,page: page,
+            Codex.saveState({location: location,page: pageno,
                              npages: Codex.pagecount},
                            skiphist);
         else if (skiphist) {}
         else if (istarget)
             setHistory({
                 target: (target.getAttribute("data-baseid")||target.id),
-                location: location,page: page,npages: Codex.pagecount});
+                location: location,page: pageno,npages: Codex.pagecount});
         else setHistory({
             target: (target.getAttribute("data-baseid")||target.id),
-            location: location,page: page,npages: Codex.pagecount});
+            location: location,page: pageno,npages: Codex.pagecount});
         if (page)
-            // Need to incorporate numeric location for targets
-            //  which may be split across pages
-            Codex.GoToPage(target,caller||"codexGoTo",false);
+            Codex.GoToPage(page,caller||"codexGoTo",false,true);
         else {
             if (Codex.previewing)
                 Codex.stopPreview(((caller)?("goto/"+caller):("goto")),target);
