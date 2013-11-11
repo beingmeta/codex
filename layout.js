@@ -119,7 +119,8 @@ Codex.Paginate=
                 fdjtID("CODEXCONTENT").style.display='none';
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
-                layout.restoreLayout(content);
+                layout.restoreLayout(content,finish_layout);}
+            function finish_layout(layout) {
                 getPageTops(layout.pages);
                 fdjtID("CODEXPAGE").style.visibility='';
                 fdjtID("CODEXCONTENT").style.visibility='';
@@ -429,6 +430,7 @@ Codex.Paginate=
         function getLayoutArgs(){
             var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+            var origin=fdjtDOM("div#CODEXCONTENT");
             var container=fdjtDOM("div.codexpages#CODEXPAGES");
             var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
@@ -460,7 +462,8 @@ Codex.Paginate=
                 fdjtState.setLocal("codex.sourceid("+Codex.refuri+")",sourceid);
             
             var args={page_height: height,page_width: width,
-                      container: container,pagerule: Codex.CSS.pagerule,
+                      container: container,origin: origin,
+                      pagerule: Codex.CSS.pagerule,
                       tracelevel: Codex.Trace.layout,
                       layout_id: layout_id,
                       logfn: fdjtLog};
