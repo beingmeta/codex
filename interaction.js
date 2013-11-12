@@ -1561,7 +1561,7 @@
         if (Codex.page_turner) {
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;}
-        Codex.page_turner=setInterval(function(){forward();},800);
+        // Codex.page_turner=setInterval(function(){forward();},800);
         cancel(evt);}
     function right_margin_release(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
@@ -1605,9 +1605,7 @@
     Codex.Backward=backward;
     function left_margin_tap(evt){
 	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
-        if (Codex.page_turner) {
-            clearInterval(Codex.page_turner);
-            Codex.page_turner=false;}
+        stopPageTurner();
         if (Codex.previewing) {
             Codex.stopPreview("left_margin_tap",Codex.hudup);
             if (Codex.hudup) {
@@ -1630,16 +1628,12 @@
             (Codex.mode!=="scanning")&&
             (Codex.mode!=="tocscan"))
             Codex.setMode(false);
-        if (Codex.page_turner) {
-            clearInterval(Codex.page_turner);
-            Codex.page_turner=false;}
-        Codex.page_turner=setInterval(function(){backward();},800);
+        stopPageTurner();
+        // Codex.page_turner=setInterval(function(){backward();},800);
         cancel(evt);}
     function left_margin_release(evt){
         if (Codex.Trace.gestures) tracetouch("left_margin",evt);
-        if (Codex.page_turner) {
-            clearInterval(Codex.page_turner);
-            Codex.page_turner=false;}
+        stopPageTurner();
         cancel(evt);}
     function left_margin_swipe(evt){
         var dx=evt.deltaX, dy=evt.deltaY;
@@ -1647,6 +1641,7 @@
         if (Codex.Trace.gestures)
             fdjtLog("Right margin swiped %o dx=%o, dy=%o, adx=%o, ady=%o",
                     evt,dx,dy,adx,ady);
+        stopPageTurner();
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (adx<10) return;

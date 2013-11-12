@@ -129,7 +129,7 @@ var Codex={
         addgloss: 0,      // Note whenever a gloss post completes
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
-        state: true,     // Whether to trace set state
+        state: false,     // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
         selection: false, // Whether to trace inter-window messages
