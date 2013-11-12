@@ -308,6 +308,22 @@ Codex.Paginate=
                             var first=getPageTop(child);
                             if (first) return first;}}}
                 return false;}
+
+            function getPageTopID(node) {
+                if (hasClass(node,"codexpage")) {}
+                else if ((node.id)&&(!(node.codexbaseid))&&
+                         (Codex.docinfo[node.id])) {
+                    if (hasText(node)) return node.id;}
+                else {}
+                var children=node.childNodes;
+                if (children) {
+                    var i=0; var lim=children.length;
+                    while (i<lim) {
+                        var child=children[i++];
+                        if (child.nodeType===1) {
+                            var first=getPageTopID(child);
+                            if (first) return first;}}}
+                return false;}
             
             function getDupNode(under,id){
                 var children;
@@ -343,13 +359,14 @@ Codex.Paginate=
                 while (j<jlim) {
                     var page=pages[j++];
                     var topnode=getPageTop(page);
+                    var topnodeid=topnode.codexbaseid||topnode.id;
+                    var topid=getPageTopID(page)||topnodeid;
                     if (topnode) {
-                        var topstart=document.getElementById(
-                            topnode.codexbaseid||topnode.id);
+                        var topstart=document.getElementById(topnodeid);
                         var locoff=((topstart===topnode)?(0):
                                     (getLocOff(pages,topstart,topnode)));
-                        var id=topstart.id; var info=docinfo[id];
-                        page.setAttribute("data-topid",id);
+                        var info=docinfo[topnodeid];
+                        if (topid) page.setAttribute("data-topid",topid);
                         page.setAttribute(
                             "data-sbookloc",info.starts_at+locoff);
                         running=info.starts_at+locoff;}
