@@ -267,7 +267,7 @@ Codex.setMode=
 
             fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
 
-            if (Codex.Trace.startup)
+            if (Codex.Trace.startup>1)
                 fdjtLog("Initialized basic HUD layout");}
         Codex.initHUD=initHUD;
         

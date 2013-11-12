@@ -1227,7 +1227,7 @@ Codex.Startup=
                 cover=fdjtDOM("div#CODEXCOVER");
                 cover.innerHTML=fixStaticRefs(Codex.HTML.cover);
                 frame.appendChild(cover);}
-            if (Codex.Trace.startup) {
+            if (Codex.Trace.startup>1) {
                 if (existing_cover)
                     fdjtLog("Setting up existing cover");
                 else fdjtLog("Setting up new cover");}
@@ -1462,7 +1462,6 @@ Codex.Startup=
             var curclass=cover.className;
             var cur=((curclass)&&(coverids[curclass])&&(fdjtID(coverids[curclass])));
             var nxt=((mode)&&(coverids[mode])&&(fdjtID(coverids[mode])));
-            fdjtLog("cur=%o, nxt=%o",cur,nxt);
             if ((cur)&&(nxt)) {
                 cur.style.display='block';
                 nxt.style.display='block';
@@ -2149,6 +2148,7 @@ Codex.Startup=
         function initGlosses(glosses,etc){
             if ((glosses.length===0)&&(etc.length===0)) return;
             var msg=fdjtID("CODEXNEWGLOSSES");
+            var start=fdjtTime();
             if (msg) {
                 msg.innerHTML=fdjtString(
                     "Assimilating %d new glosses",glosses.length);
@@ -2157,7 +2157,7 @@ Codex.Startup=
                 if (glosses.length)
                     fdjtLog("Assimilating %d new glosses/%d sources...",
                             glosses.length,etc.length);}
-            else if (glosses.length) 
+            else if ((glosses.length)&&(Codex.Trace.glosses)) 
                 fdjtLog("Assimilating %d new glosses...",glosses.length);
             else {}
             Codex.sourcedb.Import(
@@ -2173,7 +2173,8 @@ Codex.Startup=
                 if (tstamp>latest) latest=tstamp;}
             Codex.syncstamp=latest;
             if (glosses.length)
-                fdjtLog("Done assimilating %d new glosses...",glosses.length);
+                fdjtLog("Assimilated %d new glosses in %dms...",
+                        glosses.length,fdjtTime()-start);
             dropClass(msg,"running");}
         Codex.Startup.initGlosses=initGlosses;
         
@@ -2295,7 +2296,8 @@ Codex.Startup=
                                                 i,Math.floor(pct),lim));},
                              function(){
                                  var eq=Codex.empty_query;
-                                 fdjtLog("Done populating clouds");
+                                 if (Codex.Trace.startup>1)
+                                     fdjtLog("Done populating clouds");
                                  fdjtUI.ProgressBar.setProgress(
                                      "CODEXINDEXMESSAGE",100);
                                  fdjtUI.ProgressBar.setMessage(

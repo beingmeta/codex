@@ -133,7 +133,7 @@
     function setupGestures(domnode){
         var mode=Codex.ui;
         if (!(mode)) Codex.ui=mode="mouse";
-        if ((!(domnode))&&((Codex.Trace.startup)||(Codex.Trace.gestures)))
+        if ((!(domnode))&&((Codex.Trace.startup>1)||(Codex.Trace.gestures)))
             fdjtLog("Setting up basic handlers for %s UI",mode);
         if ((domnode)&&(Codex.Trace.gestures))
             fdjtLog("Setting up %s UI handlers for %o",mode,domnode);

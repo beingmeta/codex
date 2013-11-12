@@ -86,7 +86,7 @@ Codex.Paginate=
             var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
             if ((!(Codex.layout))&&(Codex.Trace.startup))
-                fdjtLog("Intial page layout requires %dx%d %s %s pages",
+                fdjtLog("Page layout requires %dx%d %s %s pages",
                         width,height,bodysize,bodyfamily);
             if (Codex.layout) {
                 var current=Codex.layout;

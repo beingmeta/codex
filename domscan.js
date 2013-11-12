@@ -77,7 +77,7 @@ Codex.DOMScan=(function(){
         docinfo._heads=allheads;
         docinfo._ids=allids;
         if (!(root.id)) root.id="SBOOKROOT";
-        if ((Codex.Trace.startup)||(Codex.Trace.scan)) {
+        if ((Codex.Trace.startup>1)||(Codex.Trace.scan)) {
             if (root.id) 
                 fdjtLog("Scanning %s#%s for structure and metadata",
                         root.tagName,root.id);
