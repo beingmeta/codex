@@ -69,15 +69,15 @@ body.sbook { font-size: 62.5%; }
 #CODEXBODY.codexfamilyserif h1, #CODEXBODY.codexfamilyserif h2,
 #CODEXBODY.codexfamilyserif h3, #CODEXBODY.codexfamilyserif h4 {
     font-family: Arial,Verdana,Helvetica,sans-serif;}    
-#CODEXBODY div, #CODEXBODY p, #CODEXBODY li, #CODEXBODY dt, #CODEXBODY dd,
-#CODEXBODY h1, #CODEXBODY h2, #CODEXBODY h3, #CODEXBODY h4, #CODEXBODY h5,
-#CODEXBODY h6, #CODEXBODY h7 {
+.codexbody div, .codexbody p, .codexbody li, .codexbody dt, .codexbody dd,
+.codexbody h1, .codexbody h2, .codexbody h3, .codexbody h4, .codexbody h5,
+.codexbody h6, .codexbody h7 {
     line-height: 125%;}
- #CODEXBODY .codexoversize div,  #CODEXBODY .codexoversize p,
- #CODEXBODY .codexoversize li,  #CODEXBODY .codexoversize dt,  #CODEXBODY .codexoversize dd,
- #CODEXBODY .codexoversize h1,  #CODEXBODY .codexoversize h2,  #CODEXBODY .codexoversize h3,
- #CODEXBODY .codexoversize h4,  #CODEXBODY .codexoversize h5,  #CODEXBODY .codexoversize h6,
- #CODEXBODY .codexoversize h7 {
+ .codexbody .codexoversize div,  .codexbody .codexoversize p,
+ .codexbody .codexoversize li,  .codexbody .codexoversize dt,  .codexbody .codexoversize dd,
+ .codexbody .codexoversize h1,  .codexbody .codexoversize h2,  .codexbody .codexoversize h3,
+ .codexbody .codexoversize h4,  .codexbody .codexoversize h5,  .codexbody .codexoversize h6,
+ .codexbody .codexoversize h7 {
     line-height: 115%;}
 
 #CODEXBODY.codexbodysizexlarge p, #CODEXBODY.codexbodysizexlarge li,
@@ -93,7 +93,7 @@ body.sbook { font-size: 62.5%; }
 #SBOOKTITLEPAGE .title, #SBOOKTITLEPAGE .author { margin-bottom: 1em;}
 #SBOOKTITLEPAGE .pubinfo { margin-top: 3em;}
 
-#CODEXBODY .titlepage, #CODEXBODY .sbooktitlepage { text-align: center;}
+.codexbody .titlepage, .codexbody .sbooktitlepage { text-align: center;}
 
 body.codexpagesizedefault #CODEXPAGE {}
 body.codexpagesizefull #CODEXPAGE {
