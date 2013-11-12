@@ -2200,12 +2200,12 @@ Codex.Startup=
             var state=Codex.state, synced=Codex.syncstate;
             var hash=window.location.hash; var target=false;
             if ((typeof hash === "string") && (hash.length>0)) {
-                if ((hash[0]==='#') && (hash.length>1))
-                    target=document.getElementById(hash.slice(1));
-                else target=document.getElementById(hash);
+                if (hash[0]==='#') hash=hash.slice(1);
+                if (hash) target=document.getElementById(hash);
                 if (Codex.Trace.startup>1)
                     fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
-            if (target) Codex.GoTo(target,"initLocation/hash",true,true,true);
+            if ((target)&&((!(state.target))||(state.target!==hash)))
+                Codex.GoTo(target,"initLocation/hash",true,true,true);
             else if ((!(state))&&(synced))
                 Codex.restoreState(synced,"initLocation/synced",true);
             else if ((!(synced))&&(state))
