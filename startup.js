@@ -204,7 +204,7 @@ Codex.Startup=
                     else if ((req.readyState===4)&&(navigator.onLine))
                         Codex.setConnected(false);
                     else {}
-                    if ((Codex.Trace.dosync)||(Codex.Trace.state))
+                    if (Codex.Trace.state)
                         fdjtLog("configSave(callback) %o ready=%o status=%o %j",
                                 evt,req.readyState,
                                 ((req.readyState===4)&&(req.status)),
@@ -283,7 +283,7 @@ Codex.Startup=
                         on_fetched_config=false;
                         onfetch();}}
                 else {}
-                if ((Codex.Trace.dosync)||(Codex.Trace.state))
+                if (Codex.Trace.state)
                     fdjtLog("configSave(callback) %o ready=%o status=%o %j",
                             evt,req.readyState,
                             ((req.readyState===4)&&(req.status)),

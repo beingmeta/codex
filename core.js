@@ -129,8 +129,7 @@ var Codex={
         addgloss: 0,      // Note whenever a gloss post completes
         layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
-        dosync: false,    // Whether to trace state saves
-        state: false,     // Whether to trace set state
+        state: true,     // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
         selection: false, // Whether to trace inter-window messages
@@ -910,8 +909,7 @@ var Codex={
         if ((Codex.dosync)&&(navigator.onLine)) {
             var uri=Codex.docuri||Codex.refuri;
             var state=Codex.state; var synced=Codex.syncstate;
-            var traced=(Codex.Trace.dosync)||(Codex.Trace.state)||
-                (Codex.Trace.network);
+            var traced=(Codex.Trace.state)||(Codex.Trace.network);
             if (!(state)) {
                 var statestring=readLocal("codex.state("+uri+")");
                 if (statestring) Codex.state=state=JSON.parse(statestring);
