@@ -96,8 +96,8 @@ Codex.Startup=
 
         /* Save local */
 
-        var saveLocal=Codex.saveLocal;
         var readLocal=Codex.readLocal;
+        var saveLocal=Codex.saveLocal;
 
         /* Interval timers */
         var ticktock=false;
@@ -224,7 +224,7 @@ Codex.Startup=
             var setting;
             if (typeof fetch === "undefined") fetch=true;
             if ((navigator.onLine)&&(fetch)) fetchConfig();
-            var config=(saved_config=(getLocal("codex.config",true)||{}));
+            var config=(saved_config=(readLocal("codex.config",true)||{}));
             Codex.postconfig=[];
             if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
             if (config) {
@@ -361,7 +361,7 @@ Codex.Startup=
             envSetup();
 
             // Initialize the book state (location, targets, etc)
-            initState(); Codex.syncState();
+            Codex.initState(); Codex.syncState();
 
             // If we don't know who the user is, ask ASAP
             if (!((Codex.user)||(window._sbook_loadinfo)||
@@ -748,15 +748,14 @@ Codex.Startup=
         
         function startupDone(mode){
             if ((Codex.glosshash)&&(Codex.glossdb.ref(Codex.glosshash))) {
-                if (Codex.showGloss(Codex.glosshash))
+                if (Codex.showGloss(Codex.glosshash)) {
                     Codex.glosshash=false;
+                    Codex.Timeline.initLocation=fdjtTime();}
                 else initLocation();}
             else initLocation();
             window.onpopstate=function onpopstate(evt){
                 if (evt.state) Codex.restoreState(evt.state,"popstate");};
             fdjtLog("Startup done");
-            if (fdjtID("CODEXREADYSPLASH"))
-                fdjtID("CODEXREADYSPLASH").style.display='none';
             Codex.displaySync();
             fdjtDOM.dropClass(document.body,"codexstartup");
             if (mode) {}
@@ -797,7 +796,7 @@ Codex.Startup=
                 fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}
             if ((!(mode))&&(location.hash)) Codex.hideCover();
             else if ((!(mode))&&(Codex.user)) {
-                var opened=getLocal("Codex.opened("+Codex.refuri+")",true);
+                var opened=readLocal("Codex.opened("+Codex.refuri+")",true);
                 if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
                     Codex.hideCover();}}
         
@@ -2185,73 +2184,70 @@ Codex.Startup=
         
         fdjtDOM.addListener(window,"online",go_online);
 
-        function initState() {
-            var uri=Codex.docuri||Codex.refuri;
-            var statestring=readLocal("codex.state("+uri+")");
-            if (statestring)
-                Codex.state=JSON.parse(statestring);
-            var syncstatestring=readLocal("codex.syncstate("+uri+")");
-            if (syncstatestring)
-                Codex.syncstate=JSON.parse(syncstatestring);}
-        
+        function getLoc(x){
+            var info=Codex.getLocInfo(x);
+            return ((info)&&(info.start));}
+        var loc2pct=Codex.location2pct;
+
         /* This initializes the sbook state to the initial location with the
            document, using the hash value if there is one. */ 
         function initLocation() {
-            var state=Codex.state, synced=Codex.syncstate;
+            var state=Codex.state;
             var hash=window.location.hash; var target=false;
             if ((typeof hash === "string") && (hash.length>0)) {
-                if (hash[0]==='#') hash=hash.slice(1);
-                if (hash) target=document.getElementById(hash);
-                if (Codex.Trace.startup>1)
-                    fdjtLog("sbookInitLocation hash=%s=%o",hash,target);}
-            if ((target)&&((!(state.target))||(state.target!==hash)))
-                Codex.GoTo(target,"initLocation/hash",true,true,true);
-            else if ((!(state))&&(synced))
-                Codex.restoreState(synced,"initLocation/synced",true);
-            else if ((!(synced))&&(state))
-                Codex.restoreState(state,"initLocation/state",true);
-            else if (!((synced)||(state))) {
-                Codex.GoTo(1);}
-            else if ((state.device)&&(state.device===synced.device))
-                Codex.restoreState(state,"initLocation/samedevice",true);
+                if (hash[0]==='#') hash=hash.slice(1);}
+            if ((hash)&&(target=fdjtID(hash))) {
+                if ((state)&&(state.target)&&(state.target!==hash))
+                    state={target: hash,location: getLoc(target),
+                           changed: fdjtTime()};}
+            else if (state) {}
             else {
-                var msg1="You've moved across apps/devices.  Would you like to start:";
-                var choices=[{label: "right 'here' @"+Codex.location2pct(state.location),
-                              handler: Codex.hideCover}];
-                if (synced.location!==state.location)
-                    choices.push(
-                        {label: ("your latest @"+
-                                 Codex.location2pct(synced.location)),
-                         title: "the most recent location you moved to on any device/app",
-                         handler: function(){
-                             Codex.restoreState(synced);
-                             Codex.hideCover();}});
-                if ((synced.maxloc>state.location)&&
-                    (synced.maxloc!==synced.location)&&
-                    (synced.maxloc<=(Codex.docinfo._maxloc)))
-                    choices.push(
-                        {label: "your farthest @"+Codex.location2pct(synced.maxloc),
-                         title: "the farthest location you've read on any device/app",
-                         handler: function(){
-                             Codex.GoTo(state.maxloc,"sync");
-                             Codex.hideCover();}});
-                if ((state.maxloc)&&
-                    (state.maxloc>state.location)&&
-                    (state.maxloc!==synced.location)&&
-                    (state.maxloc!==synced.maxloc)&&
-                    (state.maxloc<(Codex.docinfo._maxloc)))
-                    choices.push(
-                        {label: "your farthest `here` @"+Codex.location2pct(state.maxloc),
-                         title: "the farthest location you've read on this device/app",
-                         handler: function(){
-                             Codex.GoTo(state.maxloc,"sync");
-                             Codex.hideCover();}});
-                if (choices.length===1)
-                    Codex.restoreState(state,"initLocation/nochoices");
-                else {
-                    Codex.hideCover();
-                    fdjtUI.choose({choices: choices,cancel: true,timeout:17},
-                                  fdjtDOM("div",msg1));}}}
+                target=fdjtID("CODEXSTART")||fdjtDOM.$(".codexstart")||
+                    fdjtID("SBOOKSTART")||fdjtDOM.$(".sbookstart")||
+                    fdjtID("SBOOKTITLEPAGE");
+                if (target)
+                    state={target: target.id,location: getLoc(target),
+                           // This is the beginning of the 21st century
+                           changed: 978307200};
+                else state={location: 1,changed: 978307200};}
+            if (Codex.Trace.startup) {
+                if (hash)
+                    fdjtLog("initLocation/hash #%s %j",hash,state);
+                else fdjtLog("initLocation %j",state);}
+            if ((state.changed)&&(Codex.state)&&
+                (state.changed>Codex.state.changed))
+                Codex.saveState(state);}
+        Codex.initLocation=initLocation;
+
+        function resolveXState(xstate) {
+            var state=Codex.state;
+            if (!(state)) Codex.restoreState(xstate);
+            if (xstate.changed<state.changed) return;
+            var msg1="You've moved across apps/devices.  Would you like to start:";
+            var choices=[{label: "right 'here' @"+loc2pct(state.location),
+                          handler: Codex.hideCover}];
+            if (xstate.location!==state.location)
+                choices.push(
+                    {label: ("your latest @"+loc2pct(xstate.location)),
+                     title: "the most recent location you moved to on any device/app",
+                     handler: function(){
+                         Codex.restoreState(xstate);
+                         Codex.hideCover();}});
+            if ((xstate.maxloc>state.location)&&
+                (xstate.maxloc!==state.location))
+                choices.push(
+                    {label: "your farthest @"+loc2pct(xstate.maxloc),
+                     title: "the farthest location you've read on any device/app",
+                     handler: function(){
+                         Codex.GoTo(xstate.maxloc,"sync");
+                         Codex.hideCover();}});
+            if (choices.length===1)
+                Codex.restoreState(state,"resolveXState/onechoice");
+            else {
+                Codex.hideCover();
+                fdjtUI.choose({choices: choices,cancel: true,timeout:17},
+                              fdjtDOM("div",msg1));}}
+        Codex.resolveXState=resolveXState;
 
         /* Indexing tags */
         

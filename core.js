@@ -809,15 +809,42 @@ var Codex={
         window.location.hash=targetid;}
     Codex.setHashID=setHashID;
 
+    // Assert whether we're connected and update body classes
+    //  to reflect the state. Also, run run any delayed thunks
+    //  queued for connection.
+    function setConnected(val){
+        if ((val)&&(!(Codex.connected))) {
+            var onconnect=Codex._onconnect;
+            Codex._onconnect=false;
+            if ((onconnect)&&(onconnect.length)) {
+                var i=0; var lim=onconnect.length;
+                while (i<lim) (onconnect[i++])();}
+            if (fdjtState.getLocal("queued("+Codex.refuri+")"))
+                Codex.writeQueuedGlosses();}
+        if (((val)&&(!(Codex.connected)))||
+            ((!(val))&&(Codex.connected)))
+            fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
+                              ((val)?("cxCONN"):("cxDISCONN")));
+        Codex.connected=val;
+    } Codex.setConnected=setConnected;
+
+
+    /* Managing the reader state */
+
     var syncing=false;
     
+    Codex.initState=function initState() {
+        var uri=Codex.docuri||Codex.refuri;
+        var statestring=readLocal("codex.state("+uri+")");
+        if (statestring)
+            Codex.state=JSON.parse(statestring);};
+    
     // This records the current state of the app, bundled into an
-    //  object and primarily consisting of target and location.
-    // It also includes other information, including the time the
-    //  state was last changed.
+    //  object and primarily consisting a location, a target, and
+    //  the time it was last changed.
     // Mechanically, this fills things out and stores the object
     //  in Codex.state as well as in local storage.  If the changed
-    //  date is later than the current syncstate, it also does
+    //  date is later than the current.xstate, it also does
     //  an Ajax call to update the server.
     // Finally, unless skiphist is true, it updates the browser
     //  history.
@@ -843,13 +870,18 @@ var Codex={
         var uri=Codex.docuri||Codex.refuri;
         saveLocal("codex.state("+uri+")",statestring);
         if ((!(syncing))&&(Codex.dosync)&&
-            ((!(Codex.syncstate))||(state.changed>Codex.syncstate.changed)))
+            ((!(Codex.xstate))||(state.changed>Codex.xstate.changed)))
             syncState();
         if ((!(skiphist))&&(window.history)&&(window.history.pushState))
             setHistory(state,frag,title);
     } Codex.saveState=saveState;
 
+    // This sets the browser history from a particular state
     function setHistory(state,hash,title){
+        if (Codex.Trace.state) {
+            if (title)
+                fdjtLog("setHistory %s (%s) state=%j",hash,title,state);
+            else fdjtLog("setHistory %s state=%j",hash,state);}
         if (!((window.history)&&(window.history.pushState))) return;
         if (!(hash)) hash=state.target;
         if (!(title)) title=state.title;
@@ -874,33 +906,12 @@ var Codex={
         saveState(state);
     } Codex.restoreState=restoreState;
 
-    function clearState(syncedtoo){
+    function clearState(){
         var uri=Codex.docuri||Codex.refuri;
         Codex.state=false;
         clearLocal("codex.state("+uri+")");
-        if (syncedtoo) {
-            Codex.syncedstate=false;
-            clearLocal("codex.syncstate("+uri+")");}
+        Codex.xstate=false;
     } Codex.clearState=clearState;
-
-    // Assert whether we're connected and update body classes
-    //  to reflect the state. Also, run run any delayed thunks
-    //  queued for connection.
-    function setConnected(val){
-        if ((val)&&(!(Codex.connected))) {
-            var onconnect=Codex._onconnect;
-            Codex._onconnect=false;
-            if ((onconnect)&&(onconnect.length)) {
-                var i=0; var lim=onconnect.length;
-                while (i<lim) (onconnect[i++])();}
-            if (fdjtState.getLocal("queued("+Codex.refuri+")"))
-                Codex.writeQueuedGlosses();}
-        if (((val)&&(!(Codex.connected)))||
-            ((!(val))&&(Codex.connected)))
-            fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
-                              ((val)?("cxCONN"):("cxDISCONN")));
-        Codex.connected=val;
-    } Codex.setConnected=setConnected;
 
     // Post the current state and update synced state from what's
     // returned
@@ -908,18 +919,8 @@ var Codex={
         if ((syncing)||(!(Codex.dosync))) return;
         if ((Codex.dosync)&&(navigator.onLine)) {
             var uri=Codex.docuri||Codex.refuri;
-            var state=Codex.state; var synced=Codex.syncstate;
             var traced=(Codex.Trace.state)||(Codex.Trace.network);
-            if (!(state)) {
-                var statestring=readLocal("codex.state("+uri+")");
-                if (statestring) Codex.state=state=JSON.parse(statestring);
-                else state={};}
-            if (!(synced)) {
-                var syncstatestring=readLocal("codex.syncstate("+uri+")");
-                if (syncstatestring)
-                    Codex.syncstate=synced=JSON.parse(syncstatestring);
-                else synced=false;}
-            if (state===synced) return;
+            var state=Codex.state;
             var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
                 (Codex.refuri);
             var sync_uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
@@ -930,31 +931,35 @@ var Codex={
                 "&SYNCUSER="+encodeURIComponent(Codex.user._id);
             if (Codex.deviceName) sync_uri=sync_uri+
                 "&DEVICE="+encodeURIComponent(Codex.deviceName);
-            if (state.target) sync_uri=sync_uri+
-                "&TARGET="+encodeURIComponent(state.target);
-            if ((state.location)||(state.hasOwnProperty('location')))
-                sync_uri=sync_uri+
-                "&LOCATION="+encodeURIComponent(state.location);
-            if (state.changed) sync_uri=sync_uri+
-                "&CHANGED="+encodeURIComponent(state.changed);
             if (Codex.ends_at) sync_uri=sync_uri+
                 "&LOCLEN="+encodeURIComponent(Codex.ends_at);
+            if (state) {
+                if (state.target) sync_uri=sync_uri+
+                    "&TARGET="+encodeURIComponent(state.target);
+                if ((state.location)||(state.hasOwnProperty('location')))
+                    sync_uri=sync_uri+
+                    "&LOCATION="+encodeURIComponent(state.location);
+                if (state.changed) sync_uri=sync_uri+
+                    "&CHANGED="+encodeURIComponent(state.changed);}
             var req=new XMLHttpRequest();
             syncing=state;
             req.onreadystatechange=function(evt){
                 if (req.readyState===4) {
                     if ((req.status>=200)&&(req.status<300)) {
-                        var newstate=JSON.parse(req.responseText);
-                        if (newstate.changed) {
-                            var uri=Codex.docuri||Codex.refuri;
+                        var xstate=JSON.parse(req.responseText);
+                        if (xstate.changed) {
                             if (traced)
-                                fdjtLog("syncState(callback) %o %j",
-                                        evt,newstate);
-                            var newstatestring=JSON.stringify(state);
-                            Codex.syncstate=newstate;
-                            if (!(Codex.state)) saveState(newstate);
-                            saveLocal("codex.syncstate("+uri+")",
-                                      newstatestring);}
+                                fdjtLog("syncState(callback) %o %j\n\t%j",
+                                        evt,xstate,Codex.state);
+                            if (Codex.xstate) Codex.xstate=xstate;
+                            else if (!(Codex.state)) {
+                                Codex.xstate=xstate;
+                                restoreState(xstate);}
+                            else if (Codex.state.changed>xstate.changed)
+                                Codex.xstate=xstate;
+                            else {
+                                Codex.xstate=xstate;
+                                Codex.resolveXState(xstate);}}
                         else if (traced)
                             fdjtLog("syncState(callback/error) %o %d %s",
                                     evt,req.status,req.responseText);}
