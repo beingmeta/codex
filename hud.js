@@ -271,7 +271,10 @@ Codex.setMode=
                 fdjtLog("Initialized basic HUD layout");}
         Codex.initHUD=initHUD;
         
-        function resizeHUD(){}
+        function resizeHUD(){
+            var view_height=fdjtDOM.viewHeight();
+            fdjtID("CODEXHEART").style.maxHeight=(view_height-100)+'px';
+            fdjt.DOM.adjustFonts(Codex.HUD);}
         Codex.resizeHUD=resizeHUD;
 
         /* Various UI methods */
