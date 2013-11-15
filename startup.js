@@ -101,6 +101,9 @@ Codex.Startup=
         var readLocal=Codex.readLocal;
         var saveLocal=Codex.saveLocal;
 
+        /* Whether to resize by default */
+        var resize_default=true;
+
         /* Interval timers */
         var ticktock=false;
         
@@ -1732,6 +1735,7 @@ Codex.Startup=
         /* Margin creation */
 
         var resizing=false;
+        var choose_resize=false;
 
         function initMargins(){
             var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
@@ -1782,15 +1786,39 @@ Codex.Startup=
             pagefoot.style.backgroundColor=bgcolor;
             */
             fdjtDOM.addListener(window,"resize",function(evt){
+                var layout=Codex.layout;
                 if (resizing) clearTimeout(resizing);
                 Codex.resizeHUD();
-                if ((Codex.layout)&&(Codex.layout.onresize)&&
-                    (!(Codex.freezelayout))&&(!(Codex.glossform)))
-                    resizing=setTimeout(function(){
-                        resizing=false;
-                        Codex.sizeContent();
-                        Codex.layout.onresize(evt||event);},
-                                       3000);});}
+                if ((layout)&&(layout.onresize)&&
+                    (!(Codex.freezelayout))&&(!(Codex.glossform))) {
+                    if ((layout.done-layout.started)<=3000)
+                        resizing=setTimeout(resizeNow,50);
+                    else if (Codex.layoutCached())
+                        resizing=setTimeout(resizeNow,50);
+                    else if (choose_resize) {}
+                    else {
+                        var msg=fdjtDOM("div.message","Update layout?");
+                        choose_resize=true;
+                        var choices=[
+                            {label: "Yes",
+                             handler: function(){
+                                 choose_resize=false;
+                                 resize_default=true;
+                                 resizing=setTimeout(resizeNow,50);},
+                             isdefault: resize_default},
+                            {label: "No",
+                             handler: function(){
+                                 choose_resize=false;
+                                 resize_default=false;
+                                 resizing=setTimeout(Codex.cheapResize,50);},
+                             isdefault: (!(resize_default))}];
+                        fdjtUI.choose({choices: choices,timeout: 5},msg);}}});}
+        
+        function resizeNow(evt){
+            if (resizing) clearTimeout(resizing);
+            resizing=false;
+            Codex.sizeContent();
+            Codex.layout.onresize(evt);}
         
         function getBGColor(arg){
             var color=fdjtDOM.getStyle(arg).backgroundColor;
