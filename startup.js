@@ -60,6 +60,8 @@ Codex.Startup=
         var fdjtID=fdjt.ID;
         var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
         
+        var CodexLayout=fdjt.CodexLayout;
+
         var warn=fdjtLog.warn;
 
         var https_root="https://s3.amazonaws.com/beingmeta/static/";
@@ -852,7 +854,15 @@ Codex.Startup=
 
             var refuris=getLocal("codex.refuris",true)||[];
 
-            Codex.sourceid=getMeta("SBOOKS.sourceid");
+            Codex.sourceid=getMeta("SBOOKS.sourceid")||getMeta("SBOOKS.fileid")||
+                Codex.docuri;
+            var oldid=getLocal("codex.sourceid("+Codex.docuri+")");
+            if (oldid) {
+                var layouts=getLocal("codex.layouts("+oldid+")");
+                if ((layouts)&&(layouts.length)) {
+                    var i=0, lim=layouts.length; while (i<lim) 
+                        CodexLayout.dropLayout(layouts[i++]);}}
+            else setLocal("codex.sourceid("+Codex.docuri+")",Codex.sourceid);
 
             // Get the settings for scanning the document structure
             getScanSettings();
