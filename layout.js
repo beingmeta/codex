@@ -405,11 +405,8 @@ Codex.Paginate=
         Codex.Paginate=Paginate;
 
         CodexLayout.prototype.onresize=function(){
-            var view_height=fdjtDOM.viewHeight();
-            fdjtID("CODEXHEART").style.maxHeight=(view_height-100)+'px';
             if (Codex.bypage) Codex.Paginate("resize");
-            else fdjt.DOM.adjustFonts(Codex.content);
-            fdjt.DOM.adjustFonts(Codex.HUD);};
+            else fdjt.DOM.adjustFonts(Codex.content);};
         
         Codex.addConfig(
             "layout",
@@ -467,17 +464,53 @@ Codex.Paginate=
         Codex.addConfig("bodysize",updateLayoutProperty);
         Codex.addConfig("bodyfamily",updateLayoutProperty);
         
+        function getLayoutID(width,height,family,size,source_id){
+            if (!(width))
+                width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+            if (!(height))
+                height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
+            if (!(family)) family=Codex.bodyfamily||"serif";
+            if (!(size)) size=Codex.bodysize||"normal";
+            if (!(source_id))
+                source_id=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri||Codex.refuri);
+            return fdjtString("%dx%d-%s-%s(%s)",
+                              width,height,family,size,
+                              // Layout depends on the actual file ID, if we've got
+                              // one, rather than just the REFURI
+                              source_id);}
+        Codex.getLayoutID=getLayoutID;
+
+        function layoutCached(layout_id){
+            if (!(layout_id)) layout_id=getLayoutID();
+            else if (typeof layout_id === "number")
+                layout_id=getLayoutID.apply(null,arguments);
+            else {}
+            var layouts=getLocal("codex.layouts("+Codex.sourceid+")",true);
+            return ((layouts)&&(layouts.indexOf(layout_id)>=0));}
+        Codex.layoutCached=layoutCached;
+        
+        function clearLayouts(source_id){
+            if (source_id) {
+                var layouts=getLocal("codex.layouts("+Codex.sourceid+")",true);
+                var i=0, lim=layouts.length; while (i<lim) 
+                    CodexLayout.dropLayout(layouts[i++]);
+                fdjtState.dropLocal("codex.layouts("+Codex.sourceid+")");}
+            else {
+                CodexLayout.clearLayouts();
+                fdjtState.dropLocal(/^codex.layouts\(/g);}}
+        Codex.clearLayouts=clearLayouts;
+
         function getLayoutArgs(){
-            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             var origin=fdjtDOM("div#CODEXCONTENT");
             var container=fdjtDOM("div.codexpages#CODEXPAGES");
-            var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
+            var bodysize=Codex.bodysize||"normal";
             var sourceid=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri||Codex.refuri);
             var layout_id=fdjtString(
                 "%dx%d-%s-%s(%s)",
-                width,height,bodysize,bodyfamily,
+                width,height,bodyfamily,bodysize,
                 // Layout depends on the actual file ID, if we've got
                 // one, rather than just the REFURI
                 sourceid||Codex.refuri);
@@ -597,6 +630,21 @@ Codex.Paginate=
             return args;}
         CodexLayout.getLayoutArgs=getLayoutArgs;
 
+        function cheapResize(){
+            var layout=Codex.layout;
+            var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
+            var lwidth=layout.width, lheight=layout.height;
+            var hscale=height/lheight, vscale=width/lwidth;
+            var scale=((hscale<vscale)?(hscale):(vscale));
+            var cheaprule=Codex.CSS.resizerule;
+            if (!(cheaprule))
+                Codex.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
+                    "div#CODEXPAGE div.codexpage","");
+            cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
+            cheaprule.style[fdjtDOM.transformOrigin]="center top";}
+        Codex.cheapResize=cheapResize;
+        
         /* Updating the page display */
 
         function updatePageDisplay(pagenum,location,classname) {
