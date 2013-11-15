@@ -2240,11 +2240,11 @@ Codex.Startup=
                            changed: fdjtTime()};}
             else if (state) {}
             else {
-                target=fdjtID("CODEXSTART")||fdjtDOM.$(".codexstart")||
-                    fdjtID("SBOOKSTART")||fdjtDOM.$(".sbookstart")||
+                target=fdjtID("CODEXSTART")||fdjt.$1(".codexstart")||
+                    fdjtID("SBOOKSTART")||fdjt.$1(".sbookstart")||
                     fdjtID("SBOOKTITLEPAGE");
                 if (target)
-                    state={target: target.id,location: getLoc(target),
+                    state={location: getLoc(target),
                            // This is the beginning of the 21st century
                            changed: 978307200};
                 else state={location: 1,changed: 978307200};}
@@ -2254,7 +2254,8 @@ Codex.Startup=
                 else fdjtLog("initLocation %j",state);}
             if ((state.changed)&&(Codex.state)&&
                 (state.changed>Codex.state.changed))
-                Codex.saveState(state);}
+                Codex.saveState(state,true);
+            else Codex.state=state;}
         Codex.initLocation=initLocation;
 
         function resolveXState(xstate) {
