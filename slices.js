@@ -553,7 +553,6 @@ Codex.Slice=(function () {
                 ((elt.parentNode)&&(Codex.scrollers[elt.parentNode.id]));
             if (scroller) scroller.scrollToElement(elt,0);}
         else {
-            var container=slice.container;
             var cardinfo=slice.getCard(elt);
             if (cardinfo) {
                 var scrollto=cardinfo.dom;
