@@ -54,6 +54,7 @@ Codex.Paginate=
 
         var fdjtString=fdjt.String;
         var fdjtState=fdjt.State;
+        var fdjtHash=fdjt.Hash;
         var fdjtTime=fdjt.Time;
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
@@ -73,6 +74,9 @@ Codex.Paginate=
         var isEmpty=fdjtString.isEmpty;
         var secs2short=fdjtTime.secs2short;
         
+        var getLocal=fdjtState.getLocal;
+        var setLocal=fdjtState.setLocal;
+
         var atoi=parseInt;
 
         function Paginate(why,init){
@@ -157,6 +161,25 @@ Codex.Paginate=
 
                 return false;}
             
+            var max_layouts=3;
+
+            function recordLayout(layout,source_id){
+                var id=layout.layout_id;
+                var key="codex.layouts("+source_id+")";
+                var saved=getLocal(key,true);
+                if (!(saved)) setLocal(key,[id],true);
+                else {
+                    var loc=saved.indexOf(id);
+                    if (loc<0) saved.push(id);
+                    else {saved.splice(loc,1); saved.push(id);}
+                    if (saved.length>max_layouts) {
+                        var j=saved.length-max_layouts-1;
+                        while (j>=0) {
+                            fdjtLog("Dropping layout #%d %s",j,saved[j]);
+                            CodexLayout.dropLayout(saved[j--]);}
+                        saved=saved.slice(saved.length-max_layouts);}
+                    setLocal(key,saved,true);}}
+
             function new_layout(){
 
                 // Prepare to do the layout
@@ -197,7 +220,7 @@ Codex.Paginate=
                             var elapsed=layout.done-layout.started;
                             if ((typeof Codex.cachelayouts === "number")?
                                 (elapsed>Codex.cachelayouts):(elapsed>5000)) {
-                                layout.saveLayout();}}
+                                layout.saveLayout(function(l){recordLayout(l,Codex.sourceid);});}}
                         getPageTops(layout.pages);
                         fdjtID("CODEXPAGE").style.visibility='';
                         fdjtID("CODEXCONTENT").style.visibility='';
@@ -451,7 +474,7 @@ Codex.Paginate=
             var container=fdjtDOM("div.codexpages#CODEXPAGES");
             var bodysize=Codex.bodysize||"normal";
             var bodyfamily=Codex.bodyfamily||"serif";
-            var sourceid=Codex.sourceid;
+            var sourceid=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri||Codex.refuri);
             var layout_id=fdjtString(
                 "%dx%d-%s-%s(%s)",
                 width,height,bodysize,bodyfamily,
