@@ -1789,6 +1789,9 @@ Codex.Startup=
                 var layout=Codex.layout;
                 if (resizing) clearTimeout(resizing);
                 Codex.resizeHUD();
+                if (Codex.CSS.resizerule) {
+                    Codex.CSS.resizerule.style[fdjtDOM.transform]="";
+                    Codex.CSS.resizerule.style[fdjtDOM.transformOrigin]="";}
                 if ((layout)&&(layout.onresize)&&
                     (!(Codex.freezelayout))&&(!(Codex.glossform))) {
                     if ((layout.done-layout.started)<=3000)
