@@ -79,6 +79,9 @@ body.cxANIMATE.cxPREVIEW div#CODEXPAGE {
     transform: scale(0.95,0.95); -webkit-transform:scale(0.95,0.95);
     -moz-transform: scale(0.95,0.95); -o-transform:scale(0.95,0.95);}
 
+body.cxANIMATE.cxNOSHRINK div#CODEXPAGE .codexpage {
+    transform: inherit; -webkit-transform: inherit;
+    -moz-transform: inherit; -o-transform: inherit;}
 body.cxANIMATE.cxSHRINK div#CODEXPAGE .codexpage,
 body.cxANIMATE.cxPREVIEW div#CODEXPAGE .codexpage {
     transform: scale(0.98,0.98); -webkit-transform:scale(0.98,0.98);
@@ -802,6 +805,15 @@ div.startupmessage.running {
     -khtml-opacity: 1.00;
     -moz-opacity: 1.00;
     -o-opacity: 1.00;}
+
+/* Dialog styling */
+
+div.fdjtdialog.updatelayout {
+    font-size: 250%;}
+div.fdjtdialog.updatelayout div.message {
+    font-size: 150%;}
+div.fdjtdialog.fdjtconfirm.updatelayout div.choices button {
+    font-size: 150%;}
 
 /* Logotypes */
 
