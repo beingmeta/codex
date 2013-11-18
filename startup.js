@@ -1735,7 +1735,7 @@ Codex.Startup=
         /* Margin creation */
 
         var resizing=false;
-        var choose_resize=false;
+        var choosing_resize=false;
 
         function initMargins(){
             var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
@@ -1794,28 +1794,31 @@ Codex.Startup=
                     Codex.CSS.resizerule.style[fdjtDOM.transformOrigin]="";}
                 if ((layout)&&(layout.onresize)&&
                     (!(Codex.freezelayout))&&(!(Codex.glossform))) {
-                    if ((layout.done-layout.started)<=3000)
+                    if ((Codex.resizelayout)&&
+                        ((layout.done-layout.started)<=Codex.resizelayout))
                         resizing=setTimeout(resizeNow,50);
                     else if (Codex.layoutCached())
                         resizing=setTimeout(resizeNow,50);
-                    else if (choose_resize) {}
+                    else if (choosing_resize) {}
                     else {
                         var msg=fdjtDOM("div.message","Update layout?");
-                        choose_resize=true;
+                        choosing_resize=true;
                         var choices=[
                             {label: "Yes",
                              handler: function(){
-                                 choose_resize=false;
+                                 choosing_resize=false;
                                  resize_default=true;
                                  resizing=setTimeout(resizeNow,50);},
                              isdefault: resize_default},
                             {label: "No",
                              handler: function(){
-                                 choose_resize=false;
+                                 choosing_resize=false;
                                  resize_default=false;
                                  resizing=setTimeout(Codex.cheapResize,50);},
                              isdefault: (!(resize_default))}];
-                        fdjtUI.choose({choices: choices,timeout: 5},msg);}}});}
+                        fdjtUI.choose({choices: choices,
+                                       timeout: Codex.choice_timeout||5},
+                                      msg);}}});}
         
         function resizeNow(evt){
             if (resizing) clearTimeout(resizing);
@@ -1946,38 +1949,40 @@ Codex.Startup=
                     uri+((user)?("&SYNCUSER="+user._id):("&JUSTUSER=yes")),
                     start);
                 if (user) {
-                    // If there was already a user, just startup regular
-                    //  updates now
+                    // If there was already a user, just startup
+                    //  regular updates now
                     if ((!(ticktock))&&(Codex.update_interval)) 
-                        Codex.ticktock=ticktock=setInterval(updateInfo,Codex.update_interval);}
+                        Codex.ticktock=ticktock=
+                        setInterval(updateInfo,Codex.update_interval);}
                 else if (Codex.user)
-                    // This response gave us a user, so we start another request, which
-                    //  will get glosses.  The response to this request will start the
+                    // This response gave us a user, so we start
+                    //  another request, which will get glosses.  The
+                    //  response to this request will start the
                     //  interval timer.
                     setTimeout(updateInfo,50);
                 else {
                     // The response back didn't give us any user information
                     fdjtLog.warn("Couldn't determine user!");}}
             function ajaxFailed(req){
-                if (req.readyState===4) {
-                    if (req.status<500) {
-                        fdjtLog.warn("Ajax call to %s failed on callback, falling back to JSONP",
-                                     uri);
-                        updateInfoJSONP(uri+((user)?(""):("&JUSTUSER=yes")),jsonp);
-                        noajax=true;}
-                    else {
-                        try {
-                            fdjtLog.warn(
-                                "Ajax call to %s returned status %d %j, taking a break",
-                                uri,req.status,JSON.parse(req.responseText));}
-                        catch (ex) {
-                            fdjtLog.warn(
-                                "Ajax call to %s returned status %d, taking a break",
-                                uri,req.status);}
-                        if (ticktock) {
-                            clearInterval(Codex.ticktock);
-                            Codex.ticktock=ticktock=false;}
-                        setTimeout(updateInfo,30*60*1000);}}}
+                if ((req.readyState===4)&&(req.status<500)) {
+                    fdjtLog.warn(
+                        "Ajax call to %s failed on callback, falling back to JSONP",
+                        uri);
+                    updateInfoJSONP(uri+((user)?(""):("&JUSTUSER=yes")),jsonp);
+                    noajax=true;}
+                else if (req.readyState===4) {
+                    try {
+                        fdjtLog.warn(
+                            "Ajax call to %s returned status %d %j, taking a break",
+                            uri,req.status,JSON.parse(req.responseText));}
+                    catch (ex) {
+                        fdjtLog.warn(
+                            "Ajax call to %s returned status %d, taking a break",
+                            uri,req.status);}
+                    if (ticktock) {
+                        clearInterval(Codex.ticktock);
+                        Codex.ticktock=ticktock=false;}
+                    setTimeout(updateInfo,30*60*1000);}}
             if ((updating)||(!(navigator.onLine))) return; else updating=true;
             // Get any requested glosses and add them to the call
             var i=0, lim, glosses=getQuery("GLOSS",true); {
@@ -2264,10 +2269,13 @@ Codex.Startup=
         function resolveXState(xstate) {
             var state=Codex.state;
             if (!(state)) Codex.restoreState(xstate);
-            if (xstate.changed<state.changed) return;
+            if (state.changed>=xstate.changed) return;
             var msg1="You've moved across apps/devices.  Would you like to start:";
             var choices=[{label: "right 'here' @"+loc2pct(state.location),
-                          handler: Codex.hideCover}];
+                          handler: function(){
+                              state.changed=fdjtTime.tick();
+                              Codex.saveState(state,true,true);
+                              Codex.hideCover();}}];
             if (xstate.location!==state.location)
                 choices.push(
                     {label: ("your latest @"+loc2pct(xstate.location)),
