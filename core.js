@@ -63,6 +63,9 @@ var Codex={
     // Whether to cache layouts locally; the value is a threshold
     // (in milliseconds) for when to cache
     cachelayouts: 2500,
+    // Ask about updating the layout when it took longer than this
+    //  many milliseconds
+    resizelayout: false, // 5000
     // Whether to force new layouts
     forcelayout: false,
     // Whether we're freezing layouts (during text input, etc)
@@ -848,12 +851,13 @@ var Codex={
     //  an Ajax call to update the server.
     // Finally, unless skiphist is true, it updates the browser
     //  history.
-    function saveState(state,skiphist){
-        if ((Codex.state===state)||
-            ((Codex.state)&&
-             (Codex.state.target===state.target)&&
-             (Codex.state.location===state.location)&&
-             (Codex.state.page===state.page)))
+    function saveState(state,skiphist,force){
+        if ((!force)&&
+            ((Codex.state===state)||
+             ((Codex.state)&&
+              (Codex.state.target===state.target)&&
+              (Codex.state.location===state.location)&&
+              (Codex.state.page===state.page))))
             return;
         if (!(state.changed)) state.changed=fdjtTime.tick();
         if (!(state.refuri)) state.refuri=Codex.refuri;
