@@ -2200,7 +2200,8 @@ Codex.Startup=
                         var i=0; var lim=info.length; 
                         while (i<lim) gotItem(info[i++],qids);
                         saveItems(qids,name);}
-                    else fdjtTime.slowmap(function(item){gotItem(item,qids)},info,false,
+                    else fdjtTime.slowmap(function(item){gotItem(item,qids);},
+                                          info,false,
                                           function(){saveItems(qids,name);});}
                 else {
                     var ref=Codex.sourcedb.Import(
@@ -2209,7 +2210,7 @@ Codex.Startup=
                     if (persist) ref.save();
                     Codex[name]=ref._id;
                     if (persist) saveLocal(
-                        "codex."+name+"("+refuri+")",ref._id,true);}}}
+                        "codex."+name+"("+Codex.refuri+")",ref._id,true);}}}
 
         function initGlosses(glosses,etc){
             if ((glosses.length===0)&&(etc.length===0)) return;
