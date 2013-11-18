@@ -84,6 +84,7 @@ Codex.Paginate=
             if (!(why)) why="because";
             dropClass(document.body,"cxSCROLL");
             addClass(document.body,"cxLAYOUT");
+            shrinkLayout(false);
             var forced=((init)&&(init.forced));
             var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
             var height=geom.inner_height, width=geom.width;
@@ -465,14 +466,18 @@ Codex.Paginate=
         Codex.addConfig("bodyfamily",updateLayoutProperty);
         
         function getLayoutID(width,height,family,size,source_id){
+            var page=fdjtID("CODEXPAGE");
+            var left=page.style.left, right=page.style.right;
+            page.style.left=""; page.style.right="";
             if (!(width))
-                width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+                width=getGeometry(page,false,true).width;
             if (!(height))
                 height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             if (!(family)) family=Codex.bodyfamily||"serif";
             if (!(size)) size=Codex.bodysize||"normal";
             if (!(source_id))
                 source_id=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri||Codex.refuri);
+            page.style.left=left; page.style.right=right;
             return fdjtString("%dx%d-%s-%s(%s)",
                               width,height,family,size,
                               // Layout depends on the actual file ID, if we've got
@@ -630,20 +635,45 @@ Codex.Paginate=
             return args;}
         CodexLayout.getLayoutArgs=getLayoutArgs;
 
-        function cheapResize(){
+        function shrinkLayout(flag){
+            var cheaprule=Codex.CSS.resizerule;
+            if (typeof flag==="undefined") flag=true;
+            if ((flag)&&(hasClass(document.body,"cxSHRUNKLAYOUT"))) return;
+            if ((!(flag))&&(!(hasClass(document.body,"cxSHRUNKLAYOUT")))) return;
+            if (!(flag)) {
+                dropClass(document.body,"cxSHRUNKLAYOUT");
+                if (cheaprule) {
+                    cheaprule.style[fdjtDOM.transform]="";
+                    cheaprule.style[fdjtDOM.transformOrigin]="";
+                    cheaprule.style.left="";
+                    cheaprule.style.top="";}
+                return;}
             var layout=Codex.layout;
             var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
             var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             var lwidth=layout.width, lheight=layout.height;
             var hscale=height/lheight, vscale=width/lwidth;
             var scale=((hscale<vscale)?(hscale):(vscale));
-            var cheaprule=Codex.CSS.resizerule;
-            if (!(cheaprule))
+            if (!(cheaprule)) {
+                var s="div#CODEXPAGE div.codexpage";
                 Codex.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
-                    "div#CODEXPAGE div.codexpage","");
+                    s+", body.cxANIMATE.cxPREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
-            cheaprule.style[fdjtDOM.transformOrigin]="center top";}
-        Codex.cheapResize=cheapResize;
+            var nwidth=width*scale, nheight=height*scale;
+            if (nwidth<width)
+                cheaprule.style.left=(scale*((width-nwidth)/2))+"px";
+            if (nheight<height) cheaprule.style.top="0px";
+            cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
+            cheaprule.style[fdjtDOM.transformOrigin]="center top";
+            var n=Codex.pagecount;
+            var spanwidth=(fdjtID("CODEXPAGEINFO").offsetWidth)/n;
+            if (spanwidth<1) spanwidth=1;
+            if (Codex.CSS.pagespanrule)
+                Codex.CSS.pagespanrule.style.width=spanwidth+"px";
+            else Codex.CSS.pagespanrule=fdjtDOM.addCSSRule(
+                "div.pagespans > span","width: "+spanwidth+"px;");
+            addClass(document.body,"cxSHRUNKLAYOUT");}
+        Codex.shrinkLayout=shrinkLayout;
         
         /* Updating the page display */
 
