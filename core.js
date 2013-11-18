@@ -63,9 +63,9 @@ var Codex={
     // Whether to cache layouts locally; the value is a threshold
     // (in milliseconds) for when to cache
     cachelayouts: 2500,
-    // Ask about updating the layout when it took longer than this
-    //  many milliseconds
-    resizelayout: false, // 5000
+    // Ask about updating layouts which took longer than this
+    //  many milliseconds to generate
+    resizelayout: 5000,
     // Whether to force new layouts
     forcelayout: false,
     // Whether we're freezing layouts (during text input, etc)
