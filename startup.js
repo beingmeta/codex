@@ -77,6 +77,7 @@ Codex.Startup=
         var addClass=fdjtDOM.addClass;
         var dropClass=fdjtDOM.dropClass;
         var getChildren=fdjtDOM.getChildren;
+        var getGeometry=fdjtDOM.getGeometry;
 
         var fixStaticRefs=Codex.fixStaticRefs;
 
@@ -1029,7 +1030,6 @@ Codex.Startup=
             else {bookSetup(); return Codex.bookinfo;}}
         Codex.getBookInfo=getBookInfo;
         
-        
         function initUserOffline(){
             var refuri=Codex.refuri;
             var user=getLocal("codex.user");
@@ -1669,6 +1669,8 @@ Codex.Startup=
             fdjtDOM.append(body,Codex.body);
             // Initialize the margins
             initMargins();
+            // Add resize handler
+            fdjtDOM.addListener(window,"resize",resizeHandler);
             // Size the content
             sizeContent();
             if (Codex.Trace.startup>2) fdjtLog("Organized content");}
@@ -1681,7 +1683,7 @@ Codex.Startup=
             content.style.right=page.style.right='';
             body.style.overflow='hidden';
             // Get geometry
-            var geom=fdjtDOM.getGeometry(page);
+            var geom=getGeometry(page);
             var view_height=fdjtDOM.viewHeight();
             var page_width=geom.width, view_width=fdjtDOM.viewWidth();
             var page_margin=(view_width-page_width)/2;
@@ -1689,22 +1691,22 @@ Codex.Startup=
                 page.style.left=page_margin+'px';
                 page.style.right=page_margin+'px';}
             else page.style.left=page.style.right='';
-            if ((geom.top<35)||((view_height-(geom.height+geom.top))<35))
+            if ((geom.top<10)||((view_height-(geom.height+geom.top))<25))
                 Codex.fullheight=true;
             else Codex.fullheight=false;
-            if ((geom.left<35)||((view_width-(geom.width+geom.left))<35))
+            if ((geom.left<10)||((view_width-(geom.width+geom.left))<25))
                 Codex.fullwidth=true;
             else Codex.fullwidth=false;
             if (Codex.fullwidth) addClass(document.body,"cxFULLWIDTH");
             else dropClass(document.body,"cxFULLWIDTH");
             if (Codex.fullheight) addClass(document.body,"cxFULLHEIGHT");
             else dropClass(document.body,"cxFULLHEIGHT");
-            geom=fdjtDOM.getGeometry(page,page.offsetParent,true);
+            geom=getGeometry(page,page.offsetParent,true);
             var fakepage=fdjtDOM("DIV.codexpage");
             page.appendChild(fakepage);
             // There might be a better way to get the .codexpage settings,
             //  but this seems to work.
-            var fakepage_geom=fdjtDOM.getGeometry(fakepage,page,true);
+            var fakepage_geom=getGeometry(fakepage,page,true);
             fdjtID("CODEXPAGELEFT").style.width=page_margin+"px";
             fdjtID("CODEXPAGERIGHT").style.width=page_margin+"px";
             var inner_width=geom.inner_width, inner_height=geom.inner_height;
@@ -1733,9 +1735,6 @@ Codex.Startup=
         Codex.sizeContent=sizeContent;
         
         /* Margin creation */
-
-        var resizing=false;
-        var choosing_resize=false;
 
         function initMargins(){
             var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
@@ -1780,46 +1779,61 @@ Codex.Startup=
                 else {
                     bgcolor=bgcolor.replace("rgba","rgb");
                     bgcolor=bgcolor.replace(/,\s*((\d+)|(\d+.\d+))\s*\)/,")");}}
-            else if (bgcolor==="transparent") bgcolor="white";
-            /*
-            pagehead.style.backgroundColor=bgcolor;
-            pagefoot.style.backgroundColor=bgcolor;
-            */
-            fdjtDOM.addListener(window,"resize",function(evt){
-                var layout=Codex.layout;
-                if (resizing) clearTimeout(resizing);
-                Codex.resizeHUD();
-                if (Codex.CSS.resizerule) {
-                    Codex.CSS.resizerule.style[fdjtDOM.transform]="";
-                    Codex.CSS.resizerule.style[fdjtDOM.transformOrigin]="";}
-                if ((layout)&&(layout.onresize)&&
-                    (!(Codex.freezelayout))&&(!(Codex.glossform))) {
-                    if ((Codex.resizelayout)&&
-                        ((layout.done-layout.started)<=Codex.resizelayout))
-                        resizing=setTimeout(resizeNow,50);
-                    else if (Codex.layoutCached())
-                        resizing=setTimeout(resizeNow,50);
-                    else if (choosing_resize) {}
-                    else {
-                        var msg=fdjtDOM("div.message","Update layout?");
-                        choosing_resize=true;
-                        var choices=[
-                            {label: "Yes",
-                             handler: function(){
-                                 choosing_resize=false;
-                                 resize_default=true;
-                                 resizing=setTimeout(resizeNow,50);},
-                             isdefault: resize_default},
-                            {label: "No",
-                             handler: function(){
-                                 choosing_resize=false;
-                                 resize_default=false;
-                                 resizing=setTimeout(Codex.cheapResize,50);},
-                             isdefault: (!(resize_default))}];
-                        fdjtUI.choose({choices: choices,
-                                       timeout: Codex.choice_timeout||5},
-                                      msg);}}});}
+            else if (bgcolor==="transparent") bgcolor="white";}
+
+        var resizing=false;
+        var resize_wait=false;
+        var choosing_resize=false;
         
+        function resizeHandler(evt){
+            if (resize_wait) clearTimeout(resize_wait);
+            if (choosing_resize) {
+                fdjt.Dialog.close(choosing_resize);
+                choosing_resize=false;}
+            resize_wait=setTimeout(codexResize,200);}
+
+        function codexResize(){
+            var layout=Codex.layout;
+            if (resizing) clearTimeout(resizing);
+            Codex.resizeHUD();
+            Codex.shrinkLayout(false);
+            if (!(layout)) return;
+            var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
+            if ((layout)&&(layout.width===width)&&(layout.height===height))
+                return;
+            if ((layout)&&(layout.onresize)&&
+                (!(Codex.freezelayout))&&(!(Codex.glossform))) {
+                if ((Codex.resizelayout)&&
+                    ((layout.done-layout.started)<=Codex.resizelayout))
+                    resizing=setTimeout(resizeNow,50);
+                else if (Codex.layoutCached())
+                    resizing=setTimeout(resizeNow,50);
+                else if (choosing_resize) {}
+                else {
+                    var msg=fdjtDOM("div.message","Update layout?");
+                    choosing_resize=true;
+                    var choices=[
+                        {label: "Yes",
+                         handler: function(){
+                             choosing_resize=false;
+                             resize_default=true;
+                             delete Codex.layout_choice_timeout;
+                             resizing=setTimeout(resizeNow,50);},
+                         isdefault: resize_default},
+                        {label: "No",
+                         handler: function(){
+                             choosing_resize=false;
+                             resize_default=false;
+                             Codex.layout_choice_timeout=2;
+                             resizing=setTimeout(Codex.shrinkLayout,50);},
+                         isdefault: (!(resize_default))}];
+                    var spec={choices: choices,
+                              timeout: (Codex.layout_choice_timeout||
+                                        Codex.choice_timeout||5),
+                              spec: "div.fdjtdialog.fdjtconfirm.updatelayout"};
+                    choosing_resize=fdjtUI.choose(spec,msg);}}}
+
         function resizeNow(evt){
             if (resizing) clearTimeout(resizing);
             resizing=false;
