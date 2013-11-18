@@ -2174,27 +2174,34 @@ Codex.Startup=
             Codex._user_setup=false;}
         Codex.loginUser=loginUser;
         
+        function gotItem(item,qids){
+            if (typeof item === 'string') {
+                var load_ref=Codex.sourcedb.ref(item);
+                if (Codex.keepdata) load_ref.load();
+                qids.push(load_ref._id);}
+            else {
+                var import_ref=Codex.sourcedb.Import(
+                    item,false,
+                    RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+                import_ref.save();
+                qids.push(import_ref._id);}}
+        function saveItems(qids,name){
+            var refuri=Codex.refuri;
+            Codex[name]=qids;
+            if (Codex.keepdata)
+                setLocal("codex."+name+"("+refuri+")",qids,true);}
+            
         // Processes info loaded remotely
         function gotInfo(name,info,persist) {
-            var refuri=Codex.refuri;
             if (info) {
                 if (info instanceof Array) {
-                    var i=0; var lim=info.length; var qids=[];
-                    while (i<lim) {
-                        if (typeof info[i] === 'string') {
-                            var load_qid=info[i++];
-                            var load_ref=Codex.sourcedb.ref(load_qid);
-                            if (Codex.keepdata) load_ref.load();
-                            qids.push(load_ref._id);}
-                        else {
-                            var import_ref=Codex.sourcedb.Import(
-                                info[i++],false,
-                                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
-                            import_ref.save();
-                            qids.push(import_ref._id);}}
-                    Codex[name]=qids;
-                    if (Codex.keepdata)
-                        setLocal("codex."+name+"("+refuri+")",qids,true);}
+                    var qids=[];
+                    if (info.length<7) {
+                        var i=0; var lim=info.length; 
+                        while (i<lim) gotItem(info[i++],qids);
+                        saveItems(qids,name);}
+                    else fdjtTime.slowmap(function(item){gotItem(item,qids)},info,false,
+                                          function(){saveItems(qids,name);});}
                 else {
                     var ref=Codex.sourcedb.Import(
                         info,false,
@@ -2220,10 +2227,10 @@ Codex.Startup=
                 fdjtLog("Assimilating %d new glosses...",glosses.length);
             else {}
             Codex.sourcedb.Import(
-                etc,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+                etc,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX,true);
             Codex.glossdb.Import(
                 glosses,{"tags": Knodule.importTagSlot},
-                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
+                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX,true);
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
             while (i<lim) {

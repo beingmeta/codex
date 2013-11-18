@@ -1218,7 +1218,7 @@
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
-        Codex.glossdb.Import(glossdata);
+        Codex.glossdb.Import(glossdata,false,false,true);
         if (evt) fdjtUI.cancel(evt);
         dropClass(form.parentNode,"submitting");
         /* Turn off the target lock */
@@ -1250,7 +1250,7 @@
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
-        Codex.glossdb.Import(glossdata);
+        Codex.glossdb.Import(glossdata,false,false,true);
         // Clear the UUID
         clearGlossForm(form);
         if (evt) fdjtUI.cancel(evt);
