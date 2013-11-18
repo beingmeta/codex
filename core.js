@@ -923,9 +923,9 @@ var Codex={
             var state=Codex.state;
             var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||
                 (Codex.refuri);
-            var sync_uri="https://"+Codex.server+"/v1/sync?ACTION=save"+
+            var sync_uri="https://sync.sbooks.net/v1/sync"+
+                "?REFURI="+encodeURIComponent(refuri)+
                 "&DOCURI="+encodeURIComponent(Codex.docuri)+
-                "&REFURI="+encodeURIComponent(refuri)+
                 "&NOW="+fdjtTime.tick();
             if (Codex.user) sync_uri=sync_uri+
                 "&SYNCUSER="+encodeURIComponent(Codex.user._id);

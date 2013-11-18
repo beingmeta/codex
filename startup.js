@@ -214,7 +214,7 @@ Codex.Startup=
                                 evt,req.readyState,
                                 ((req.readyState===4)&&(req.status)),
                                 saved_config);};
-                var uri="https://auth.sbooks.net/admin/codexconfig?"+
+                var uri="https://config.sbooks.net/config?"+
                     encodeURIComponent(JSON.stringify(saved));
                 try {
                     req.open("GET",uri,true);
@@ -293,7 +293,7 @@ Codex.Startup=
                             evt,req.readyState,
                             ((req.readyState===4)&&(req.status)),
                             saved_config);};
-            var uri="https://auth.sbooks.net/admin/codexconfig";
+            var uri="https://config.sbooks.net/config";
             try {
                 req.open("GET",uri,true);
                 req.withCredentials=true;
