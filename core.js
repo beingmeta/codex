@@ -68,12 +68,15 @@ var Codex={
     resizelayout: 5000,
     // Whether to force new layouts
     forcelayout: false,
-    // Whether we're freezing layouts (during text input, etc)
+    // Whether layout is temporarily frozen, for example during text
+    // input (on tablets, there may be extraneous resizes when the
+    // on-screen keyboard appears)
     freezelayout: false,
-    // Whether to store glosses, etc for offline/faster access
+    // Whether to store glosses, etc for offline access and improved
+    // performance
     keepdata: false,
     // Dominant interaction mode
-    mouse: true,touch: false,kbd: false,
+    mouse: true, touch: false, kbd: false,
     // This is a table for iScroll scrollers, when used
     scrollers: {},
     // Restrictions on excerpts
