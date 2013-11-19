@@ -84,7 +84,7 @@ Codex.Paginate=
             if (!(why)) why="because";
             dropClass(document.body,"cxSCROLL");
             addClass(document.body,"cxLAYOUT");
-            shrinkLayout(false);
+            scaleLayout(false);
             var forced=((init)&&(init.forced));
             var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
             var height=geom.inner_height, width=geom.width;
@@ -540,6 +540,7 @@ Codex.Paginate=
                 fdjtState.setLocal("codex.sourceid("+Codex.refuri+")",sourceid);
             
             var args={page_height: height,page_width: width,
+                      orientation: fdjtDOM.getOrientation(window),
                       container: container,origin: origin,
                       pagerule: Codex.CSS.pagerule,
                       tracelevel: Codex.Trace.layout,
@@ -635,18 +636,18 @@ Codex.Paginate=
             return args;}
         CodexLayout.getLayoutArgs=getLayoutArgs;
 
-        function shrinkLayout(flag){
+        function scaleLayout(flag){
             var cheaprule=Codex.CSS.resizerule;
             if (typeof flag==="undefined") flag=true;
-            if ((flag)&&(hasClass(document.body,"cxSHRUNKLAYOUT"))) return;
-            if ((!(flag))&&(!(hasClass(document.body,"cxSHRUNKLAYOUT")))) return;
+            if ((flag)&&(hasClass(document.body,"cxSCALEDLAYOUT"))) return;
+            if ((!(flag))&&(!(hasClass(document.body,"cxSCALEDLAYOUT")))) return;
+            if (cheaprule) {
+                cheaprule.style[fdjtDOM.transform]="";
+                cheaprule.style[fdjtDOM.transformOrigin]="";
+                cheaprule.style.left="";
+                cheaprule.style.top="";}
             if (!(flag)) {
-                dropClass(document.body,"cxSHRUNKLAYOUT");
-                if (cheaprule) {
-                    cheaprule.style[fdjtDOM.transform]="";
-                    cheaprule.style[fdjtDOM.transformOrigin]="";
-                    cheaprule.style.left="";
-                    cheaprule.style.top="";}
+                dropClass(document.body,"cxSCALEDLAYOUT");
                 return;}
             var layout=Codex.layout;
             var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
@@ -660,8 +661,11 @@ Codex.Paginate=
                     s+", body.cxANIMATE.cxPREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
             var nwidth=width*scale, nheight=height*scale;
+            // If the width has shrunk (it can't have grown), that means
+            //  that there is an additional left margin, so we move the page
+            //  over to the left
             if (nwidth<width)
-                cheaprule.style.left=(scale*((width-nwidth)/2))+"px";
+                cheaprule.style.left=(-(((width-nwidth)/2)/scale))+"px";
             if (nheight<height) cheaprule.style.top="0px";
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
             cheaprule.style[fdjtDOM.transformOrigin]="center top";
@@ -672,8 +676,8 @@ Codex.Paginate=
                 Codex.CSS.pagespanrule.style.width=spanwidth+"px";
             else Codex.CSS.pagespanrule=fdjtDOM.addCSSRule(
                 "div.pagespans > span","width: "+spanwidth+"px;");
-            addClass(document.body,"cxSHRUNKLAYOUT");}
-        Codex.shrinkLayout=shrinkLayout;
+            addClass(document.body,"cxSCALEDLAYOUT");}
+        Codex.scaleLayout=scaleLayout;
         
         /* Updating the page display */
 
