@@ -577,8 +577,7 @@ Codex.Startup=
                 setUser(userinfo,
                         loadinfo.outlets,loadinfo.overlays,
                         loadinfo.sync);
-                if (loadinfo.nodeid) setNodeID(loadinfo.nodeid);
-                if (loadinfo.sync>sync) Codex.sync=sync=loadinfo.sync;}
+                if (loadinfo.nodeid) setNodeID(loadinfo.nodeid);}
             else if ((Codex.userinfo)||(window._userinfo)) {
                 userinfo=(Codex.userinfo)||(window._userinfo);
                 if ((Codex.Trace.storage)||(Codex.Trace.startup))
