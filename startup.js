@@ -1790,29 +1790,38 @@ Codex.Startup=
             if (choosing_resize) {
                 fdjt.Dialog.close(choosing_resize);
                 choosing_resize=false;}
-            resize_wait=setTimeout(codexResize,200);}
+            resize_wait=setTimeout(codexResize,1000);}
 
         function codexResize(){
             var layout=Codex.layout;
             if (resizing) clearTimeout(resizing);
             Codex.resizeHUD();
-            Codex.shrinkLayout(false);
+            Codex.scaleLayout(false);
             if (!(layout)) return;
             var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
             var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             if ((layout)&&(layout.width===width)&&(layout.height===height))
                 return;
             if ((layout)&&(layout.onresize)&&
-                (!(Codex.freezelayout))&&(!(Codex.glossform))) {
+                (!(Codex.freezelayout))&&(!((Codex.touch)&&(Codex.glossform)))) {
                 if ((Codex.resizelayout)&&
                     ((layout.done-layout.started)<=Codex.resizelayout))
                     resizing=setTimeout(resizeNow,50);
                 else if (Codex.layoutCached())
                     resizing=setTimeout(resizeNow,50);
+                else if ((!(Codex.touch))&&((layout.done-layout.started)<=20000))
+                    // On a non-touch display, always resize if it
+                    // took less than 20 seconds
+                    resizing=setTimeout(resizeNow,50);
                 else if (choosing_resize) {}
                 else {
                     var msg=fdjtDOM("div.message","Update layout?");
+                    // This should be fast, so we do it right away.
+                    Codex.scaleLayout();
                     choosing_resize=true;
+                    // When a choice is made, it becomes the default
+                    // When a choice is made to not resize, the
+                    // choice timeout is reduced.
                     var choices=[
                         {label: "Yes",
                          handler: function(){
@@ -1825,8 +1834,7 @@ Codex.Startup=
                          handler: function(){
                              choosing_resize=false;
                              resize_default=false;
-                             Codex.layout_choice_timeout=2;
-                             resizing=setTimeout(Codex.shrinkLayout,50);},
+                             Codex.layout_choice_timeout=3;},
                          isdefault: (!(resize_default))}];
                     var spec={choices: choices,
                               timeout: (Codex.layout_choice_timeout||
@@ -2282,7 +2290,7 @@ Codex.Startup=
                 if (hash)
                     fdjtLog("initLocation/hash #%s %j",hash,state);
                 else fdjtLog("initLocation %j",state);}
-            if ((state.changed)&&(Codex.state)&&
+            if ((state)&&(state.changed)&&(Codex.state)&&
                 (state.changed>Codex.state.changed))
                 Codex.saveState(state,true);
             else Codex.state=state;}
