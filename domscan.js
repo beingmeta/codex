@@ -287,11 +287,13 @@ Codex.DOMScan=(function(){
             if ((!(id))&&(!(Codex.baseid))) {
                 // If there isn't a known BASEID, we generate
                 //  ids for block level elements using WSN.
+                var wsn=false;
                 if (((tag.search(/p|h\d|blockquote|li/i)===0)||
                      (getStyle(child).display.search(
                              /block|list-item|table|table-row/)===0))&&
-                    ((child.childNodes)&&(child.childNodes.length))) {
-                    var baseid="WSN_"+md5ID(child), wsnid=baseid, count=1;
+                    ((child.childNodes)&&(child.childNodes.length))&&
+                    (wsn=md5ID(child))) {
+                    var baseid="WSN_"+wsn, wsnid=baseid, count=1;
                     if (baseid!=="WSN_") {
                         while ((document.getElementById[wsnid])||(idmap[wsnid]))
                             wsnid=baseid+"_"+(count++);
