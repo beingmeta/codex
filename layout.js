@@ -240,9 +240,13 @@ Codex.Paginate=
                     else {
                         var root=nodes[i++];
                         var timeslice=
-                            layout.timeslice||CodexLayout.timeslice||100;
+                            ((layout.hasOwnProperty('timeslice'))?
+                             (layout.timeslice):
+                             (CodexLayout.timeslice||100));
                         var timeskip=
-                            layout.timeskip||CodexLayout.timeskip||50;
+                            ((layout.hasOwnProperty('timeskip'))?
+                             (layout.timeskip):
+                             (CodexLayout.timeskip||50));
                         if (((root.nodeType===3)&&
                              (!(isEmpty(root.nodeValue))))||
                             ((root.nodeType===1)&&
@@ -541,6 +545,9 @@ Codex.Paginate=
             
             var args={page_height: height,page_width: width,
                       orientation: fdjtDOM.getOrientation(window),
+                      // Include this line to disable timeslicing
+                      //  of layout (can help with debugging)
+                      // timeslice: false,timeskip: false,
                       container: container,origin: origin,
                       pagerule: Codex.CSS.pagerule,
                       tracelevel: Codex.Trace.layout,
