@@ -116,9 +116,6 @@ Codex.Paginate=
             
             var layout_id=layout.layout_id;
 
-            // Get the document info
-            var docinfo=Codex.docinfo;
-
             function restore_layout(content,layout_id){
                 fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("CODEXCONTENT").style.display='none';
@@ -126,7 +123,6 @@ Codex.Paginate=
                 addClass(document.body,"cxBYPAGE");
                 layout.restoreLayout(content,finish_layout);}
             function finish_layout(layout) {
-                getPageTops(layout.pages);
                 fdjtID("CODEXPAGE").style.visibility='';
                 fdjtID("CODEXCONTENT").style.visibility='';
                 dropClass(document.body,"cxLAYOUT");
@@ -186,7 +182,8 @@ Codex.Paginate=
                 // Prepare to do the layout
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
-                fdjtID("CODEXPAGE").style.visibility='hidden';
+                // This keeps the page content hidden during layout
+                // fdjtID("CODEXPAGE").style.visibility='hidden';
                 fdjtID("CODEXCONTENT").style.visibility='hidden';
                 
                 // Now make the content (temporarily) the same width as
@@ -222,7 +219,6 @@ Codex.Paginate=
                             if ((typeof Codex.cachelayouts === "number")?
                                 (elapsed>Codex.cachelayouts):(elapsed>5000)) {
                                 layout.saveLayout(function(l){recordLayout(l,Codex.sourceid);});}}
-                        getPageTops(layout.pages);
                         fdjtID("CODEXPAGE").style.visibility='';
                         fdjtID("CODEXCONTENT").style.visibility='';
                         dropClass(document.body,"cxLAYOUT");
@@ -320,87 +316,7 @@ Codex.Paginate=
                 
                 rootloop();}
 
-            function getPageTop(node) {
-                if (hasClass(node,"codexpage")) {}
-                else if ((node.id)&&(docinfo[node.id])) {
-                    if (hasText(node)) return node;}
-                else if ((node.codexbaseid)&&(docinfo[node.codexbaseid])) {
-                    if (hasText(node)) return node;}
-                else {}
-                var children=node.childNodes;
-                if (children) {
-                    var i=0; var lim=children.length;
-                    while (i<lim) {
-                        var child=children[i++];
-                        if (child.nodeType===1) {
-                            var first=getPageTop(child);
-                            if (first) return first;}}}
-                return false;}
-
-            function getPageTopID(node) {
-                if (hasClass(node,"codexpage")) {}
-                else if ((node.id)&&(!(node.codexbaseid))&&
-                         (Codex.docinfo[node.id])) {
-                    if (hasText(node)) return node.id;}
-                else {}
-                var children=node.childNodes;
-                if (children) {
-                    var i=0; var lim=children.length;
-                    while (i<lim) {
-                        var child=children[i++];
-                        if (child.nodeType===1) {
-                            var first=getPageTopID(child);
-                            if (first) return first;}}}
-                return false;}
             
-            function getDupNode(under,id){
-                var children;
-                if (under.nodeType!==1) return false;
-                else if (under.codexbaseid===id) return under;
-                if (!(children=under.childNodes))
-                    return false;
-                else if (!(children.length)) return false;
-                else {
-                    var i=0, lim=children.length;
-                    while (i<lim) {
-                        var found=getDupNode(children[i++],id);
-                        if (found) return found;}}}
-
-            function getLocOff(pages,topstart,topnode){
-                var id=topstart.id; var locoff=0;
-                var pagescan=topstart, pagenum, elt=topstart;
-                while (pagescan) {
-                    if (hasClass(pagescan,"codexpage")) {
-                        break;}
-                    else pagescan=pagescan.parentNode;}
-                if (!(pagescan)) return locoff;
-                else pagenum=parseInt(pagescan.getAttribute("data-pagenum"),10);
-                while ((elt)&&(elt!==topnode)) {
-                    var width=textWidth(elt);
-                    if (width) locoff=locoff+width;
-                    pagescan=pages[++pagenum];
-                    if (pagescan) elt=getDupNode(pagescan,id);}
-                return locoff;}
-            
-            function getPageTops(pages){
-                var j=0, jlim=pages.length, running=0;
-                while (j<jlim) {
-                    var page=pages[j++];
-                    var topnode=getPageTop(page);
-                    var topnodeid=topnode.codexbaseid||topnode.id;
-                    var topid=getPageTopID(page)||topnodeid;
-                    if (topnode) {
-                        var topstart=document.getElementById(topnodeid);
-                        var locoff=((topstart===topnode)?(0):
-                                    (getLocOff(pages,topstart,topnode)));
-                        var info=docinfo[topnodeid];
-                        if (topid) page.setAttribute("data-topid",topid);
-                        page.setAttribute(
-                            "data-sbookloc",info.starts_at+locoff);
-                        running=info.starts_at+locoff;}
-                    else {
-                        page.setAttribute("data-sbookloc",running);}}}
-
             if ((Codex.cachelayouts)&&(!((Codex.forcelayout)))) {
                 CodexLayout.fetchLayout(layout_id,function(content){
                     if (content) restore_layout(content,layout_id);
@@ -524,6 +440,103 @@ Codex.Paginate=
                 // one, rather than just the REFURI
                 sourceid||Codex.refuri);
 
+            var docinfo=Codex.docinfo;
+            var goneto=false;
+
+            function setPageInfo(page,layout){
+                var pages=layout.pages, pagenum=layout.pagenum;
+                var topnode=getPageTop(page);
+                var topnodeid=topnode.codexbaseid||topnode.id;
+                var topid=getPageTopID(page)||topnodeid;
+                var curloc=false;
+                if (topnode) {
+                    var topstart=document.getElementById(topnodeid);
+                    var locoff=((topstart===topnode)?(0):
+                                (getLocOff(pages,topstart,topnode)));
+                    var info=docinfo[topnodeid];
+                    curloc=info.starts_at+locoff;
+                    if (topid) page.setAttribute("data-topid",topid);
+                    page.setAttribute("data-sbookloc",curloc);}
+                else {
+                    if (pagenum) {
+                        var prevpage=pages[pagenum-1];
+                        var prevoff=prevpage.getAttribute("data-sbookloc");
+                        if (prevoff)
+                            page.setAttribute("data-sbookloc",prevoff);}}
+                if ((typeof curloc === "number")&&(pagenum)&&
+                    (Codex.state)&&(goneto!==Codex.state)&&
+                    (Codex.state.hasOwnProperty('location'))&&
+                    (curloc>=Codex.state.location)) {
+                    goneto=Codex.state;
+                    setTimeout(function(){
+                        Codex.GoToPage(pagenum,"layout",false);},
+                               10);}}
+            
+            function getPageTop(node) {
+                if (hasClass(node,"codexpage")) {}
+                else if ((node.id)&&(docinfo[node.id])) {
+                    if (hasText(node)) return node;}
+                else if ((node.codexbaseid)&&(docinfo[node.codexbaseid])) {
+                    if (hasText(node)) return node;}
+                else {}
+                var children=node.childNodes;
+                if (children) {
+                    var i=0; var lim=children.length;
+                    while (i<lim) {
+                        var child=children[i++];
+                        if (child.nodeType===1) {
+                            var first=getPageTop(child);
+                            if (first) return first;}}}
+                return false;}
+
+            function getPageTopID(node) {
+                if (hasClass(node,"codexpage")) {}
+                else if ((node.id)&&(!(node.codexbaseid))&&
+                         (Codex.docinfo[node.id])) {
+                    if (hasText(node)) return node.id;}
+                else {}
+                var children=node.childNodes;
+                if (children) {
+                    var i=0; var lim=children.length;
+                    while (i<lim) {
+                        var child=children[i++];
+                        if (child.nodeType===1) {
+                            var first=getPageTopID(child);
+                            if (first) return first;}}}
+                return false;}
+            
+            function getDupNode(under,id){
+                var children;
+                if (under.nodeType!==1) return false;
+                else if (under.codexbaseid===id) return under;
+                if (!(children=under.childNodes))
+                    return false;
+                else if (!(children.length)) return false;
+                else {
+                    var i=0, lim=children.length;
+                    while (i<lim) {
+                        var found=getDupNode(children[i++],id);
+                        if (found) return found;}}}
+
+            function getLocOff(pages,topstart,topnode){
+                var id=topstart.id; var locoff=0;
+                var pagescan=topstart, pagenum, elt=topstart;
+                while (pagescan) {
+                    if (hasClass(pagescan,"codexpage")) {
+                        break;}
+                    else pagescan=pagescan.parentNode;}
+                if (!(pagescan)) return locoff;
+                else pagenum=parseInt(pagescan.getAttribute("data-pagenum"),10);
+                while ((elt)&&(elt!==topnode)) {
+                    var width=textWidth(elt);
+                    if (width) locoff=locoff+width;
+                    pagescan=pages[++pagenum];
+                    if (pagescan) elt=getDupNode(pagescan,id);}
+                return locoff;}
+
+
+
+
             var saved_sourceid=
                 fdjtState.getLocal("codex.sourceid("+Codex.refuri+")");
             if ((saved_sourceid)&&(sourceid)&&(sourceid!==sourceid)) {
@@ -552,6 +565,7 @@ Codex.Paginate=
                       pagerule: Codex.CSS.pagerule,
                       tracelevel: Codex.Trace.layout,
                       layout_id: layout_id,
+                      pagefn: setPageInfo,
                       logfn: fdjtLog};
             fdjtDOM.replace("CODEXPAGES",container);
             Codex.pages=container;
@@ -877,7 +891,8 @@ Codex.Paginate=
             var layout=Codex.layout, pages=layout.pages, npages=pages.length;
             var i=((page)?(parseInt(page.getAttribute("data-pagenum"),10)):(1));
             while (i<npages) {
-                var probe=pages[i], loc=parseInt(probe.getAttribute("data-sbookloc"),10);
+                var probe=pages[i];
+                var loc=parseInt(probe.getAttribute("data-sbookloc"),10);
                 if (loc===location) return probe;
                 else if (loc>location) return pages[i-1];
                 else i++;}}
