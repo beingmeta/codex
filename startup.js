@@ -715,11 +715,7 @@ Codex.Startup=
                         applyTagAttributes(metadata,indexingDone);}},
                 // Figure out which mode to start up in, based on
                 // query args to the book.
-                function(){
-                    if (!(Codex.bypage)) startupDone();
-                    else if ((Codex.layout)&&(Codex.layout.done))
-                        startupDone();
-                    else Codex.layoutdone=startupDone;}],
+                startupDone],
              100,25);}
         Codex.Startup=CodexStartup;
         
