@@ -1669,10 +1669,13 @@
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
         if (Codex.clearGlossmark) Codex.clearGlossmark();
-        if ((Codex.bypage)&&(Codex.pagecount)) {
+        if ((Codex.bypage)&&(typeof Codex.curpage === "number")) {
+            var pagemax=((Codex.bypage)&&
+                         ((Codex.pagecount)||(Codex.layout.pagenum-1)));
             var newpage=false;
-            if (Codex.curpage===Codex.pagecount) {}
-            else Codex.GoToPage(newpage=Codex.curpage+1,"pageForward",true,true);}
+            if (Codex.curpage>=pagemax) {}
+            else Codex.GoToPage(
+                newpage=Codex.curpage+1,"pageForward",true,false);}
         else {
             var delta=fdjtDOM.viewHeight()-50;
             if (delta<0) delta=fdjtDOM.viewHeight();
@@ -1685,12 +1688,12 @@
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
         if (Codex.clearGlossmark) Codex.clearGlossmark();
-        if ((Codex.bypage)&&(Codex.pagecount)) {
+        if ((Codex.bypage)&&(typeof Codex.curpage === "number")) {
             var newpage=false;
             if (Codex.curpage===0) {}
             else {
                 newpage=Codex.curpage-1;
-                Codex.GoToPage(newpage,"pageBackward",true,true);}}
+                Codex.GoToPage(newpage,"pageBackward",true,false);}}
         else {
             var delta=fdjtDOM.viewHeight()-50;
             if (delta<0) delta=fdjtDOM.viewHeight();
