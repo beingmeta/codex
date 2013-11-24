@@ -1054,7 +1054,7 @@ var Codex={
         var info=(target)&&
             Codex.docinfo[target.getAttribute("data-baseid")||target.id];
         var page=((Codex.bypage)&&(Codex.layout)&&
-                  (Codex.pagecount)&&(Codex.getPage(target,location)));
+                  (Codex.getPage(target,location)));
         var pageno=(page)&&(parseInt(page.getAttribute("data-pagenum"),10));
         if (!(target)) {
             if (Codex.layout instanceof fdjt.CodexLayout)
