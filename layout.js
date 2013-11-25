@@ -526,12 +526,14 @@ Codex.Paginate=
                         break;}
                     else pagescan=pagescan.parentNode;}
                 if (!(pagescan)) return locoff;
-                else pagenum=parseInt(pagescan.getAttribute("data-pagenum"),10);
+                else pagenum=parseInt(
+                    pagescan.getAttribute("data-pagenum"),10);
                 while ((elt)&&(elt!==topnode)) {
                     var width=textWidth(elt);
                     if (width) locoff=locoff+width;
                     pagescan=pages[++pagenum];
-                    if (pagescan) elt=getDupNode(pagescan,id);}
+                    if (pagescan) elt=getDupNode(pagescan,id);
+                    else return locoff;}
                 return locoff;}
 
 
