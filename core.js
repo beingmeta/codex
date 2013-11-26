@@ -240,13 +240,13 @@ var Codex={
                 if (sources) {
                     if (typeof sources === 'string') sources=[sources];
                     if ((sources)&&(sources.length)) {
-                        i=0, lim=sources.length; while (i<lim) {
+                        i=0; lim=sources.length; while (i<lim) {
                             var source=sources[i++];
                             var ref=Codex.sourcedb.ref(source);
                             Codex.UI.addGlossSource(ref,true);}}}
                 var alltags=item.alltags;
                 if ((alltags)&&(alltags.length)) {
-                    i=0, lim=alltags.length; while (i<lim) {
+                    i=0; lim=alltags.length; while (i<lim) {
                         var each_tag=alltags[i++], entry;
                         entry=Codex.addTag2Cloud(each_tag,Codex.empty_cloud);
                         if ((make_cue)&&(entry)) addClass(entry,"cue");
