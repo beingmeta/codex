@@ -896,7 +896,9 @@ var Codex={
         if ((!(title))&&(hash)&&(Codex.docinfo[hash])) {
             state.title=title=Codex.docinfo[hash].title||
                 Codex.docinfo[hash].head.title;}
-        if (!(hash)) hash="SBOOKLOC"+state.location;
+        if ((!(hash))&&(start.location)&&
+            (typeof state.location === "number"))
+            hash="SBOOKLOC"+state.location;
         if (Codex.Trace.state)
             fdjtLog("Pushing history %j %s (%s) '%s'",
                     state,href,title);
@@ -1031,6 +1033,9 @@ var Codex={
         if (typeof istarget === 'undefined') istarget=true;
         if (typeof savestate === 'undefined') savestate=true;
         var target, location, locinfo;
+        if (!(arg)) {
+            fdjtLog.warn("falsy arg (%s) to codexGoTo from %s",arg,caller);
+            return;}
         if (typeof arg === 'string') {
             target=document.getElementById(arg);
             locinfo=getLocInfo(target);
