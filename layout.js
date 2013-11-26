@@ -129,8 +129,8 @@ Codex.Paginate=
                 Codex.layout=layout;
                 Codex.pagecount=layout.pages.length;
                 if (Codex.Trace.startup)
-                    fdjtLog("Restored saved layout %s, adding glossmarks",
-                            layout_id);
+                    fdjtLog("Restored %d-page layout %s, adding glosses",
+                            layout.pages.length,layout_id);
                 var lostids=layout.lostids, moved_ids=lostids._all_ids;
                 var i=0, lim=moved_ids.length;
                 while (i<lim) {
