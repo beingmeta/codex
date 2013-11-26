@@ -653,6 +653,7 @@ div.codexpage {
     margin: 0px;}
 
 div.codexpage img { max-width: 90%; max-height: 80%;}
+div.codexpage img[style] { max-width: inherit; max-height: inherit;}
 
 div.codexpage.curpage {display: block;}
 
