@@ -896,7 +896,7 @@ var Codex={
         if ((!(title))&&(hash)&&(Codex.docinfo[hash])) {
             state.title=title=Codex.docinfo[hash].title||
                 Codex.docinfo[hash].head.title;}
-        if ((!(hash))&&(start.location)&&
+        if ((!(hash))&&(state.location)&&
             (typeof state.location === "number"))
             hash="SBOOKLOC"+state.location;
         if (Codex.Trace.state)
