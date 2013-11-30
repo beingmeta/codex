@@ -978,6 +978,7 @@
         else if ((target.tagName==="TEXTAREA")||
                  (target.tagName==="INPUT"))
             return;
+        else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
             Codex.stopPreview("onkeydown",Codex.hudup);
@@ -989,7 +990,6 @@
             Codex.hideCover();
             fdjt.UI.cancel(evt);
             return false;}
-        else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (kc===34) Codex.pageForward(evt);   /* page down */
         else if (kc===33) Codex.pageBackward(evt);  /* page up */
         else if (kc===40) { /* arrow down */
