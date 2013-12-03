@@ -130,6 +130,16 @@
         fdjtDOM.addListeners(node,Codex.UI.handlers[mode][type]);}
     Codex.UI.addHandlers=addHandlers;
 
+    function externClickable(evt){
+        var target=fdjtUI.T(evt);
+        var anchor=getParent(target,"A");
+        if ((anchor)&&(anchor.href)) {
+            if (anchor.href[0]==="#") return false;
+            else if (anchor.getAttribute("href")[0]==="#")
+                return false;
+            else return true;}
+        else return isClickable(evt);}
+
     function setupGestures(domnode){
         var mode=Codex.ui;
         if (!(mode)) Codex.ui=mode="mouse";
@@ -147,7 +157,7 @@
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             // Last arg is docancel, since we don't need to worry about conflicts
             //   with scrolling
-            Codex.TapHold.body=fdjtUI.TapHold(fdjt.ID("CODEXBODY"),{override: true});
+            Codex.TapHold.body=fdjtUI.TapHold(fdjt.ID("CODEXBODY"),{override: true,untouchable: externClickable});
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
@@ -500,6 +510,14 @@
                     evt,passage,((passage)&&(passage.parentNode)),
                     document.body.className,
                     Codex.HUD.className);
+        if (Codex.previewing) return;
+        else if (hasParent(target,"A")) {
+            var anchor=getParent(target,"A");
+            var href=((anchor)&&(anchor.getAttribute("href")));
+            fdjtUI.cancel(evt);
+            if ((href)&&(href[0]==="#")&&(fdjtID(href.slice(1)))) {
+                Codex.startPreview(href.slice(1),"content/anchor_held");
+                return;}}
         // Already selecting this target, cancel any pending slippage
         if ((!(passage))||
             // Target already selecting
@@ -553,6 +571,9 @@
         evt=evt||event;
         var target=fdjtUI.T(evt), children=false;
         if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
+        if (Codex.previewing) {
+            Codex.stopPreview("content_released");
+            fdjtUI.cancel(evt);}
         var passage=((hasParent(target,".fdjtselecting"))&&(getTarget(target)));
         if (!(passage)) {
             children=getChildren(target,".fdjtselected");
