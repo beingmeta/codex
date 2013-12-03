@@ -503,7 +503,7 @@
             dropClass(cur,"softcue");}
         // Get the tags on this element as cues
         var newcues=cloud.getByValue(tags);
-        i=0, lim=newcues.length; while (i<lim) {
+        i=0; lim=newcues.length; while (i<lim) {
             var completion=newcues[i++];
             if (!(hasClass(completion,"cue"))) {
                 addClass(completion,"cue");

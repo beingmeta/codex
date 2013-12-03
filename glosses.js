@@ -1166,8 +1166,7 @@
         setCheckSpan(proto_post,post.checked);
         // Save network settings
         var networks=getInputs(form,"NETWORKS");
-        i=0, lim=networks.length;
-        while (i<lim) {
+        i=0; lim=networks.length; while (i<lim) {
             var network_input=networks[i++];
             var proto_input=getInputFor(form,"NETWORKS",network_input.value);
             setCheckSpan(proto_input,network_input.checked);}
@@ -1177,8 +1176,7 @@
         var inputs=getChildren(shared,"INPUT");
         // Here's the logic: we save all checked outlets and any
         // others up to 5.
-        i=0, lim=inputs.length; var n_others=0;
-        while (i<lim) {
+        i=0; lim=inputs.length; var n_others=0; while (i<lim) {
             var input=inputs[i++];
             if ((input.checked)||(n_others<=5)) {
                 var checkspan=addOutlet(

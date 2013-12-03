@@ -243,8 +243,8 @@ Codex.TOC=
             var i=0; var lim=livetitles.length;
             while (i<lim) livetitles[i++].style.fontSize='';
             var tocs=fdjtDOM.$(".toc0");
-            i=0, lim=tocs.length;
-            while (i<lim) { updateTOC(headinfo,tocs[i++]);}
+            // Update current location in ToCs
+            i=0; lim=tocs.length; while (i<lim) { updateTOC(headinfo,tocs[i++]);}
             if (!(headinfo)) {
                 addClass(tocs,"codexlivehead");
                 addClass(tocs,"codexcurhead");

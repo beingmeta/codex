@@ -335,7 +335,7 @@ Codex.DOMScan=(function(){
                 scanstate.curlevel=headinfo.level;
                 scanstate.notoc=true;
                 var toc_children=child.childNodes;
-                i=0, lim=toc_children.length; while (i<lim) {
+                i=0; lim=toc_children.length; while (i<lim) {
                     var toc_child=toc_children[i++];
                     if (toc_child.nodeType===1)
                         scanner(toc_child,scanstate,docinfo);}
@@ -383,7 +383,7 @@ Codex.DOMScan=(function(){
                 scanstate.location=scanstate.location+textWidth(child);}
             else {
                 var grandchildren=child.childNodes;
-                i=0, lim=grandchildren.length;
+                i=0; lim=grandchildren.length;
                 while (i<lim) {
                     var grandchild=grandchildren[i++];
                     if (grandchild.nodeType===3) {

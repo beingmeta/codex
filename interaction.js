@@ -353,8 +353,8 @@
         // If we get here, we're doing a page flip
         if ((evt.changedTouches)&&(evt.changedTouches.length)) {
             touch=evt.changedTouches[0];
-            sX=touch.screenX, sY=touch.screenY;
-            cX=touch.clientX, cY=touch.clientY;}
+            sX=touch.screenX; sY=touch.screenY;
+            cX=touch.clientX; cY=touch.clientY;}
         if (Codex.Trace.gestures)
             fdjtLog("ctouch/nopassage (%o) %o, m=%o, @%o,%o, vw=%o",
                     evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
@@ -572,9 +572,9 @@
         var target=fdjtUI.T(evt), children=false;
         if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
         if (Codex.previewing) {
-            var target=Codex.previewing;
             Codex.stopPreview("content_released");
-            fdjtUI.cancel(evt);}
+            fdjtUI.cancel(evt);
+            return;}
         else if (hasParent(target,"A")) {
             fdjtUI.cancel(evt);
             return;}

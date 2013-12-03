@@ -157,7 +157,7 @@ Codex.Slice=(function () {
         var j=0, nvecs=tagvecs.length;
         while (j<nvecs) {
             var tags=tagvecs[j++];
-            i=0, lim=tags.length;
+            i=0; lim=tags.length;
             while (i<tags.length) {
                 var tag=tags[i++];
                 if (!(tag)) continue;
@@ -319,14 +319,14 @@ Codex.Slice=(function () {
         if (info.sources) {
             var sources=info.sources;
             if (typeof sources==='string') sources=[sources];
-            i=0, lim=sources.length; while (i<lim) {
+            i=0; lim=sources.length; while (i<lim) {
                 var source=Codex.sourcedb.loadref(sources[i++]);
                 if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
                     return { src: source.pic, alt: source.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.links) {
             var links=info.links;
-            i=0, lim=links.length; while (i<lim) {
+            i=0; lim=links.length; while (i<lim) {
                 var link=links[i++];
                 if (link.href.search(/\.(jpg|png|gif|jpeg)$/i)>0)
                     return { src: link.href, alt: "graphic",
@@ -334,7 +334,7 @@ Codex.Slice=(function () {
         if (info.shared) {
             var outlets=info.shared;
             if (typeof outlets==='string') outlets=[outlets];
-            i=0, lim=outlets.length; while (i<lim) {
+            i=0; lim=outlets.length; while (i<lim) {
                 var outlet=Codex.sourcedb.loadref(outlets[i++]);
                 if ((outlet)&&(outlet.kind===':OVERLAY')&&(outlet.pic))
                     return { src: outlet.pic, alt: outlet.name,

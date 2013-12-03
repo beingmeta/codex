@@ -1607,7 +1607,7 @@ Codex.Startup=
             applyMetaClass("sbooknote");
             var note_counter=1;
             var allnotes=getChildren(content,".sbooknote");
-            i=0, lim=allnotes.length; while (i<lim) {
+            i=0; lim=allnotes.length; while (i<lim) {
                 var notable=allnotes[i++];
                 if (!(notable.id)) notable.id="CODEXNOTE"+(note_counter++);
                 var noteref=notable.id+"_REF";
@@ -1627,7 +1627,7 @@ Codex.Startup=
             // Interpet links
             var notelinks=getChildren(
                 body,"a[rel='sbooknote'],a[rel='footnote'],a[rel='endnote']");
-            i=0, lim=notelinks.length; while (i<lim) {
+            i=0; lim=notelinks.length; while (i<lim) {
                 var ref=notelinks[i++];
                 var href=ref.href;
                 if (!(fdjtDOM.hasText(ref))) ref.innerHTML="Note";
@@ -1636,7 +1636,7 @@ Codex.Startup=
             
             if (!(init_content)) {
                 var children=[], childnodes=body.childNodes;
-                i=0, lim=childnodes.length; while (i<lim) children.push(childnodes[i++]);
+                i=0; lim=childnodes.length; while (i<lim) children.push(childnodes[i++]);
                 i=0; while (i<lim) {
                     // Copy all of the content nodes
                     var child=children[i++];
@@ -1748,7 +1748,7 @@ Codex.Startup=
             var i=0, lim=nodes.length;
             while (i<lim) scanleft.appendChild(nodes[i++]);
             holder.innerHTML=fixStaticRefs(Codex.HTML.pageright);
-            nodes=fdjtDOM.toArray(holder.childNodes), i=0, lim=nodes.length;
+            nodes=fdjtDOM.toArray(holder.childNodes); i=0; lim=nodes.length;
             while (i<lim) scanright.appendChild(nodes[i++]);
 
             fdjtDOM.prepend(document.body,/* pagehead,pagefoot, */
@@ -2003,7 +2003,7 @@ Codex.Startup=
             if ((updating)||(!(navigator.onLine))) return; else updating=true;
             // Get any requested glosses and add them to the call
             var i=0, lim, glosses=getQuery("GLOSS",true); {
-                i=0, lim=glosses.length; while (i<lim) uri=uri+"&GLOSS="+glosses[i++];}
+                i=0; lim=glosses.length; while (i<lim) uri=uri+"&GLOSS="+glosses[i++];}
             glosses=getHash("GLOSS"); {
                 i=0; lim=glosses.length; while (i<lim) uri=uri+"&GLOSS="+glosses[i++];}
             if (Codex.mycopyid) uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
@@ -2100,11 +2100,11 @@ Codex.Startup=
                     fdjtID("CODEXUSERNAME").innerHTML=username;
                 var names=document.getElementsByName("CODEXUSERNAME");
                 if ((names)&&(names.length)) {
-                    i=0, lim=names.length; while (i<lim)
+                    i=0; lim=names.length; while (i<lim)
                         names[i++].innerHTML=username;}
                 names=fdjtDOM.$(".codexusername");
                 if ((names)&&(names.length)) {
-                    i=0, lim=names.length; while (i<lim)
+                    i=0; lim=names.length; while (i<lim)
                         names[i++].innerHTML=username;}}
             if (fdjtID("SBOOKMARKUSER"))
                 fdjtID("SBOOKMARKUSER").value=Codex.user._id;
@@ -2153,18 +2153,18 @@ Codex.Startup=
                 if (fdjtID("CODEXUSERPIC")) fdjtID("CODEXUSERPIC").src=pic;
                 var byname=document.getElementsByName("CODEXUSERPIC");
                 if (byname) {
-                    i=0, lim=byname.length; while (i<lim)
+                    i=0; lim=byname.length; while (i<lim)
                         byname[i++].src=pic;}}
             var idlinks=document.getElementsByName("IDLINK");
             if (idlinks) {
-                i=0, lim=idlinks.length; while (i<lim) {
+                i=0; lim=idlinks.length; while (i<lim) {
                     var idlink=idlinks[i++];
                     idlink.target='_blank';
                     idlink.title='click to edit your personal information';
                     idlink.href='https://auth.sbooks.net/my/profile';}}
             if (Codex.user.friends) {
                 var friends=Codex.user.friends; var sourcedb=Codex.sourcedb;
-                i=0, lim=friends.length; while (i<lim) {
+                i=0; lim=friends.length; while (i<lim) {
                     var friend=RefDB.resolve(friends[i++],sourcedb);
                     Codex.addTag2Cloud(friend,Codex.gloss_cloud);
                     Codex.addTag2Cloud(friend,Codex.share_cloud);}}
