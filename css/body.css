@@ -80,6 +80,8 @@ body.sbook { font-size: 62.5%; }
  .codexbody .codexoversize h7 {
     line-height: 115%;}
 
+#CODEXBODY a:hover, #CODEXBODY a:active { color: blue; }
+
 #CODEXBODY.codexbodysizexlarge p, #CODEXBODY.codexbodysizexlarge li,
 #CODEXBODY.codexbodysizexlarge dt, #CODEXBODY.codexbodysizexlarge dd {
     font-size: 125%;}
