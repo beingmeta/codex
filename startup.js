@@ -2268,7 +2268,8 @@ Codex.Startup=
             if ((typeof hash === "string") && (hash.length>0)) {
                 if (hash[0]==='#') hash=hash.slice(1);}
             if ((hash)&&(target=fdjtID(hash))) {
-                if ((state)&&(state.target)&&(state.target!==hash))
+                if ((!(state))||
+                    ((state.target)&&(state.target!==hash)))
                     state={target: hash,location: getLoc(target),
                            changed: fdjtTime()};}
             else if (state) {}
