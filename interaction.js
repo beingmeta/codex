@@ -572,8 +572,12 @@
         var target=fdjtUI.T(evt), children=false;
         if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
         if (Codex.previewing) {
+            var target=Codex.previewing;
             Codex.stopPreview("content_released");
             fdjtUI.cancel(evt);}
+        else if (hasParent(target,"A")) {
+            fdjtUI.cancel(evt);
+            return;}
         var passage=((hasParent(target,".fdjtselecting"))&&(getTarget(target)));
         if (!(passage)) {
             children=getChildren(target,".fdjtselected");
