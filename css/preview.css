@@ -124,10 +124,10 @@ div#CODEXSKIMMERHELP.helpbox p, div#CODEXSEETHRUHELP.helpbox p {
 div#CODEXSKIMMERHELP.helpbox dfn, div#CODEXSEETHRUHELP.helpbox dfn {
     font-size: 125%;}
 
-body.cxPREVIEW div#CODEXSKIMMERHELP,
-body.cxPREVIEW.hudup div#CODEXSEETHRUHELP {
+body.cxPREVIEW.cxPAGEPREVIEW div#CODEXSKIMMERHELP,
+body.cxPREVIEW div#CODEXSEETHRUHELP {
     display: block; opacity: 0.9;}
-body.cxPREVIEW.hudup div#CODEXSKIMMERHELP { display: none;}
+body.cxPREVIEW.cxPAGEPREVIEW div#CODEXSEETHRUHELP { display: none;}
 
 body.cxPREVIEW.hudup div#CODEXHUD.searchresults div#CODEXSEETHRUHELP,
 body.cxPREVIEW.hudup div#CODEXHUD.allglosses div#CODEXSEETHRUHELP {

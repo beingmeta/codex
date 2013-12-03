@@ -1197,6 +1197,7 @@ var Codex={
             addClass(target,"codexpreviewtarget");}
         Codex.previewing=target;
         addClass(document.body,"cxPREVIEW");
+        if (hasClass(target,"codexpage")) addClass(document.body,"cxPAGEPREVIEW");
         return target;}
     Codex.startPreview=startPreview;
     function stopPreview(caller,jumpto){
@@ -1213,6 +1214,7 @@ var Codex={
         else scrollPreview(false,caller);
         Codex.previewing=false;
         dropClass(document.body,"cxPREVIEW");
+        dropClass(document.body,"cxPAGEPREVIEW");
         if (jumpto) {
             if (Codex.hudup) Codex.setHUD(false);
             codexGoTo(jumpto);}

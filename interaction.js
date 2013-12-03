@@ -1006,7 +1006,7 @@
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
-            Codex.stopPreview("onkeydown",Codex.hudup);
+            Codex.stopPreview("onkeydown",(!(hasClass(document.body,"cxPAGEPREVIEW"))));
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
@@ -2050,6 +2050,7 @@
         Codex.stopPreview("pageinfo_release",true);
         preview_start_page=false;
         previewing_page=false;
+        fdjtUI.cancel(evt);
         if (((hasParent(target,pageinfo))&&(target.tagName==="span"))) {
             return;}}
     function pageinfo_slip(evt){
