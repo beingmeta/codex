@@ -160,15 +160,15 @@ Codex.Paginate=
             
             var max_layouts=3;
 
-            function recordLayout(layout,source_id){
-                var id=layout.layout_id;
+            function recordLayout(layout_id,source_id){
                 var key="codex.layouts("+source_id+")";
                 var saved=getLocal(key,true);
-                if (!(saved)) setLocal(key,[id],true);
+                if (!(saved)) setLocal(key,[layout_id],true);
                 else {
-                    var loc=saved.indexOf(id);
-                    if (loc<0) saved.push(id);
-                    else {saved.splice(loc,1); saved.push(id);}
+                    var loc=saved.indexOf(layout_id);
+                    // Place at end, removing current position if neccessary
+                    if (loc>=0) saved.splice(loc,1);
+                    saved.push(layout_id);
                     if (saved.length>max_layouts) {
                         var j=saved.length-max_layouts-1;
                         while (j>=0) {
@@ -218,7 +218,8 @@ Codex.Paginate=
                             var elapsed=layout.done-layout.started;
                             if ((typeof Codex.cachelayouts === "number")?
                                 (elapsed>Codex.cachelayouts):(elapsed>5000)) {
-                                layout.saveLayout(function(l){recordLayout(l,Codex.sourceid);});}}
+                                layout.saveLayout(function(l){
+                                    recordLayout(l.layout_id,Codex.sourceid);});}}
                         fdjtID("CODEXPAGE").style.visibility='';
                         fdjtID("CODEXCONTENT").style.visibility='';
                         dropClass(document.body,"cxLAYOUT");
@@ -317,9 +318,11 @@ Codex.Paginate=
                 rootloop();}
 
             
-            if ((Codex.cachelayouts)&&(!((Codex.forcelayout)))) {
+            if ((Codex.cachelayouts)&&( !((Codex.forcelayout)))) {
                 CodexLayout.fetchLayout(layout_id,function(content){
-                    if (content) restore_layout(content,layout_id);
+                    if (content) {
+                        recordLayout(layout_id,Codex.sourceid);
+                        restore_layout(content,layout_id);}
                     else new_layout();});}
             else {
                 setTimeout(new_layout,10);}}
@@ -415,13 +418,17 @@ Codex.Paginate=
         Codex.layoutCached=layoutCached;
         
         function clearLayouts(source_id){
+            if (typeof source_id === "undefined") source_id=Codex.sourceid;
             if (source_id) {
                 var layouts=getLocal("codex.layouts("+Codex.sourceid+")",true);
-                var i=0, lim=layouts.length; while (i<lim) 
-                    CodexLayout.dropLayout(layouts[i++]);
+                var i=0, lim=layouts.length; while (i<lim) {
+                    var layout=layouts[i++];
+                    fdjtLog("Dropping layout %s",layout);
+                    CodexLayout.dropLayout(layout);}
                 fdjtState.dropLocal("codex.layouts("+Codex.sourceid+")");}
             else {
                 CodexLayout.clearLayouts();
+                CodexLayout.clearAll();
                 fdjtState.dropLocal(/^codex.layouts\(/g);}}
         Codex.clearLayouts=clearLayouts;
 
