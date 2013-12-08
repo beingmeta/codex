@@ -374,16 +374,18 @@ Codex.Paginate=
             fdjtDOM.swapClass(
                 Codex.body,new RegExp("codex"+name+"\\w*"),"codex"+name+val);
             Codex[name]=val;
-            Codex.sizeContent();
+            if ((Codex.postconfig)&&(Codex.content)) {
+                if (Codex.postconfig.indexOf(Codex.sizeContent)<0)
+                    Codex.sized=false;
+                    Codex.postconfig.push(Codex.sizeContent);}
+            else if (Codex.content) Codex.sizeContent();
             if (Codex.layout) {
                 // If you're already paginated, repaginate.  Either
                 // when done with the config or immediately.
                 if (Codex.postconfig) {
                     Codex.postconfig.push(function(){
-                        // Codex.setMode(true);
                         Codex.Paginate(name);});}
                 else {
-                    // Codex.setMode(true);
                     Codex.Paginate(name);}}}
         Codex.addConfig("bodysize",updateLayoutProperty);
         Codex.addConfig("bodyfamily",updateLayoutProperty);

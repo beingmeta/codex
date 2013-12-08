@@ -168,13 +168,19 @@ Codex.Startup=
                     if (value===input.value) setCheckSpan(input,true);
                     else setCheckSpan(input,false);}
                 else input.value=value;}
-            if (!((current_config[name])&&
+            if (!((current_config.hasOwnProperty(name))&&
                   (current_config[name]===value))) {
                 if (config_handlers[name]) {
                     if (Codex.Trace.config)
                         fdjtLog("setConfig (handler=%s) %o=%o",
                                 config_handlers[name],name,value);
-                    config_handlers[name](name,value);}}
+                    config_handlers[name](name,value);}
+                else if (Codex.Trace.config)
+                    fdjtLog("setConfig (no handler) %o=%o",name,value);
+                else {}}
+            else if (Codex.Trace.config)
+                fdjtLog("Redundant setConfig %o=%o",name,value);
+            else {}
             current_config[name]=value;
             if ((!(save))&&(inputs.length))
                 fdjtDOM.addClass("CODEXSETTINGS","changed");
@@ -227,12 +233,14 @@ Codex.Startup=
         Codex.saveConfig=saveConfig;
 
         function initConfig(fetch){
-            var setting;
-            if (typeof fetch === "undefined") fetch=true;
-            if ((navigator.onLine)&&(fetch)) fetchConfig();
-            var config=(saved_config=(readLocal("codex.config",true)||{}));
+            var setting, config, started=fdjtTime();
+            if (!(fetch)) {
+                if (navigator.onLine) fetchConfig();
+                config=(saved_config=(readLocal("codex.config",true)||{}));
+                if ((config)&&((Codex.Trace.config)||(Codex.Trace.startup)))
+                    fdjtLog("Starting with cached config %j",config);}
+            else config=fetch;
             Codex.postconfig=[];
-            if (Codex.Trace.config) fdjtLog("initConfig (saved) %o",config);
             if (config) {
                 for (setting in config) {
                     if ((config.hasOwnProperty(setting))&&
@@ -240,7 +248,7 @@ Codex.Startup=
                         setConfig(setting,config[setting]);}}
             else config={};
             if (Codex.Trace.config)
-                fdjtLog("initConfig (default) %o",default_config);
+                fdjtLog("initConfig (default) %j",default_config);
             for (setting in default_config) {
                 if (!(config.hasOwnProperty(setting)))
                     if (default_config.hasOwnProperty(setting)) {
@@ -258,7 +266,9 @@ Codex.Startup=
             
             var devicename=current_config.devicename;
             if ((devicename)&&(!(fdjtString.isEmpty(devicename))))
-                Codex.deviceName=devicename;}
+                Codex.deviceName=devicename;
+            if (Codex.Trace.startup>1)
+                fdjtLog("initConfig took %dms",fdjtTime()-started);}
 
         var fetching_config=false, config_fetched=false;
         var on_fetched_config=false;
@@ -274,7 +284,6 @@ Codex.Startup=
                         fdjtLog("Got device config: %j",config);
                         fetching_config=false;
                         config_fetched=true;
-                        initConfig(false);
                         saveConfig(config,false);
                         if (on_fetched_config) {
                             onfetch=on_fetched_config;
@@ -387,6 +396,7 @@ Codex.Startup=
             appSetup();
             showMessage();
             if (!(updating)) userSetup();
+            contentSetup();
 
             // Hide the loading splash page, if any
             if (fdjtID("CODEXSPLASH"))
@@ -452,6 +462,7 @@ Codex.Startup=
         function appSetup() {
 
             var body=document.body;
+            var started=fdjtTime();
 
             if (Codex.Trace.startup>2) fdjtLog("Starting app setup");
 
@@ -463,9 +474,6 @@ Codex.Startup=
             // Initialize the databases
             Codex.initDB();
 
-            // Modifies the DOM in various ways
-            initBody();
-            
             // This initializes the book tools (the HUD/Heads Up Display)
             Codex.initHUD();
 
@@ -520,9 +528,7 @@ Codex.Startup=
                 ((!(Codex.force_online))&&
                  ((Codex.force_offline)||(workOffline())));
 
-            // Setup the UI components for the body and HUD
-            Codex.setupGestures();
-            
+        
             // Setup the reticle (if desired)
             if ((typeof (body.style["pointer-events"])!== "undefined")&&
                 ((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
@@ -532,8 +538,20 @@ Codex.Startup=
 
             fdjtLog("Body: %s",document.body.className);
 
-            if (Codex.Trace.startup>2) fdjtLog("Done with app setup");}
+            if (Codex.Trace.startup>1)
+                fdjtLog("App setup took %dms",fdjtTime()-started);}
         
+        function contentSetup(){
+            var started=fdjtTime();
+            // Modifies the DOM in various ways
+            initBody();
+            // Size the content
+            sizeContent();
+            // Setup the UI components for the body and HUD
+            Codex.setupGestures();
+            if (Codex.Trace.gestures)
+                fdjtLog("Content setup in %dms",fdjtTime()-started);}
+
         Codex.setSync=function setSync(val){
             if (!(val)) return false;
             var cur=Codex.sync;
@@ -546,6 +564,7 @@ Codex.Startup=
         function userSetup(){
             // Get any local sync information
             var sync=Codex.sync=getLocal("codex.sync("+Codex.refuri+")",true)||0;
+            var started=fdjtTime();
             var loadinfo=false, userinfo=false;
 
             // If the configuration is set to not persist, but there's
@@ -588,6 +607,8 @@ Codex.Startup=
                 setUser(userinfo,userinfo.outlets,userinfo.overlays,
                         userinfo.sync||userinfo.modified);}
             else {}
+            if (Codex.Trace.startup>1)
+                fdjtLog("userSetup done in %dms",fdjtTime()-started);
             if (Codex.nologin) return;
             else if (!(Codex.refuri)) return;
             else if (window.navigator.onLine) {
@@ -934,6 +955,7 @@ Codex.Startup=
             var useragent=navigator.userAgent;
             var device=fdjt.device;
             var body=document.body;
+            var started=fdjtTime();
 
             if ((!(device.touch))&&(getQuery("touch")))
                 device.touch=getQuery("touch");
@@ -975,12 +997,14 @@ Codex.Startup=
                 device.iscroll=true;}
             device.string=device.string+" "+
                 ((Codex.iscroll)?("iScroll"):("nativescroll"));
-            fdjtLog("Device: %s/%dx%d %s",
-                    Codex.ui,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),device.string);}
+            fdjtLog("deviceSetup done in %dms: %s/%dx%d %s",
+                    fdjtTime()-started,
+                    Codex.ui,fdjtDOM.viewWidth(),fdjtDOM.viewHeight(),
+                    device.string);}
 
         function bookSetup(){
             if (Codex.bookinfo) return;
-            var bookinfo=Codex.bookinfo={};
+            var bookinfo=Codex.bookinfo={}; var started=fdjtTime();
             bookinfo.title=
                 getMeta("Codex.title")||
                 getMeta("SBOOKS.title")||
@@ -1019,7 +1043,9 @@ Codex.Startup=
                 getMeta("SBOOKS.digitized")||
                 getMeta("DIGITIZED");
             bookinfo.converted=fdjtID("SBOOKS.converted")||
-                getMeta("SBOOKS.converted");}
+                getMeta("SBOOKS.converted");
+            if (Codex.Trace.startup>1)
+                fdjtLog("bookSetup done in %dms",fdjtTime()-started);}
         function getBookInfo(){
             if (Codex.bookinfo) return Codex.bookinfo;
             else {bookSetup(); return Codex.bookinfo;}}
@@ -1040,11 +1066,13 @@ Codex.Startup=
                         user,sync,nodeid,userinfo);
             if (!(sync)) return;
             if (!(user)) return;
-            if (Codex.Trace.startup)
+            if (Codex.Trace.startup>1)
                 fdjtLog("initOffline userinfo=%j",userinfo);
             // Should these really be refs in sourcedb?
-            var outlets=Codex.outlets=getLocal("codex.outlets("+refuri+")",true)||[];
-            var overlays=Codex.overlays=getLocal("codex.overlays("+refuri+")",true)||[];
+            var outlets=Codex.outlets=
+                getLocal("codex.outlets("+refuri+")",true)||[];
+            var overlays=Codex.overlays=
+                getLocal("codex.overlays("+refuri+")",true)||[];
             if (userinfo) setUser(userinfo,outlets,overlays,sync);
             if (nodeid) setNodeID(nodeid);}
 
@@ -1222,7 +1250,7 @@ Codex.Startup=
 
         // Cover setup
         function coverSetup(){
-            var frame=fdjtID("CODEXFRAME");
+            var frame=fdjtID("CODEXFRAME"), started=fdjtTime();
             var cover, existing_cover=fdjtID("CODEXCOVER");
             if (!(frame)) {
                 frame=fdjtDOM("div#CODEXFRAME");
@@ -1234,7 +1262,7 @@ Codex.Startup=
                 cover=fdjtDOM("div#CODEXCOVER");
                 cover.innerHTML=fixStaticRefs(Codex.HTML.cover);
                 frame.appendChild(cover);}
-            if (Codex.Trace.startup>1) {
+            if (Codex.Trace.startup>2) {
                 if (existing_cover)
                     fdjtLog("Setting up existing cover");
                 else fdjtLog("Setting up new cover");}
@@ -1294,14 +1322,15 @@ Codex.Startup=
                     titlepage.setAttribute("style","");}
                 else {
                     var info=getBookInfo();
-                    titlepage=fdjtDOM("div#CODEXTITLEPAGE",
-                                      fdjtDOM("DIV.title",info.title),
-                                      fdjtDOM("DIV.credits",
-                                              ((info.byline)?(fdjtDOM("DIV.byline",info.byline)):
-                                               ((info.authors)&&(info.authors.length))?
-                                               (fdjtDOM("DIV.author",info.authors[0])):
-                                               (false))),
-                                      fdjtDOM("DIV.pubinfo"));}}
+                    titlepage=fdjtDOM(
+                        "div#CODEXTITLEPAGE",
+                        fdjtDOM("DIV.title",info.title),
+                        fdjtDOM("DIV.credits",
+                                ((info.byline)?(fdjtDOM("DIV.byline",info.byline)):
+                                 ((info.authors)&&(info.authors.length))?
+                                 (fdjtDOM("DIV.author",info.authors[0])):
+                                 (false))),
+                        fdjtDOM("DIV.pubinfo"));}}
             if (fdjtID("CODEXTITLEPAGEHOLDER")) {
                 fdjtDOM.replace(fdjtID("CODEXTITLEPAGEHOLDER"),titlepage);
                 titlepage.id="CODEXTITLEPAGE";}
@@ -1326,11 +1355,13 @@ Codex.Startup=
             if (creditspage) {
                 addClass(cover,"withcreditspage");
                 if (fdjtID("CODEXCREDITSPAGEHOLDER")) {
-                    fdjtDOM.replace(fdjtID("CODEXCREDITSPAGEHOLDER"),creditspage);
+                    fdjtDOM.replace(fdjtID("CODEXCREDITSPAGEHOLDER"),
+                                    creditspage);
                     creditspage.id="CODEXCREDITSPAGE";}
                 else if (hasParent(creditspage,cover)) {}
                 else cover.appendChild(creditspage);
-                if ((fdjtID("CODEXCREDITSPAGE"))&&(fdjtID("CODEXCREDITSPAGEHOLDER")))
+                if ((fdjtID("CODEXCREDITSPAGE"))&&
+                    (fdjtID("CODEXCREDITSPAGEHOLDER")))
                     fdjtDOM.remove("CODEXCREDITSPAGEHOLDER");}
             
             var infopage=fdjtID("CODEXINFOPAGE");
@@ -1373,7 +1404,7 @@ Codex.Startup=
                 console=fdjtDOM("div#CODEXCONSOLE");
                 cover.appendChild(console);}
             Codex.DOM.console=console;
-            if (Codex.Trace.startup>1) fdjtLog("Setting up console %o",console);
+            if (Codex.Trace.startup>2) fdjtLog("Setting up console %o",console);
             console.innerHTML=Codex.HTML.console;
             Codex.DOM.input_console=input_console=
                 fdjtDOM.getChild(console,"TEXTAREA");
@@ -1417,11 +1448,13 @@ Codex.Startup=
 
             // Handle any adjustfont regions
             fdjtUI.adjustFont.setup(cover);
+            fdjtDOM.tweakFonts(cover);
 
             // Make the cover hidden by default
             Codex.CSS.hidecover=fdjtDOM.addCSSRule(
                 "div#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
-            fdjtDOM.tweakFonts(cover);
+            if (Codex.Trace.startup>1)
+                fdjtLog("Cover setup done in %dms",fdjtTime()-started);
             return cover;}
 
         var coverids={"bookcover": "CODEXBOOKCOVER",
@@ -1587,11 +1620,11 @@ Codex.Startup=
         /* Initializing the body and content */
 
         function initBody(){
-            var body=document.body;
+            var body=document.body, started=fdjtTime();
             var init_content=fdjtID("CODEXCONTENT");
             var content=(init_content)||(fdjtDOM("div#CODEXCONTENT"));
             var i, lim;
-            if (Codex.Trace.startup>2) fdjtLog("Organizing content");
+            if (Codex.Trace.startup>2) fdjtLog("Starting initBody");
 
             body.setAttribute("tabindex",1);
             /* -- Sets 1em to equal 10px -- */ 
@@ -1603,7 +1636,8 @@ Codex.Startup=
             Codex.content=content;
 
             // Move all the notes together
-            var notesblock=fdjtID("SBOOKNOTES")||fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
+            var notesblock=fdjtID("SBOOKNOTES")||
+                fdjtDOM("div.sbookbackmatter#SBOOKNOTES");
             applyMetaClass("sbooknote");
             var note_counter=1;
             var allnotes=getChildren(content,".sbooknote");
@@ -1636,7 +1670,8 @@ Codex.Startup=
             
             if (!(init_content)) {
                 var children=[], childnodes=body.childNodes;
-                i=0; lim=childnodes.length; while (i<lim) children.push(childnodes[i++]);
+                i=0; lim=childnodes.length;
+                while (i<lim) children.push(childnodes[i++]);
                 i=0; while (i<lim) {
                     // Copy all of the content nodes
                     var child=children[i++];
@@ -1660,17 +1695,20 @@ Codex.Startup=
                         " pages"),
                 pages);
             
-            Codex.body=fdjtDOM("div#CODEXBODY.codexbody",content,page);
-            fdjtDOM.append(body,Codex.body);
+            Codex.body=fdjtID("CODEXBODY");
+            if (!(Codex.body)) {
+                Codex.body=fdjtDOM("div#CODEXBODY.codexbody",content,page);
+                body.appendChild(Codex.body);}
+            else Codex.body.appendChild(page);
             // Initialize the margins
             initMargins();
-            // Add resize handler
-            fdjtDOM.addListener(window,"resize",resizeHandler);
-            // Size the content
-            sizeContent();
-            if (Codex.Trace.startup>2) fdjtLog("Organized content");}
+            if (Codex.Trace.startup>1)
+                fdjtLog("initBody took %dms",fdjtTime()-started);
+            Codex.Timeline.initBody=fdjtTime();}
 
         function sizeContent(){
+            if (Codex.sized) return;
+            var started=Codex.sized=fdjtTime();
             var content=Codex.content, page=Codex.page, body=document.body;
             // Clear any explicit left/right settings to get at
             //  whatever the CSS actually specifies
@@ -1726,7 +1764,10 @@ Codex.Startup=
             else Codex.CSS.glossmark_rule=fdjtDOM.addCSSRule(
                 "#CODEXPAGE .codexglossmark","margin-right: "+
                     (-glossmark_offset)+"px;");
-            document.body.style.overflow='';}
+            document.body.style.overflow='';
+            if (Codex.Trace.startup>1)
+                fdjtLog("Content sizing took %dms",fdjtTime()-started);
+        }
         Codex.sizeContent=sizeContent;
         
         /* Margin creation */
@@ -2048,7 +2089,8 @@ Codex.Startup=
 
         function setUser(userinfo,outlets,overlays,sync){
             var keepdata=((Codex.keepdata)&&(navigator.onLine));
-            if (Codex.Trace.startup)
+            var started=fdjtTime();
+            if (Codex.Trace.startup>1)
                 fdjtLog("Setting up user %s (%s)",userinfo._id,
                        userinfo.name||userinfo.email);
             if (userinfo) {
@@ -2075,7 +2117,13 @@ Codex.Startup=
                 setLocal("codex.user",Codex.user._id);
                 // We also save it locally so we can get it synchronously
                 setLocal(Codex.user._id,Codex.user.Export(),true);}
+            var startui=fdjtTime();
             setupUI4User();
+            if (Codex.Trace.startup) {
+                var now=fdjtTime();
+                fdjtLog("setUser %s (%s) done in %dms, UI took %dms",
+                        userinfo._id,userinfo.name||userinfo.email,
+                        now-started,now-startui);}
             return Codex.user;}
         Codex.setUser=setUser;
         

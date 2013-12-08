@@ -78,6 +78,7 @@ Codex.setMode=
 
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
+            var started=fdjtTime();
             var messages=fdjtDOM("div#CODEXSTARTUPMESSAGES.startupmessages");
             messages.innerHTML=fixStaticRefs(Codex.HTML.messages);
             if (Codex.Trace.startup>2) fdjtLog("Initializing HUD layout");
@@ -151,7 +152,7 @@ Codex.setMode=
             
             // Initialize gloss UI
             Codex.DOM.allglosses=fdjtID("CODEXALLGLOSSES");
-            if (Codex.Trace.startup>1)
+            if ((Codex.Trace.startup>2)&&(Codex.DOM.allglosses))
                 fdjtLog("Setting up gloss UI %o",allglosses);
 
             Codex.glosses=allglosses=new Codex.Slice(Codex.DOM.allglosses);
@@ -193,11 +194,7 @@ Codex.setMode=
                     fdjtLog("Setting up message listener");
                 fdjtDOM.addListener(window,"message",messageHandler);}
             
-            // Set up the splash form
             var splashform=fdjtID("CODEXSPLASHFORM");
-            if (Codex.Trace.startup>1)
-                fdjtLog("Setting up splash %o",splashform);
-
             var docinput=fdjtDOM.getInput(splashform,"DOCURI");
             if (docinput) docinput.value=Codex.docuri;
             var refinput=fdjtDOM.getInput(splashform,"REFURI");
@@ -219,19 +216,17 @@ Codex.setMode=
                 appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
             fdjtDOM.setInputs(".codexhiddenappuri",appuri);
             
-            if (Codex.Trace.startup>1)
-                fdjtLog("Setting up taphold for foot %o",Codex.DOM.foot);
-            Codex.TapHold.foot=new fdjtUI.TapHold(Codex.DOM.foot,{override: true,holdfast: true});
-            Codex.TapHold.head=new fdjtUI.TapHold(Codex.DOM.head,{override: true});
+            Codex.TapHold.foot=
+                new fdjtUI.TapHold(
+                    Codex.DOM.foot,{override: true,holdfast: true});
+            Codex.TapHold.head=
+                new fdjtUI.TapHold(Codex.DOM.head,{override: true});
             Codex.DOM.scanner=fdjtID("CODEXSCANNER");
-            if (Codex.Trace.startup>1)
-                fdjtLog("Setting up taphold for scanner %o",Codex.DOM.scanner);
             Codex.TapHold.scanner=new fdjtUI.TapHold(Codex.DOM.scanner);
             
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=fixStaticRefs(Codex.HTML.help);
 
-            /* Currently a no-op */
             resizeHUD();
 
             Codex.scrollers={};
@@ -268,7 +263,7 @@ Codex.setMode=
             fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
 
             if (Codex.Trace.startup>1)
-                fdjtLog("Initialized basic HUD layout");}
+                fdjtLog("Initialized basic HUD in %dms",fdjtTime()-started);}
         Codex.initHUD=initHUD;
         
         function resizeHUD(){

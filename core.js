@@ -173,8 +173,9 @@ var Codex={
         else fdjtState.setSession(key,value);}
     Codex.saveLocal=saveLocal;
     function readLocal(key){
-        if (Codex.keepdata) return getLocal(key)||fdjtState.getSession(key);
-        else return fdjtState.getSession(key)||getLocal(key);}
+        if (Codex.keepdata) return getLocal(key,true)||
+            fdjtState.getSession(key,true);
+        else return fdjtState.getSession(key,true)||getLocal(key,true);}
     Codex.readLocal=readLocal;
     function clearLocal(key){
         fdjtState.dropLocal(key);
