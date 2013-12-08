@@ -172,10 +172,10 @@ var Codex={
         if (Codex.keepdata) setLocal(key,value);
         else fdjtState.setSession(key,value);}
     Codex.saveLocal=saveLocal;
-    function readLocal(key){
-        if (Codex.keepdata) return getLocal(key,true)||
-            fdjtState.getSession(key,true);
-        else return fdjtState.getSession(key,true)||getLocal(key,true);}
+    function readLocal(key,parse){
+        if (Codex.keepdata) return getLocal(key,parse)||
+            fdjtState.getSession(key,parse);
+        else return fdjtState.getSession(key,parse)||getLocal(key,parse);}
     Codex.readLocal=readLocal;
     function clearLocal(key){
         fdjtState.dropLocal(key);
@@ -842,9 +842,8 @@ var Codex={
     
     Codex.initState=function initState() {
         var uri=Codex.docuri||Codex.refuri;
-        var statestring=readLocal("codex.state("+uri+")");
-        if (statestring)
-            Codex.state=JSON.parse(statestring);};
+        var state=readLocal("codex.state("+uri+")",true);
+        if (state) Codex.state=state;};
     
     // This records the current state of the app, bundled into an
     //  object and primarily consisting a location, a target, and
