@@ -820,7 +820,8 @@ Codex.Startup=
             else if ((!(mode))&&(Codex.user)) {
                 var opened=readLocal("Codex.opened("+Codex.refuri+")",true);
                 if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
-                    Codex.hideCover();}}
+                    Codex.hideCover();}
+            fdjtDOM.addListener(window,"resize",resizeHandler);}
         
         /* Application settings */
 
