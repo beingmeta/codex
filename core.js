@@ -168,9 +168,9 @@ var Codex={
     
     Codex.tagweights=new ObjectMap();
 
-    function saveLocal(key,value){
-        if (Codex.keepdata) setLocal(key,value);
-        else fdjtState.setSession(key,value);}
+    function saveLocal(key,value,unparse){
+        if (Codex.keepdata) setLocal(key,value,unparse);
+        else fdjtState.setSession(key,value,unparse);}
     Codex.saveLocal=saveLocal;
     function readLocal(key,parse){
         if (Codex.keepdata) return getLocal(key,parse)||
