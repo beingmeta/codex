@@ -82,7 +82,7 @@ Codex.Startup=
         var fixStaticRefs=Codex.fixStaticRefs;
 
         var saveprops=Codex.saveprops=
-            ["sources","outlets","overlays","sync","nodeid","state"];
+            ["sources","outlets","layers","sync","nodeid","state"];
         
         /* Initialization */
         
@@ -594,7 +594,7 @@ Codex.Startup=
                             userinfo._id,userinfo.name||userinfo.email,
                             loadinfo.sync,userinfo);
                 setUser(userinfo,
-                        loadinfo.outlets,loadinfo.overlays,
+                        loadinfo.outlets,loadinfo.layers,
                         loadinfo.sync);
                 if (loadinfo.nodeid) setNodeID(loadinfo.nodeid);}
             else if ((Codex.userinfo)||(window._userinfo)) {
@@ -604,7 +604,7 @@ Codex.Startup=
                             ((Codex.userinfo)?("Codex.userinfo"):("window._userinfo")),
                             userinfo._id,userinfo.name||userinfo.email,
                             userinfo.sync||userinfo.modified,userinfo);
-                setUser(userinfo,userinfo.outlets,userinfo.overlays,
+                setUser(userinfo,userinfo.outlets,userinfo.layers,
                         userinfo.sync||userinfo.modified);}
             else {}
             if (Codex.Trace.startup>1)
@@ -1072,9 +1072,9 @@ Codex.Startup=
             // Should these really be refs in sourcedb?
             var outlets=Codex.outlets=
                 getLocal("codex.outlets("+refuri+")",true)||[];
-            var overlays=Codex.overlays=
-                getLocal("codex.overlays("+refuri+")",true)||[];
-            if (userinfo) setUser(userinfo,outlets,overlays,sync);
+            var layers=Codex.layers=
+                getLocal("codex.layers("+refuri+")",true)||[];
+            if (userinfo) setUser(userinfo,outlets,layers,sync);
             if (nodeid) setNodeID(nodeid);}
 
         var offline_init=false;
@@ -1414,16 +1414,16 @@ Codex.Startup=
             input_button.onclick=consolebutton_click;
             input_console.onkeypress=consoleinput_keypress;
 
-            var overlays=fdjtID("CODEXOVERLAYS");
-            if (!(overlays)) {
-                overlays=fdjtDOM("div#CODEXOVERLAYS");
-                cover.appendChild(overlays);}
+            var layers=fdjtID("CODEXLAYERS");
+            if (!(layers)) {
+                layers=fdjtDOM("div#CODEXLAYERS");
+                cover.appendChild(layers);}
             var sbooksapp=fdjtID("SBOOKSAPP");
             if (!(sbooksapp)) {
                 sbooksapp=fdjtDOM("iframe#SBOOKSAPP");
                 sbooksapp.setAttribute("frameborder",0);
                 sbooksapp.setAttribute("scrolling","auto");}
-            overlays.appendChild(sbooksapp);
+            layers.appendChild(sbooksapp);
             Codex.DOM.sbooksapp=sbooksapp;
                 
             var about=fdjtID("CODEXABOUTBOOK");
@@ -1464,7 +1464,7 @@ Codex.Startup=
                       "aboutbook": "CODEXABOUTBOOK",
                       "help": "CODEXAPPHELP",
                       "settings": "CODEXSETTINGS",
-                      "overlays": "CODEXOVERLAYS"};
+                      "layers": "CODEXLAYERS"};
 
         function cover_clicked(evt){
             var target=fdjtUI.T(evt);
@@ -1495,7 +1495,7 @@ Codex.Startup=
                 fdjt.UI.cancel(evt);
                 return;}
             */
-            if ((mode==="overlays")&&
+            if ((mode==="layers")&&
                 (!(fdjtID("SBOOKSAPP").src))&&
                 (!(Codex.appinit)))
                 Codex.initIFrameApp();
@@ -1903,7 +1903,7 @@ Codex.Startup=
             if (!((Codex.user)&&(Codex._user_setup))) {
                 if (info.userinfo)
                     setUser(info.userinfo,
-                            info.outlets,info.overlays,
+                            info.outlets,info.layers,
                             info.sync);
                 else {
                     if (getLocal("queued("+Codex.refuri+")"))
@@ -1949,16 +1949,16 @@ Codex.Startup=
                         ((Codex.sync)?("updated "):("")),
                         ((info.etc)?(info.etc.length):(0)),
                         info.sync);
-                fdjtLog("loadInfo got %d sources, %d outlets, and %d overlays",
+                fdjtLog("loadInfo got %d sources, %d outlets, and %d layers",
                         ((info.sources)?(info.sources.length):(0)),
                         ((info.outlets)?(info.outlets.length):(0)),
-                        ((info.overlays)?(info.overlays.length):(0)));}
+                        ((info.layers)?(info.layers.length):(0)));}
             if ((info.glosses)||(info.etc))
                 initGlosses(info.glosses||[],info.etc||[]);
             if (info.etc) gotInfo("etc",info.etc,keepdata);
             if (info.sources) gotInfo("sources",info.sources,keepdata);
             if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
-            if (info.overlays) gotInfo("overlays",info.overlays,keepdata);
+            if (info.layers) gotInfo("layers",info.layers,keepdata);
             addOutlets2UI(info.outlets);
             if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
                 Codex.setSync(info.sync);}
@@ -2088,7 +2088,7 @@ Codex.Startup=
             if (elt) fdjtDOM.replace(elt,update_script);
             else document.body.appendChild(update_script);}
 
-        function setUser(userinfo,outlets,overlays,sync){
+        function setUser(userinfo,outlets,layers,sync){
             var keepdata=((Codex.keepdata)&&(navigator.onLine));
             var started=fdjtTime();
             if (Codex.Trace.startup>1)
@@ -2111,7 +2111,7 @@ Codex.Startup=
                 userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (keepdata) setConfig("keepdata",true,true);
             if (outlets) Codex.outlets=outlets;
-            if (overlays) Codex.overlays=overlays;
+            if (layers) Codex.layers=layers;
             if (keepdata) {
                 // No callback needed
                 Codex.user.save();
@@ -2682,7 +2682,7 @@ Codex.Startup=
                 dropLocal("codex.sourceid("+refuri+")");
                 dropLocal("codex.sources("+refuri+")");
                 dropLocal("codex.outlets("+refuri+")");
-                dropLocal("codex.overlays("+refuri+")");
+                dropLocal("codex.layers("+refuri+")");
                 dropLocal("codex.state("+refuri+")");
                 dropLocal("codex.etc("+refuri+")");
                 Codex.sourcedb.clearOffline(function(){

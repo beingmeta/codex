@@ -96,7 +96,7 @@
                 var title=
                     ((kind===':CIRCLE')?("the reading circle "):
                      (kind===':OVERDOC')?("the reading guide "):
-                     ("the overlay "))+
+                     ("the layer "))+
                     ((info.name)?("“"+(info.name)+"”"):"")+
                     ((info.about)?": ":"")+
                     ((info.about)?(info.about):"");

@@ -336,7 +336,7 @@ Codex.Slice=(function () {
             if (typeof outlets==='string') outlets=[outlets];
             i=0; lim=outlets.length; while (i<lim) {
                 var outlet=Codex.sourcedb.loadref(outlets[i++]);
-                if ((outlet)&&(outlet.kind===':OVERLAY')&&(outlet.pic))
+                if ((outlet)&&(outlet.kind===':LAYER')&&(outlet.pic))
                     return { src: outlet.pic, alt: outlet.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.maker) {

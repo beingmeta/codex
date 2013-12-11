@@ -133,12 +133,12 @@ div#CODEXCOVER.help > div#CODEXAPPHELP,
 div#CODEXCOVER.aboutsbooks > div#CODEXABOUTSBOOKS,
 div#CODEXCOVER.console > div#CODEXCONSOLE,
 div#CODEXCOVER.settings > div#CODEXSETTINGS, 
-div#CODEXCOVER.overlays > div#CODEXOVERLAYS {
+div#CODEXCOVER.layers > div#CODEXLAYERS {
     opacity: 1.0; z-index: 20; display: block;}
 
 div#CODEXCOVER.bookcover .control[data-mode='bookcover'],
 div#CODEXCOVER.titlepage .control[data-mode='titlepage'],
-div#CODEXCOVER.overlays .control[data-mode='overlays'],
+div#CODEXCOVER.layers .control[data-mode='layers'],
 div#CODEXCOVER.aboutbook .control[data-mode='aboutbook'],
 div#CODEXCOVER.settings .control[data-mode='settings'],
 div#CODEXCOVER.help .control[data-mode='help'],
@@ -150,10 +150,10 @@ div#CODEXCOVER.login .control[data-mode='login'] {
 .control[data-mode='creditspage'] {
     display: none;}
 body.cxSHOWCONSOLE span.control[data-mode='console'] { display: inline;}
-span.control[data-mode='overlays'] .whenloggedin { display: none;}
-body.cxUSER span.control[data-mode='overlays'] .whenloggedin {
+span.control[data-mode='layers'] .whenloggedin { display: none;}
+body.cxUSER span.control[data-mode='layers'] .whenloggedin {
     display: inline;}
-body.cxUSER span.control[data-mode='overlays'] .notloggedin {
+body.cxUSER span.control[data-mode='layers'] .notloggedin {
     display: none;}
 body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
 
@@ -174,9 +174,9 @@ div#CODEXBOOKCREDITS {
     -webkit-overflow-scrolling: touch;
     overflow: auto;}
 
-/* The sBooks app for managing overlays */
+/* The sBooks app for managing layers */
 
-div#CODEXCOVER > div#CODEXOVERLAYS iframe#SBOOKSAPP {
+div#CODEXCOVER > div#CODEXLAYERS iframe#SBOOKSAPP {
     height: 100%; width: 100%; margin: 0px; padding: 0px;
     background-color: ivory;}
 

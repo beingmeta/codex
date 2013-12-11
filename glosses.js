@@ -1117,7 +1117,7 @@
                                      "this machine, so any highlights or glosses you add won't ",
                                      "be saved until you do."),
                               fdjtDOM("p.smaller","In addition, you won't get updated glosses from ",
-                                      "your networks or overlays."),
+                                      "your networks or layers."),
                               fdjtDOM("p.smaller",
                                       "You may either login now, queue any changes you make until ",
                                      "you do login, or cancel the change you were trying to make.")]))),

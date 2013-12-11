@@ -5,7 +5,7 @@
 /* Copyright (C) 2009-2013 beingmeta, inc.
 
    This file provides initialization and some interaction for the
-   Codex HUD (Heads Up Display), an overlay on the book content
+   Codex HUD (Heads Up Display), an layer on the book content
    provided by the Codex e-reader web application.
 
    This file is part of Codex, a Javascript/DHTML web application for reading
@@ -405,7 +405,7 @@ Codex.setMode=
         var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossaddlink)|(glosstagging)|(glosseditdetail)|(glossediting))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
-        var CodexCoverModes=/\b((welcome)|(help)|(overlays)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
+        var CodexCoverModes=/\b((welcome)|(help)|(layers)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
         var CodexSearchModes=/((refinesearch)|(searchresults)|(expandsearch))/;
         Codex.searchModes=CodexSearchModes;
         var codex_mode_scrollers=
