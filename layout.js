@@ -197,9 +197,9 @@ Codex.Paginate=
                 // Now walk the content
                 var content=Codex.content;
                 var nodes=TOA(content.childNodes);
-                fdjtLog("Laying out %d root nodes into %dx%d pages (%s)",
+                fdjtLog("Laying out %d root nodes into %dx%d pages (%s), id=%s",
                         nodes.length,layout.width,layout.height,
-                        (why||""));
+                        (why||""),layout_id);
                 
                 // Do the adjust font bit.  We rely on Codex.content
                 //  having the same width as Codex.page
@@ -319,11 +319,14 @@ Codex.Paginate=
                     fdjtUI.ProgressBar.setMessage("CODEXLAYOUTMESSAGE",msg);}
                 
                 rootloop();}
-
             
             if ((Codex.cachelayouts)&&( !((Codex.forcelayout)))) {
+                if (Codex.Trace.layout)
+                    fdjtLog("Fetching layout %s",layout_id);
                 CodexLayout.fetchLayout(layout_id,function(content){
                     if (content) {
+                        if (Codex.Trace.layout)
+                            fdjtLog("Got layout %s",layout_id);
                         recordLayout(layout_id,Codex.sourceid);
                         restore_layout(content,layout_id);}
                     else new_layout();});}
@@ -671,6 +674,15 @@ Codex.Paginate=
             return args;}
         CodexLayout.getLayoutArgs=getLayoutArgs;
 
+        function sizeCodexPage(){
+            var page=Codex.page, geom=getGeometry(page);
+            var page_width=geom.width, view_width=fdjtDOM.viewWidth();
+            var page_margin=(view_width-page_width)/2;
+            if (page_margin!==50) {
+                page.style.left=page_margin+'px';
+                page.style.right=page_margin+'px';}
+            else page.style.left=page.style.right='';}
+        
         function scaleLayout(flag){
             var cheaprule=Codex.CSS.resizerule;
             if (typeof flag==="undefined") flag=true;
@@ -683,10 +695,12 @@ Codex.Paginate=
                 cheaprule.style.top="";}
             if (!(flag)) {
                 dropClass(document.body,"cxSCALEDLAYOUT");
+                sizeCodexPage();
                 return;}
+            else sizeCodexPage();
             var layout=Codex.layout;
-            var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
-            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
+            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
+            var width=geom.width, height=geom.inner_height;
             var lwidth=layout.width, lheight=layout.height;
             var hscale=height/lheight, vscale=width/lwidth;
             var scale=((hscale<vscale)?(hscale):(vscale));
@@ -694,16 +708,15 @@ Codex.Paginate=
                 var s="div#CODEXPAGE div.codexpage";
                 Codex.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
                     s+", body.cxANIMATE.cxPREVIEW "+s,"");}
+            cheaprule.style[fdjtDOM.transformOrigin]="left top";
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
-            var nwidth=width*scale, nheight=height*scale;
+            var nwidth=lwidth*scale, nheight=lheight*scale;
             // If the width has shrunk (it can't have grown), that means
             //  that there is an additional left margin, so we move the page
             //  over to the left
             if (nwidth<width)
-                cheaprule.style.left=(-(((width-nwidth)/2)/scale))+"px";
+                cheaprule.style.left=((width-nwidth)/2)+"px";
             if (nheight<height) cheaprule.style.top="0px";
-            cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
-            cheaprule.style[fdjtDOM.transformOrigin]="center top";
             var n=Codex.pagecount;
             var spanwidth=(fdjtID("CODEXPAGEINFO").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;

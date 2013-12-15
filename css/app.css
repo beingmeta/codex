@@ -38,6 +38,7 @@ body.cxSCROLL div#CODEXPAGE, img.codexpagebutton { display: none;}
 
 body.cxBYPAGE { overflow: hidden; }
 body.cxBYPAGE div#CODEXCONTENT { display: none;}
+body.cxLAYOUT div#CODEXCONTENT { display: none;}
 
 /* The page content gets a little transparent when the HUD comes up*/
 body.cxANIMATE.hudup div#CODEXPAGE {

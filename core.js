@@ -133,7 +133,7 @@ var Codex={
         savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
         addgloss: 0,      // Note whenever a gloss post completes
-        layout: 0,        // How much to trace document layout
+        layout: 1,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
         state: false,     // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
