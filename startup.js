@@ -1708,7 +1708,6 @@ Codex.Startup=
             Codex.Timeline.initBody=fdjtTime();}
 
         function sizeContent(){
-            if (Codex.sized) return;
             var started=Codex.sized=fdjtTime();
             var content=Codex.content, page=Codex.page, body=document.body;
             // Clear any explicit left/right settings to get at
@@ -1831,7 +1830,8 @@ Codex.Startup=
 
         function codexResize(){
             var layout=Codex.layout;
-            if (resizing) clearTimeout(resizing);
+            if (resizing) {
+                clearTimeout(resizing); resizing=false;}
             Codex.resizeHUD();
             Codex.scaleLayout(false);
             if (!(layout)) return;
@@ -1846,7 +1846,7 @@ Codex.Startup=
                     resizing=setTimeout(resizeNow,50);
                 else if (Codex.layoutCached())
                     resizing=setTimeout(resizeNow,50);
-                else if ((!(Codex.touch))&&((layout.done-layout.started)<=20000))
+                else if ((!(Codex.touch))&&((layout.done-layout.started)<=7000))
                     // On a non-touch display, always resize if it
                     // took less than 20 seconds
                     resizing=setTimeout(resizeNow,50);

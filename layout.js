@@ -108,6 +108,9 @@ Codex.Paginate=
                 Codex.layout.Revert();
                 Codex.layout=false;}
 
+            // Resize the content
+            Codex.sizeContent();
+
             // Create a new layout
             var layout_args=getLayoutArgs();
             var layout=new CodexLayout(layout_args);
