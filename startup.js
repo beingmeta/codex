@@ -2343,16 +2343,12 @@ Codex.Startup=
 
         function resolveXState(xstate) {
             var state=Codex.state;
-            if (!(state)) Codex.restoreState(xstate);
-            if ((state.changed>=xstate.changed)&&
-                (state.maxloc>xstate.maxloc))
-                return;
-            var msg1="You've moved across apps/devices.  Would you like to start:";
-            var choices=[{label: "right 'here' @"+loc2pct(state.location),
-                          handler: function(){
-                              state.changed=fdjtTime.tick();
-                              Codex.saveState(state,true,true);
-                              Codex.hideCover();}}];
+            if (!(state)) {
+                Codex.restoreState(xstate);
+                return;}
+            else if (state.changed>=xstate.changed) return;
+            var msg1="Would you like to sync your location to:";
+            var choices=[];
             var latest=xstate.location, farthest=xstate.maxloc;
             if (farthest>state.location)
                 choices.push(
@@ -2368,15 +2364,19 @@ Codex.Startup=
                      handler: function(){
                          Codex.restoreState(xstate);
                          Codex.hideCover();}});
-            if ((xstate.maxloc>state.location)&&
-                (xstate.maxloc!==state.location))
-
+            choices.push({label: "Cancel", // "right 'here' @"+loc2pct(state.location),
+                          handler: function(){
+                              state.changed=fdjtTime.tick();
+                              Codex.saveState(state,true,true);
+                              Codex.hideCover();}});
             if (choices.length===1)
                 Codex.restoreState(state,"resolveXState/onechoice");
             else {
                 Codex.hideCover();
                 fdjtUI.choose({choices: choices,cancel: true,timeout:17},
-                              fdjtDOM("div",msg1));}}
+                              fdjtDOM("div",msg1));}
+            if (xstate.maxloc>state.maxloc) {
+                state.maxloc=xstate.maxloc;}}
         Codex.resolveXState=resolveXState;
 
         /* Indexing tags */
