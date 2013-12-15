@@ -2343,6 +2343,8 @@ Codex.Startup=
 
         function resolveXState(xstate) {
             var state=Codex.state;
+            if (Codex.Trace.state)
+                fdjtLog("resolveXState state=%j, xstate=%j",state,xstate);
             if (!(state)) {
                 Codex.restoreState(xstate);
                 return;}
@@ -2369,6 +2371,8 @@ Codex.Startup=
                               state.changed=fdjtTime.tick();
                               Codex.saveState(state,true,true);
                               Codex.hideCover();}});
+            if (Codex.Trace.state)
+                fdjtLog("resolveXState choices=%j",choices);
             if (choices.length===1)
                 Codex.restoreState(state,"resolveXState/onechoice");
             else {

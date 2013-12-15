@@ -130,12 +130,12 @@ var Codex={
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
         network: 0,       // How much to trace server interaction
+        state: true,      // Whether to trace synchronization
         savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
         addgloss: 0,      // Note whenever a gloss post completes
-        layout: 1,        // How much to trace document layout
+        layout: 0,        // How much to trace document layout
         knodules: 0,      // How much to trace knodule processing
-        state: false,     // Whether to trace set state
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
         selection: false, // Whether to trace inter-window messages
@@ -872,6 +872,9 @@ var Codex={
         if ((state.maxloc)&&(state.maxloc<state.location))
             state.maxloc=state.location;
         else if (!(state.maxloc)) state.maxloc=state.location;
+        if (Codex.Trace.state)
+            fdjtLog("saveState skiphist=? force=? state=%j",
+                    skiphist,force,state);
         Codex.state=state;
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri||Codex.refuri;
