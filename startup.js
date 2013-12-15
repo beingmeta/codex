@@ -2344,14 +2344,24 @@ Codex.Startup=
         function resolveXState(xstate) {
             var state=Codex.state;
             if (!(state)) Codex.restoreState(xstate);
-            if (state.changed>=xstate.changed) return;
+            if ((state.changed>=xstate.changed)&&
+                (state.maxloc>xstate.maxloc))
+                return;
             var msg1="You've moved across apps/devices.  Would you like to start:";
             var choices=[{label: "right 'here' @"+loc2pct(state.location),
                           handler: function(){
                               state.changed=fdjtTime.tick();
                               Codex.saveState(state,true,true);
                               Codex.hideCover();}}];
-            if (xstate.location!==state.location)
+            var latest=xstate.location, farthest=xstate.maxloc;
+            if (farthest>state.location)
+                choices.push(
+                    {label: "your farthest @"+loc2pct(xstate.maxloc),
+                     title: "the farthest location you've read on any device/app",
+                     handler: function(){
+                         Codex.GoTo(xstate.maxloc,"sync");
+                         Codex.hideCover();}});
+            if ((latest!==state.location)&&(latest!==farthest))
                 choices.push(
                     {label: ("your latest @"+loc2pct(xstate.location)),
                      title: "the most recent location you moved to on any device/app",
@@ -2360,12 +2370,7 @@ Codex.Startup=
                          Codex.hideCover();}});
             if ((xstate.maxloc>state.location)&&
                 (xstate.maxloc!==state.location))
-                choices.push(
-                    {label: "your farthest @"+loc2pct(xstate.maxloc),
-                     title: "the farthest location you've read on any device/app",
-                     handler: function(){
-                         Codex.GoTo(xstate.maxloc,"sync");
-                         Codex.hideCover();}});
+
             if (choices.length===1)
                 Codex.restoreState(state,"resolveXState/onechoice");
             else {

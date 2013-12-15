@@ -960,11 +960,11 @@ var Codex={
                             if (traced)
                                 fdjtLog("syncState(callback) %o %j\n\t%j",
                                         evt,xstate,Codex.state);
-                            if (Codex.xstate) Codex.xstate=xstate;
-                            else if (!(Codex.state)) {
+                            if (!(Codex.state)) {
                                 Codex.xstate=xstate;
                                 restoreState(xstate);}
-                            else if (Codex.state.changed>xstate.changed)
+                            else if ((Codex.state.changed>xstate.changed)&&
+                                     (Codex.state.maxloc>xstate.maxloc))
                                 Codex.xstate=xstate;
                             else {
                                 Codex.xstate=xstate;
