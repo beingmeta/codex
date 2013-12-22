@@ -217,10 +217,10 @@ Codex.Paginate=
                     if (i>=lim) {
                         layout.Finish();
                         layout_progress(layout);
-                        if (Codex.cachelayouts) {
+                        if (Codex.cache_layout_thresh) {
                             var elapsed=layout.done-layout.started;
-                            if ((typeof Codex.cachelayouts === "number")?
-                                (elapsed>Codex.cachelayouts):(elapsed>5000)) {
+                            if ((typeof Codex.cache_layout_thresh === "number")?
+                                (elapsed>Codex.cache_layout_thresh):(elapsed>5000)) {
                                 layout.saveLayout(function(l){
                                     recordLayout(l.layout_id,Codex.sourceid);});}}
                         fdjtID("CODEXPAGE").style.visibility='';
@@ -320,7 +320,7 @@ Codex.Paginate=
                 
                 rootloop();}
             
-            if ((Codex.cachelayouts)&&( !((Codex.forcelayout)))) {
+            if ((Codex.cache_layout_thresh)&&( !((Codex.forcelayout)))) {
                 if (Codex.Trace.layout)
                     fdjtLog("Fetching layout %s",layout_id);
                 CodexLayout.fetchLayout(layout_id,function(content){

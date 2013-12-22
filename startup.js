@@ -84,6 +84,12 @@ Codex.Startup=
         var saveprops=Codex.saveprops=
             ["sources","outlets","layers","sync","nodeid","state"];
         
+        // This is the window outer dimensions, which is stable across
+        // most chrome changes, especially on-screen keyboards.  We
+        // track so that we can avoid resizes which shouldn't force
+        // layout updates.
+        var outer_height=false, outer_width=false;
+
         /* Initialization */
         
         function startupLog(){
@@ -361,15 +367,20 @@ Codex.Startup=
             fdjtLog.console="CODEXCONSOLELOG";
             fdjtLog.consoletoo=true;
             if (!(Codex._setup_start)) Codex._setup_start=new Date();
-            fdjtLog("This is Codex version %s, built %s on %s, launched %s, from %s",
+            fdjtLog("This is Codex v%s, built %s on %s, launched %s, from %s",
                     Codex.version,Codex.buildtime,Codex.buildhost,
                     Codex._setup_start.toString(),
                     Codex.root||"somewhere");
             if (navigator.appVersion)
                 fdjtLog("Navigator App version: %s (%s)",
                         navigator.appVersion,navigator.userAgent);
-            // This lets trace configurations be passed as query
-            // arguments, for handy debugging.
+
+            // Get window outer dimensions (this doesn't count Chrome,
+            // onscreen keyboards, etc)
+            outer_height=window.outerHeight;
+            outer_width=window.outerWidth;
+
+            // Check for any trace settings passed as query arguments
             if (getQuery("cxtrace")) readTraceSettings();
 
             // This reads settings
@@ -1835,23 +1846,33 @@ Codex.Startup=
             Codex.resizeHUD();
             Codex.scaleLayout(false);
             if (!(layout)) return;
+            if ((window.outerWidth===outer_width)&&
+                (window.outerHeight===outer_height)) {
+                // Not a real change (we think), so just scale the
+                // layout, don't make a new one.
+                Codex.scaleLayout(true);
+                return;}
+            // Set these values to the new one
+            outer_width=window.outerWidth;
+            outer_height=window.outerHeight;
+            // Possibly a new layout
             var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
             var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             if ((layout)&&(layout.width===width)&&(layout.height===height))
                 return;
-            if ((layout)&&(layout.onresize)&&
-                (!(Codex.freezelayout))&&(!((Codex.touch)&&(Codex.glossform)))) {
-                if ((Codex.resizelayout)&&
-                    ((layout.done-layout.started)<=Codex.resizelayout))
+            if ((layout)&&(layout.onresize)&&(!(Codex.freezelayout))) {
+                // This handles prompting for whether or not to update
+                // the layout.  We don't prompt if the layout didn't
+                // take very long (Codex.long_layout_thresh) or is already
+                // cached (Codex.layoutCached()).
+                if ((Codex.long_layout_thresh)&&
+                    ((layout.done-layout.started)<=Codex.long_layout_thresh))
                     resizing=setTimeout(resizeNow,50);
                 else if (Codex.layoutCached())
                     resizing=setTimeout(resizeNow,50);
-                else if ((!(Codex.touch))&&((layout.done-layout.started)<=7000))
-                    // On a non-touch display, always resize if it
-                    // took less than 20 seconds
-                    resizing=setTimeout(resizeNow,50);
                 else if (choosing_resize) {}
                 else {
+                    // This prompts for updating the layout
                     var msg=fdjtDOM("div.message","Update layout?");
                     // This should be fast, so we do it right away.
                     Codex.scaleLayout();
