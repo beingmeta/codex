@@ -2370,7 +2370,7 @@ Codex.Startup=
                 Codex.restoreState(xstate);
                 return;}
             else if (state.changed>=xstate.changed) return;
-            var msg1="Would you like to sync your location to:";
+            var msg1="Sync To";
             var choices=[];
             var latest=xstate.location, farthest=xstate.maxloc;
             if (farthest>state.location)
@@ -2379,15 +2379,19 @@ Codex.Startup=
                      title: "the farthest location you've read on any device/app",
                      handler: function(){
                          Codex.GoTo(xstate.maxloc,"sync");
+                         state=Codex.state; state.changed=fdjtTime.tick();
+                         Codex.saveState(state,true,true);
                          Codex.hideCover();}});
             if ((latest!==state.location)&&(latest!==farthest))
                 choices.push(
                     {label: ("your latest @"+loc2pct(xstate.location)),
                      title: "the most recent location you moved to on any device/app",
                      handler: function(){
-                         Codex.restoreState(xstate);
+                         Codex.restoreState(xstate); state=Codex.state;
+                         state.changed=fdjtTime.tick();
+                         Codex.saveState(state,true,true);
                          Codex.hideCover();}});
-            choices.push({label: "Cancel", // "right 'here' @"+loc2pct(state.location),
+            choices.push({label: "Right 'here' @"+loc2pct(state.location),
                           handler: function(){
                               state.changed=fdjtTime.tick();
                               Codex.saveState(state,true,true);
