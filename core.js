@@ -102,7 +102,7 @@ var Codex={
     // Number of milliseconds between gloss updates
     update_interval: 5*60*1000,
     // Number of milliseconds between location sync
-    sync_interval: 2*60*1000,
+    sync_interval: 5*1000,
     // Various handlers, settings, and status information for the
     // Codex interface
     UI: {
@@ -168,6 +168,10 @@ var Codex={
     
     Codex.tagweights=new ObjectMap();
 
+    function hasLocal(key){
+        if (Codex.keepdata) return fdjtState.existsLocal(key);
+        else return fdjtState.existsSession(key);}
+    Codex.hasLocal=hasLocal;
     function saveLocal(key,value,unparse){
         if (Codex.keepdata) setLocal(key,value,unparse);
         else fdjtState.setSession(key,value,unparse);}
@@ -843,6 +847,20 @@ var Codex={
     Codex.initState=function initState() {
         var uri=Codex.docuri||Codex.refuri;
         var state=readLocal("codex.state("+uri+")",true);
+        var hash=window.location.hash;
+        if (hash) {
+            if (hash[0]==="#") hash=hash.slice(1);}
+        else hash=false;
+        var elt=((hash)&&(document.getElementById(hash)));
+        if (elt) {
+            if (!((state)&&(state.target===hash))) {
+                if (!(state)) state={};
+                // Hash changed
+                state.refuri=Codex.refuri;
+                state.docuri=Codex.docuri;
+                state.target=hash;
+                state.location=false;
+                state.changed=fdjtTime.tick;}}
         if (state) Codex.state=state;};
     
     // This records the current state of the app, bundled into an
@@ -855,13 +873,14 @@ var Codex={
     // Finally, unless skiphist is true, it updates the browser
     //  history.
     function saveState(state,skiphist,force){
-        if ((!force)&&
+        if ((!force)&&(state)&&
             ((Codex.state===state)||
              ((Codex.state)&&
               (Codex.state.target===state.target)&&
               (Codex.state.location===state.location)&&
               (Codex.state.page===state.page))))
             return;
+        if (!(state)) state=Codex.state;
         if (!(state.changed)) state.changed=fdjtTime.tick();
         if (!(state.refuri)) state.refuri=Codex.refuri;
         var title=state.title, frag=state.target;
@@ -881,7 +900,7 @@ var Codex={
         saveLocal("codex.state("+uri+")",statestring);
         if ((!(syncing))&&(Codex.dosync)&&
             ((!(Codex.xstate))||(state.changed>Codex.xstate.changed)))
-            syncState();
+            syncState(true);
         if ((!(skiphist))&&(window.history)&&(window.history.pushState))
             setHistory(state,frag,title);
     } Codex.saveState=saveState;
@@ -915,6 +934,7 @@ var Codex={
                    // Don't save the state since we've already got one
                    false,(!(savehist)));
         if (!(state.refuri)) state.refuri=Codex.refuri;
+        if (!(state.docuri)) state.docuri=Codex.docuri;
         saveState(state);
     } Codex.restoreState=restoreState;
 
@@ -925,10 +945,19 @@ var Codex={
         Codex.xstate=false;
     } Codex.clearState=clearState;
 
+    var last_sync=false;
     // Post the current state and update synced state from what's
     // returned
-    function syncState(){
+    function syncState(force){
         if ((syncing)||(!(Codex.dosync))) return;
+        if ((!(force))&&(last_sync)&&((fdjtTime.tick()-last_sync)<Codex.sync_interval)) {
+            if (Codex.Trace.state)
+                fdjtLog("Skipping state sync because it's too soon");
+            return;}
+        if ((!(force))&&(!(hasClass(document.body,"cxFOCUS")))) {
+            if (Codex.Trace.state)
+                fdjtLog("Skipping state sync because page doesn't have focus");
+            return;}
         if ((Codex.dosync)&&(navigator.onLine)) {
             var uri=Codex.docuri||Codex.refuri;
             var traced=(Codex.Trace.state)||(Codex.Trace.network);
@@ -939,6 +968,7 @@ var Codex={
                 "?REFURI="+encodeURIComponent(refuri)+
                 "&DOCURI="+encodeURIComponent(Codex.docuri)+
                 "&NOW="+fdjtTime.tick();
+            Codex.last_sync=last_sync=fdjtTime.tick(); syncing=state;
             if (Codex.user) sync_uri=sync_uri+
                 "&SYNCUSER="+encodeURIComponent(Codex.user._id);
             if (Codex.deviceName) sync_uri=sync_uri+
