@@ -917,11 +917,19 @@ Codex.Paginate=
             if (!(location)) return page;
             var layout=Codex.layout, pages=layout.pages, npages=pages.length;
             var i=((page)?(parseInt(page.getAttribute("data-pagenum"),10)):(1));
-            while (i<npages) {
-                var probe=pages[i];
-                var loc=parseInt(probe.getAttribute("data-sbookloc"),10);
-                if (loc===location) return probe;
-                else if (loc>location) return pages[i-1];
+            var probe=pages[i-1], found=false;
+            var loc=parseInt(probe.getAttribute("data-sbookloc"),10);
+            if (loc===location) return probe;
+            else if (loc>=location) found=probe;
+            i++; while (i<npages) {
+                probe=pages[i];
+                loc=parseInt(probe.getAttribute("data-sbookloc"),10);
+                if (typeof loc !== "number") {
+                    if (found) return found;
+                    else i++;}
+                else if (loc===location) {
+                    found=probe; i++;}
+                else if (loc>location) return found;
                 else i++;}}
         Codex.getPage=getPage;
         
