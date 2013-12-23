@@ -105,6 +105,7 @@ Codex.Startup=
 
         /* Save local */
 
+        var hasLocal=Codex.hasLocal;
         var readLocal=Codex.readLocal;
         var saveLocal=Codex.saveLocal;
 
@@ -112,7 +113,7 @@ Codex.Startup=
         var resize_default=true;
 
         /* Interval timers */
-        var ticktock=false;
+        var ticktock=false, synctock=false;
         
         /* Configuration information */
 
@@ -124,7 +125,7 @@ Codex.Startup=
              animatecontent: true,animatehud: true,
              hidesplash: false,keyboardhelp: true,
              holdmsecs: 400,wandermsecs: 1500,
-             glossupdate: 5*60*1000};
+             syncinterval: 5,glossupdate: 5*60};
         var current_config={};
         var saved_config={};
 
@@ -359,7 +360,26 @@ Codex.Startup=
                 clearInterval(Codex.ticktock);
                 Codex.ticktock=ticktock=false;
                 if (value) Codex.ticktock=ticktock=
-                    setInterval(updateInfo,value);}});
+                    setInterval(updateInfo,value*1000);}});
+
+        Codex.addConfig("syncinterval",function(name,value){
+            Codex.sync_interval=value;
+            if (Codex.synctock) {
+                clearInterval(Codex.synctock);
+                Codex.synctock=synctock=false;}
+            if ((value)&&(Codex.dosync))
+                Codex.synctock=synctock=
+                setInterval(Codex.syncState,value*1000);});
+        Codex.addConfig("dosync",function(name,value){
+            if ((!(value))&&(Codex.synctock)) {
+                clearInterval(Codex.synctock);
+                Codex.synctock=synctock=false;}
+            else if ((value)&&(!(Codex.synctock))&&
+                     (Codex.sync_interval))
+                Codex.synctock=synctock=
+                setInterval(Codex.syncState,value*1000);
+            Codex.saveLocal("dosync("+Codex.docuri+")",value,true);
+            Codex.dosync=value;});
         
         function syncStartup(){
             // This is the startup code which is run
@@ -773,6 +793,13 @@ Codex.Startup=
                 about_tmp.parentNode.replaceChild(aboutbook,about_tmp);}
             if (aboutauthor) {
                 author_tmp.parentNode.replaceChild(aboutauthor,author_tmp);}
+            if ((Codex.state)&&(Codex.state.target)&&(!((Codex.state.location)))) {
+                var info=Codex.docinfo[Codex.state.target];
+                if ((info)&&(info.starts_at)) {
+                    Codex.state.location=info.starts_at;
+                    // Save current state, skip history, force save
+                    Codex.saveState(false,true,true);}}
+                    
             if (Codex.scandone) {
                 var donefn=Codex.scandone;
                 delete Codex.scandone;
@@ -957,6 +984,9 @@ Codex.Startup=
                     Codex.autotoc=true;
                 else Codex.autotoc=false;}
 
+            if (hasLocal("dosync("+Codex.docuri+")"))
+                Codex.dosync=readLocal("dosync("+Codex.docuri+")",true);
+            
             if (!((Codex.nologin)||(Codex.force_online))) {
                 Codex.mycopyid=getMeta("SBOOKS.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
@@ -2139,6 +2169,7 @@ Codex.Startup=
                 setLocal("codex.user",Codex.user._id);
                 // We also save it locally so we can get it synchronously
                 setLocal(Codex.user._id,Codex.user.Export(),true);}
+            
             var startui=fdjtTime();
             setupUI4User();
             if (Codex.Trace.startup) {
@@ -2334,17 +2365,9 @@ Codex.Startup=
            document, using the hash value if there is one. */ 
         function initLocation() {
             var state=Codex.state;
-            var hash=window.location.hash; var target=false;
-            if ((typeof hash === "string") && (hash.length>0)) {
-                if (hash[0]==='#') hash=hash.slice(1);}
-            if ((hash)&&(target=fdjtID(hash))) {
-                if ((!(state))||
-                    ((state.target)&&(state.target!==hash)))
-                    state={target: hash,location: getLoc(target),
-                           changed: fdjtTime()};}
-            else if (state) {}
+            if (state) {}
             else {
-                target=fdjtID("CODEXSTART")||fdjt.$1(".codexstart")||
+                var target=fdjtID("CODEXSTART")||fdjt.$1(".codexstart")||
                     fdjtID("SBOOKSTART")||fdjt.$1(".sbookstart")||
                     fdjtID("SBOOKTITLEPAGE");
                 if (target)
@@ -2352,10 +2375,6 @@ Codex.Startup=
                            // This is the beginning of the 21st century
                            changed: 978307200};
                 else state={location: 1,changed: 978307200};}
-            if (Codex.Trace.startup) {
-                if (hash)
-                    fdjtLog("initLocation/hash #%s %j",hash,state);
-                else fdjtLog("initLocation %j",state);}
             if ((state)&&(state.changed)&&(Codex.state)&&
                 (state.changed>Codex.state.changed))
                 Codex.saveState(state,true);
@@ -2364,6 +2383,12 @@ Codex.Startup=
 
         function resolveXState(xstate) {
             var state=Codex.state;
+            if (!(Codex.sync_interval)) return;
+            if (Codex.statedialog) {
+                if (Codex.Trace.state)
+                    fdjtLog("resolveXState dialog exists: %o",
+                            Codex.statedialog);
+                return;}
             if (Codex.Trace.state)
                 fdjtLog("resolveXState state=%j, xstate=%j",state,xstate);
             if (!(state)) {
@@ -2375,8 +2400,9 @@ Codex.Startup=
             var latest=xstate.location, farthest=xstate.maxloc;
             if (farthest>state.location)
                 choices.push(
-                    {label: "your farthest @"+loc2pct(xstate.maxloc),
-                     title: "the farthest location you've read on any device/app",
+                    {label: "your farthest @"+loc2pct(farthest),
+                     title: "your farthest location on any device/app",
+                     isdefault: false,
                      handler: function(){
                          Codex.GoTo(xstate.maxloc,"sync");
                          state=Codex.state; state.changed=fdjtTime.tick();
@@ -2384,26 +2410,30 @@ Codex.Startup=
                          Codex.hideCover();}});
             if ((latest!==state.location)&&(latest!==farthest))
                 choices.push(
-                    {label: ("your latest @"+loc2pct(xstate.location)),
-                     title: "the most recent location you moved to on any device/app",
+                    {label: ("your latest @"+loc2pct(latest)),
+                     title: "the most recent location on any device/app",
+                     isdefault: false,
                      handler: function(){
                          Codex.restoreState(xstate); state=Codex.state;
                          state.changed=fdjtTime.tick();
                          Codex.saveState(state,true,true);
                          Codex.hideCover();}});
-            choices.push({label: "Right 'here' @"+loc2pct(state.location),
-                          handler: function(){
-                              state.changed=fdjtTime.tick();
-                              Codex.saveState(state,true,true);
-                              Codex.hideCover();}});
             if (Codex.Trace.state)
                 fdjtLog("resolveXState choices=%j",choices);
-            if (choices.length===1)
-                Codex.restoreState(state,"resolveXState/onechoice");
-            else {
-                Codex.hideCover();
-                fdjtUI.choose({choices: choices,cancel: true,timeout:17},
-                              fdjtDOM("div",msg1));}
+            if (choices.length)
+                choices.push(
+                    {label: "stop syncing",
+                     title: "stop syncing this book on this device",
+                     handler: function(){
+                         setConfig("dosync",false);
+                         setConfig("syncinterval",false);}});
+            if (choices.length)
+                Codex.statedialog=fdjtUI.choose(
+                    {choices: choices,cancel: true,timeout: 7,nodefault: true,
+                     onclose: function(){
+                         Codex.statedialog=false;},
+                     spec: "div.fdjtdialog#CODEXRESOLVESTATE"},
+                    fdjtDOM("div",msg1));
             if (xstate.maxloc>state.maxloc) {
                 state.maxloc=xstate.maxloc;}}
         Codex.resolveXState=resolveXState;
