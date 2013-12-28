@@ -403,8 +403,14 @@ Codex.Startup=
             // Check for any trace settings passed as query arguments
             if (getQuery("cxtrace")) readTraceSettings();
 
-            // This reads settings
-            envSetup();
+            // Get various settings for the sBook from the HTML (META
+            // tags, etc), including settings or guidance for
+            // scanning, graphics, layout, glosses, etc.
+            readBookSettings();
+            fdjtLog("Book setup %s (%s)",Codex.refuri,Codex.sourceid);
+            
+            // This sets various aspects of the environment
+            readEnvSettings();
 
             // Initialize the book state (location, targets, etc)
             Codex.initState(); Codex.syncState();
@@ -477,7 +483,7 @@ Codex.Startup=
             fdjt.State.clearCookie("SBOOKSPOPUP","/","sbooks.net");
             fdjt.State.clearCookie("SBOOKSMESSAGE","/","sbooks.net");}
 
-        function envSetup() {
+        function readEnvSettings() {
 
             // Initialize domain and origin for browsers which care
             try {document.domain="sbooks.net";}
@@ -485,10 +491,46 @@ Codex.Startup=
             try {document.origin="sbooks.net";}
             catch (ex) {fdjtLog.warn("Error setting document.origin");}
 
-            // Get various settings for the sBook from the HTML (META
-            // tags, etc), including settings or guidance for
-            // scanning, graphics, layout, glosses, etc.
-            readSettings();}
+            // First, define common schemas
+            fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
+            fdjtDOM.addAppSchema("SBOOKS","http://sbooks.net/");
+            fdjtDOM.addAppSchema("Codex","http://codex.sbooks.net/");
+            fdjtDOM.addAppSchema("DC","http://purl.org/dc/elements/1.1/");
+            fdjtDOM.addAppSchema("DCTERMS","http://purl.org/dc/terms/");
+            fdjtDOM.addAppSchema("OLIB","http://openlibrary.org/");
+
+            Codex.devinfo=fdjtState.versionInfo();
+            
+            if (getQuery("offline")) {
+                var qval=getQuery("offline");
+                if ((qval===false)||(qval===0)||(qval==="no")||(qval==="off")||
+                    (qval==="never")||(qval==="0"))
+                    Codex.force_online=true;
+                else Codex.force_offline=true;}
+            else if (getMeta("SBOOKS.offline")) {
+                var mval=getMeta("SBOOKS.offline");
+                if ((mval===false)||(mval===0)||(mval==="no")||(mval==="off")||
+                    (mval==="never")||(mval==="0"))
+                    Codex.force_online=true;
+                else Codex.force_offline=true;}
+
+            /* Where to get your images from, especially to keep
+               references inside https */
+            if ((Codex.root==="http://static.beingmeta.com/")&&
+                (window.location.protocol==='https:'))
+                Codex.root=https_root;
+            // Whether to suppress login, etc
+            if ((getLocal("codex.nologin"))||(getQuery("nologin")))
+                Codex.nologin=true;
+            var sbooksrv=getMeta("SBOOKS.server")||getMeta("SBOOKSERVER");
+            if (sbooksrv) Codex.server=sbooksrv;
+            else if (fdjtState.getCookie("SBOOKSERVER"))
+                Codex.server=fdjtState.getCookie("SBOOKSERVER");
+            else Codex.server=lookupServer(document.domain);
+            if (!(Codex.server)) Codex.server=Codex.default_server;
+
+            // Get the settings for scanning the document structure
+            getScanSettings();}
 
         function appSetup() {
 
@@ -876,16 +918,7 @@ Codex.Startup=
                 return false;}
             else return false;}
         
-        function readSettings(){
-
-            // First, define common schemas
-            fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
-            fdjtDOM.addAppSchema("SBOOKS","http://sbooks.net/");
-            fdjtDOM.addAppSchema("Codex","http://codex.sbooks.net/");
-            fdjtDOM.addAppSchema("DC","http://purl.org/dc/elements/1.1/");
-            fdjtDOM.addAppSchema("DCTERMS","http://purl.org/dc/terms/");
-            fdjtDOM.addAppSchema("OLIB","http://openlibrary.org/");
-            
+        function readBookSettings(){
             // Basic stuff
             var refuri=_getsbookrefuri();
             var locuri=window.location.href;
@@ -896,54 +929,21 @@ Codex.Startup=
             Codex.docuri=_getsbookdocuri();
             Codex.topuri=document.location.href;
             
-            Codex.devinfo=fdjtState.versionInfo();
-            
-            if (getQuery("offline")) {
-                var qval=getQuery("offline");
-                if ((qval===false)||(qval===0)||(qval==="no")||(qval==="off")||
-                    (qval==="never")||(qval==="0"))
-                    Codex.force_online=true;
-                else Codex.force_offline=true;}
-            else if (getMeta("SBOOKS.offline")) {
-                var mval=getMeta("SBOOKS.offline");
-                if ((mval===false)||(mval===0)||(mval==="no")||(mval==="off")||
-                    (mval==="never")||(mval==="0"))
-                    Codex.force_online=true;
-                else Codex.force_offline=true;}
-
             var refuris=getLocal("codex.refuris",true)||[];
 
             Codex.sourceid=getMeta("SBOOKS.sourceid")||getMeta("SBOOKS.fileid")||
                 Codex.docuri;
             var oldid=getLocal("codex.sourceid("+Codex.docuri+")");
-            if (oldid) {
+            if ((oldid)&&(oldid!==Codex.sourceid)) {
                 var layouts=getLocal("codex.layouts("+oldid+")");
                 if ((layouts)&&(layouts.length)) {
                     var i=0, lim=layouts.length; while (i<lim) 
                         CodexLayout.dropLayout(layouts[i++]);}}
             else setLocal("codex.sourceid("+Codex.docuri+")",Codex.sourceid);
 
-            // Get the settings for scanning the document structure
-            getScanSettings();
-
-            /* Where to get your images from, especially to keep
-               references inside https */
-            if ((Codex.root==="http://static.beingmeta.com/")&&
-                (window.location.protocol==='https:'))
-                Codex.root=https_root;
-            
-            // Whether to suppress login, etc
-            if ((getLocal("codex.nologin"))||(getQuery("nologin")))
-                Codex.nologin=true;
             Codex.bypage=(Codex.page_style==='bypage'); 
             Codex.max_excerpt=getMeta("SBOOKS.maxexcerpt")||(Codex.max_excerpt);
             Codex.min_excerpt=getMeta("SBOOKS.minexcerpt")||(Codex.min_excerpt);
-            var sbooksrv=getMeta("SBOOKS.server")||getMeta("SBOOKSERVER");
-            if (sbooksrv) Codex.server=sbooksrv;
-            else if (fdjtState.getCookie("SBOOKSERVER"))
-                Codex.server=fdjtState.getCookie("SBOOKSERVER");
-            else Codex.server=lookupServer(document.domain);
-            if (!(Codex.server)) Codex.server=Codex.default_server;
             
             var notespecs=getMeta("sbooknote",true).concat(
                 getMeta("SBOOKS.note",true));
