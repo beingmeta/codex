@@ -407,7 +407,8 @@ Codex.Startup=
             // tags, etc), including settings or guidance for
             // scanning, graphics, layout, glosses, etc.
             readBookSettings();
-            fdjtLog("Book setup %s (%s)",Codex.refuri,Codex.sourceid);
+            fdjtLog("Book setup %s %s (%s)",
+                    Codex.docref||"@??",Codex.refuri,Codex.sourceid);
             
             // This sets various aspects of the environment
             readEnvSettings();
@@ -955,6 +956,9 @@ Codex.Startup=
                                  (fdjtDOM.sel(noterefspecs)):(false));
 
             refuris.push(refuri);
+
+            var docref=getMeta("SBOOKS.docref");
+            if (docref) Codex.docref=docref;
 
             var coverpage=getLink("SBOOKS.coverpage",false,true)||
                 getLink("coverpage",false,true);
