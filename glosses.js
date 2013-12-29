@@ -59,6 +59,7 @@
     var RefDB=fdjt.RefDB;
     var Ref=fdjt.Ref;
     var fdjtID=fdjt.ID;
+    var cxID=Codex.ID;
 
     var addClass=fdjtDOM.addClass;
     var hasClass=fdjtDOM.hasClass;
@@ -151,7 +152,7 @@
         else if ((arg.maker)&&(arg.maker!==Codex.user))
             response=true;
         else {}
-        var passage=((gloss)?(fdjtID(gloss.frag)):(arg));
+        var passage=((gloss)?(cxID(gloss.frag)):(arg));
         var passageid=((passage.codexbaseid)||(passage.id));
         var formid=((gloss)?
                     ((response)?
@@ -313,14 +314,14 @@
             return;}
         var gloss=false;
         // Identify when the target is a gloss
-        if ((typeof target === 'string')&&(fdjtID(target))) 
-            target=fdjtID(target);
+        if ((typeof target === 'string')&&(cxID(target))) 
+            target=cxID(target);
         else if ((typeof target === 'string')&&
                  (Codex.glossdb.probe(target))) {
             gloss=Codex.glossdb.ref(target);
-            target=fdjtID(gloss.frag);}
+            target=cxID(gloss.frag);}
         else if (target._db===Codex.glossdb) {
-            gloss=target; target=fdjtID(gloss.frag);}
+            gloss=target; target=cxID(gloss.frag);}
         else {}
         if ((gloss)&&(form)&&(!(form.nodeType))) {
             // Passing a non-false non-node as a form forces a

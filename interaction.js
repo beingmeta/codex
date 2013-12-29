@@ -92,6 +92,7 @@
     var fdjtUI=fdjt.UI;
     var RefDB=fdjt.RefDB;
     var fdjtID=fdjt.ID;
+    var cxID=Codex.ID;
 
     // Imports (kind of )
     var addClass=fdjtDOM.addClass;
@@ -368,7 +369,7 @@
         return;}
 
     function resolve_anchor(ref){
-        var elt=document.getElementById(ref);
+        var elt=cxID(ref);
         if (elt) return elt;
         var elts=document.getElementsByName(ref);
         if (elts.length===0) return false;
@@ -464,7 +465,7 @@
         return false;}
 
     function getNoteNode(ref){
-        var elt=document.getElementById(ref);
+        var elt=cxID(ref);
         var body=fdjt.ID("CODEXBODY"), db=document.body;
         if (!(elt)) {
             var elts=document.getElementsByName(ref);
@@ -515,7 +516,7 @@
             var anchor=getParent(target,"A");
             var href=((anchor)&&(anchor.getAttribute("href")));
             fdjtUI.cancel(evt);
-            if ((href)&&(href[0]==="#")&&(fdjtID(href.slice(1)))) {
+            if ((href)&&(href[0]==="#")&&(cxID(href.slice(1)))) {
                 Codex.startPreview(href.slice(1),"content/anchor_held");
                 return;}}
         // Already selecting this target, cancel any pending slippage
@@ -704,12 +705,12 @@
         if (about) {
             var name=about.name||about.getAttribute("name");
             var ref=name.slice(3);
-            var target=fdjtID(ref);
             var info=Codex.docinfo[ref];
+            var target=info.elt||cxID(ref);
             var already_there=(info)&&(Codex.head)&&
                 (info.frag===Codex.head.id);
             if (Codex.Trace.gestures)
-                fdjtLog("toc_tapped %o about=%o ref=%s",evt,about,ref);
+                fdjtLog("toc_tapped %o about=%o ref=%s target=%o",evt,about,ref,target);
             if (already_there) {
                 Codex.setMode("overtoc");
                 fdjtUI.cancel(evt);
@@ -738,7 +739,7 @@
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             addClass(spanbar,"codexvisible");
             addClass(toc,"codexheld");
-            Codex.startPreview(fdjtID(ref),"codexheld");
+            Codex.startPreview(cxID(ref),"codexheld");
             return fdjtUI.cancel(evt);}
         else if (Codex.Trace.gestures) fdjtLog("toc_held %o noabout", evt);
         else {}}
@@ -762,8 +763,9 @@
             dropClass(toc,"codexheld");
             if (Codex.previewing)
                 Codex.stopPreview("toc_released");}
-        else if (Codex.Trace.gestures)
+        else if (Codex.Trace.gestures) {
             fdjtLog("toc_released %o noabout",evt);
+            Codex.stopPreview("toc_released");}
         else {
             Codex.stopPreview("toc_released");}
         fdjtUI.cancel(evt);}
@@ -820,7 +822,7 @@
             fdjtUI.cancel(evt);
             return;}
         var card=getCard(target);
-        var passage=fdjtID(card.getAttribute("data-passage"));
+        var passage=cxID(card.getAttribute("data-passage"));
         var glossid=card.getAttribute("data-gloss");
         var gloss=((glossid)&&(Codex.glossdb.ref(glossid)));
         if (getParent(target,".detail")) {
@@ -869,7 +871,7 @@
         var passageid=card.getAttribute("data-passage");
         var glossid=card.getAttribute("data-gloss");
         var gloss=((glossid)&&Codex.glossdb.ref(glossid));
-        var passage=fdjtID(passageid), show_target=false;
+        var passage=cxID(passageid), show_target=false;
         var dups=Codex.getDups(passageid);
         // Set up for preview
         Codex.previewTarget=passage; addClass(dups,"codexpreviewtarget");
@@ -1449,7 +1451,7 @@
              (fdjt.ID(glossmark.name.slice(15))))||
             getTarget(glossmark.parentNode,true);
         if ((passage)&&(passage.getAttribute("data-baseid"))) 
-            passage=fdjtID(passage.getAttribute("data-baseid"));
+            passage=cxID(passage.getAttribute("data-baseid"));
         if (Codex.Trace.gestures)
             fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",
                     evt,target,glossmark,passage,Codex.mode,Codex.target);
@@ -1739,7 +1741,7 @@
                 i++; while (i<lim) {
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
-                        var passage=fdjtID(ids[i]);
+                        var passage=cxID(ids[i]);
                         var glossmark=getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanForward/glosses",true);
                         Codex.showGlossmark(passage,glossmark);
@@ -1798,7 +1800,7 @@
                 i--; while (i>=0) {
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
-                        var passage=fdjtID(ids[i]);
+                        var passage=cxID(ids[i]);
                         var glossmark=getChild(passage,".codexglossmark");
                         Codex.GoTo(passage,"scanBackward/glosses",true);
                         Codex.showGlossmark(passage,glossmark);

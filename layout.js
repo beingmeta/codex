@@ -60,6 +60,7 @@ Codex.Paginate=
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
         var fdjtID=fdjt.ID;
+        var cxID=Codex.ID;
         var CodexLayout=fdjt.CodexLayout;
 
         var getGeometry=fdjtDOM.getGeometry;
@@ -465,7 +466,7 @@ Codex.Paginate=
                 var topid=getPageTopID(page)||topnodeid;
                 var curloc=false;
                 if (topnode) {
-                    var topstart=document.getElementById(topnodeid);
+                    var topstart=cxID(topnodeid);
                     var locoff=((topstart===topnode)?(0):
                                 (getLocOff(pages,topstart,topnode)));
                     var info=docinfo[topnodeid];
@@ -834,7 +835,7 @@ Codex.Paginate=
                     Codex.setLocation(location);}
                 updatePageDisplay(pagenum,Codex.location);
                 curpage=page; Codex.curpage=pagenum;
-                var curnode=fdjtID(page.getAttribute("data-topid"));
+                var curnode=cxID(page.getAttribute("data-topid"));
                 if (savestate) {
                     Codex.point=curnode;
                     if (!((Codex.hudup)||(Codex.mode))) Codex.scanning=false;
@@ -911,7 +912,7 @@ Codex.Paginate=
         function getPage(arg,location){
             var node=((arg)&&
                       ((arg.nodeType)?(arg):
-                       (typeof arg === "string")?(fdjtID(arg)):
+                       (typeof arg === "string")?(cxID(arg)):
                        (false)));
             var page=((node)&&(getParent(node,".codexpage")));
             if (!(location)) return page;

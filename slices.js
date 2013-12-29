@@ -54,8 +54,8 @@ Codex.Slice=(function () {
     var fdjtTime=fdjt.Time;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var RefDB=fdjt.RefDB, fdjtID=fdjt.ID;
-    var Ref=RefDB.Ref;
+    var cxID=Codex.ID;
+    var RefDB=fdjt.RefDB, Ref=RefDB.Ref;
 
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
@@ -68,11 +68,11 @@ Codex.Slice=(function () {
 
     function renderCard(info,query,idprefix,standalone){
         var target_id=(info.frag)||(info.id);
-        var target=((target_id)&&(fdjtID(target_id)));
+        var target=((target_id)&&(cxID(target_id)));
         var target_info=Codex.docinfo[target_id];
         if (!(target_info)) return false;
         var head_info=((target_info.level)?(target_info):(target_info.head));
-        var head=((head_info)&&(document.getElementById(head_info.frag)));
+        var head=((head_info)&&(cxID(head_info.frag)));
         var score=((query)&&(query.scores.get(info)));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
         var note_len=((info.note)?(info.note.length):(0));
@@ -385,7 +385,7 @@ Codex.Slice=(function () {
         var id=target_info.id||target_info.frag;
         if (id) {
             locbar.about="#"+id;
-            locbar.title=sumText(fdjtID(id));}
+            locbar.title=sumText(cxID(id));}
         return locbar;}
 
     function makelocrule(target_info,cxtinfo,spec){
@@ -472,7 +472,7 @@ Codex.Slice=(function () {
             var heads=Codex.Info(head).heads;
             if (heads) {
                 var j=heads.length-1; while (j>0) {
-                    var hinfo=heads[j--]; var elt=fdjtID(hinfo.frag);
+                    var hinfo=heads[j--]; var elt=cxID(hinfo.frag);
                     if ((!(elt))||(!(hinfo.title))||
                         (elt===Codex.docroot)||(elt===document.body))
                         continue;

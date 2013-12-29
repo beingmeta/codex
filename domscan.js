@@ -180,7 +180,7 @@ Codex.DOMScan=(function(){
                         head,curhead,level,headid);
             /* Iniitalize the headinfo */
             headinfo.starts_at=scanstate.location;
-            headinfo.level=level; // headinfo.elt=head; 
+            headinfo.level=level; headinfo.elt=head; 
             headinfo.sub=[];
             headinfo.frag=headid;
             headinfo.title=getTitle(head);
@@ -223,7 +223,7 @@ Codex.DOMScan=(function(){
                     scaninfo.ends_at=scanstate.location;
                     scanstate.tagstack=scanstate.tagstack.slice(0,-1);
                     scaninfo=scaninfo.head;
-                    scan=document.getElementById(scaninfo.frag);
+                    scan=scaninfo.elt||document.getElementById(scaninfo.frag);
                     scanlevel=((scaninfo)?(scaninfo.level):(0));}
                 if (Codex.Trace.scan>2)
                     fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
@@ -331,7 +331,7 @@ Codex.DOMScan=(function(){
                 var notoc=scanstate.notoc;
                 var headinfo=tocinfo.head;
                 scanstate.curinfo=headinfo;
-                scanstate.curhead=document.getElementById(headinfo.frag);
+                scanstate.curhead=headinfo.elt||document.getElementById(headinfo.frag);
                 scanstate.curlevel=headinfo.level;
                 scanstate.notoc=true;
                 var toc_children=child.childNodes;
@@ -352,7 +352,7 @@ Codex.DOMScan=(function(){
             var info=(id&&(docinfo[id]));
             if ((!(info))&&(id)) {
                 allids.push(id); info=new ScanInfo(id,scanstate);
-                docinfo[id]=info;}
+                docinfo[id]=info; info.elt=child;}
             if ((info)&&(id)&&(child.id)&&(child.id!==id))
                 // Store info under both ID and TOCID if different
                 docinfo[child.id]=info;
@@ -412,7 +412,7 @@ Codex.DOMScan=(function(){
         rootinfo.level=0; rootinfo.sub=[];
         rootinfo.head=false; rootinfo.heads=[];
         rootinfo.frag=root.id;
-        // rootinfo.elt=root;
+        rootinfo.elt=root;
         scanstate.allinfo.push(rootinfo);
         scanstate.allinfo.push(0);
         /* Build the metadata */

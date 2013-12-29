@@ -57,6 +57,7 @@ Codex.setMode=
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
         var fdjtID=fdjt.ID;
+        var cxID=Codex.ID;
         
         // Helpful dimensions
         // Whether to call displaySync on mode changes
@@ -277,7 +278,7 @@ Codex.setMode=
             if (!(item.frag)) {
                 fdjtLog.warn("Warning: skipping gloss %o with no fragment identifier",
                              item.uuid);}
-            else if (document.getElementById(item.frag)) {
+            else if (cxID(item.frag)) {
                 var addGlossmark=Codex.UI.addGlossmark;
                 allglosses.addCards(item);
                 var nodes=Codex.getDups(item.frag);
@@ -777,7 +778,7 @@ Codex.setMode=
                              "codexhighlightpassage");
                 else addClass(Codex.getDups(src.about),"codexhighlightpassage");}
             else if ((src)&&(getParent(src,".sbookresults"))) {
-                var about=src.about, target=fdjtID(about);
+                var about=src.about, target=cxID(about);
                 if (target) {
                     var info=Codex.docinfo[target.id];
                     var terms=Codex.query.tags;
@@ -967,7 +968,7 @@ Codex.setMode=
                 while (i<lim) {
                     var src=elts[i++];
                     if (hasParent(src,allglosses)) {
-                        var elt=fdjtID(src.about);
+                        var elt=cxID(src.about);
                         setMode("allglosses");
                         Codex.Scan(elt,src);
                         return true;}}

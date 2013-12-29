@@ -52,6 +52,7 @@ Codex.TOC=
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
         var getParent=fdjtDOM.getParent;
+        var cxID=Codex.ID;
         
         var cxicon=Codex.icon;
         function navicon(kind){
@@ -135,7 +136,7 @@ Codex.TOC=
             var start=headinfo.starts_at, end=headinfo.ends_at;
             var len=end-start;
             var subsections=headinfo.sub, last_info, sectnum=0;
-            var head=document.getElementById(headinfo.frag);
+            var head=headinfo.elt||cxID(headinfo.frag);
             spanbar.starts=start; spanbar.ends=end;
             if ((!(subsections)) || (subsections.length===0))
                 return false;
@@ -147,14 +148,14 @@ Codex.TOC=
             if (range) range.style.left="0%";
             var i=0; while (i<subsections.length) {
                 var spaninfo=subsections[i++];
-                var subsection=document.getElementById(spaninfo.frag);
+                var subsection=spaninfo.elt||cxID(spaninfo.frag);
                 var spanstart; var spanend; var addname=true;
                 if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
                     /* Add 'fake section' for the precursor of the
                      * first actual section */
                     spanstart=start;  spanend=spaninfo.starts_at;
                     spaninfo=headinfo;
-                    subsection=document.getElementById(headinfo.frag);
+                    subsection=headinfo.elt||cxID(headinfo.frag);
                     i--; sectnum++; addname=false;}
                 else {
                     spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;

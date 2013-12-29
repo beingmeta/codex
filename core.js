@@ -459,9 +459,9 @@ var Codex={
                 else target=target.parentNode;}}
         if (target) {
             if (target.level)
-                return document.getElementById(target.frag);
+                return cxID(target.frag);
             else if (target.head)
-                return document.getElementById(target.head.frag);
+                return cxID(target.head.frag);
             else return false;}
         else return false;}
     Codex.getHead=getHead;
@@ -475,8 +475,8 @@ var Codex={
             var ref=((target.about)||(target.getAttribute("about")));
             if (!(target.about)) target.about=ref;
             if (ref[0]==='#')
-                return document.getElementById(ref.slice(1));
-            else return document.getElementById(ref);}
+                return cxID(ref.slice(1));
+            else return cxID(ref);}
         else return false;};
     Codex.getRefElt=function(target){
         while (target)
@@ -497,9 +497,9 @@ var Codex={
             if ((Codex.layout)&&(Codex.layout.dups)) {
                 var dups=Codex.layout.dups;
                 var d=dups[id];
-                if (d) return [document.getElementById(id)].concat(d);
-                else return [document.getElementById(id)];}
-            else return [document.getElementById(id)];}
+                if (d) return [cxID(id)].concat(d);
+                else return [cxID(id)];}
+            else return [cxID(id)];}
         else return getDups(id.codexbaseid||id.id);}
     Codex.getDups=getDups;
 
@@ -540,6 +540,15 @@ var Codex={
             if (isEmpty(arg)) return false;
             else return arg;}
         else return false;}
+
+    var codex_docinfo=false;
+    function cxID(id){
+        var info;
+        if (!(codex_docinfo)) codex_docinfo=Codex.docinfo;
+        return ((codex_docinfo)&&(info=codex_docinfo[id])&&(info.elt))||
+            document.getElementById(id)||
+            fdjtDOM.$1("[data-tocid='"+id+"']");}
+    Codex.ID=cxID;
 
     Codex.getTitle=function(target,tryhard) {
         var targetid;
@@ -594,14 +603,14 @@ var Codex={
             if (Codex.mode==="tocscan") Codex.setMode(false);
             return;}
         else if (typeof head === "string") 
-            head=getHead(fdjtID(head))||Codex.content;
+            head=getHead(cxID(head))||Codex.content;
         else {}
         var headid=head.codexbaseid||head.id;
         var headinfo=Codex.docinfo[headid];
         while ((headinfo)&&(!(headinfo.level))) {
             headinfo=headinfo.head;
             headid=headinfo.frag;
-            head=document.getElementById(headid);}
+            head=cxID(headid);}
         if (Codex.Trace.nav)
             fdjtLog("Codex.setHead #%s",headid);
         if (head===Codex.head) {
@@ -615,7 +624,7 @@ var Codex={
             if (Codex.head) dropClass(Codex.head,"sbookhead");
             addClass(head,"sbookhead");
             Codex.setLocation(Codex.location);
-            Codex.head=fdjtID(headid);
+            Codex.head=cxID(headid);
             Codex.TOC.setHead(headinfo);}
         else {
             if (Codex.Trace.target)
@@ -701,7 +710,7 @@ var Codex={
             return;
         else {}
         var targetid=target.codexbaseid||target.id;
-        var primary=((targetid)&&(fdjtID(targetid)))||target;
+        var primary=((targetid)&&(cxID(targetid)))||target;
         var targets=getDups(targetid);
         addClass(target,"codextarget");
         addClass(target,"codexnewtarget");
@@ -720,7 +729,7 @@ var Codex={
     Codex.setTarget=setTarget;
 
     function clearHighlights(target){
-        if (typeof target === "string") target=fdjtID(target);
+        if (typeof target === "string") target=cxID(target);
         if (!(target)) return;
         else if (target.length) {
             dropClass(target,"codexhighlightpassage");
@@ -736,7 +745,7 @@ var Codex={
     Codex.clearHighlights=clearHighlights;
 
     function findExcerpt(node,excerpt,off){
-        if (typeof node === "string") node=document.getElementById(node);
+        if (typeof node === "string") node=cxID(node);
         if (!(node)) return false;
         if (node.nodeType) node=getDups(node);
         var found=fdjtDOM.findString(node,excerpt,off||0);
@@ -851,7 +860,7 @@ var Codex={
         if (hash) {
             if (hash[0]==="#") hash=hash.slice(1);}
         else hash=false;
-        var elt=((hash)&&(document.getElementById(hash)));
+        var elt=((hash)&&(cxID(hash)));
         if (elt) {
             if (!((state)&&(state.target===hash))) {
                 if (!(state)) state={};
@@ -930,7 +939,7 @@ var Codex={
     function restoreState(state,reason,savehist){
         if (Codex.Trace.state) fdjtLog("Restoring (%s) state %j",reason,state);
         Codex.GoTo(state.location,reason||"restoreState",
-                   ((state.target)&&(fdjtID(state.target))),
+                   ((state.target)&&(cxID(state.target))),
                    // Don't save the state since we've already got one
                    false,(!(savehist)));
         if (!(state.refuri)) state.refuri=Codex.refuri;
@@ -1058,7 +1067,7 @@ var Codex={
         while (i<lim)  {
             if (allinfo[i].starts_at>loc) break;
             else i++;}
-        return fdjtID(allinfo[i-1].frag);
+        return cxID(allinfo[i-1].frag);
     } Codex.resolveLocation=resolveLocation;
 
     // This moves within the document in a persistent way
@@ -1070,7 +1079,7 @@ var Codex={
             fdjtLog.warn("falsy arg (%s) to codexGoTo from %s",arg,caller);
             return;}
         if (typeof arg === 'string') {
-            target=document.getElementById(arg);
+            target=cxID(arg);
             locinfo=getLocInfo(target);
             location=locinfo.start;}
         else if (typeof arg === 'number') {
@@ -1086,8 +1095,8 @@ var Codex={
             fdjtLog.warn("Bad codexGoTo %o",arg);
             return;}
         if ((istarget)&&(istarget.nodeType)) target=istarget;
-        else if ((typeof istarget === "string")&&(fdjtID(istarget)))
-            target=fdjtID(istarget);
+        else if ((typeof istarget === "string")&&(cxID(istarget)))
+            target=cxID(istarget);
         else {}
         var info=(target)&&
             Codex.docinfo[target.getAttribute("data-baseid")||target.id];
@@ -1156,7 +1165,7 @@ var Codex={
         while (target)
             if (target.href) break; else target=target.parentNode;
         if ((target)&&(target.href)&&(target.href[0]==='#')) {
-            var elt=document.getElementById(target.href.slice(1));
+            var elt=cxID(target.href.slice(1));
             if (elt) {Codex.GoTo(elt,"anchorFn"); fdjtUI.cancel(evt);}}}
     Codex.anchorFn=anchorFn;
 
@@ -1182,7 +1191,7 @@ var Codex={
         var xoff=window.scrollLeft||0, yoff=window.scrollTop||0;
         if (elt) {
             if (elt.frag) elt=elt.frag;
-            if (typeof elt==="string") elt=fdjtID(elt);
+            if (typeof elt==="string") elt=cxID(elt);
             if (!(elt)) return;
             else preview_elt=elt;
             if (!(oldscroll)) oldscroll={x: 0,y: yoff};
@@ -1217,7 +1226,7 @@ var Codex={
             Codex.clearHighlights(p);}}
 
     function startPreview(spec,caller){
-        var target=((spec.nodeType)?(spec):(fdjtID(spec)));
+        var target=((spec.nodeType)?(spec):(cxID(spec)));
         if (Codex.Trace.flips)
             fdjtLog("startPreview %o (%s)",target,caller);
         if (target===Codex.previewing) {}
@@ -1302,8 +1311,7 @@ var Codex={
     
     function getCover(){
         if (Codex.cover) return Codex.cover;
-        var cover=fdjtID("SBOOKCOVERPAGE")||
-            fdjtID("COVERPAGE");
+        var cover=fdjtID("SBOOKCOVERPAGE")||fdjtID("COVERPAGE");
         if (cover) {}
         else if (Codex.coverpage) {
             cover=fdjtDOM.Image(

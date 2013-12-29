@@ -58,6 +58,7 @@ Codex.Startup=
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
         var fdjtID=fdjt.ID;
+        var cxID=Codex.ID;
         var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
         
         var CodexLayout=fdjt.CodexLayout;
@@ -407,8 +408,9 @@ Codex.Startup=
             // tags, etc), including settings or guidance for
             // scanning, graphics, layout, glosses, etc.
             readBookSettings();
-            fdjtLog("Book setup %s %s (%s)",
-                    Codex.docref||"@??",Codex.refuri,Codex.sourceid);
+            fdjtLog("Book %s (%s) %s (%s)",
+                    Codex.docref||"@??",Codex.bookbuild||"",
+                    Codex.refuri,Codex.sourceid);
             
             // This sets various aspects of the environment
             readEnvSettings();
@@ -942,6 +944,8 @@ Codex.Startup=
                         CodexLayout.dropLayout(layouts[i++]);}}
             else setLocal("codex.sourceid("+Codex.docuri+")",Codex.sourceid);
 
+            Codex.bookbuild=getMeta("SBOOKS.buildstamp");
+
             Codex.bypage=(Codex.page_style==='bypage'); 
             Codex.max_excerpt=getMeta("SBOOKS.maxexcerpt")||(Codex.max_excerpt);
             Codex.min_excerpt=getMeta("SBOOKS.minexcerpt")||(Codex.min_excerpt);
@@ -1221,11 +1225,11 @@ Codex.Startup=
         function getScanSettings(){
             if (!(Codex.docroot))
                 if (getMeta("SBOOKS.root"))
-                    Codex.docroot=fdjtID(getMeta("SBOOKS.root"));
+                    Codex.docroot=cxID(getMeta("SBOOKS.root"));
             else Codex.docroot=fdjtID("SBOOKCONTENT")||document.body;
             if (!(Codex.start))
                 if (getMeta("SBOOKS.start"))
-                    Codex.start=fdjtID(getMeta("SBOOKS.start"));
+                    Codex.start=cxID(getMeta("SBOOKS.start"));
             else if (fdjtID("SBOOKSTART"))
                 Codex.start=fdjtID("SBOOKSTART");
             else {}
@@ -1691,7 +1695,7 @@ Codex.Startup=
                 var notable=allnotes[i++];
                 if (!(notable.id)) notable.id="CODEXNOTE"+(note_counter++);
                 var noteref=notable.id+"_REF";
-                if (!(document.getElementById(noteref))) {
+                if (!(cxID(noteref))) {
                     var label=getChild(notable,"label")||
                         getChild(notable,"summary")||
                         getChild(notable,".sbooklabel")||
