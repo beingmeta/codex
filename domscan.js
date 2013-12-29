@@ -169,9 +169,8 @@ Codex.DOMScan=(function(){
                     else {}}
                 return width;}}
 
-        function handleHead(head,docinfo,scanstate,level,
+        function handleHead(head,headid,docinfo,scanstate,level,
                             curhead,curinfo,curlevel){
-            var headid=head.id;
             var headinfo=docinfo[headid]||
                 (docinfo[headid]=new ScanInfo(headid,scanstate));
             scanstate.headcount++;
@@ -272,6 +271,7 @@ Codex.DOMScan=(function(){
             else {}
             var tag=child.tagName, classname=child.className;
             var id=child.id;
+            if (id) id=child.getAttribute('data-tocid')||id;
             if ((Codex.ignore)&&(Codex.ignore.match(child))) return;
             if ((rootns)&&(child.namespaceURI!==rootns)) return;
             if ((classname)&&
@@ -343,7 +343,7 @@ Codex.DOMScan=(function(){
                 scanstate.curlevel=curlevel; scanstate.notoc=notoc;
                 scanstate.curhead=curhead; scanstate.curinfo=curinfo;
                 return;}
-            var toclevel=((child.id)&&(getLevel(child)));
+            var toclevel=((id)&&(getLevel(child)));
             // The header functionality is handled by its surrounding
             // section (which should have a toclevel of its own)
             if ((scanstate.notoc)||(tag==='header')) {
@@ -353,9 +353,12 @@ Codex.DOMScan=(function(){
             if ((!(info))&&(id)) {
                 allids.push(id); info=new ScanInfo(id,scanstate);
                 docinfo[id]=info;}
+            if ((info)&&(id)&&(child.id)&&(child.id!==id))
+                // Store info under both ID and TOCID if different
+                docinfo[child.id]=info;
             if (info) {
                 info.starts_at=scanstate.location;
-                info.sbookhead=curhead.id;
+                info.sbookhead=curhead.getAttribute('data-tocid')||curhead.id;
                 info.headstart=curinfo.starts_at;}
             if (info) {
                 info.head=curinfo;
@@ -375,7 +378,7 @@ Codex.DOMScan=(function(){
                 ((Codex.ignore)&&(Codex.ignore.match(child))))
                 return;
             if ((toclevel)&&(!(info.tocdone)))
-                handleHead(child,docinfo,scanstate,toclevel,
+                handleHead(child,id,docinfo,scanstate,toclevel,
                            curhead,curinfo,curlevel);
             if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
                 ((classname)&&(Codex.terminals)&&
