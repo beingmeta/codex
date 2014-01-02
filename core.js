@@ -826,7 +826,7 @@ var Codex={
              (window.location.hash.slice(1)===targetid)))
             return;
         if ((target===Codex.body)||(target===document.body)) return;
-        window.location.hash=targetid;}
+        if (targetid) window.location.hash=targetid;}
     Codex.setHashID=setHashID;
 
     // Assert whether we're connected and update body classes
