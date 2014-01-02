@@ -567,7 +567,7 @@ div.codexglossform.glossadd form div.addglossmenu.expanded > img[alt="glossrespo
 
 #CODEXGLOSSMESSAGE {
     position: absolute; top: 0px; height: 25px;
-    left: 20px; right: 20px; width: auto;
+    left: 70px; right: 70px; width: auto;
     padding: 1ex; padding-top: 2px; padding-bottom: 2px;
     background-color: ivory; font-style: italic;
     font-size: 1em;}
