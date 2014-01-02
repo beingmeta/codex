@@ -1996,7 +1996,6 @@ Codex.Startup=
                 (info)&&(info.userinfo)&&(Codex.user)&&
                 (info.userinfo._id!==Codex.user._id)) {
                 clearOffline();}
-            var keepdata=((Codex.keepdata)&&(navigator.onLine));
             info.loaded=fdjtTime();
             if ((!(Codex.localglosses))&&
                 ((getLocal("codex.sync("+refuri+")"))||
@@ -2013,27 +2012,31 @@ Codex.Startup=
                         ((info.outlets)?(info.outlets.length):(0)),
                         ((info.layers)?(info.layers.length):(0)));}
             if ((info.glosses)||(info.etc))
-                initGlosses(info.glosses||[],info.etc||[]);
-            if (info.etc) gotInfo("etc",info.etc,keepdata);
-            if (info.sources) gotInfo("sources",info.sources,keepdata);
-            if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
-            if (info.layers) gotInfo("layers",info.layers,keepdata);
-            addOutlets2UI(info.outlets);
-            if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
-                Codex.setSync(info.sync);}
-            Codex.loaded=info.loaded=fdjtTime();
-            if (Codex.whenloaded) {
-                var whenloaded=Codex.whenloaded;
-                Codex.whenloaded=false;
-                setTimeout(whenloaded,10);}
-            if (Codex.keepdata) {
-                Codex.glossdb.save(true);
-                Codex.sourcedb.save(true);}
-            if (Codex.glosshash) {
-                if (Codex.showGloss(Codex.glosshash))
-                    Codex.glosshash=false;}
+                initGlosses(info.glosses||[],info.etc||[],
+                            function(){infoLoaded(info);});
             if (Codex.glosses) Codex.glosses.update();}
         Codex.loadInfo=loadInfo;
+
+     function infoLoaded(info){
+         var keepdata=Codex.keepdata;
+         if (info.etc) gotInfo("etc",info.etc,keepdata);
+         if (info.sources) gotInfo("sources",info.sources,keepdata);
+         if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
+         if (info.layers) gotInfo("layers",info.layers,keepdata);
+         addOutlets2UI(info.outlets);
+         if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
+             Codex.setSync(info.sync);}
+         Codex.loaded=info.loaded=fdjtTime();
+         if (Codex.whenloaded) {
+             var whenloaded=Codex.whenloaded;
+             Codex.whenloaded=false;
+             setTimeout(whenloaded,10);}
+         if (Codex.keepdata) {
+             Codex.glossdb.save(true);
+             Codex.sourcedb.save(true);}
+         if (Codex.glosshash) {
+             if (Codex.showGloss(Codex.glosshash))
+                 Codex.glosshash=false;}}
 
         var updating=false;
         var noajax=false;
@@ -2324,7 +2327,8 @@ Codex.Startup=
                     if (persist) saveLocal(
                         "codex."+name+"("+Codex.refuri+")",ref._id,true);}}}
 
-        function initGlosses(glosses,etc){
+        function initGlosses(glosses,etc,callback){
+            if (typeof callback === "undefined") callback=true;
             if ((glosses.length===0)&&(etc.length===0)) return;
             var msg=fdjtID("CODEXNEWGLOSSES");
             var start=fdjtTime();
@@ -2343,7 +2347,8 @@ Codex.Startup=
                 etc,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX,true);
             Codex.glossdb.Import(
                 glosses,{"tags": Knodule.importTagSlot},
-                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX,true);
+                RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX,
+                callback);
             var i=0; var lim=glosses.length;
             var latest=Codex.syncstamp||0;
             while (i<lim) {
