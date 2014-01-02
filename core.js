@@ -938,10 +938,17 @@ var Codex={
 
     function restoreState(state,reason,savehist){
         if (Codex.Trace.state) fdjtLog("Restoring (%s) state %j",reason,state);
-        Codex.GoTo(state.location,reason||"restoreState",
-                   ((state.target)&&(cxID(state.target))),
-                   // Don't save the state since we've already got one
-                   false,(!(savehist)));
+        if (state.location)
+            Codex.GoTo(state.location,reason||"restoreState",
+                       ((state.target)&&(cxID(state.target))),
+                       // Don't save the state since we've already got one
+                       false,(!(savehist)));
+        else if ((state.page)&&(Codex.layout)) {
+            Codex.GoToPage(state.page,reason||"restoreState",
+                           // Don't save the state since we've already got one
+                           false,(!(savehist)));
+            if ((state.target)&&(cxID(state.target)))
+                setTarget(cxID(state.target));}
         if (!(state.refuri)) state.refuri=Codex.refuri;
         if (!(state.docuri)) state.docuri=Codex.docuri;
         saveState(state);
