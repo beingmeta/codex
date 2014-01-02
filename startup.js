@@ -126,7 +126,7 @@ Codex.Startup=
              animatecontent: true,animatehud: true,
              hidesplash: false,keyboardhelp: true,
              holdmsecs: 400,wandermsecs: 1500,
-             syncinterval: 5,glossupdate: 5*60};
+             syncinterval: 60,glossupdate: 5*60};
         var current_config={};
         var saved_config={};
 
@@ -2071,7 +2071,7 @@ Codex.Startup=
                     //  regular updates now
                     if ((!(ticktock))&&(Codex.update_interval)) 
                         Codex.ticktock=ticktock=
-                        setInterval(updateInfo,Codex.update_interval);}
+                        setInterval(updateInfo,Codex.update_interval*1000);}
                 else if (Codex.user)
                     // This response gave us a user, so we start
                     //  another request, which will get glosses.  The
