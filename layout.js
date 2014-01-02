@@ -731,6 +731,7 @@ Codex.Paginate=
         /* Updating the page display */
 
         function updatePageDisplay(pagenum,location,classname) {
+            var update_progress=(!(classname));
             if (!(classname)) classname="current";
             var npages=Codex.pagecount;
             var page_elt=fdjt.ID("CODEXPAGESPAN"+pagenum);
@@ -759,9 +760,12 @@ Codex.Paginate=
                 ((locoff.title)||"")+
                 ((locoff.title)?("; "):(""))+
                 "click to jump to a percentage location in the book";
+            if (update_progress) {
+                var page_progress=fdjtID("CODEXPAGEPROGRESS");
+                if (page_progress) page_progress.style.width=
+                    ((pagenum*100)/npages)+"%";}
             fdjtDOM.addListeners(
                 locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCPCT"]);
-            pageno_text.title="click to jump to a particular page";
             fdjtDOM.addListeners(
                 pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
         Codex.updatePageDisplay=updatePageDisplay;

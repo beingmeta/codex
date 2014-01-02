@@ -104,7 +104,7 @@ div#CODEXFOOT div#CODEXPAGEINFO .pagespans {
 div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
   opacity: 0.0; overflow: hidden; z-index: 20; height: 40px;
   display: inline-block; position: absolute; bottom: 0px;
-  vertical-align: top;}
+  box-sizing: border-box; vertical-align: top;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
     height: 40px;}
 div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
@@ -131,6 +131,13 @@ body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.preview {
   visibility: visible; opacity: 1.0; z-index: 100;
   font-size: 200%; height: 60px; width: 1.5em;
   pointer-events: none;}
+
+div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGEPROGRESS {
+  box-sizing: border-box; border-right: solid darkblue 2px;
+  position: absolute; bottom: 0px; left: 0px;
+  width: 33%; height: 20px;
+  background-color: silver;
+  z-index: 5;}
 
 div#CODEXHUD .codexgoto {
     position: absolute; bottom: 0px; padding-bottom: 0.5ex;
