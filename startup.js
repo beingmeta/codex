@@ -818,26 +818,12 @@ Codex.Startup=
         
         function scanDOM(){
             var scanmsg=fdjtID("CODEXSTARTUPSCAN");
-            var aboutbook=fdjtID("SBOOKABOUTPAGE"), about_tmp=false;
-            var aboutauthor=fdjtID("SBOOKAUTHORPAGE"), author_tmp=false;
-            if (aboutbook) {
-                about_tmp=document.createTextNode("");
-                aboutbook.parentNode.replaceChild(about_tmp,aboutbook);
-                Codex.content.appendChild(aboutbook);}
-            if (aboutauthor) {
-                author_tmp=document.createTextNode("");
-                aboutauthor.parentNode.replaceChild(author_tmp,aboutauthor);
-                Codex.content.appendChild(aboutauthor);}
             addClass(scanmsg,"running");
             var metadata=new Codex.DOMScan(Codex.content,Codex.refuri+"#");
             // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
             Codex.docinfo=metadata;
             Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
             dropClass(scanmsg,"running");
-            if (aboutbook) {
-                about_tmp.parentNode.replaceChild(aboutbook,about_tmp);}
-            if (aboutauthor) {
-                author_tmp.parentNode.replaceChild(aboutauthor,author_tmp);}
             if ((Codex.state)&&(Codex.state.target)&&(!((Codex.state.location)))) {
                 var info=Codex.docinfo[Codex.state.target];
                 if ((info)&&(info.starts_at)) {
