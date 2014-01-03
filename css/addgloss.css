@@ -9,25 +9,32 @@
 div.codexglossformbody { position: relative; }
 
 div#CODEXADDGLOSS div.codexglossform {
-    min-height: 50px; max-height: 50px;}
+    box-sizing: border-box;
+    min-height: 40px; max-height: 50px;}
 
-body.hudup div#CODEXADDGLOSS div.codexglossform,
 div#CODEXADDGLOSS div.codexglossform.focused {
-    min-height: 75px; max-height: 150px;}
+    min-height: 75px; max-height: inherit;}
 
 div.codexglossform.hiddenglossform {
     opacity: 0.05;}
 
 div.codexglossform form div.textbox,
 div.codexglossform form div.glossetc {
+    max-height: 40%;
     clear: left; text-align: left;
     margin-left: 0.5em; margin-right: 60px;}
+div.codexglossform.focused form div.textbox,
+div.codexglossform.focused form div.glossetc {
+    max-height: inherit;}
 div.codexglossform form div.textbox { margin-top: 2px;}
 div.codexglossform form div.glossetc {
     overflow: hidden;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {
-    min-height: 1em; padding: 2px;}
+    min-height: 1em; max-height: 1.5em; padding: 2px;}
+div.codexglossform.focused form div.textbox textarea,
+div.codexglossform.focused form div.textbox input[type="TEXT"] {
+    max-height: inherit;}
 
 div#CODEXADDGLOSS div.codexglossform {
     border-radius: 1em; -webkit-border-radius: 1em;
@@ -181,7 +188,6 @@ div.codexglossform form .glossexposure {
     display: none;
     z-index: 500;}
 
-body.hudup div.codexglossform form .glossexposure,
 div.codexglossform form.addoutlet .glossexposure,
 div.codexglossform.focused form .glossexposure,
 div.codexglossform.glossedit form .glossexposure {

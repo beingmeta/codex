@@ -381,8 +381,7 @@
             addClass(wrapper,"hiddenglossform");
             Codex.setHUD(false);}
         else {
-            dropClass(wrapper,"hiddenglossform");
-            Codex.setHUD(true);}}
+            dropClass(wrapper,"hiddenglossform");}}
 
     function updateExcerpt(form,sel){
         var info=sel.getInfo();
@@ -753,6 +752,7 @@
         var text=target.value, pos=target.selectionStart||0;
         var ch=evt.charCode, charstring=String.fromCharCode(ch);
         var taginfo=findTag(text,pos);
+        if (ch!==13) addClass(getParent(form,".codexglossform"),"focused");
         if (ch===13) {
             if (taginfo) {
                 // Remove tag text

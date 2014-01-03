@@ -110,6 +110,7 @@
     var getInputsFor=fdjtDOM.getInputsFor;
     var getInputValues=fdjtDOM.getInputValues;
     var hasText=fdjtDOM.hasText;
+    var Selector=fdjtDOM.Selector;
 
     var submitEvent=fdjtUI.submitEvent;
 
@@ -158,7 +159,9 @@
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             // Last arg is docancel, since we don't need to worry about conflicts
             //   with scrolling
-            Codex.TapHold.body=fdjtUI.TapHold(fdjt.ID("CODEXBODY"),{override: true,untouchable: externClickable});
+            Codex.TapHold.body=fdjtUI.TapHold(
+                fdjt.ID("CODEXBODY"),
+                {override: true,untouchable: externClickable});
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
@@ -173,7 +176,9 @@
             while (i<lim) {
                 key=keys[i++];
                 var nodes=fdjtDOM.$(key,domnode);
-                var h=handlers[key];
+                var h=handlers[key], sel=new Selector(key);
+                if ((domnode)&&(sel.match(domnode)))
+                    fdjtDOM.addListeners(domnode,h);
                 var j=0, jlim=nodes.length;
                 while (j<jlim) {
                     var node=nodes[j++];
@@ -195,7 +200,6 @@
         var div=((form)&&(getParent(form,".codexglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));
         if (div) {
-            addClass(div,"focused");
             Codex.setGlossMode(false);}
         if (input) Codex.setFocus(input);
         if (!(Codex.hudup)) Codex.setHUD(true,false);
@@ -214,6 +218,14 @@
         // Restore this without removal of the gloss
         // if ((div)&&(hasClass(div,"modified"))) Codex.submitGloss(div);
         gloss_focus=false;}
+    function glossform_sharpfocus(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var form=getParent(target,"FORM");
+        var div=((form)&&(getParent(form,".codexglossform")));
+        if (div) addClass(div,"focused");
+        glossform_focus(evt);}
+    Codex.UI.glossform_focus=glossform_sharpfocus;
     Codex.UI.glossform_focus=glossform_focus;
     Codex.UI.glossform_blur=glossform_blur;
 
@@ -610,8 +622,7 @@
         Codex.setMode("addgloss",true);
         var input=getInputs(form,"NOTE")[0];
         if (input) {
-            Codex.setFocus(input);
-            addClass(form_div,"focused");}}
+            Codex.setFocus(input);}}
 
     function content_swiped(evt){
         var dx=evt.deltaX, dy=evt.deltaY; var vw=fdjtDOM.viewWidth();
@@ -2558,6 +2569,7 @@
          ".hudmodebutton": {
              tap: hudmodebutton,release: hudmodebutton,slip: hudmodebutton},
          // GLOSSFORM rules
+         ".codexglossform": {click: glossform_sharpfocus,touchstart: glossform_sharpfocus},
          "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
          // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
@@ -2668,6 +2680,7 @@
              tap: hudmodebutton,hold: hudmodebutton,release: hudmodebutton,
              slip: hudmodebutton},
          // GLOSSFORM rules
+         ".codexglossform": {click: glossform_sharpfocus,touchstart: glossform_sharpfocus},
          "span.codexsharegloss": {click: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {
              click: back_to_reading,
