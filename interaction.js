@@ -626,8 +626,9 @@
         if (mode) form.className=mode;
         Codex.setMode("addgloss",true);
         var input=getInputs(form,"NOTE")[0];
-        if (input) {
-            Codex.setFocus(input);}}
+        if ((input)&&(Codex.keyboard))
+            Codex.setFocus(input);
+    }
 
     function content_swiped(evt){
         var dx=evt.deltaX, dy=evt.deltaY; var vw=fdjtDOM.viewWidth();
