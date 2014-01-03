@@ -233,7 +233,6 @@
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));
-        fdjtLog("glossform_touch %o div=%o input=%o",evt,div,input);
         if (hasClass(div,"focused")) {
             setTimeout(function(){
                 if (input) {Codex.setFocus(input); input.focus();}},
