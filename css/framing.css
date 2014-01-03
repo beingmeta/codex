@@ -89,7 +89,8 @@ body.codexhelp #CODEXFRAME {
     pointer-events: all;}
 body.cxTOUCH #CODEXFRAME > #CODEXHUD > * {
     pointer-events: none;}
-body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > * {
+body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > *,
+body.cxTOUCH #CODEXFRAME > #CODEXHUD.addgloss > * {
     pointer-events: all;}
 
 body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHEAD,

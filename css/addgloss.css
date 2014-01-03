@@ -13,7 +13,8 @@ div#CODEXADDGLOSS div.codexglossform {
     min-height: 40px; max-height: 50px;}
 
 div#CODEXADDGLOSS div.codexglossform.focused {
-    min-height: 75px; max-height: inherit;}
+    min-height: 75px; max-height: inherit;
+    background-color: ivory;}
 
 div.codexglossform.hiddenglossform {
     opacity: 0.05;}
@@ -183,7 +184,10 @@ div.codexglossform .glossetc .glossdate {
     font-size: 80%; font-variant: small-caps; color: purple;}
 
 div.codexglossform form .glossexposure {
-    position: absolute; top: 50px; right: 0px;
+    position: absolute; top: 1.7em; right: 60px;
+    z-index: 500;}
+div.codexglossform.focused form .glossexposure {
+    position: absolute; top: 45px; right: 0px;
     width: 50px; margin-right: 5px; margin-left: 5px;
     display: none;
     z-index: 500;}
@@ -517,11 +521,12 @@ div#CODEXRIBBON div.inputbox#CODEXGLOSSOUTLETINPUT input[TYPE="TEXT"] {
 
 div.codexglossform form div.addglossmenu {
     position: absolute; top: 0px; right: 0px;
-    width: 50px; margin-right: 5px; margin-left: 5px;
+    width: 40px; margin-right: 5px; margin-left: 5px;
     z-index: 800;}
 
 div.codexglossform form div.addglossmenu > img {
     width: 40px; height: 40px; padding: 2px; margin-bottom: 4px;
+    box-sizing: border-box;
     display: none; }
 div.codexglossform form div.addglossmenu > img.held {
     background-color: lightgreen; border-color: green;}

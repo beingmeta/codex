@@ -979,6 +979,7 @@ div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     opacity: 0.95; margin-left: 0px; margin-right: 0px;
     border-color: silver; overflow: visible;
+    background-color: transparent;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
     -webkit-opacity: 0.95;
