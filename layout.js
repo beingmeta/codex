@@ -928,7 +928,8 @@ Codex.Paginate=
                 var next=pages[i++];
                 loc=parseInt(next.getAttribute("data-sbookloc"),10);
                 if (typeof loc !== "number") return prev;
-                else if (loc>=location) return next;
+                else if (loc===location) return next;
+                else if (loc>location) return prev;
                 else i++;}
             return page;}
         Codex.getPage=getPage;
