@@ -127,6 +127,7 @@ body.hudup #CODEXTOP .hudpanel {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
+/*
 body.cxANIMATE #CODEXTOP {
     transition-property: top;
     transition-duration: 0.75s;
@@ -141,6 +142,14 @@ body.cxANIMATE #CODEXTOP {
 body.cxANIMATE #CODEXHUD.openhead #CODEXTOP,
 #CODEXHUD.openhead #CODEXTOP {
     top: 0px;}
+*/
+body.cxANIMATE #CODEXTOP {
+    transition-property: opacity;
+    transition-duration: 2s;
+    opacity: 0.0; max-height: 0px;
+    display: block;}
+body.cxANIMATE #CODEXHUD.openhead #CODEXTOP {
+    max-height: inherit; opacity: 1.0;}
 body.hudup #CODEXTOP {display: block;}
 body #CODEXHUD.openhead #CODEXTOP,
 body #CODEXHUD.scanning #CODEXSCANNER {
