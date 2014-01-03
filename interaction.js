@@ -192,6 +192,15 @@
 
     var gloss_focus=false;
     var gloss_blurred=false;
+    var gloss_blur_timeout=false;
+
+    function glossform_focusin(evt){
+        var target=fdjtUI.T(evt);
+        if (gloss_blur_timeout) clearTimeout(gloss_blur_timeout);
+        glossform_focus(evt);}
+    function glossform_focusout(evt){
+        gloss_blur_timeout=setTimeout(function(e){glossform_blur(evt);},500);}
+
     function glossform_focus(evt){
         evt=evt||event;
         gloss_blurred=false;
@@ -202,7 +211,6 @@
         if (div) {
             Codex.setGlossMode(false);}
         if (input) Codex.setFocus(input);
-        // if (!(Codex.hudup)) Codex.setHUD(true,false);
         Codex.freezelayout=true;
         gloss_focus=form;}
     function glossform_blur(evt){
@@ -220,12 +228,17 @@
         gloss_focus=false;}
     function glossform_touch(evt){
         evt=evt||event;
+        if (gloss_blur_timeout) clearTimeout(gloss_blur_timeout);
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));
-        if (hasClass(div,"focused")) return;
-        if (input) Codex.setFocus(input);
+        fdjtLog("glossform_touch %o div=%o input=%o",evt,div,input);
+        if (hasClass(div,"focused")) {
+            setTimeout(function(){
+                if (input) {Codex.setFocus(input); input.focus();}},
+                       150);
+            return;}
         if (!((hasParent(target,".textbox"))||(hasParent(target,".addglossmenu"))))
             fdjtUI.cancel(evt);
         addClass(div,"focused");
@@ -233,6 +246,8 @@
     Codex.UI.glossform_touch=glossform_touch;
     Codex.UI.glossform_focus=glossform_focus;
     Codex.UI.glossform_blur=glossform_blur;
+    Codex.UI.glossform_focusin=glossform_focusin;
+    Codex.UI.glossform_focusout=glossform_focusout;
 
     /* Adding a gloss button */
     
@@ -2577,7 +2592,7 @@
          // GLOSSFORM rules
          ".codexglossform": {click: glossform_touch,touchstart: glossform_touch},
          "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
-         // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
          ".codexglossform .response": {click: Codex.toggleHUD},
          ".addglossmenu": {
