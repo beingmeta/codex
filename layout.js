@@ -920,22 +920,17 @@ Codex.Paginate=
                        (false)));
             var page=((node)&&(getParent(node,".codexpage")));
             if (!(location)) return page;
+            var loc=parseInt(page.getAttribute("data-sbookloc"),10);
+            if (loc===location) return page;
             var layout=Codex.layout, pages=layout.pages, npages=pages.length;
-            var i=((page)?(parseInt(page.getAttribute("data-pagenum"),10)):(1));
-            var probe=pages[i-1], found=false;
-            var loc=parseInt(probe.getAttribute("data-sbookloc"),10);
-            if (loc===location) return probe;
-            else if (loc>=location) found=probe;
-            i++; while (i<npages) {
-                probe=pages[i];
-                loc=parseInt(probe.getAttribute("data-sbookloc"),10);
-                if (typeof loc !== "number") {
-                    if (found) return found;
-                    else i++;}
-                else if (loc===location) {
-                    found=probe; i++;}
-                else if (loc>location) return found;
-                else i++;}}
+            var i=((page)?(parseInt(page.getAttribute("data-pagenum"),10)):(1)); i--;
+            var prev=page; while (i<npages) {
+                var next=pages[i++];
+                loc=parseInt(next.getAttribute("data-sbookloc"),10);
+                if (typeof loc !== "number") return prev;
+                else if (loc>=location) return next;
+                else i++;}
+            return page;}
         Codex.getPage=getPage;
         
         function displaySync(){
