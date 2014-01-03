@@ -77,6 +77,8 @@ var Codex={
     keepdata: false,
     // Dominant interaction mode
     mouse: true, touch: false, kbd: false,
+    // Whether there is a keyboard
+    keyboard: true,
     // This is a table for iScroll scrollers, when used
     scrollers: {},
     // Restrictions on excerpts

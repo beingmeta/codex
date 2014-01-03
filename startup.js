@@ -1004,6 +1004,7 @@ Codex.Startup=
                 fdjt.TapHold.default_opts.touch=true;
                 Codex.ui="touch";
                 Codex.touch=true;
+                Codex.keyboard=false;
                 viewportSetup();}
             if ((device.android)&&(device.android>=3)) {
                 default_config.keyboardhelp=false;
