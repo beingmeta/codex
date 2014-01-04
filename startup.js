@@ -2568,7 +2568,7 @@ Codex.Startup=
                     var info=Codex.docinfo[frag];
                     // Pointer to non-existent node.  Warn here?
                     if (!(info)) {
-                        warn("Couldn't find node for %o",frag);
+                        Codex.missing_nodes.push(frag);
                         continue;}
                     if (typeof idinfo !== 'string') {
                         // When the idinfo is an array, the first

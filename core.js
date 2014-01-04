@@ -60,6 +60,8 @@ var Codex={
     // Various device properties which can effect behaviors
     fullheight: false, fullwidth: false, handheld: false,
     updatehash: true, iscroll: false,
+    // This tracks missing node identifiers
+    missing_nodes: [],
     // Whether to cache layouts locally; the value is a threshold
     // (in milliseconds) for when to cache
     cache_layout_thresh: 2500,
