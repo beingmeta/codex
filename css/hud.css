@@ -272,7 +272,8 @@ body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTFRAME {
+body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTFRAME,
+body #CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
     border: solid rgba(0,0,255,0.52) 3px;
     z-index: 100; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -302,7 +303,8 @@ body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
-body #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
+body #CODEXHUD.addgloss.glossaddlink #CODEXHEART,
+body #CODEXHUD.addgloss.glossattach #CODEXHEART {
     margin-bottom: 1.5ex; margin-top: 1.5ex; 
     padding-bottom: 1em; padding-top: 1ex;
     margin-right: 1px;}
@@ -313,7 +315,8 @@ body #CODEXHUD.addgloss.glosstagging #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART div.hudpanel,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss.glossaddlink #CODEXHEART div.hudpanel {
+body #CODEXHUD.addgloss.glossaddlink #CODEXHEART div.hudpanel,
+body #CODEXHUD.addgloss.glossattach #CODEXHEART div.hudpanel {
     margin-top: 0px; margin-bottom: 0px;}
 body.hudup #CODEXHUD.allglosses.openheart #CODEXHEART,
 body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
@@ -325,7 +328,8 @@ body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART {
+body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART,
+body.cxISCROLL #CODEXHUD.addgloss.glossattach #CODEXHEART {
     padding-top: 0px; padding-bottom: 0px;}
 body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXHEARTCONTENT,
@@ -333,7 +337,8 @@ body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART #CODEXHEARTCONTENT,
 body.cxISCROLL #CODEXHUD.addgloss.glosseditdetail #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART #CODEXHEARTCONTENT {
+body.cxISCROLL #CODEXHUD.addgloss.glossaddlink #CODEXHEART #CODEXHEARTCONTENT,
+body.cxISCROLL #CODEXHUD.addgloss.glossattach #CODEXHEART #CODEXHEARTCONTENT {
     padding-top: 1em; padding-bottom: 1em;}
 
 #CODEXHEART div.hudpanel > h1:first-child { margin-top: 0px;}
@@ -350,6 +355,8 @@ body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME {
     top: 150px; bottom: 50px; height: auto;}
 body #CODEXHUD.addgloss.glossaddlink #CODEXHEARTFRAME {
+    top: 150px; height: auto; min-height: 100px;}
+body #CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
     top: 150px; height: auto; min-height: 100px;}
 
 div#CODEXHUD #CODEXFOOT {
@@ -425,6 +432,7 @@ div#CODEXHUD.addgloss.glosstagoutlet div#CODEXHEART div#CODEXSHARECLOUD.hudpanel
 div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXSHARECLOUD.hudpanel,
 div#CODEXHUD.addgloss.glossaddlink div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSEDITDETAIL.hudpanel,
+div#CODEXHUD.addgloss.glossattach div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
 div#CODEXHUD.glossdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
 div#CODEXHUD.refinesearch div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
 div#CODEXHUD.expandsearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,

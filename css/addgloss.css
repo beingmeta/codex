@@ -473,6 +473,13 @@ div#CODEXGLOSSATTACH.detail tr.url, div#CODEXGLOSSATTACH.upload tr.url {
 div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"],
 div#CODEXGLOSSATTACH table.fdjtform td input[type="URL"] { width: 95%;}
 
+div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.upload,
+div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.choosetype,
+div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.detail {
+    display: table-row;}
+div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.url {
+    display: none;}
+
 #CODEXNETWORKBUTTONS { text-align: center;}
 #CODEXNETWORKBUTTONS span.completion {}
 #CODEXNETWORKBUTTONS span.checkspan input[TYPE="CHECKBOX"],

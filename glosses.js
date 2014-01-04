@@ -132,6 +132,7 @@
         else if (mode==="editdetail") {
             input=fdjtID("CODEXDETAILTEXT");
             fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
+        else if (mode==="attach") {}
         else {
             dropClass(form,glossmodes);
             dropClass("CODEXHUD",/\bgloss\w+\b/);
