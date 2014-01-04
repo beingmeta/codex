@@ -211,7 +211,7 @@ div.codexglossform .checkspan.postgloss img {
     vertical-align: top;}
 
 div.codexglossform.glossedit form .glossetc .glossdate {
-    display: block;}
+    display: inline-block; margin-right: 1ex;}
 
 div.codexglossform form div.glossetc .twisty { display: none;}
 div.codexglossform form div.glossetc.overflow .twisty { display: none;}

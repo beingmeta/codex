@@ -256,9 +256,10 @@ Codex.Slice=(function () {
         var user=info.maker;
         var userinfo=(user)&&(Codex.sourcedb.load(user));
         var agestring=timestring(info.modified||info.created||info.tstamp);
+        var age=fdjtDOM("span.age",agestring);
+        age.title=fdjtTime.timeString(info.modified||info.created||info.tstamp);
         var tool=fdjtDOM(
-            "span.tool",
-            fdjtDOM("span.age",agestring)," ",
+            "span.tool",age," ",
             fdjtDOM.Image(
                 (((user===Codex.user)||(user===Codex.user._id))?
                  (cxicon("gloss_edit_titled",40,40)):
