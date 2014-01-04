@@ -285,6 +285,9 @@ Codex.setMode=
                 addClass(nodes,"glossed");
                 var i=0, lim=nodes.length; while (i<lim) {
                     addGlossmark(nodes[i++],item);}
+                if (item.excerpt) {
+                    var range=Codex.findExcerpt(nodes,item.excerpt,item.exoff);
+                    if (range) fdjtUI.Highlight(range,"codexuserexcerpt");}
                 if (item.tags) {
                     var gloss_cloud=Codex.gloss_cloud;
                     var tags=item.tags, j=0, n_tags=tags.length;

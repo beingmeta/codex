@@ -772,6 +772,9 @@ section.codexpreviewtarget h6, div.html5section.codexpreviewtarget h6,
 section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
     color: rgb(122,34,95); } 
 
+.codexuserexcerpt {
+    text-shadow: 0.2ex 0.2ex rgba(255, 215, 0, 0.53);}
+
 /* Startup messages */
 
 div#CODEXSTARTUPMESSAGES {
