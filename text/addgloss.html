@@ -70,22 +70,6 @@
            title=" cancel gloss" class="button" alt="glosscancel"
            tabindex="8"/>
     </div>
-    <div class="glossexposure">
-      <div class="checkspan private" tabindex="5">
-        <input type="CHECKBOX" name="PRIVATE" value="yes"
-               onchange="Codex.UI.changeGlossPrivacy(event);"/>
-        <span class="checked"
-              title="this gloss won't be shared with my associated networks">
-          Private</span>
-        <span class="unchecked"
-              title="this gloss will be shared with my associated networks">
-          Shared</span>
-      </div>
-      <div class="checkspan postgloss">
-        <input type="CHECKBOX" name="POSTGLOSS" value="yes"/>
-        post
-      </div>
-    </div>
     <div class="textbox">
       <textarea
          name="NOTE"
@@ -98,6 +82,22 @@
     </div>
     <div class="glossetc">
       <span class="glossdate"></span>
+      <span class="glossexposure">
+        <span class="checkspan private" tabindex="5">
+          <input type="CHECKBOX" name="PRIVATE" value="yes"
+                 onchange="Codex.UI.changeGlossPrivacy(event);"/>
+          <span class="checked"
+                title="this gloss won't be shared with my associated networks">
+            Private</span>
+          <span class="unchecked"
+                title="this gloss will be shared with my associated networks">
+            Shared</span>
+        </span>
+        <span class="checkspan postgloss">
+          <span>Post</span>
+          <input type="CHECKBOX" name="POSTGLOSS" value="yes"/>
+        </span>
+      </span>
       <span class="networks">
         <!--
         <span class="checkspan twitter_share">

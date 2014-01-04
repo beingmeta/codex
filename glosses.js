@@ -107,6 +107,7 @@
         var form=((arg.tagName==="FORM")?(arg):
                   ((fdjtDOM.getParent(arg,"form"))||
                    (fdjtDOM.getChild(arg,"form"))));
+        var div=getParent(form,".codexglossform");
         var input=false;
         var detail_elt=getInput(form,"DETAIL");
         if (!(form)) return;
@@ -118,6 +119,7 @@
                     ((frag)&&(frag.value)),
                     ((uuid)&&(uuid.value)));}
         if ((toggle)&&(mode===form.className)) mode=false;
+        if (mode) addClass(div,"focused");
         if (form.className==="editdetail") {
             detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;}
         if (!(mode)) {

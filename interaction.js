@@ -238,8 +238,9 @@
                 if (input) {Codex.setFocus(input); input.focus();}},
                        150);
             return;}
-        if (!((hasParent(target,".textbox"))||(hasParent(target,".addglossmenu"))))
-            fdjtUI.cancel(evt);
+        if ((hasParent(target,".addglossmenu"))||(hasParent(target,".glossexposure")))
+            return;
+        if (!(hasParent(target,".textbox"))) fdjtUI.cancel(evt);
         addClass(div,"focused");
         glossform_focus(evt);}
     Codex.UI.glossform_touch=glossform_touch;
@@ -2591,7 +2592,7 @@
          // GLOSSFORM rules
          ".codexglossform": {click: glossform_touch,touchstart: glossform_touch},
          "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
-         ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
          ".codexglossform .response": {click: Codex.toggleHUD},
          ".addglossmenu": {
@@ -2706,7 +2707,7 @@
              click: back_to_reading,
              touchmove: cancel,
              touchend: cancel},
-         ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".codexglossform .response": {click: Codex.toggleHUD},
          ".addglossmenu": {
              tap: glossmode_tap,
