@@ -795,27 +795,50 @@ Codex.Startup=
                     applyTagSpans();
                     applyMultiTagSpans();},
                 function(){
-                    if (window._sbook_autoindex) {
-                        if ((Codex.Trace.startup>1)||(Codex.Trace.indexing)) {
-                            if (window._sbook_autoindex._nkeys)
-                                fdjtLog("Processing provided index of %d keys and %d refs",
-                                        window._sbook_autoindex._nkeys,
-                                        window._sbook_autoindex._nrefs);
-                            else fdjtLog("Processing provided index");}
-                        Codex.useIndexData(
-                            window._sbook_autoindex,
-                            Codex.knodule,false,
-                            function(){
-                                applyTagAttributes(metadata,indexingDone);});
+                    var pubindex=Codex._publisher_index||
+                        window._sbook_autoindex;
+                    if (pubindex) {
+                        handlePublisherIndex(pubindex,function(){
+                            applyTagAttributes(metadata,indexingDone);});
+                        Codex._publisher_index=false;
                         window._sbook_autoindex=false;}
+                    else if (fdjtID("SBOOKAUTOINDEX")) {
+                        var elt=fdjtID("SBOOKAUTOINDEX");
+                        fdjtDOM.addListener(elt,"load",function(evt){
+                            handlePublisherIndex(false,function(){
+                                applyTagAttributes(metadata,indexingDone);});
+                            Codex._publisher_index=false;
+                            window._sbook_autoindex=false;});}
                     else {
-                        applyTagAttributes(metadata,indexingDone);}},
-                // Figure out which mode to start up in, based on
-                // query args to the book.
+                        var indexref=getLink("SBOOKS.bookindex");
+                        if (indexref) {
+                            var script_elt=document.createElement("SCRIPT");
+                            script_elt.setAttribute("src",indexref);
+                            script_elt.setAttribute("language","javascript");
+                            script_elt.setAttribute("async","async");
+                            fdjtDOM.addListener(script_elt,"load",function(evt){
+                                handlePublisherIndex(false,function(){
+                                    applyTagAttributes(metadata,indexingDone);});
+                                Codex._publisher_index=false;
+                                window._sbook_autoindex=false;});
+                            document.body.appendChild(script_elt);}
+                        else applyTagAttributes(metadata,indexingDone);}},
                 startupDone],
              100,25);}
         Codex.Startup=CodexStartup;
         
+        function handlePublisherIndex(pubindex,whendone){
+            if (!(pubindex))
+                pubindex=Codex._publisher_index||window._sbook_autoindex;
+            if (!(pubindex)) return;
+            if ((Codex.Trace.startup>1)||(Codex.Trace.indexing)) {
+                if (pubindex._nkeys)
+                    fdjtLog("Processing provided index of %d keys and %d refs",
+                            pubindex._nkeys,pubindex._nrefs);
+                else fdjtLog("Processing provided index");}
+            Codex.useIndexData(pubindex,Codex.knodule,false,whendone);}
+            
+
         function scanDOM(){
             var scanmsg=fdjtID("CODEXSTARTUPSCAN");
             addClass(scanmsg,"running");
