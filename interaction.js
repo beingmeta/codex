@@ -1049,6 +1049,14 @@
             Codex.hideCover();
             fdjt.UI.cancel(evt);
             return false;}
+        else if (Codex.glossform) {
+            var input=fdjt.DOM.getInput(Codex.glossform,"NOTE");
+            glossform_focus(Codex.glossform); Codex.setFocus(input); input.focus();
+            var new_evt=document.createEvent("UIEvent");
+            new_evt.type="keydown"; new_evt.keyCode=kc;
+            input.dispatchEvent(new_evt);
+            fdjtUI.cancel(evt);
+            return;}
         else if (kc===34) Codex.pageForward(evt);   /* page down */
         else if (kc===33) Codex.pageBackward(evt);  /* page up */
         else if (kc===40) { /* arrow down */
