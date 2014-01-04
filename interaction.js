@@ -1500,6 +1500,7 @@
         if ((Codex.mode==='openglossmark')&&
             (Codex.target===passage)) {
             Codex.setMode(false);
+            Codex.clearGlossmark();
             return;}
         else if (Codex.select_target) return;
         else Codex.showGlossmark(passage,glossmark);}
