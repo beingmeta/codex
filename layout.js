@@ -919,7 +919,7 @@ Codex.Paginate=
                        (typeof arg === "string")?(cxID(arg)):
                        (false)));
             var page=((node)&&(getParent(node,".codexpage")));
-            if (!(location)) return page;
+            if ((!(location))||(!(page))) return page;
             var loc=parseInt(page.getAttribute("data-sbookloc"),10);
             if (loc===location) return page;
             var layout=Codex.layout, pages=layout.pages, npages=pages.length;
