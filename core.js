@@ -549,7 +549,7 @@ var Codex={
     function cxID(id){
         var info;
         if (!(codex_docinfo)) codex_docinfo=Codex.docinfo;
-        return ((codex_docinfo)&&(info=codex_docinfo[id])&&(info.elt))||
+        return ((codex_docinfo)&&(info=codex_docinfo[id])&&(info.elt.id)&&(info.elt))||
             document.getElementById(id)||
             fdjtDOM.$1("[data-tocid='"+id+"']");}
     Codex.ID=cxID;
@@ -974,7 +974,7 @@ var Codex={
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because it's too soon");
             return;}
-        if ((!(force))&&(!(hasClass(document.body,"cxFOCUS")))) {
+        if ((!(force))&&(Codex.state)&&(!(hasClass(document.body,"cxFOCUS")))) {
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because page doesn't have focus");
             return;}
