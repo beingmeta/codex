@@ -474,11 +474,18 @@ Codex.Paginate=
                     if (topid) page.setAttribute("data-topid",topid);
                     page.setAttribute("data-sbookloc",curloc);}
                 else {
-                    if (pagenum) {
-                        var prevpage=pages[pagenum-1];
-                        var prevoff=prevpage.getAttribute("data-sbookloc");
-                        if (prevoff)
-                            page.setAttribute("data-sbookloc",prevoff);}}
+                    if ((pagenum)&&(pagenum>1)) {
+                        var prevpage=pages[pagenum-2];
+                        var lastid=getPageLastID(prevpage);
+                        var lastinfo=((lastid)&&(docinfo[lastid]));
+                        if (lastinfo) {
+                            curloc=lastinfo.starts_at;
+                            page.setAttribute("data-sbookloc",lastinfo.ends_at);}
+                        else {
+                            var prevoff=prevpage.getAttribute("data-sbookloc");
+                            if (prevoff)
+                                page.setAttribute("data-sbookloc",prevoff);
+                            else page.setAttribute("data-sbookloc","0");}}}
                 if ((typeof curloc === "number")&&(pagenum)&&
                     (Codex.state)&&(goneto!==Codex.state)&&
                     (Codex.state.hasOwnProperty('location'))&&
@@ -520,6 +527,21 @@ Codex.Paginate=
                             var first=getPageTopID(child);
                             if (first) return first;}}}
                 return false;}
+
+            function getPageLastID(node,id) {
+                if (hasClass(node,"codexpage")) {}
+                else if ((node.id)&&(!(node.codexbaseid))&&
+                         (Codex.docinfo[node.id]))
+                    id=node.id;
+                if (node.nodeType!==1) return id;
+                var children=node.childNodes;
+                if (children) {
+                    var i=0; var lim=children.length;
+                    while (i<lim) {
+                        var child=children[i++];
+                        if (child.nodeType===1) {
+                            id=getPageLastID(child,id);}}}
+                return id;}
             
             function getDupNode(under,id){
                 var children;
@@ -835,8 +857,9 @@ Codex.Paginate=
                         dropClass(lastpage,"oldpage");},
                                500);}
                 if (typeof spec === 'number') {
-                    var location=parseInt(page.getAttribute("data-sbookloc"),10);
-                    Codex.setLocation(location);}
+                    var locval=page.getAttribute("data-sbookloc");
+                    var location=((locval)&&(parseInt(locval,10)));
+                    if (location) Codex.setLocation(location);}
                 updatePageDisplay(pagenum,Codex.location);
                 curpage=page; Codex.curpage=pagenum;
                 var curnode=cxID(page.getAttribute("data-topid"));
