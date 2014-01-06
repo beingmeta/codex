@@ -914,7 +914,7 @@ var Codex={
         if ((!(syncing))&&(Codex.dosync)&&
             ((!(Codex.xstate))||(state.changed>Codex.xstate.changed)))
             syncState(true);
-        if ((!(skiphist))&&(window.history)&&(window.history.pushState))
+        if ((!(skiphist))&&(frag)&&(window.history)&&(window.history.pushState))
             setHistory(state,frag,title);
     } Codex.saveState=saveState;
 
