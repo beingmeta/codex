@@ -1717,7 +1717,7 @@ Codex.Startup=
                     fdjtDOM.replace(notable,anchor);
                     fdjtDOM.append(notesblock,notable,"\n");}
                 else fdjtDOM.append(notesblock,notable,"\n");}
-
+            
             // Interpet links
             var notelinks=getChildren(
                 body,"a[rel='sbooknote'],a[rel='footnote'],a[rel='endnote']");
@@ -1740,7 +1740,8 @@ Codex.Startup=
                     else if (/(META|LINK|SCRIPT)/gi.test(child.tagName)) {}
                     else content.appendChild(child);}}
             // Append the notes block to the content
-            fdjtDOM.append(content,"\n",notesblock,"\n");
+            if (notesblock.childNodes.length)
+                fdjtDOM.append(content,"\n",notesblock,"\n");
             
             // Initialize cover and titlepage (if specified)
             Codex.cover=Codex.getCover();
