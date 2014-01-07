@@ -205,12 +205,13 @@ Codex.setMode=
             if ((Codex.user)&&(Codex.user.email)) {
                 var nameinput=fdjtDOM.getInput(splashform,"USERNAME");
                 if (nameinput) nameinput.value=Codex.user.email;}
-            var query=document.location.search||"?";
-            var appuri="https://"+Codex.server+"/flyleaf"+query;
+            var query=document.location.search;
             var refuri=Codex.refuri;
-            if (query.search("REFURI=")<0)
-                appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
-            if (query.search("TOPURI=")<0)
+            var appuri="https://"+Codex.server+"/flyleaf";
+            if ((query)&&(query.length)) appuri=appuri+"&"; else appuri=appuri+"?";
+            if (query.search(/(^|&)REFURI=/)<0)
+                appuri=appuri+"REFURI="+encodeURIComponent(refuri);
+            if (query.search(/(^|&)TOPURI/)<0)
                 appuri=appuri+"&TOPURI="+
                 encodeURIComponent(document.location.href);
             if (document.title) {
@@ -702,17 +703,12 @@ Codex.setMode=
                 if (document.location.search[0]==="?")
                     query=query+document.location.search.slice(1);
                 else query=query+document.location.search;}
-            if (document.location.hash) {
-                if (query[query.length-1]!=="&") query=query+"&";
-                if (document.location.search[0]==="#")
-                    query=query+document.location.hash.slice(1);
-                else query=query+document.location.hash;}
             if ((query.length)&&(query[query.length-1]!=="&"))
                 query=query+"&";
             var refuri=Codex.refuri;
             var appuri="https://"+Codex.server+"/flyleaf?"+query;
             if (query.search("REFURI=")<0)
-                appuri=appuri+"&REFURI="+encodeURIComponent(refuri);
+                appuri=appuri+"REFURI="+encodeURIComponent(refuri);
             if (query.search("TOPURI=")<0)
                 appuri=appuri+"&TOPURI="+
                 encodeURIComponent(document.location.href);
@@ -720,6 +716,9 @@ Codex.setMode=
                 appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
             if (Codex.user) {
                 appuri=appuri+"&BOOKUSER="+encodeURIComponent(Codex.user._id);}
+            if (document.location.hash) {
+                appuri=appuri+"&HASH="+document.location.hash.slice(1);}
+
             fdjtID("SBOOKSAPP").src=appuri;
             iframe_app_init=true;}
         Codex.initIFrameApp=initIFrameApp;
