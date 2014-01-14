@@ -136,7 +136,7 @@ div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGEPROGRESS {
   box-sizing: border-box; border-right: solid darkblue 2px;
   position: absolute; bottom: 0px; left: 0px;
   width: 33%; height: 20px;
-  background-color: silver;
+  background-color: rgba(162,181,205,0.8);
   z-index: 5;}
 
 div#CODEXHUD .codexgoto {
