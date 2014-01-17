@@ -58,6 +58,8 @@ body.hudup #CODEXTOP {
     background-color: rgba(255,255,240,0.6);
     border-width: 4px;
     min-height: 40px;}
+body.cxFULLHEIGHT.hudup #CODEXTOP {
+    background-color: transparent;}
 body.hudup #CODEXTOP .hudpanel {
     background-color: rgba(255,255,240,0.6);}
 
@@ -673,14 +675,15 @@ body.hudup div#CODEXHUD .hudbutton {
     -khtml-opacity: 0.60;
     -moz-opacity: 0.60;
     -o-opacity: 0.60;}
-body.hudup.cxMOUSE div#CODEXHUD img.hudbutton:hover {
-    opacity: 0.8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80);
-    -webkit-opacity: 0.80;
-    -khtml-opacity: 0.80;
-    -moz-opacity: 0.80;
-    -o-opacity: 0.80;}
+body.hudup.cxMOUSE div#CODEXHUD img.hudbutton:hover,
+body.hudup.cxFULLHEIGHT div#CODEXHUD .hudbutton {
+    opacity: 0.95;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
+    filter: alpha(opacity=95);
+    -webkit-opacity: 0.95;
+    -khtml-opacity: 0.95;
+    -moz-opacity: 0.95;
+    -o-opacity: 0.95;}
 
 body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
 
@@ -1182,8 +1185,8 @@ img.codexclosehud#CODEXSTOPSCAN {
 
 /* Full height/width rules */
 
-body.cxFULLHEIGHT #CODEXTOP, body.cxFULLHEIGHT #CODEXFOOT {
-    display: none;}
+body.cxFULLHEIGHT #CODEXTOP {display: none;}
+body.cxFULLHEIGHT #CODEXFOOT {}
 body.cxFULLHEIGHT.hudup #CODEXTOP, body.cxFULLHEIGHT.hudup #CODEXFOOT {
     display: block;}
 
@@ -1196,19 +1199,11 @@ body.cxFULLHEIGHT.cxFULLWIDTH.codexscanning #CODEXHUD,
 body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {
     display: block;}
 
-body.cxFULLHEIGHT.hudup div#CODEXHEAD {
-    background-color: ivory;
-    padding-bottom: 2px;
-    border-bottom: solid black 2px;
-    height: 54px; max-height: inherit;}
 body.cxFULLHEIGHT #CODEXSHOWCOVER {
     padding: 0px; }
 body.cxFULLHEIGHT.hudup div#CODEXFOOT {
-    background-color: ivory;
     padding-top: 2px;
     border-radius: 0px;}
-body.cxFULLHEIGHT div#CODEXFOOT div#CODEXPAGEINFO {
-    left: 0px; right: 0px;}
 body.cxFULLHEIGHT div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     left: auto; right: auto; width: 100%;}
 

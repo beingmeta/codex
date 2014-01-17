@@ -66,7 +66,7 @@
 
 @media (max-device-width: 500px) {
     div#CODEXFOOT div#CODEXPAGEINFO {
-        margin-left: 0px; margin-right: 0px;}
+        left: 0px; right: 0px;}
 
     div#CODEXHEAD img.hudbutton[hudmode="allglosses"],
     div#CODEXHEAD img.hudbutton[hudmode="help"] {
