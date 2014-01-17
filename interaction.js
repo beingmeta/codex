@@ -966,7 +966,6 @@
                 Codex.stopPreview("slice_slipped");},
                                   500);}}
 
-
     function getTargetDup(scan,target){
         var targetid=target.id;
         while (scan) {
@@ -1742,6 +1741,9 @@
                 else if (dy>10) Codex.setMode("statictoc");
                 else {}}}
         cancel(evt);}
+
+    function preview_touchmove_nodefault(evt){
+        if (Codex.previewing) fdjtUI.noDefault(evt);}
 
     function stopPageTurner(){
         if (Codex.page_turner) {
@@ -2640,6 +2642,7 @@
             // touchstart: default_tap,
             // touchmove: noDefault,
             touchend: stopPageTurner,
+            touchmove: preview_touchmove_nodefault,
             focus: codexfocus,
             blur: codexblur},
          content: {tap: content_tapped,
@@ -2657,6 +2660,7 @@
          summary: {tap: slice_tapped,
                    hold: slice_held,
                    release: slice_released,
+                   touchmove: preview_touchmove_nodefault,
                    slip: slice_slipped},
          // "#CODEXHEART": {touchstart: heart_touched},
          // "#CODEXFRAME": {touchstart: noDefault,touchmove: noDefault,touchend: noDefault},
