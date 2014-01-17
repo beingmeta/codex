@@ -917,12 +917,17 @@ Codex.Paginate=
                         caller||"nocaller",previewing,curpage,pagenum);
             var newpage=false;
             if (!(previewing)) return;
-            if (target) {
+            if ((target)&&(target.nodeType)) {
                 dropClass(curpage,"curpage");
                 dropClass(curpage,"hidepage");
                 addClass(previewing,"curpage");
                 if (hasClass(target,"codexpage")) newpage=target;
                 else newpage=getParent(target,".codexpage");}
+            else if (target)  {
+                dropClass(curpage,"curpage");
+                dropClass(curpage,"hidepage");
+                addClass(previewing,"curpage");
+                newpage=curpage;}
             else {
                 dropClass(previewing,"preview");
                 dropClass(curpage,"hidepage");}

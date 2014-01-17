@@ -2109,7 +2109,7 @@
         if (target.nodeType===3) target=target.parentNode;
         if (!(Codex.previewing)) {preview_start_page=false; return;}
         dropClass(target,"preview");
-        Codex.stopPreview("pageinfo_release",false);
+        Codex.stopPreview("pageinfo_release");
         preview_start_page=false;
         previewing_page=false;
         fdjtUI.cancel(evt);
