@@ -133,6 +133,9 @@ body.cxPREVIEW.hudup div#CODEXHUD.searchresults div#CODEXSEETHRUHELP,
 body.cxPREVIEW.hudup div#CODEXHUD.allglosses div#CODEXSEETHRUHELP {
     display: none;}
 
+body.cxPREVIEW #CODEXPAGENOTEXT, body.cxPREVIEW #CODEXLOCPCT, body.cxPREVIEW #CODEXLOCOFF {
+    pointer-events: none;}
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***
