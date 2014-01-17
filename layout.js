@@ -69,7 +69,7 @@ Codex.Paginate=
         var hasClass=fdjtDOM.hasClass;
         var addClass=fdjtDOM.addClass;
         var dropClass=fdjtDOM.dropClass;
-        var TOA=fdjtDOM.toArray;
+        var toArray=fdjtDOM.toArray;
         var textWidth=fdjtDOM.textWidth;
         var hasText=fdjtDOM.hasText;
         var isEmpty=fdjtString.isEmpty;
@@ -197,7 +197,7 @@ Codex.Paginate=
                 
                 // Now walk the content
                 var content=Codex.content;
-                var nodes=TOA(content.childNodes);
+                var nodes=toArray(content.childNodes);
                 fdjtLog("Laying out %d root nodes into %dx%d pages (%s), id=%s",
                         nodes.length,layout.width,layout.height,
                         (why||""),layout_id);
@@ -836,8 +836,10 @@ Codex.Paginate=
                 if (Codex.Trace.flips)
                     fdjtLog("GoToPage/%s Flipping to %o (%d) for %o",
                             caller,page,pagenum,spec);
-                if (!(curpage)) 
-                    addClass(page,"curpage");
+                if (!(curpage)) {
+                    var curpages=Codex.pages.getElementsByClassName('curpage');
+                    if (curpages.length) dropClass(toArray(curpages),"curpage");
+                    addClass(page,"curpage");}
                 else {
                     var curnum=parseInt(curpage.getAttribute("data-pagenum"),10);
                     dropClass(curpage,/(oldpage|newpage|onleft|onright)/g);
@@ -848,6 +850,8 @@ Codex.Paginate=
                     addClass(page,"newpage");
                     var lastpage=curpage;
                     setTimeout(function(){
+                        var whoops=Codex.pages.getElementsByClassName('curpage');
+                        if (whoops.length) dropClass(toArray(whoops),"curpage");
                         dropClass(lastpage,"curpage");
                         addClass(page,"curpage");
                         dropClass(page,"newpage");
