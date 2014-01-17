@@ -288,7 +288,9 @@ Codex.setMode=
                     addGlossmark(nodes[i++],item);}
                 if (item.excerpt) {
                     var range=Codex.findExcerpt(nodes,item.excerpt,item.exoff);
-                    if (range) fdjtUI.Highlight(range,"codexuserexcerpt");}
+                    if (range) {
+                        fdjtUI.Highlight(range,"codexuserexcerpt",
+                                         item.note,{"data-glossid":item.uuid});}}
                 if (item.tags) {
                     var gloss_cloud=Codex.gloss_cloud;
                     var tags=item.tags, j=0, n_tags=tags.length;

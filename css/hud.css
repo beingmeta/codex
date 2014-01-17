@@ -725,6 +725,9 @@ body.hudup div#CODEXHUD.openglossmark div.hudpanel#CODEXPOINTGLOSSES {
     -o-box-shadow: 1em 1em 1em #cccccc;
     display: block;}
 
+body.cxTOUCH #CODEXFRAME > #CODEXHUD > div#CODEXPOINTGLOSSES {
+    pointer-events: all;}
+
 /* The CODEXSCANNER */
 
 body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSCANNER,

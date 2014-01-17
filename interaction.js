@@ -418,6 +418,8 @@
             if (!(found)) return elts[0];
             else return found;}}
 
+    var CodexSlice=Codex.Slice;
+
     function handle_content_click(target){
 
         if ((clicked)&&((fdjtTime()-clicked)<3000)) return true;
@@ -494,6 +496,21 @@
             Codex.setMode("showaside");
             clicked=fdjtTime();
             return true;}
+
+        var glossref=getParent(target,"[data-glossid]");
+        if (glossref) {
+            var glossid=glossref.getAttribute("data-glossid");
+            var gloss=Codex.glossdb.ref(glossid);
+            if (!(gloss)) return false;
+            var slicediv=fdjtDOM("div.codexglosses.codexslice");
+            var slice=new CodexSlice(slicediv,[gloss]);
+            var hudwrapper=fdjtDOM("div.hudpanel#CODEXPOINTGLOSSES",slicediv);
+            fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
+            Codex.setTarget(target);
+            slice.update();
+            Codex.setMode("openglossmark");
+            return true;}
+
         return false;}
 
     function getNoteNode(ref){
