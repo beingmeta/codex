@@ -9,7 +9,7 @@
 @media screen and (max-width: 600px) {
     div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
         left: auto; right: auto; width: 100%;}
-    #CODEXTOP, #CODEXSCANNER {
+    #CODEXSCANNER {
         border-width: 2px;
         border-bottom-left-radius: 1ex;
         border-bottom-right-radius: 1ex;

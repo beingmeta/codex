@@ -818,6 +818,17 @@
         else {
             Codex.stopPreview("toc_released");}
         fdjtUI.cancel(evt);}
+    function toc_touchtoo(evt){
+        evt=evt||event;
+        if (preview_timer) {
+            clearTimeout(preview_timer); preview_timer=false;}
+        if (!(Codex.previewing)) return;
+        else if (Codex.Trace.gestures) {
+            fdjtLog("toc_touchtoo %o noabout",evt);
+            Codex.stopPreview("toc_touchtoo",true);}
+        else {
+            Codex.stopPreview("toc_touchtoo",true);}
+        fdjtUI.cancel(evt);}
     function toc_slipped(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
@@ -965,6 +976,17 @@
                     fdjtLog("slice_slipped/timeout %o",evt);
                 Codex.stopPreview("slice_slipped");},
                                   500);}}
+    function slice_touchtoo(evt){
+        evt=evt||event;
+        if (preview_timer) {
+            clearTimeout(preview_timer); preview_timer=false;}
+        if (!(Codex.previewing)) return;
+        else if (Codex.Trace.gestures) {
+            fdjtLog("slice_touchtoo %o noabout",evt);
+            Codex.stopPreview("toc_touchtoo",true);}
+        else {
+            Codex.stopPreview("toc_touchtoo",true);}
+        fdjtUI.cancel(evt);}
 
     function getTargetDup(scan,target){
         var targetid=target.id;
@@ -2654,12 +2676,15 @@
                    click: content_click},
          hud: {click: handleXTarget, tap: handleXTarget},
          toc: {tap: toc_tapped,hold: toc_held,
-               slip: toc_slipped, release: toc_released},
+               slip: toc_slipped, release: toc_released,
+               touchtoo: toc_touchtoo,
+               touchmove: preview_touchmove_nodefault},
          glossmark: {touchstart: glossmark_tapped,touchend: cancel},
          // glossbutton: {mouseup: glossbutton_ontap,mousedown: cancel},
          summary: {tap: slice_tapped,
                    hold: slice_held,
                    release: slice_released,
+                   touchtoo: slice_touchtoo,
                    touchmove: preview_touchmove_nodefault,
                    slip: slice_slipped},
          // "#CODEXHEART": {touchstart: heart_touched},

@@ -111,8 +111,8 @@ Codex.TOC=
             while (i<n) {
                 toc.appendChild(new CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
             if (depth===0) {
-                if (prefix) Codex.TapHold[prefix]=fdjtUI.TapHold(toc);
-                else fdjtUI.TapHold(toc);
+                if (prefix) Codex.TapHold[prefix]=fdjtUI.TapHold(toc,{holdfast: true});
+                else fdjtUI.TapHold(toc,{holdfast: true});
                 Codex.UI.addHandlers(toc,'toc');}
             return toc;}
         
