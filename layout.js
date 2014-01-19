@@ -785,7 +785,27 @@ Codex.Paginate=
             if (update_progress) {
                 var page_progress=fdjtID("CODEXPAGEPROGRESS");
                 if (page_progress) page_progress.style.width=
-                    ((pagenum*100)/npages)+"%";}
+                    ((pagenum*100)/npages)+"%";
+                var page=fdjtID("CODEXPAGE"+pagenum);
+                var topid=(page)&&page.getAttribute("data-topid");
+                var info=(topid)&&Codex.docinfo[topid];
+                if (info) {
+                    var headinfo=((info.level)?(info):(info.head)), scan=headinfo, nextinfo;
+                    while (scan) {
+                        if (scan.next) {nextinfo=scan.next; break;}
+                        else scan=scan.head;}
+                    var start_page=getPage(headinfo.frag,headinfo.starts_at);
+                    var start_pageno=
+                        (start_page)&&parseInt((start_page).getAttribute("data-pagenum"));
+                    var npages=Codex.layout.pages.length;
+                    var sect_range=fdjtID("CODEXPAGESECTSPAN");
+                    sect_range.style.left=(100*((start_pageno-1)/npages))+"%";
+                    if (nextinfo) {
+                        var end_page=getPage(nextinfo.frag,nextinfo.starts_at);
+                        var end_pageno=
+                            (end_page)&&parseInt((end_page).getAttribute("data-pagenum"));
+                        sect_range.style.width=(100*((end_pageno-start_pageno)/npages))+"%";}
+                    else sect_range.style.width=(100*((npages-start_pageno+1)/npages))+"%";}}
             fdjtDOM.addListeners(
                 locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCPCT"]);
             fdjtDOM.addListeners(

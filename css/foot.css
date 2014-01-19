@@ -133,11 +133,17 @@ body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.preview {
   pointer-events: none;}
 
 div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGEPROGRESS {
-  box-sizing: border-box; border-right: solid darkblue 2px;
+  box-sizing: content-box; border-right: solid darkblue 2px;
   position: absolute; bottom: 0px; left: 0px;
   width: 33%; height: 20px;
   background-color: rgba(162,181,205,0.8);
   z-index: 5;}
+div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGESECTSPAN {
+  box-sizing: content-box;
+  border-left: dotted red 2px; border-right: dotted red 2px;
+  position: absolute; bottom: 0px; left: 10%; width: 0%;
+  background-color: transparent; height: 20px;
+  z-index: 50;}
 
 div#CODEXHUD .codexgoto {
     position: absolute; bottom: 0px; padding-bottom: 0.5ex;
