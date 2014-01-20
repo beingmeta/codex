@@ -23,10 +23,7 @@ body.hudup div#CODEXFOOT div#CODEXPAGEINFO {
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
 div#CODEXFOOT div#CODEXPAGEINFO span#CODEXLOCPCT {
-    position: absolute; bottom: 0px; right: 3px; cursor: text;}
-div#CODEXFOOT div#CODEXPAGEINFO span#CODEXPAGENO {
-    position: absolute; right: 50%; bottom: 0px;
-    max-height: 50%;}
+    position: absolute; right: 3px; cursor: text;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO span#CODEXLOCPCT,
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO span#CODEXPAGENOTEXT {
     pointer-events: none;}
@@ -148,9 +145,16 @@ div#CODEXFOOT div#CODEXPAGEINFO .codexsectmarker {
   pointer-events: none;
   z-index: 45;}
 div#CODEXFOOT div#CODEXPAGEINFO #CODEXSECTMARKER1.codexsectmarker {
-    height: 75%;}
+    height: 95%;}
 div#CODEXFOOT div#CODEXPAGEINFO #CODEXSECTMARKER2.codexsectmarker {
-    height: 65%; background-color: rgba(0,0,255,0.15); }
+    height: 70%; background-color: rgba(0,0,255,0.15); }
+div#CODEXFOOT div#CODEXPAGEINFO #CODEXSECTMARKER3.codexsectmarker {
+    height: 45%; background-color: rgba(0,0,255,0.15); }
+
+body.cxTOUCH.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO {
+    height: 120px;}
+body.cxTOUCH.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.preview  {
+    height: 100%;}
 
 div#CODEXHUD .codexgoto {
     position: absolute; bottom: 0px; padding-bottom: 0.5ex;

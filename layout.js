@@ -785,19 +785,26 @@ Codex.Paginate=
             if (update_progress) {
                 var page_progress=fdjtID("CODEXPAGEPROGRESS");
                 if (page_progress) page_progress.style.width=
-                    ((pagenum*100)/npages)+"%";
+                    ((pagenum*100)/npages)+"%";}
+            if (update_progress) {
+                /* Update section markers */
                 var page=fdjtID("CODEXPAGE"+pagenum);
                 var topid=(page)&&page.getAttribute("data-topid");
                 var info=(topid)&&Codex.docinfo[topid];
                 if (info) {
-                    var headinfo=((info.level)?(info):(info.head)), nexthead=headinfo.head;
-                    var span1=(headinfo)&&getPageSpan(headinfo);
-                    var span2=(nexthead)&&getPageSpan(nexthead);
+                    var head1=((info.level)?(info):(info.head));
+                    var head2=((head1)&&(head1.head));
+                    var head3=((head2)&&(head2.head));
+                    var span1=(head1)&&getPageSpan(head1);
+                    var span2=(head2)&&getPageSpan(head2);
+                    var span3=(head2)&&getPageSpan(head3);
                     while ((span2)&&(span1.width<=1)) {
-                        headinfo=nexthead; nexthead=headinfo.head;
-                        span1=span2; span2=(nexthead)&&(getPageSpan(nexthead));}
+                        head1=head2; head2=head3; head3=head2.head;
+                        span1=span2; span2=span3;
+                        span3=(head3)&&(getPageSpan(head3));}
                     var npages=Codex.layout.pages.length;
                     var marker1=fdjtID("CODEXSECTMARKER1"), marker2=fdjtID("CODEXSECTMARKER2");
+                    var marker3=fdjtID("CODEXSECTMARKER3")
                     if ((span1)&&(span1.width)) {
                         marker1.style.left=(100*(span1.start/npages))+"%";
                         marker1.style.width=(100*(span1.width/npages))+"%";
@@ -807,7 +814,12 @@ Codex.Paginate=
                         marker2.style.left=(100*(span2.start/npages))+"%";
                         marker2.style.width=(100*(span2.width/npages))+"%";
                         marker2.style.display='block';                    }
-                    else marker2.style.display='none';}}
+                    else marker2.style.display='none';
+                    if ((span3)&&(span3.width)) {
+                        marker3.style.left=(100*(span3.start/npages))+"%";
+                        marker3.style.width=(100*(span3.width/npages))+"%";
+                        marker3.style.display='block';                    }
+                    else marker3.style.display='none';}}
             fdjtDOM.addListeners(
                 locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCPCT"]);
             fdjtDOM.addListeners(
