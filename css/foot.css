@@ -138,12 +138,17 @@ div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGEPROGRESS {
   width: 33%; height: 20px;
   background-color: rgba(162,181,205,0.8);
   z-index: 5;}
-div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGESECTSPAN {
+div#CODEXFOOT div#CODEXPAGEINFO .codexsectmarker {
   box-sizing: content-box;
-  border-left: dotted red 2px; border-right: dotted red 2px;
+  /* border-left: dotted rgba(0,0,255,0.5) 2px; border-right: dotted rgba(0,0,255,0.5) 2px; */
   position: absolute; bottom: 0px; left: 10%; width: 0%;
-  background-color: transparent; height: 20px;
-  z-index: 50;}
+  background-color: rgba(0,0,255,0.3); height: 20px;
+  border-top-left-radius: 4px; border-top-right-radius: 4px;
+  z-index: 45;}
+div#CODEXFOOT div#CODEXPAGEINFO #CODEXSECTMARKER1.codexsectmarker {
+    height: 30px;}
+div#CODEXFOOT div#CODEXPAGEINFO #CODEXSECTMARKER2.codexsectmarker {
+    height: 25px; background-color: rgba(0,0,255,0.15); }
 
 div#CODEXHUD .codexgoto {
     position: absolute; bottom: 0px; padding-bottom: 0.5ex;

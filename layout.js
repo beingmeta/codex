@@ -790,28 +790,46 @@ Codex.Paginate=
                 var topid=(page)&&page.getAttribute("data-topid");
                 var info=(topid)&&Codex.docinfo[topid];
                 if (info) {
-                    var headinfo=((info.level)?(info):(info.head)), scan=headinfo, nextinfo;
-                    while (scan) {
-                        if (scan.next) {nextinfo=scan.next; break;}
-                        else scan=scan.head;}
-                    var start_page=getPage(headinfo.frag,headinfo.starts_at);
-                    var start_pageno=
-                        (start_page)&&parseInt((start_page).getAttribute("data-pagenum"));
+                    var headinfo=((info.level)?(info):(info.head)), nexthead=headinfo.head;
+                    var span1=(headinfo)&&getPageSpan(headinfo);
+                    var span2=(nexthead)&&getPageSpan(nexthead);
+                    while ((span2)&&(span1.width<=1)) {
+                        headinfo=nexthead; nexthead=headinfo.head;
+                        span1=span2; span2=(nexthead)&&(getPageSpan(nexthead));}
                     var npages=Codex.layout.pages.length;
-                    var sect_range=fdjtID("CODEXPAGESECTSPAN");
-                    sect_range.style.left=(100*((start_pageno-1)/npages))+"%";
-                    if (nextinfo) {
-                        var end_page=getPage(nextinfo.frag,nextinfo.starts_at);
-                        var end_pageno=
-                            (end_page)&&parseInt((end_page).getAttribute("data-pagenum"));
-                        sect_range.style.width=(100*((end_pageno-start_pageno)/npages))+"%";}
-                    else sect_range.style.width=(100*((npages-start_pageno+1)/npages))+"%";}}
+                    var marker1=fdjtID("CODEXSECTMARKER1"), marker2=fdjtID("CODEXSECTMARKER2");
+                    if ((span1)&&(span1.width)) {
+                        marker1.style.left=(100*(span1.start/npages))+"%";
+                        marker1.style.width=(100*(span1.width/npages))+"%";
+                        marker1.style.display='block';                    }
+                    else marker1.style.display='none';
+                    if ((span2)&&(span2.width)) {
+                        marker2.style.left=(100*(span2.start/npages))+"%";
+                        marker2.style.width=(100*(span2.width/npages))+"%";
+                        marker2.style.display='block';                    }
+                    else marker2.style.display='none';}}
             fdjtDOM.addListeners(
                 locoff,Codex.UI.handlers[Codex.ui]["#CODEXLOCPCT"]);
             fdjtDOM.addListeners(
                 pageno_text,Codex.UI.handlers[Codex.ui]["#CODEXPAGENOTEXT"]);}
         Codex.updatePageDisplay=updatePageDisplay;
         
+        function getPageSpan(headinfo) {
+            var scan=headinfo, nextinfo, result={};
+            while (scan) {
+                if (scan.next) {nextinfo=scan.next; break;}
+                else scan=scan.head;}
+            var start_page=getPage(headinfo.frag,headinfo.starts_at);
+            if (!(start_page)) return false;
+            else result.start=parseInt((start_page).getAttribute("data-pagenum"));
+            if (nextinfo) {
+                var end_page=getPage(nextinfo.frag,nextinfo.starts_at);
+                if (end_page)
+                    result.end=parseInt((end_page).getAttribute("data-pagenum"));}
+            if (!(result.end)) result.end=Codex.layout.pages.length+1;
+            result.width=result.end-result.start;
+            return result;}
+
         /* Page info */
         
         function setupPageInfo(){
