@@ -26,7 +26,7 @@ div#CODEXFOOT div#CODEXPAGEINFO span#CODEXLOCPCT {
     position: absolute; bottom: 0px; right: 3px; cursor: text;}
 div#CODEXFOOT div#CODEXPAGEINFO span#CODEXPAGENO {
     position: absolute; right: 50%; bottom: 0px;
-    max-height: 20px;}
+    max-height: 50%;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO span#CODEXLOCPCT,
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO span#CODEXPAGENOTEXT {
     pointer-events: none;}
@@ -79,7 +79,7 @@ body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
 /* Page spans */
 
 div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
-  position: absolute; bottom: 0px; height: 20px; width: 100%;
+  position: absolute; bottom: 0px; height: 50%; width: 100%;
   border-top: solid black 1px; z-index: 50;
   pointer-events: none;}
 div#CODEXFOOT div#CODEXPAGEINFO div.textfoot > span {
@@ -100,13 +100,13 @@ body.cxLAYOUT hr#CODEXLAYOUTINDICATOR {
 
 div#CODEXFOOT div#CODEXPAGEINFO .pagespans {
   position: absolute; bottom: 0px;
-  width: 100%; height: 40px; z-index: 10;}
+  width: 100%; height: 100%; z-index: 10;}
 div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
-  opacity: 0.0; overflow: hidden; z-index: 20; height: 40px;
+  opacity: 0.0; overflow: hidden; z-index: 20; height: 100%;
   display: inline-block; position: absolute; bottom: 0px;
   box-sizing: border-box; vertical-align: top;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span {
-    height: 40px;}
+    height: 100%;}
 div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
   background-color: lightblue; color: transparent; 
   visibility: visible; opacity: 1.0; z-index: 100;
@@ -114,9 +114,9 @@ div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans {
   top: 0px; bottom: auto;}
 body div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
-    vertical-align: bottom; height: 20px;}
+    vertical-align: bottom; height: 50%;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
-    height: 40px;}
+    height: 100%;}
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
   overflow: visible; visibility: visible; z-index: 60; color: black;
   opacity: 1.0;
@@ -129,13 +129,13 @@ body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.current {
 body.cxPREVIEW div#CODEXFOOT div#CODEXPAGEINFO .pagespans span.preview {
   background-color: gold; overflow: visible;
   visibility: visible; opacity: 1.0; z-index: 100;
-  font-size: 200%; height: 60px; width: 1.5em;
+  font-size: 200%; height: 150%; width: 1.5em;
   pointer-events: none;}
 
 div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGEPROGRESS {
   box-sizing: content-box; border-right: solid darkblue 2px;
   position: absolute; bottom: 0px; left: 0px;
-  width: 33%; height: 20px;
+  width: 33%; height: 50%;
   background-color: rgba(162,181,205,0.8);
   pointer-events: none;
   z-index: 5;}
@@ -143,14 +143,14 @@ div#CODEXFOOT div#CODEXPAGEINFO .codexsectmarker {
   box-sizing: content-box;
   /* border-left: dotted rgba(0,0,255,0.5) 2px; border-right: dotted rgba(0,0,255,0.5) 2px; */
   position: absolute; bottom: 0px; left: 10%; width: 0%;
-  background-color: rgba(0,0,255,0.3); height: 20px;
+  background-color: rgba(0,0,255,0.3); height: 50%;
   border-top-left-radius: 4px; border-top-right-radius: 4px;
   pointer-events: none;
   z-index: 45;}
 div#CODEXFOOT div#CODEXPAGEINFO #CODEXSECTMARKER1.codexsectmarker {
-    height: 30px;}
+    height: 75%;}
 div#CODEXFOOT div#CODEXPAGEINFO #CODEXSECTMARKER2.codexsectmarker {
-    height: 25px; background-color: rgba(0,0,255,0.15); }
+    height: 65%; background-color: rgba(0,0,255,0.15); }
 
 div#CODEXHUD .codexgoto {
     position: absolute; bottom: 0px; padding-bottom: 0.5ex;
