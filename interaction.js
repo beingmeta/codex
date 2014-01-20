@@ -756,14 +756,9 @@
             var info=Codex.docinfo[ref];
             var target=info.elt||cxID(ref);
             if (target.id!==ref) target=cxID(ref);
-            var already_there=(info)&&(Codex.head)&&
-                (info.frag===Codex.head.id);
             if (Codex.Trace.gestures)
-                fdjtLog("toc_tapped %o about=%o ref=%s target=%o",evt,about,ref,target);
-            if (already_there) {
-                Codex.setMode("overtoc");
-                fdjtUI.cancel(evt);
-                return;}
+                fdjtLog("toc_tapped %o about=%o ref=%s target=%o",
+                        evt,about,ref,target);
             Codex.JumpTo(target);
             fdjtUI.cancel(evt);}
        else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
@@ -1848,9 +1843,8 @@
                 fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
                         head,headinfo,headinfo.next,headinfo.head);
             if (headinfo.next) Codex.GoTo(headinfo.next.frag,"scanForward");
-            else if ((headinfo.head)&&(headinfo.head.next)) {
+            else if ((headinfo.head)&&(headinfo.head.next)) 
                 Codex.GoTo(headinfo.head.next.frag,"scanForward");
-                Codex.setMode("overtoc");}
             else if ((headinfo.head)&&(headinfo.head.head)&&
                      (headinfo.head.head.next)) 
                 Codex.GoTo(headinfo.head.head.next.frag,"scanForward");
