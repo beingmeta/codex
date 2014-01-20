@@ -195,7 +195,6 @@
     var gloss_blur_timeout=false;
 
     function glossform_focusin(evt){
-        var target=fdjtUI.T(evt);
         if (gloss_blur_timeout) clearTimeout(gloss_blur_timeout);
         glossform_focus(evt);}
     function glossform_focusout(evt){
@@ -756,6 +755,7 @@
             var ref=name.slice(3);
             var info=Codex.docinfo[ref];
             var target=info.elt||cxID(ref);
+            if (target.id!==ref) target=cxID(ref);
             var already_there=(info)&&(Codex.head)&&
                 (info.frag===Codex.head.id);
             if (Codex.Trace.gestures)
