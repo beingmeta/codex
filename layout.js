@@ -802,9 +802,8 @@ Codex.Paginate=
                         head1=head2; head2=head3; head3=head2.head;
                         span1=span2; span2=span3;
                         span3=(head3)&&(getPageSpan(head3));}
-                    var npages=Codex.layout.pages.length;
                     var marker1=fdjtID("CODEXSECTMARKER1"), marker2=fdjtID("CODEXSECTMARKER2");
-                    var marker3=fdjtID("CODEXSECTMARKER3")
+                    var marker3=fdjtID("CODEXSECTMARKER3");
                     if ((span1)&&(span1.width)) {
                         marker1.style.left=(100*(span1.start/npages))+"%";
                         marker1.style.width=(100*(span1.width/npages))+"%";
@@ -833,11 +832,11 @@ Codex.Paginate=
                 else scan=scan.head;}
             var start_page=getPage(headinfo.frag,headinfo.starts_at);
             if (!(start_page)) return false;
-            else result.start=parseInt((start_page).getAttribute("data-pagenum"));
+            else result.start=parseInt((start_page).getAttribute("data-pagenum"),10);
             if (nextinfo) {
                 var end_page=getPage(nextinfo.frag,nextinfo.starts_at);
                 if (end_page)
-                    result.end=parseInt((end_page).getAttribute("data-pagenum"));}
+                    result.end=parseInt((end_page).getAttribute("data-pagenum"),10);}
             if (!(result.end)) result.end=Codex.layout.pages.length+1;
             result.width=result.end-result.start;
             return result;}
