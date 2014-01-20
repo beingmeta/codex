@@ -104,7 +104,8 @@ body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img {
     height: inherit;}
 
 div#CODEXHEART div#CODEXSTATICTOC {
-    margin-left: 1em; margin-right: 1em;}
+    margin-left: 0.1em; margin-right: 0.1em;
+    font-size: 2em;}
 div#CODEXHEART div#CODEXSTATICTOC div.codextoc {
     display: block; font-size: 90%; text-align: left;}
 div#CODEXHEART div#CODEXSTATICTOC div.codextoc img { display: none;}
