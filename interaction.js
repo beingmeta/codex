@@ -2124,10 +2124,6 @@
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
-        if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
-            fdjtUI.cancel(evt);
-            Codex.setMode(false);
-            return;}
         var target=fdjtUI.T(evt);
         if (target.nodeType===3) target=target.parentNode;
         if (!(Codex.previewing)) {preview_start_page=false; return;}

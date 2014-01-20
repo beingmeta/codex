@@ -120,7 +120,8 @@ div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
     -moz-border-radius-bottomright: 1ex;
     -o-border-radius-bottomright: 1ex;}
 div#CODEXSKIMMERHELP.helpbox p, div#CODEXSEETHRUHELP.helpbox p {
-    margin: 0px; padding: 0px; text-align: center; text-indent: 0px;}
+    margin: 0px; padding: 0px; text-align: center; text-indent: 0px;
+    max-width: inherit;}
 div#CODEXSKIMMERHELP.helpbox dfn, div#CODEXSEETHRUHELP.helpbox dfn {
     font-size: 125%;}
 
