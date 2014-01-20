@@ -747,7 +747,7 @@
             //  the user really meant to tap on the body underneath,
             //  so we stop previewing and jump there We might try to
             //  figure out exactly which element was tapped somehow
-            Codex.stopPreview("toc_tapped",true);
+            Codex.stopPreview("toc_tapped");
             fdjtUI.cancel(evt);
             return;}
        var about=getAbout(tap_target);
@@ -1078,7 +1078,7 @@
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
-            Codex.stopPreview("onkeydown",(!(hasClass(document.body,"cxPAGEPREVIEW"))));
+            Codex.stopPreview("onkeydown");
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
@@ -1501,18 +1501,19 @@
                  (hasParent(target,Codex.uiclasses)))
             return;
         else if (Codex.previewing) {
-            Codex.stopPreview("default_tap",true);
+            Codex.stopPreview("default_tap");
             cancel(evt);
             return;}
         else if (((Codex.hudup)||(Codex.mode))) {
             Codex.setMode(false);
             cancel(evt);}
-        else {
+        else if (false) {
             var cx=evt.clientX, cy=evt.clientY;
             var w=fdjtDOM.viewWidth(), h=fdjtDOM.viewHeight();
             if ((cy<60)||(cy>(h-60))) return;
             if (cx<w/3) Codex.Backward(evt);
-            else if (cx>w/2) Codex.Forward(evt);}}
+            else if (cx>w/2) Codex.Forward(evt);}
+        else {}}
 
     /* Glossmarks */
     
@@ -1643,7 +1644,7 @@
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;}
         if (Codex.previewing) {
-            Codex.stopPreview("right_margin_tap",true);
+            Codex.stopPreview("right_margin_tap");
             if (Codex.hudup) {
                 Codex.setHUD(false);
                 Codex.setMode(false);}
@@ -1713,7 +1714,7 @@
 	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
         stopPageTurner();
         if (Codex.previewing) {
-            Codex.stopPreview("left_margin_tap",true);
+            Codex.stopPreview("left_margin_tap");
             if (Codex.hudup) {
                 Codex.setHUD(false);
                 Codex.setMode(false);}
@@ -2015,7 +2016,7 @@
         var target=fdjtUI.T(evt);
         if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
         if (Codex.previewing) {
-            Codex.stopPreview("head_tap",true);
+            Codex.stopPreview("head_tap");
             cancel(evt);
             return;}
         if (fdjtUI.isClickable(target)) return;
@@ -2037,7 +2038,7 @@
     function foot_tap(evt){
         if (Codex.Trace.gestures) fdjtLog("foot_tap %o",evt);
         if (Codex.previewing) {
-            Codex.stopPreview("foot_tap",true);
+            Codex.stopPreview("foot_tap");
             cancel(evt);
             return;}
         if (isClickable(evt)) return;
@@ -2131,7 +2132,7 @@
         if (target.nodeType===3) target=target.parentNode;
         if (!(Codex.previewing)) {preview_start_page=false; return;}
         dropClass(target,"preview");
-        Codex.stopPreview("pageinfo_release");
+        Codex.stopPreview("pageinfo_release",true);
         preview_start_page=false;
         previewing_page=false;
         fdjtUI.cancel(evt);
@@ -2160,7 +2161,7 @@
         previewing_page=false;}
     function pageinfo_touchtoo(evt){
         if (Codex.previewing) {
-            Codex.stopPreview("touchtoo",true);
+            Codex.stopPreview("touchtoo");
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
@@ -2711,7 +2712,7 @@
          "#CODEXPAGEHEAD": {touchstart: head_tap},
          "#CODEXTABS": {touchstart: head_tap},
          "#CODEXTOP": {click: head_tap},
-         "#CODEXFOOT": {tap: foot_tap},
+         "#CODEXFOOT": {tap: foot_tap,touchstart: noDefault,touchmove: noDefault},
          // Forward and backwards
          "#CODEXPAGELEFT": {tap: left_margin_tap,
                             hold: left_margin_hold,
