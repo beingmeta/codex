@@ -2680,11 +2680,11 @@
                    slip: slice_slipped},
          // "#CODEXHEART": {touchstart: heart_touched},
          // "#CODEXFRAME": {touchstart: noDefault,touchmove: noDefault,touchend: noDefault},
-         "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
+         "#CODEXSTARTPAGE": {touchend: Codex.UI.dropHUD},
          "#CODEXHEAD": {tap: raiseHUD},
          "#CODEXSHOWCOVER": {tap: showcover_tapped, release: showcover_released},
-         "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
-         ".helphud": {click: Codex.UI.dropHUD},
+         "#CODEXHUDHELP": {touchend: Codex.UI.dropHUD},
+         ".helphud": {touchend: Codex.UI.dropHUD},
          "#CODEXPAGEFOOT": {},
          "#CODEXPAGEINFO": {tap: pageinfo_tap,
                             hold: pageinfo_hold,
@@ -2701,7 +2701,7 @@
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
          "#CODEXTABS": {touchstart: head_tap},
-         "#CODEXTOP": {click: head_tap},
+         "#CODEXTOP": {touchend: head_tap},
          "#CODEXFOOT": {tap: foot_tap,touchstart: noDefault,touchmove: noDefault},
          // Forward and backwards
          "#CODEXPAGELEFT": {tap: left_margin_tap,
@@ -2719,10 +2719,10 @@
          "#CODEXATTACHTITLE": {click: addlink_keydown},
          "#CODEXATTACHOK": {click: addlink_action},
          "#CODEXATTACHCANCEL": {click: addlink_cancel},
-         "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
-         "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
-         "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
-         "#CODEXSHARECLOUD": {click: outlet_tapped},
+         "#CODEXGLOSSCLOUD": {touchend: Codex.UI.handlers.glosscloud_ontap},
+         "#CODEXALLTAGS": {touchend: Codex.UI.handlers.searchcloud_ontap},
+         "#CODEXSEARCHCLOUD": {touchend: Codex.UI.handlers.searchcloud_ontap},
+         "#CODEXSHARECLOUD": {touchend: outlet_tapped},
          "#CODEXNEXTPAGE": {touchstart: function(evt){
              Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {touchstart: function(evt){
@@ -2737,18 +2737,18 @@
              release: function(evt){setHelp(false); cancel(evt);},
              slip: function(evt){setHelp(false); cancel(evt);}},
          "#CODEXHELP": {touchstart: toggleHelp},
-         "#CODEXNOTETEXT": {click: jumpToNote},
+         "#CODEXNOTETEXT": {touchend: jumpToNote,click: cancel},
          "#CODEXSHOWTEXT": {
              touchstart: back_to_reading,
              touchmove: cancel,
              touchend: cancel},
-         "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
+         "#CODEXGLOSSDETAIL": {touchend: Codex.UI.dropHUD,click: cancel},
          ".hudmodebutton": {
              tap: hudmodebutton,hold: hudmodebutton,release: hudmodebutton,
              slip: hudmodebutton},
          // GLOSSFORM rules
-         ".codexglossform": {click: glossform_touch,touchstart: glossform_touch},
-         "span.codexsharegloss": {click: fdjt.UI.CheckSpan.onclick},
+         ".codexglossform": {click: cancel,touchstart: glossform_touch},
+         "span.codexsharegloss": {touchend: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {
              click: back_to_reading,
              touchmove: cancel,
@@ -2763,8 +2763,12 @@
              click: cancel},
          "div.glossetc": {
              touchstart: fdjt.UI.CheckSpan.onclick},
-         "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-         "div.glossetc div.notetext": {click: editglossnote}});
+         "div.glossetc div.sharing": {
+             touchend: glossform_outlets_tapped,
+             click: cancel},
+         "div.glossetc div.notetext": {
+             touchend: editglossnote,
+             click: cancel}});
     
 })();
 
