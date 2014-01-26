@@ -63,8 +63,6 @@ Codex.Startup=
         
         var CodexLayout=fdjt.CodexLayout;
 
-        var warn=fdjtLog.warn;
-
         var https_root="https://s3.amazonaws.com/beingmeta/static/";
 
         // Imported functions
@@ -730,7 +728,7 @@ Codex.Startup=
             fdjtTime.timeslice
             ([  // Scan the DOM for metadata.  This is surprisingly
                 //  fast, so we don't currently try to timeslice it or
-                //  cache it, though we could
+                //  cache it, though we could.
                 function(){metadata=scanDOM();},
                 // Now you're ready to lay out the book, which is
                 //  timesliced and runs on its own.  We wait to do
