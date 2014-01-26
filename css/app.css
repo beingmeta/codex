@@ -852,9 +852,9 @@ div.fdjtdialog.fdjtconfirm.updatelayout div.choices button {
     div#CODEXPAGE {left: 5px; right: 5px;}}
 
 @media screen and (min-height: 300px) and (max-height: 500px) {
-    div#CODEXPAGE {top: 15px; bottom: 15px;}}
+    div#CODEXPAGE {top: 10px; bottom: 20px;}}
 @media screen and (max-height: 300px) {
-    div#CODEXPAGE {top: 10px; bottom: 10px;}}
+    div#CODEXPAGE {top: 5px; bottom: 15px;}}
 
 /* Emacs local variables
 ;;;  Local variables: ***
