@@ -1360,13 +1360,33 @@
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
     function addlink_submit(evt){
-        fdjtUI.cancel(evt);
+        evt=evt||event;
+        var form=fdjtUI.T(evt);
+        var fileinput=fdjtDOM.getInput(form,"ATTACH.FILE");
+        var isokay=fdjtDOM.getInput(form,"FILEOKAY");
         var linkinput=fdjtID("CODEXATTACHURL");
         var titleinput=fdjtID("CODEXATTACHTITLE");
         var livegloss=fdjtID("CODEXLIVEGLOSS");
+        var glossid=fdjtID("CODEXATTACHGLOSS");
+        var itemid=fdjtID("CODEXATTACHITEM");
+        if (hasClass("CODEXHUD","glossattach")) {
+            if (!(file_input.value)) {
+                fdjtUI.cancel(evt);
+                alert("You need to specify a file!");
+                return;}
+            if (!(isokay.checked)) {
+                fdjtUI.cancel(evt);
+                alert("You need to confirm that the file satisfies our restrictions!");
+                return;}}
+        else fdjtUI.cancel(evt);
         if (!(livegloss)) return;
         var form=getChild(livegloss,"FORM");
-        Codex.addLink2Form(form,linkinput.value,titleinput.value);
+        if (hasClass("CODEXHUD","glossattach"))
+            Codex.addLink2Form(
+                form,"https://glossdata.sbooks.net/"+glossid.value+"/"+itemid.value,
+                titleinput.value);
+        else Codex.addLink2Form(form,linkinput.value,titleinput.value);
+        fileinput.value="";
         linkinput.value="";
         titleinput.value="";
         Codex.setGlossMode("editnote");

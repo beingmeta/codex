@@ -470,12 +470,18 @@ div#CODEXGLOSSATTACH.detail tr.detail, div#CODEXGLOSSATTACH.upload tr.upload {
     display: table-row;}
 div#CODEXGLOSSATTACH.detail tr.url, div#CODEXGLOSSATTACH.upload tr.url {
     display: none;}
+div#CODEXGLOSSATTACH tr.fileisokay {
+    color: black; font-size: 0.9em;}
+div#CODEXGLOSSATTACH tr.fileisokay td {
+    padding-bottom: 1ex;}
+
 div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"],
 div#CODEXGLOSSATTACH table.fdjtform td input[type="URL"] { width: 95%;}
 
+div#CODEXGLOSSATTACH th button { width: 5em; }
+
 div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.upload,
-div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.choosetype,
-div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.detail {
+div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.fileisokay {
     display: table-row;}
 div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH tr.url {
     display: none;}
@@ -548,6 +554,11 @@ div.codexglossform form div.addglossmenu.expanded > img[alt="hamburger"] {
 div.codexglossform form.addtag div.addglossmenu > img[alt="hamburger"] {
     display: none; }
 div.codexglossform form.addtag div.addglossmenu > img[alt="addtag"] {
+    display: block; }
+
+div.codexglossform form.attach div.addglossmenu > img[alt="hamburger"] {
+    display: none; }
+div.codexglossform form.attach div.addglossmenu > img[alt="attach"] {
     display: block; }
 
 div.codexglossform form.addlink div.addglossmenu > img[alt="hamburger"] {
