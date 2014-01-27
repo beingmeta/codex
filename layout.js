@@ -123,6 +123,7 @@ Codex.Paginate=
             function restore_layout(content,layout_id){
                 fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("CODEXCONTENT").style.display='none';
+                fdjtID("CODEXLAYOUTMESSAGE").innerHTML="Using cached layout";
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
                 layout.restoreLayout(content,finish_layout);}
@@ -202,6 +203,8 @@ Codex.Paginate=
                         nodes.length,layout.width,layout.height,
                         (why||""),layout_id);
                 
+                fdjtID("CODEXLAYOUTMESSAGE").innerHTML="Starting new layout";
+
                 // Do the adjust font bit.  We rely on Codex.content
                 //  having the same width as Codex.page
                 fdjt.DOM.adjustFonts(content);

@@ -33,6 +33,10 @@
 
 div#CODEXCOVER {}
 
+body.cxSTARTUP div#CODEXCOVER, body.cxWORKING div#CODEXCOVER,
+body.cxLAYOUT div#CODEXCOVER {
+    pointer: progress;}
+
 body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 #CODEXHUD.openglossmark, body.codexhelp #CODEXHUD {
     z-index: 100; }
@@ -53,6 +57,16 @@ div#CODEXCOVER > div > div.fdjtadjusted {
     height: 100%; width: 100%;}
 
 div#CODEXCOVER > div#CODEXTAPMESSAGE {
+    position: absolute; white-space: nowrap;
+    font-size: 1.5em; font-style: italic; opacity: 1.0;
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    top: 0px; left: 30%; right: 30%; bottom: auto;
+    text-align: center; overflow: visible; 
+    background-color: black; color: silver;
+    cursor: pointer; display: block;
+    z-index: 50;
+    display: block;}
+div#CODEXCOVER > div#CODEXCOVERMESSAGE {
     position: absolute; white-space: nowrap;
     font-size: 1.5em; font-style: italic; opacity: 1.0;
     font-family: Arial,Verdana,Helvetica,sans-serif;
@@ -335,6 +349,16 @@ div#CODEXCONSOLE div.message {
 div#CODEXCONSOLE div#CODEXCONSOLEINPUT { margin-left: 4em;}
 div#CODEXCONSOLE div#CODEXCONSOLEINPUT span.button { float: right;}
 div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
+
+/* The cover message */
+
+div#CODEXCOVERMESSAGE .status {
+    display: none;}
+body.cxLAYOUT div#CODEXCOVERMESSAGE .status#CODEXLAYOUTMESSAGE {
+    display: inline-block;}
+body.cxLAYOUT div#CODEXCOVERMESSAGE #CODEXREADYMESSAGE {
+    display: none;}
+
 
 /* Emacs local variables
 ;;;  Local variables: ***

@@ -60,9 +60,9 @@ div#CODEXSTARTPAGE #CODEXSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;
     display: none;}
-body.codexstartup div#CODEXSTARTPAGE #CODEXSTARTUPMSG {
+body.cxSTARTUP div#CODEXSTARTPAGE #CODEXSTARTUPMSG {
     display: inline;}
-body.codexstartup div#CODEXSTARTPAGE #CODEXHELPTITLE {
+body.cxSTARTUP div#CODEXSTARTPAGE #CODEXHELPTITLE {
     display: none;}
 
 body.codexhelp div#CODEXHUD img.hudbutton#CODEXHELPBUTTON {

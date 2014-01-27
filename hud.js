@@ -86,13 +86,7 @@ Codex.setMode=
             Codex.HUD=CodexHUD=hud=fdjtDOM("div#CODEXHUD");
             hud.codexui=true;
             hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
-            fdjtDOM.append(messages,
-                           fdjtDOM("div.fdjtprogress#CODEXINDEXMESSAGE",
-                                   fdjtDOM("div.indicator"),
-                                   fdjtDOM("div.message")),
-                           fdjtDOM("div.fdjtprogress#CODEXLAYOUTMESSAGE",
-                                   fdjtDOM("div.indicator"),
-                                   fdjtDOM("div.message")));
+            fdjtDOM.append(messages);
             if (fdjtID("CODEXFRAME")) {
                 var frame=fdjtID("CODEXFRAME");
                 frame.appendChild(messages); frame.appendChild(hud);}

@@ -128,7 +128,7 @@ div#CODEXCONTENT, div#CODEXCONTENT p, div#CODEXCONTENT div {
     -moz-user-select: auto;
     -webkit-user-select: auto;}
 
-body.codexstartup div#CODEXCONTENT {
+body.cxSTARTUP div#CODEXCONTENT {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -796,7 +796,7 @@ body.cxANIMATE div#CODEXSTARTUPMESSAGES {
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
     -moz-transition-duration: 1s;}
-body.codexstartup div#CODEXSTARTUPMESSAGES { display: block;}
+body.cxSTARTUP div#CODEXSTARTUPMESSAGES { display: block;}
 div.startupmessage { display: none;}
 div.startupmessage {
     text-align: center; font-size: 20px; font-weight: bold;

@@ -722,6 +722,7 @@ Codex.Startup=
             var metadata=false;
             if (Codex._setup) return;
             if ((!force)&&(getQuery("nocodex"))) return;
+            addClass(document.body,"cxSTARTUP");
             // This is all of the startup that we need to do synchronously
             syncStartup();
             // The rest of the stuff we timeslice
@@ -869,7 +870,7 @@ Codex.Startup=
                 if (evt.state) Codex.restoreState(evt.state,"popstate");};
             fdjtLog("Startup done");
             Codex.displaySync();
-            fdjtDOM.dropClass(document.body,"codexstartup");
+            fdjtDOM.dropClass(document.body,"cxSTARTUP");
             if (mode) {}
             else if (getQuery("startmode"))
                 mode=getQuery("startmode");
