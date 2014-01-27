@@ -80,9 +80,16 @@ Codex.Paginate=
 
         var atoi=parseInt;
 
+        function layoutMessage(string,pct){
+            var pb=fdjtID("CODEXLAYOUTMESSAGE");
+            fdjt.UI.ProgressBar.setMessage(pb,string);
+            if (typeof pct==="number")
+                fdjt.UI.ProgressBar.setProgress(pb,pct);}
+
         function Paginate(why,init){
             if (((Codex.layout)&&(!(Codex.layout.done)))) return;
             if (!(why)) why="because";
+            layoutMessage("Starting layout",0);
             dropClass(document.body,"cxSCROLL");
             addClass(document.body,"cxLAYOUT");
             scaleLayout(false);
@@ -123,7 +130,7 @@ Codex.Paginate=
             function restore_layout(content,layout_id){
                 fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("CODEXCONTENT").style.display='none';
-                fdjtID("CODEXLAYOUTMESSAGE").innerHTML="Using cached layout";
+                layoutMessage("Using cached layout",0);
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
                 layout.restoreLayout(content,finish_layout);}
@@ -203,8 +210,8 @@ Codex.Paginate=
                         nodes.length,layout.width,layout.height,
                         (why||""),layout_id);
                 
-                fdjtID("CODEXLAYOUTMESSAGE").innerHTML="Starting new layout";
-
+                layoutMessage("Starting new layout",0);
+                
                 // Do the adjust font bit.  We rely on Codex.content
                 //  having the same width as Codex.page
                 fdjt.DOM.adjustFonts(content);
@@ -282,7 +289,8 @@ Codex.Paginate=
                         layoutMessage(fdjtString(
                             "Finished laying out %d %dx%d pages in %s",
                             pagenum,
-                            secs2short((info.done-info.started)/1000)));
+                            secs2short((info.done-info.started)/1000)),
+                                     100);
                         fdjtLog("Finished laying out %d %dx%d pages in %s",
                                 pagenum,info.width,info.height,
                                 secs2short((info.done-info.started)/1000));}
@@ -301,26 +309,22 @@ Codex.Paginate=
                                         Codex.curpage||"?",
                                         "/",pagenum," (",Math.floor(pct),
                                         "%)"));
-                            fdjtUI.ProgressBar.setProgress(
-                                "CODEXLAYOUTMESSAGE",pct);
                             layoutMessage(fdjtString(
-                                "Laid out %d pages (%d%%) in %s",
-                                pagenum,Math.floor(pct),
-                                secs2short((now-started)/1000)));
+                                "Laid out %d %dx%d pages (%d%%)",
+                                pagenum,info.width,info.height,Math.floor(pct)),
+                                         pct);
                             if (tracelevel)
-                                fdjtLog("Laid out %d pages (%d%%) in %s",
-                                        pagenum,Math.floor(pct),
+                                fdjtLog("Laid out %d %dx%d pages (%d%%) in %s",
+                                        pagenum,info.width,info.height,Math.floor(pct),
                                         secs2short((now-started)/1000));}
                         else {
                             layoutMessage(fdjtString(
-                                "Laid out %d pages in %s",
-                                info.pagenum,secs2short((now-started)/1000)));
+                                "Laid out %d %dx%d pages in %s",
+                                info.pagenum,info.width,info.height,
+                                secs2short((now-started)/1000)));
                             if (tracelevel)
                                 fdjtLog("Laid out %d pages in %s",
                                         info.pagenum,secs2short((now-started)/1000));}}}
-                
-                function layoutMessage(msg){
-                    fdjtUI.ProgressBar.setMessage("CODEXLAYOUTMESSAGE",msg);}
                 
                 rootloop();}
             

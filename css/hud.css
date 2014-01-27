@@ -28,7 +28,7 @@
 /* Major HUD components, head and heart */
 
 #CODEXTOP {
-    position: absolute; left: 60px; right: 60px; z-index: 100;
+    position: absolute; left: 60px; right: 60px; z-index: 80;
     max-height: 60px; border: solid transparent 0px;
     padding: 0px; padding-bottom: 0.5ex;}
 #CODEXHEAD, #CODEXFOOT {
