@@ -463,6 +463,7 @@ body.hudup div#CODEXHUD.addgloss.glossaddoutlet div.completions#CODEXSHARECLOUD 
 body.hudup div#CODEXHUD.addgloss.glossaddlink div#CODEXGLOSSATTACH {
     display: block;}
 
+div#CODEXGLOSSATTACH table tr th:first-child { width: 5em;}
 div#CODEXGLOSSATTACH tr.choosetype { display: none;}
 div#CODEXGLOSSATTACH tr.detail, div#CODEXGLOSSATTACH tr.upload {
     display: none;}

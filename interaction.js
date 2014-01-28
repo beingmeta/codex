@@ -1366,31 +1366,40 @@
         var isokay=fdjtDOM.getInput(form,"FILEOKAY");
         var linkinput=fdjtID("CODEXATTACHURL");
         var titleinput=fdjtID("CODEXATTACHTITLE");
+        var title=fdjtString.stdspace(titleinput.value);
+        var glossidinput=fdjtID("CODEXUPLOADGLOSSID");
+        var itemidinput=fdjtID("CODEXUPLOADGLOSSID");
         var livegloss=fdjtID("CODEXLIVEGLOSS");
-        var glossid=fdjtID("CODEXATTACHGLOSS");
-        var itemid=fdjtID("CODEXATTACHITEM");
+        var glossid=glossidinput.value;
+        var itemid=fdjt.State.getUUID();
+        var path=linkinput.value;
         if (hasClass("CODEXHUD","glossattach")) {
-            if (!(file_input.value)) {
+            if (!(fileinput.files.length)) {
                 fdjtUI.cancel(evt);
                 alert("You need to specify a file!");
                 return;}
+            else path=fileinput.files[0].name;
             if (!(isokay.checked)) {
                 fdjtUI.cancel(evt);
                 alert("You need to confirm that the file satisfies our restrictions!");
-                return;}}
+                return;}
+            itemidinput.value=itemid;}
         else fdjtUI.cancel(evt);
+        if (!(title)) {
+            var namestart=((path.indexOf('/')>=0)?(path.search(/\/[^\/]+$/)):(0));
+            if (namestart<0) title="attachment";
+            else title=path.slice(namestart);}
         if (!(livegloss)) return;
-        var form=getChild(livegloss,"FORM");
+        var glossform=getChild(livegloss,"FORM");
         if (hasClass("CODEXHUD","glossattach"))
             Codex.addLink2Form(
-                form,"https://glossdata.sbooks.net/"+glossid.value+"/"+itemid.value,
-                titleinput.value);
-        else Codex.addLink2Form(form,linkinput.value,titleinput.value);
+                glossform,"https://glossdata.sbooks.net/"+glossid.value+"/"+itemid,title);
+        else Codex.addLink2Form(glossform,linkinput.value,title);
         fileinput.value="";
         linkinput.value="";
         titleinput.value="";
-        Codex.setGlossMode("editnote");
-        fdjtUI.cancel(evt);}
+        fdjtUI.CheckSpan.set(isokay,false);
+        form.submit();}
     function addlink_cancel(evt){
         var linkinput=fdjtID("CODEXATTACHURL");
         var titleinput=fdjtID("CODEXATTACHTITLE");
