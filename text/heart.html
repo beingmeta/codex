@@ -12,13 +12,12 @@
   <textarea NAME="CODEXDETAILTEXT" ID="CODEXDETAILTEXT" class="markdowninput"></textarea>
 </div>
 <div id="CODEXGLOSSATTACH" class="hudpanel">
-  <form id="CODEXATTACHFORM" target="uploadresult"
+  <form id="CODEXATTACHFORM" target="_blank"
 	method="POST" enctype="multipart/form-data" accept-charset="utf-8"
-        action="https://glosses.sbooks.net/upload">
+        action="https://glosses.sbooks.net/1/attach">
     <table class="fdjtform">
-      <input TYPE="HIDDEN" NAME="ATTACH.GLOSSID" VALUE="" id="CODEXUPLOADGLOSSID"/>
-      <input TYPE="HIDDEN" NAME="ATTACH.ITEMID" VALUE="" id="CODEXUPLOADITEMID"/>
-      <input TYPE="HIDDEN" NAME="ATTACHING" VALUE=""/>
+      <input TYPE="HIDDEN" NAME="GLOSSID" VALUE="" id="CODEXUPLOADGLOSSID"/>
+      <input TYPE="HIDDEN" NAME="ITEMID" VALUE="" id="CODEXUPLOADITEMID"/>
       <tbody onclick="fdjt.UI.CheckSpan.onclick(event);">
         <tr class="checkspan fileisokay">
           <th><input TYPE="CHECKBOX" NAME="FILEOKAY" VALUE="yes"/></th>
@@ -28,19 +27,18 @@
       </tbody>
       <tr class="url">
         <th>URL</th>
-        <td><input TYPE="TEXT" NAME="ATTACH.URL" VALUE=""
+        <td><input TYPE="TEXT" NAME="URL" VALUE=""
                    ID="CODEXATTACHURL" class="fdjturlinput"
                    placeholder="a URL to add to this gloss"/></td>
         <th><button id="CODEXATTACHOK" NAME="ATTACH" "LINK">
             Link</button></td></tr>
 <tr class="upload">
   <th>File</th>
-        <td><input TYPE="FILE" NAME="ATTACH.FILE" ID="CODEXATTACHFILE"/></td>
+        <td><input TYPE="FILE" NAME="UPLOAD" ID="CODEXATTACHFILE"/></td>
         <th><button id="CODEXUPLOADOK" NAME="ATTACH" "UPLOAD">
             Attach</button></th></tr>
       <tr><th>Title</th>
-        <td><INPUT TYPE="TEXT" NAME="ATTACH.TITLE" VALUE=""
-                   ID="CODEXATTACHTITLE"
+        <td><INPUT TYPE="TEXT" NAME="TITLE" VALUE="" ID="CODEXATTACHTITLE"
                    placeholder="a brief description"/>
         <th><button id="CODEXATTACHCANCEL">Cancel</button></th></tr>
       <tr class="detail">

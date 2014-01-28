@@ -129,9 +129,9 @@
         if (mode==="addtag") input=fdjtID("CODEXTAGINPUT");
         else if (mode==="addlink") input=fdjtID("CODEXATTACHURL");
         else if (mode==="attach") {
-            var upload_glossid=fdjtID("CODEXUPLOADGLOSS");
+            var upload_glossid=fdjtID("CODEXUPLOADGLOSSID");
             upload_glossid.value=uuid.value;
-            var upload_itemid=fdjtID("CODEXUPLOADITEM");
+            var upload_itemid=fdjtID("CODEXUPLOADITEMID");
             upload_itemid.value=fdjtState.getUUID();}
         else if (mode==="addoutlet") input=fdjtID("CODEXOUTLETINPUT");
         else if (mode==="editdetail") {

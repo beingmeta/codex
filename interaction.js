@@ -1362,15 +1362,16 @@
     function addlink_submit(evt){
         evt=evt||event;
         var form=fdjtUI.T(evt);
-        var fileinput=fdjtDOM.getInput(form,"ATTACH.FILE");
-        var isokay=fdjtDOM.getInput(form,"FILEOKAY");
-        var linkinput=fdjtID("CODEXATTACHURL");
-        var titleinput=fdjtID("CODEXATTACHTITLE");
-        var title=fdjtString.stdspace(titleinput.value);
-        var glossidinput=fdjtID("CODEXUPLOADGLOSSID");
-        var itemidinput=fdjtID("CODEXUPLOADGLOSSID");
         var livegloss=fdjtID("CODEXLIVEGLOSS");
-        var glossid=glossidinput.value;
+        var liveglossid=fdjtDOM.getInput(livegloss,"UUID");
+        var glossid=liveglossid.value;
+        var linkinput=fdjtDOM.getInput("URL");
+        var fileinput=fdjtDOM.getInput(form,"UPLOAD");
+        var glossidinput=fdjtDOM.getInput(form,"GLOSSID");
+        var itemidinput=fdjtDOM.getInput("ITEMID");
+        var titleinput=fdjtDOM.getInput("TITLE");
+        var title=(titleinput.value)&&(fdjtString.stdspace(titleinput.value));
+        var isokay=fdjtDOM.getInput(form,"FILEOKAY");
         var itemid=fdjt.State.getUUID();
         var path=linkinput.value;
         if (hasClass("CODEXHUD","glossattach")) {
@@ -1383,6 +1384,7 @@
                 fdjtUI.cancel(evt);
                 alert("You need to confirm that the file satisfies our restrictions!");
                 return;}
+            glossidinput.value=glossid;
             itemidinput.value=itemid;}
         else fdjtUI.cancel(evt);
         if (!(title)) {
@@ -1391,15 +1393,10 @@
             else title=path.slice(namestart);}
         if (!(livegloss)) return;
         var glossform=getChild(livegloss,"FORM");
-        if (hasClass("CODEXHUD","glossattach"))
-            Codex.addLink2Form(
-                glossform,"https://glossdata.sbooks.net/"+glossid.value+"/"+itemid,title);
-        else Codex.addLink2Form(glossform,linkinput.value,title);
-        fileinput.value="";
-        linkinput.value="";
-        titleinput.value="";
-        fdjtUI.CheckSpan.set(isokay,false);
-        form.submit();}
+        if (hasClass("CODEXHUD","glossattach")) {
+            var glossdata_url="https://glossdata.sbooks.net/"+glossid+"/"+itemid+"/"+path;
+            Codex.addLink2Form(glossform,glossdata_url,title);}
+        else Codex.addLink2Form(glossform,linkinput.value,title);}
     function addlink_cancel(evt){
         var linkinput=fdjtID("CODEXATTACHURL");
         var titleinput=fdjtID("CODEXATTACHTITLE");
