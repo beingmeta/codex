@@ -1395,8 +1395,19 @@
         var glossform=getChild(livegloss,"FORM");
         if (hasClass("CODEXHUD","glossattach")) {
             var glossdata_url="https://glossdata.sbooks.net/"+glossid+"/"+itemid+"/"+path;
-            Codex.addLink2Form(glossform,glossdata_url,title);}
-        else Codex.addLink2Form(glossform,linkinput.value,title);}
+            var commframe=fdjtID("CODEXGLOSSCOMM");
+            var listener=function(evt){
+                Codex.addLink2Form(glossform,glossdata_url,title);
+                titleinput.value="";
+                fileinput.value="";
+                isokay.checked=false;
+                fdjtDOM.removeListener(commframe,"load",listener);
+                Codex.submitGloss(glossform,true);
+                Codex.setGlossMode("editnote");};
+            fdjtDOM.addListener(commframe,"load",listener);}
+        else {
+            Codex.addLink2Form(glossform,linkinput.value,title);
+            Codex.setGlossMode("editnote");}}
     function addlink_cancel(evt){
         var linkinput=fdjtID("CODEXATTACHURL");
         var titleinput=fdjtID("CODEXATTACHTITLE");
