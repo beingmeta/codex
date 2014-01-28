@@ -1250,7 +1250,7 @@
             var frag=gloss.get("frag");
             fdjt.Ajax.jsonCall(
                 function(response){glossdeleted(response,uuid,frag);},
-                "https://"+Codex.server+"/v1/delete",
+                "https://"+Codex.server+"/1/delete",
                 "gloss",uuid);}
         else if ((gloss)&&(gloss.frag)) {
             // This is the case where the gloss hasn't been saved
@@ -1365,11 +1365,11 @@
         var livegloss=fdjtID("CODEXLIVEGLOSS");
         var liveglossid=fdjtDOM.getInput(livegloss,"UUID");
         var glossid=liveglossid.value;
-        var linkinput=fdjtDOM.getInput("URL");
+        var linkinput=fdjtDOM.getInput(form,"URL");
         var fileinput=fdjtDOM.getInput(form,"UPLOAD");
         var glossidinput=fdjtDOM.getInput(form,"GLOSSID");
-        var itemidinput=fdjtDOM.getInput("ITEMID");
-        var titleinput=fdjtDOM.getInput("TITLE");
+        var itemidinput=fdjtDOM.getInput(form,"ITEMID");
+        var titleinput=fdjtDOM.getInput(form,"TITLE");
         var title=(titleinput.value)&&(fdjtString.stdspace(titleinput.value));
         var isokay=fdjtDOM.getInput(form,"FILEOKAY");
         var itemid=fdjt.State.getUUID();
