@@ -127,12 +127,12 @@
             dropClass("CODEXHUD",/\bgloss\w+\b/);
             return;}
         if (mode==="addtag") input=fdjtID("CODEXTAGINPUT");
-        else if (mode==="addlink") input=fdjtID("CODEXATTACHURL");
         else if (mode==="attach") {
             var upload_glossid=fdjtID("CODEXUPLOADGLOSSID");
             upload_glossid.value=uuid.value;
             var upload_itemid=fdjtID("CODEXUPLOADITEMID");
-            upload_itemid.value=fdjtState.getUUID();}
+            upload_itemid.value=fdjtState.getUUID();
+            input=fdjtID("CODEXATTACHURL");}
         else if (mode==="addoutlet") input=fdjtID("CODEXOUTLETINPUT");
         else if (mode==="editdetail") {
             input=fdjtID("CODEXDETAILTEXT");

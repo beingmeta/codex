@@ -14,33 +14,58 @@
 <div id="CODEXGLOSSATTACH" class="hudpanel">
   <form id="CODEXATTACHFORM" target="CODEXGLOSSCOMM"
 	method="POST" enctype="multipart/form-data" accept-charset="utf-8"
-        action="https://glosses.sbooks.net/1/attach">
+        action="https://glosses.sbooks.net/1/attach"
+        class="linking">
     <table class="fdjtform">
       <input TYPE="HIDDEN" NAME="GLOSSID" VALUE="" id="CODEXUPLOADGLOSSID"/>
       <input TYPE="HIDDEN" NAME="ITEMID" VALUE="" id="CODEXUPLOADITEMID"/>
-      <tbody onclick="fdjt.UI.CheckSpan.onclick(event);">
-        <tr class="checkspan fileisokay">
-          <th><input TYPE="CHECKBOX" NAME="FILEOKAY" VALUE="yes"/></th>
-          <td>I affirm that I have the right to use and share this file according to
-            the sBooks Terms of Service.</td>
-        </tr>
-      </tbody>
+      <tr class="attachtype">
+        <th class="headcell"><img src="/static/g/codex/gloss_attach.svgz"/>Attach</th>
+        <td onclick="fdjt.UI.CheckSpan.onclick(event);">
+          <span class="checkspan ischecked">
+            <input type="RADIO" NAME="ATTACHTYPE" VALUE="linking"
+                   onchange="Codex.UI.changeAttachment(event);"
+                   CHECKED/>
+            URL</span>
+          <span class="checkspan">
+            <input type="RADIO" NAME="ATTACHTYPE" VALUE="uploading"
+                   onchange="Codex.UI.changeAttachment(event);"/>
+            File</span>
+        </td>
+        <th class="button"></th>
+      </tr>
+      <tr class="title">
+        <th>Label</th>
+        <td><INPUT TYPE="TEXT" NAME="TITLE" VALUE="" ID="CODEXATTACHTITLE"
+                   placeholder="a descriptive label"/>
+          <th class="button">
+            <button id="CODEXATTACHCANCEL">Cancel</button></th></tr>
+      <tr class="spacing"><td> </td></tr>
       <tr class="url">
         <th>URL</th>
         <td><input TYPE="TEXT" NAME="URL" VALUE=""
                    ID="CODEXATTACHURL" class="fdjturlinput"
-                   placeholder="a URL to add to this gloss"/></td>
-        <th><button id="CODEXATTACHOK" NAME="ATTACH" "LINK">
-            Link</button></td></tr>
-<tr class="upload">
-  <th>File</th>
-        <td><input TYPE="FILE" NAME="UPLOAD" ID="CODEXATTACHFILE"/></td>
-        <th><button id="CODEXUPLOADOK" NAME="ATTACH" "UPLOAD">
-            Attach</button></th></tr>
-      <tr><th>Title</th>
-        <td><INPUT TYPE="TEXT" NAME="TITLE" VALUE="" ID="CODEXATTACHTITLE"
-                   placeholder="a brief description"/>
-        <th><button id="CODEXATTACHCANCEL">Cancel</button></th></tr>
+                   placeholder="a URL to attach"/>
+        </td>
+        <th class="button">
+          <button id="CODEXATTACHOK" NAME="ATTACH" "LINK">
+            Link</button></th>
+      </tr>
+      <tbody class="upload">
+        <tr>
+          <th>File</th>
+          <td><input TYPE="FILE" NAME="UPLOAD" ID="CODEXATTACHFILE"/></td>
+          <th class="button">
+            <button id="CODEXUPLOADOK" NAME="ATTACH" "UPLOAD">
+              Upload</button></th></tr>
+        <tr class="checkspan fileokay" onclick="fdjt.UI.CheckSpan.onclick(event);">
+          <th><input TYPE="CHECKBOX" NAME="FILEOKAY" VALUE="yes"/></th>
+          <td>I affirm that I have the right to use and share this
+            file according to the <span class="sbooksname"><em>s</em>Books<span>
+                <a href="https://www.sbooks.net/legalia/TOS/" target="_blank">
+                  Terms of Service</a>.</td>
+        </tr>
+      </tbody>
       <tr class="detail">
         <th>Detail</th>
         <td>

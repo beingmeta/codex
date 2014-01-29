@@ -1068,7 +1068,8 @@
             else {}
             return;}
         else if ((target.tagName==="TEXTAREA")||
-                 (target.tagName==="INPUT"))
+                 (target.tagName==="INPUT")||
+                 (target.tagName==="BUTTON"))
             return;
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (Codex.previewing) {
@@ -1122,7 +1123,7 @@
             else if (kc===32) // Space
                 Codex.setGlossMode("editnote",form);
             else if ((kc===47)||(kc===58)) // /or :
-                Codex.setGlossMode("addlink",form);
+                Codex.setGlossMode("attach",form);
             else if ((kc===64)) // @
                 Codex.setGlossMode("addoutlet",form);
             else {}}
@@ -1348,7 +1349,17 @@
             gloss_cloud.complete(target.value);},
                         100);}
 
-    function addlink_action(evt){
+    var attach_types=/\b(uploading|linking|dropbox|gdrive|usebox)\b/g;
+    function changeAttachment(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        var form=getParent(target,'form');
+        if (target.checked)
+            fdjtDOM.swapClass(form,attach_types,target.value);
+        else dropClass(form,target.value);}
+    Codex.UI.changeAttachment=changeAttachment;
+
+    function attach_action(evt){
         var linkinput=fdjtID("CODEXATTACHURL");
         var titleinput=fdjtID("CODEXATTACHTITLE");
         var livegloss=fdjtID("CODEXLIVEGLOSS");
@@ -1359,7 +1370,7 @@
         titleinput.value="";
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
-    function addlink_submit(evt){
+    function attach_submit(evt){
         evt=evt||event;
         var form=fdjtUI.T(evt);
         var livegloss=fdjtID("CODEXLIVEGLOSS");
@@ -1408,7 +1419,7 @@
         else {
             Codex.addLink2Form(glossform,linkinput.value,title);
             Codex.setGlossMode("editnote");}}
-    function addlink_cancel(evt){
+    function attach_cancel(evt){
         var linkinput=fdjtID("CODEXATTACHURL");
         var titleinput=fdjtID("CODEXATTACHTITLE");
         var livegloss=fdjtID("CODEXLIVEGLOSS");
@@ -1417,7 +1428,7 @@
         titleinput.value="";
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
-    function addlink_keydown(evt){
+    function attach_keydown(evt){
         evt=evt||event;
         var ch=evt.keyCode||evt.charCode;
         if (ch!==13) return;
@@ -2638,11 +2649,11 @@
                             release: right_margin_release},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
-         "#CODEXATTACHFORM": {submit: addlink_submit},
-         "#CODEXATTACHURL": {click: addlink_keydown},
-         "#CODEXATTACHTITLE": {click: addlink_keydown},
-         "#CODEXATTACHOK": {click: addlink_action},
-         "#CODEXATTACHCANCEL": {click: addlink_cancel},
+         "#CODEXATTACHFORM": {submit: attach_submit},
+         "#CODEXATTACHURL": {keydown: attach_keydown},
+         "#CODEXATTACHTITLE": {keydown: attach_keydown},
+         "#CODEXATTACHOK": {click: attach_action},
+         "#CODEXATTACHCANCEL": {click: attach_cancel},
          "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
          "#CODEXSHARECLOUD": {click: outlet_tapped},
          "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
@@ -2751,11 +2762,11 @@
                              swipe: right_margin_swipe},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
-         "#CODEXATTACHFORM": {submit: addlink_submit},
-         "#CODEXATTACHURL": {click: addlink_keydown},
-         "#CODEXATTACHTITLE": {click: addlink_keydown},
-         "#CODEXATTACHOK": {click: addlink_action},
-         "#CODEXATTACHCANCEL": {click: addlink_cancel},
+         "#CODEXATTACHFORM": {submit: attach_submit},
+         "#CODEXATTACHURL": {keydown: attach_keydown},
+         "#CODEXATTACHTITLE": {keydown: attach_keydown},
+         "#CODEXATTACHOK": {click: attach_action},
+         "#CODEXATTACHCANCEL": {click: attach_cancel},
          "#CODEXGLOSSCLOUD": {touchend: Codex.UI.handlers.glosscloud_ontap},
          "#CODEXALLTAGS": {touchend: Codex.UI.handlers.searchcloud_ontap},
          "#CODEXSEARCHCLOUD": {touchend: Codex.UI.handlers.searchcloud_ontap},
