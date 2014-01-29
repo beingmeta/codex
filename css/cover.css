@@ -266,6 +266,8 @@ div#CODEXSETTINGS h1 a.logout {
     float: right; color: red; text-decoration: none;
     font-size: 60%; font-variant: small-caps;}
 div#CODEXSETTINGS h1 a.logout:visited {color: red;}
+div#CODEXSETTINGS table.settings td span#CODEXSETTINGSMESSAGE {
+    float: right; color: red; font-size: 40%;}
 body.cxNOUSER div#CODEXSETTINGS h1 a.logout {display:none;}
 
 div#CODEXSETTINGS div.setting {
@@ -292,8 +294,6 @@ div#CODEXSETTINGS table.settings td input[type='TEXT'] {
     width: 100%;}
 div#CODEXSETTINGS table.settings tr.buttons td {
     text-align: right;}
-div#CODEXSETTINGS table.settings tr.buttons td span#CODEXSETTINGSMESSAGE {
-    float: left; color: red;}
 
 table.settings .checkspan.ischecked {
     font-weight: normal; color: rgb(0,61,111); font-size: 110%;}
@@ -308,7 +308,7 @@ div#CODEXSETTINGS table.settings .smallbutton {
     -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;}
 
-div#CODEXSETTINGS span.button {
+div#CODEXSETTINGS .button {
     float: right; font-size: 125%; cursor: pointer;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     color: white; background-color: silver;
@@ -317,8 +317,14 @@ div#CODEXSETTINGS span.button {
     -o-border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;}
-div#CODEXSETTINGS p.codexsettingschanged { color: red; display: none;}
-div#CODEXSETTINGS.changed p.codexsettingschanged { display: block;}
+div#CODEXSETTINGS h1 .button, div#CODEXSETTINGS h1 .message {
+    font-size: 50%;}
+div#CODEXSETTINGS .button.exit {
+    color: red; background-color: white;}
+div#CODEXSETTINGS .codexsettingschanged {
+    float: right; color: red; display: none;}
+div#CODEXSETTINGS.changed .codexsettingschanged { display: block;}
+body.cxNOUSER div#CODEXSETTINGS h1 a.logout {display:none;}
 
 div#CODEXSETTINGS tr.codexlayoutsettings { display: none; }
 

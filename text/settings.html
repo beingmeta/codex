@@ -1,8 +1,13 @@
-<h1><a class="logout" onclick="Codex.clearOffline();"
-       href="https://auth.sbooks.net/admin/logout"
-       title="Logout of sBooks and erase any local data">Logout</a>
-  Codex Settings</h1>
 <form onsubmit="fdjt.UI.cancel(event); return false;">
+  <h1><a class="button exit" onclick="Codex.clearOffline();"
+         href="https://auth.sbooks.net/admin/logout"
+         title="Logout of sBooks and erase any local data">Logout</a>
+    <span class="button" onclick="Codex.UI.settingsSave(event);">Save</span>
+    <span class="button" onclick="Codex.UI.settingsReset(event);">Reset</span>
+    <span class="message codexsettingschanged">
+      Your changes have been applied but not saved.</span>
+    <span class="message" ID="CODEXSETTINGSMESSAGE"></span>
+    Settings</h1>
   <table class="settings"
          onclick="fdjt.UI.CheckSpan.onclick(event); Codex.UI.settingsUpdate(event);"
          onblur="Codex.UI.settingsUpdate(event);">
@@ -110,11 +115,6 @@
       <tr class="buttons">
         <th/>
         <td colspan="2">
-          <span class="button" onclick="Codex.UI.settingsSave(event);">Save</span>
-          <span class="button" onclick="Codex.UI.settingsReset(event);">Reset</span>
-          <p class="codexsettingschanged">
-            Your changes have been applied but not saved.</p>
-          <span ID="CODEXSETTINGSMESSAGE"></span>
         </td>
       </tr>
     </tbody>
