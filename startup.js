@@ -402,6 +402,9 @@ Codex.Startup=
             // Check for any trace settings passed as query arguments
             if (getQuery("cxtrace")) readTraceSettings();
 
+            // Get config information
+            initConfig();
+
             // Get various settings for the sBook from the HTML (META
             // tags, etc), including settings or guidance for
             // scanning, graphics, layout, glosses, etc.
@@ -435,6 +438,9 @@ Codex.Startup=
             showMessage();
             if (!(updating)) userSetup();
             contentSetup();
+
+            // Reapply config settings to update the HUD UI
+            Codex.setConfig(Codex.getConfig());
 
             // Hide the loading splash page, if any
             if (fdjtID("CODEXSPLASH"))
@@ -594,10 +600,6 @@ Codex.Startup=
                     Codex.keepdata=value;
                     setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),value);});
 
-            // Get any local saved configuration information
-            //  We do this after the HUD is setup so that the settings
-            //   panel gets initialized appropriately.
-            initConfig();
             Codex.keepdata=
                 ((!(Codex.force_online))&&
                  ((Codex.force_offline)||(workOffline())));
@@ -1000,9 +1002,6 @@ Codex.Startup=
                     Codex.autotoc=true;
                 else Codex.autotoc=false;}
 
-            if (hasLocal("dosync("+Codex.docuri+")"))
-                Codex.dosync=readLocal("dosync("+Codex.docuri+")",true);
-            
             if (!((Codex.nologin)||(Codex.force_online))) {
                 Codex.mycopyid=getMeta("SBOOKS.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
@@ -2448,8 +2447,7 @@ Codex.Startup=
                     {label: "stop syncing",
                      title: "stop syncing this book on this device",
                      handler: function(){
-                         setConfig("dosync",false);
-                         setConfig("syncinterval",false);}});
+                         setConfig("dosync",false,true);}});
             if (choices.length)
                 Codex.statedialog=fdjtUI.choose(
                     {choices: choices,cancel: true,timeout: 7,nodefault: true,
