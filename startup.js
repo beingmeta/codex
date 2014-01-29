@@ -413,6 +413,8 @@ Codex.Startup=
                     Codex.docref||"@??",Codex.bookbuild||"",
                     Codex.refuri,Codex.sourceid);
             
+            Codex.dosync=readLocal("dosync("+Codex.docuri+")",true);
+
             // This sets various aspects of the environment
             readEnvSettings();
 
@@ -2447,7 +2449,7 @@ Codex.Startup=
                     {label: "stop syncing",
                      title: "stop syncing this book on this device",
                      handler: function(){
-                         setConfig("dosync",false,true);}});
+                         setConfig("dosync",false);}});
             if (choices.length)
                 Codex.statedialog=fdjtUI.choose(
                     {choices: choices,cancel: true,timeout: 7,nodefault: true,
