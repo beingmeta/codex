@@ -860,8 +860,6 @@ Codex.setMode=
             result.showconsole=
                 ((showconsole)&&(showconsole.length)&&(true))||false;
             var isoffline=fdjtDOM.getInputValues(settings,"CODEXLOCAL");
-            result.keepdata=
-                ((isoffline)&&(isoffline.length)&&(isoffline[0]))||false;
             var animatecontent=fdjtDOM.getInputValues(
                 settings,"CODEXANIMATECONTENT");
             result.animatecontent=

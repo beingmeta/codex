@@ -74,8 +74,13 @@ var Codex={
     // input (on tablets, there may be extraneous resizes when the
     // on-screen keyboard appears)
     freezelayout: false,
+    // Whether to locally store user information for offline availability
+    keepuser: false,
+    // Whether to locally save glosses, etc for offline availability,
+    keepglosses: false,
     // Whether to store glosses, etc for offline access and improved
-    // performance
+    // performance.  This is no longer used, replaced by the two values
+    // above.
     keepdata: false,
     // Dominant interaction mode
     mouse: true, touch: false, kbd: false,
@@ -173,15 +178,15 @@ var Codex={
     Codex.tagweights=new ObjectMap();
 
     function hasLocal(key){
-        if (Codex.keepdata) return fdjtState.existsLocal(key);
+        if (Codex.keepuser) return fdjtState.existsLocal(key);
         else return fdjtState.existsSession(key);}
     Codex.hasLocal=hasLocal;
     function saveLocal(key,value,unparse){
-        if (Codex.keepdata) setLocal(key,value,unparse);
+        if (Codex.keepuser) setLocal(key,value,unparse);
         else fdjtState.setSession(key,value,unparse);}
     Codex.saveLocal=saveLocal;
     function readLocal(key,parse){
-        if (Codex.keepdata) return getLocal(key,parse)||
+        if (Codex.keepuser) return getLocal(key,parse)||
             fdjtState.getSession(key,parse);
         else return fdjtState.getSession(key,parse)||getLocal(key,parse);}
     Codex.readLocal=readLocal;
@@ -272,7 +277,7 @@ var Codex={
                                     Codex.addTags(item.replyto,tags,fragslot);}
                             if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
                                  "initgloss");
-            if ((Codex.keepdata)&&(!(Codex.force_online)))
+            if ((Codex.user)&&(Codex.keepuser)&&(Codex.keepglosses)&&(!(Codex.force_online)))
                 Codex.glossdb.storage=window.localStorage;}
         
         function Gloss(){return Ref.apply(this,arguments);}
@@ -313,11 +318,9 @@ var Codex={
                 return span;};
             var anonymous=Codex.sourcedb.ref("@1961/0");
             Codex.anonymous=anonymous;
-            anonymous.name="anonymous";
-            if ((Codex.keepdata)&&(!(Codex.force_online)))
-                Codex.sourcedb.storage=window.localStorage;}
+            anonymous.name="anonymous";}
 
-        Codex.queued=((Codex.keepdata)&&
+        Codex.queued=((Codex.keepglosses)&&
                       (getLocal("queued("+Codex.refuri+")",true)))||
             [];
 

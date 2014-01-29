@@ -394,6 +394,10 @@ Codex.Startup=
                 fdjtLog("Navigator App version: %s (%s)",
                         navigator.appVersion,navigator.userAgent);
 
+            // Figure out if we have a user and whether we can keep
+            // user information
+            if (getLocal("codex.user")) Codex.keepuser=true;
+
             // Get window outer dimensions (this doesn't count Chrome,
             // onscreen keyboards, etc)
             outer_height=window.outerHeight;
@@ -575,14 +579,12 @@ Codex.Startup=
                         else j++;}}}
 
             addConfig(
-                "keepdata",
+                "keepglosses",
                 function(name,value){
                     var refuri=Codex.refuri;
-                    if (value) {
-                        fdjtDOM.remove(fdjtDOM.toArray(fdjtDOM.$(".codexkeepdata")));}
-                    if ((value)&&(Codex.keepdata)) return;
-                    else if ((!(value))&&(!(Codex.keepdata))) return;
-                    else if ((value)&&(!(Codex.force_online))) {
+                    if ((value)&&(Codex.keepglosses)) return;
+                    else if ((!(value))&&(!(Codex.keepglosses))) return;
+                    else if (value) {
                         if (!(Codex.sourcedb.storage))
                             Codex.sourcedb.storage=window.localStorage;
                         if (!Codex.glossdb.storage)
@@ -594,19 +596,17 @@ Codex.Startup=
                                 "codex."+prop+"("+refuri+")",Codex[prop],true);}
                         Codex.glossdb.save(true);
                         Codex.sourcedb.save(true);
-                        Codex.queued=getLocal("queued("+Codex.refuri+")",true)||[];}
+                        if ((Codex.queued)&&(Codex.queued.length)) 
+                            Codex.queued=Codex.queued.concat(
+                                getLocal("queued("+Codex.refuri+")",true)||[]);
+                        else Codex.queued=getLocal("queued("+Codex.refuri+")",true)||[];}
                     else if (!(value)) {
                         clearOffline();
                         fdjtState.dropLocal("queued("+Codex.refuri+")");
                         Codex.queued=[];}
-                    Codex.keepdata=value;
-                    setCheckSpan(fdjtID("CODEXLOCALCHECKBOX"),value);});
+                    Codex.keepglosses=value;
+                    setCheckSpan(fdjtID("CODEXKEEPGLOSSESCHECKBOX"),value);});
 
-            Codex.keepdata=
-                ((!(Codex.force_online))&&
-                 ((Codex.force_offline)||(workOffline())));
-
-        
             // Setup the reticle (if desired)
             if ((typeof (body.style["pointer-events"])!== "undefined")&&
                 ((Codex.demo)||(fdjtState.getLocal("codex.demo"))||
@@ -635,8 +635,8 @@ Codex.Startup=
             var cur=Codex.sync;
             if ((cur)&&(cur>val)) return cur;
             Codex.sync=val;
-            if (Codex.keepdata)
-                saveLocal("codex.sync("+Codex.refuri+")",val);
+            if (Codex.keepuser)
+                saveLocal("codex.sync("+Codex.docuri||Codex.refuri+")",val);
             return val;};
 
         function userSetup(){
@@ -647,15 +647,15 @@ Codex.Startup=
 
             // If the configuration is set to not persist, but there's
             //  a sync timestamp, we should erase what's there.
-            if ((Codex.sync)&&(!(Codex.keepdata))) clearOffline();
+            if ((Codex.sync)&&(!(Codex.keepuser))) clearOffline();
 
             if (Codex.nologin) {}
-            else if ((Codex.keepdata)&&(sync)&&(getLocal("codex.user"))) {
+            else if ((Codex.keepuser)&&(sync)&&(getLocal("codex.user"))) {
                 initUserOffline();
                 if (Codex.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);
-                if ((Codex.user)&&(Codex.sync)&&(Codex.keepdata)&&
+                if ((Codex.user)&&(Codex.sync)&&(Codex.keepglosses)&&
                     (window._sbook_loadinfo))
                     // Clear the loadinfo "left over" from startup,
                     //  which should now be in the database
@@ -779,7 +779,7 @@ Codex.Startup=
                 // Process locally stored (offline data) glosses
                 function(){
                     if (Codex.sync) {
-                        if (Codex.keepdata) return initGlossesOffline();}
+                        if (Codex.keepglosses) return initGlossesOffline();}
                     else if (window._sbook_loadinfo) {
                         loadInfo(window._sbook_loadinfo);
                         window._sbook_loadinfo=false;}},
@@ -1008,7 +1008,7 @@ Codex.Startup=
                 Codex.mycopyid=getMeta("SBOOKS.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
                     false;}
-            if (Codex.keepdata) saveLocal("codex.refuris",refuris,true);}
+            if (Codex.keepuser) saveLocal("codex.refuris",refuris,true);}
 
         function deviceSetup(){
             var useragent=navigator.userAgent;
@@ -2003,7 +2003,8 @@ Codex.Startup=
                 window._sbook_newinfo=info;
                 return;}
             var refuri=Codex.refuri;
-            if ((Codex.keepdata)&&
+            if ((Codex.keepuser)&&
+                (Codex.keepglosses)&&
                 (info)&&(info.userinfo)&&(Codex.user)&&
                 (info.userinfo._id!==Codex.user._id)) {
                 clearOffline();}
@@ -2029,7 +2030,7 @@ Codex.Startup=
         Codex.loadInfo=loadInfo;
 
      function infoLoaded(info){
-         var keepdata=Codex.keepdata;
+         var keepdata=(Codex.keepuser)&&(Codex.keepglosses);
          if (info.etc) gotInfo("etc",info.etc,keepdata);
          if (info.sources) gotInfo("sources",info.sources,keepdata);
          if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
@@ -2042,7 +2043,7 @@ Codex.Startup=
              var whenloaded=Codex.whenloaded;
              Codex.whenloaded=false;
              setTimeout(whenloaded,10);}
-         if (Codex.keepdata) {
+         if (keepdata) {
              Codex.glossdb.save(true);
              Codex.sourcedb.save(true);}
          if (Codex.glosshash) {
@@ -2162,7 +2163,7 @@ Codex.Startup=
             else document.body.appendChild(update_script);}
 
         function setUser(userinfo,outlets,layers,sync){
-            var keepdata=((Codex.keepdata)&&(navigator.onLine));
+            var keepdata=((Codex.keepuser)&&(navigator.onLine));
             var started=fdjtTime();
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up user %s (%s)",userinfo._id,
@@ -2182,10 +2183,9 @@ Codex.Startup=
                 Codex.writeQueuedGlosses();
             Codex.user=Codex.sourcedb.Import(
                 userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
-            if (keepdata) setConfig("keepdata",true,true);
             if (outlets) Codex.outlets=outlets;
             if (layers) Codex.layers=layers;
-            if (keepdata) {
+            if (Codex.keepuser) {
                 // No callback needed
                 Codex.user.save();
                 setLocal("codex.user",Codex.user._id);
@@ -2206,7 +2206,7 @@ Codex.Startup=
             var refuri=Codex.refuri;
             if (!(Codex.nodeid)) {
                 Codex.nodeid=nodeid;
-                if ((nodeid)&&(Codex.keepdata))
+                if ((nodeid)&&(Codex.keepuser))
                     setLocal("codex.nodeid("+refuri+")",nodeid,true);}}
         Codex.setNodeID=setNodeID;
 
@@ -2303,7 +2303,7 @@ Codex.Startup=
         function gotItem(item,qids){
             if (typeof item === 'string') {
                 var load_ref=Codex.sourcedb.ref(item);
-                if (Codex.keepdata) load_ref.load();
+                if (Codex.keepuser) load_ref.load();
                 qids.push(load_ref._id);}
             else {
                 var import_ref=Codex.sourcedb.Import(
