@@ -229,6 +229,8 @@
         evt=evt||event;
         if (gloss_blur_timeout) clearTimeout(gloss_blur_timeout);
         var target=fdjtUI.T(evt);
+        var closing=getParent(target,".submitclose");
+        if (closing) dropClass(closing,"submitclose");
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));

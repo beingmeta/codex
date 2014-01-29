@@ -952,12 +952,14 @@
     function addgloss_callback(req,form,keep){
         if (Codex.Trace.network)
             fdjtLog("Got AJAX gloss response %o from %o",req,req.uri);
-        glossMessage("gloss saved");
         if (Codex.Trace.savegloss)
             fdjtLog("Gloss %o successfully added (status %d) to %o",
                     getInput(form,"UUID").value,req.status,
                     getInput(form,"FRAG").value);
         dropClass(form.parentNode,"submitting");
+        if (keep)
+            addClass(form.parentNode,"submitdone");
+        else addClass(form.parentNode,"submitclose");
         var json=JSON.parse(req.responseText);
         var ref=Codex.glossdb.Import(
             // item,rules,flags
@@ -972,10 +974,19 @@
         ref.save();
         /* Turn off the target lock */
         if ((form)&&(!(keep))) {
-            fdjtDOM.remove(form.parentNode);
-            setGlossTarget(false);
-            Codex.setTarget(false);
-            Codex.setMode(false);}}
+            setTimeout(function(){
+                if (hasClass(form.parentNode,"submitclose")) {
+                    if ((form.parentNode)&&(form.parentNode))
+                        fdjtDOM.remove(form.parentNode);
+                    setGlossTarget(false);
+                    Codex.setTarget(false);
+                    Codex.setMode(false);}},
+                       3000);}
+        else if (form)
+            setTimeout(function(){
+                dropClass(form.parentNode,"submitdone");},
+                       3000);
+        else {}}
 
     function clearGlossForm(form){
         // Clear the UUID, and other fields
@@ -1302,12 +1313,6 @@
                 catch (ex) {Codex.setConnected(false);}}}}
     Codex.writeQueuedGlosses=writeQueuedGlosses;
     
-    function glossMessage(message){
-        var box=fdjt.Dialog({spec: "div.fdjtdialog#CODEXGLOSSMESSAGE"},
-                            fdjtDOM("span.savemsg",message));
-        fdjt.Dialog.setCountdown(box,5);
-        fdjtID("CODEXHEAD").appendChild(box);}
-
 })();
 
 /* Emacs local variables
