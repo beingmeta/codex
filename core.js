@@ -77,7 +77,7 @@ var Codex={
     // Whether to locally store user information for offline availability
     keepuser: false,
     // Whether to locally save glosses, etc for offline availability,
-    keepglosses: false,
+    keepglosses: true,
     // Whether to store glosses, etc for offline access and improved
     // performance.  This is no longer used, replaced by the two values
     // above.
@@ -277,7 +277,8 @@ var Codex={
                                     Codex.addTags(item.replyto,tags,fragslot);}
                             if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
                                  "initgloss");
-            if ((Codex.user)&&(Codex.keepuser)&&(Codex.keepglosses)&&(!(Codex.force_online)))
+            if ((Codex.user)&&(Codex.keepuser)&&(Codex.keepglosses)&&
+                (!(Codex.force_online)))
                 Codex.glossdb.storage=window.localStorage;}
         
         function Gloss(){return Ref.apply(this,arguments);}

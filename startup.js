@@ -104,7 +104,6 @@ Codex.Startup=
 
         /* Save local */
 
-        var hasLocal=Codex.hasLocal;
         var readLocal=Codex.readLocal;
         var saveLocal=Codex.saveLocal;
 
@@ -117,6 +116,7 @@ Codex.Startup=
         /* Configuration information */
 
         var config_handlers={};
+        var dont_save_configs={keepglosses: true};
         var default_config=
             {layout: 'bypage',forcelayout: false,
              bodysize: 'normal',bodyfamily: 'serif',
@@ -206,9 +206,10 @@ Codex.Startup=
             else setConfig(config);
             var saved={};
             for (var setting in config) {
-                if (((!(default_config.hasOwnProperty(setting)))||
-                     (config[setting]!==default_config[setting]))&&
-                    (!(getQuery(setting)))) {
+                if ((!(dont_save_configs[setting]))&&
+                    (((!(default_config.hasOwnProperty(setting)))||
+                      (config[setting]!==default_config[setting]))&&
+                     (!(getQuery(setting))))) {
                     saved[setting]=config[setting];}}
             if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
             setLocal("codex.config",JSON.stringify(saved));
@@ -584,7 +585,12 @@ Codex.Startup=
                     var refuri=Codex.refuri;
                     if ((value)&&(Codex.keepglosses)) return;
                     else if ((!(value))&&(!(Codex.keepglosses))) return;
+                    else if ((value)&&(!(Codex.keepuser))) {
+                        fdjtLog.warn(
+                            "Can't save glosses without a persistent login");
+                        return;}
                     else if (value) {
+                        var uri=Codex.docuri||Codex.refuri;
                         if (!(Codex.sourcedb.storage))
                             Codex.sourcedb.storage=window.localStorage;
                         if (!Codex.glossdb.storage)
@@ -593,19 +599,20 @@ Codex.Startup=
                         while (i<lim) {
                             var prop=saveprops[i++];
                             if (Codex[prop]) saveLocal(
-                                "codex."+prop+"("+refuri+")",Codex[prop],true);}
+                                "codex."+prop+"("+uri+")",Codex[prop],true);}
                         Codex.glossdb.save(true);
                         Codex.sourcedb.save(true);
                         if ((Codex.queued)&&(Codex.queued.length)) 
                             Codex.queued=Codex.queued.concat(
-                                getLocal("queued("+Codex.refuri+")",true)||[]);
-                        else Codex.queued=getLocal("queued("+Codex.refuri+")",true)||[];}
+                                getLocal("queued("+uri+")",true)||[]);
+                        else Codex.queued=getLocal("queued("+uri+")",true)||[];
+                        Codex.setLocal("keepglosses("+uri+")",true,true);}
                     else if (!(value)) {
                         clearOffline();
                         fdjtState.dropLocal("queued("+Codex.refuri+")");
+                        Codex.setLocal("keepglosses("+uri+")",false,true);
                         Codex.queued=[];}
-                    Codex.keepglosses=value;
-                    setCheckSpan(fdjtID("CODEXKEEPGLOSSESCHECKBOX"),value);});
+                    Codex.keepglosses=value;});
 
             // Setup the reticle (if desired)
             if ((typeof (body.style["pointer-events"])!== "undefined")&&
@@ -919,19 +926,6 @@ Codex.Startup=
             fdjtDOM.addListener(window,"resize",resizeHandler);}
         
         /* Application settings */
-
-        function workOffline(){
-            if (Codex.force_online) return false;
-            else if (Codex.force_offline) return true;
-            var config_val=getConfig("keepdata");
-            if (typeof config_val !== 'undefined') return config_val;
-            var value=(getMeta("Codex.offline"))||(getMeta("SBOOKS.offline"));
-            if ((value===0)||(value==="0")||
-                (value==="no")||(value==="off")||
-                (value==="never")) {
-                Codex.force_online=true;
-                return false;}
-            else return false;}
         
         function readBookSettings(){
             // Basic stuff
@@ -1970,6 +1964,7 @@ Codex.Startup=
                 return;}
             if (window._sbook_loadinfo!==info)
                 Codex.setConnected(true);
+            if (info.sticky) Codex.keepuser=true;
             if (!((Codex.user)&&(Codex._user_setup))) {
                 if (info.userinfo)
                     setUser(info.userinfo,
@@ -1977,7 +1972,8 @@ Codex.Startup=
                             info.sync);
                 else {
                     if (getLocal("queued("+Codex.refuri+")"))
-                        Codex.glossdb.load(getLocal("queued("+Codex.refuri+")",true));
+                        Codex.glossdb.load(
+                            getLocal("queued("+Codex.refuri+")",true));
                     fdjtID("CODEXCOVER").className="bookcover";
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
@@ -2163,7 +2159,6 @@ Codex.Startup=
             else document.body.appendChild(update_script);}
 
         function setUser(userinfo,outlets,layers,sync){
-            var keepdata=((Codex.keepuser)&&(navigator.onLine));
             var started=fdjtTime();
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up user %s (%s)",userinfo._id,

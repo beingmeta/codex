@@ -1108,7 +1108,8 @@
                 choices.push({label: "Cache",
                               isdefault: ((!(navigator.onLine))&&(Codex.keepglosses)),
                               handler: function(){
-                                  if (!(Codex.keepglosses)) Codex.setConfig("keepglosses",true,true);
+                                  if (!(Codex.keepglosses))
+                                      Codex.setConfig("keepglosses",true,true);
                                   login_message=true;
                                   queueGloss(arg,false,keep);}});
                 if (!(Codex.keepglosses))

@@ -7,11 +7,11 @@
          onclick="fdjt.UI.CheckSpan.onclick(event); Codex.UI.settingsUpdate(event);"
          onblur="Codex.UI.settingsUpdate(event);">
     <tbody id="CODEXSYNCSETTINGS">
-      <tr class="checkspan">
-        <th><input TYPE="RADIO" NAME="CODEXLOCAL" VALUE="yes"
-                   ID="CODEXKEEPGLOSSESCHECKBOX"/></th>
-        <td>Save copies of glosses and other metadata on this device</td>
-        <th><span class="nowrap">For this book</span><br/>
+      <tr class="checkspan ischecked">
+        <th><input TYPE="CHECKBOX" NAME="CODEXKEEPGLOSSES"
+                   VALUE="yes" CHECKED/></th>
+        <td>Save copies of this book's glosses on this device</td>
+        <th>
           <button onclick="Codex.UI.forceSyncAction(event);"
                   title="Update glosses and other information for this book from the sBooks cloud.">
             Sync</button>
@@ -20,8 +20,8 @@
             Clear</button></th>
       </tr>
       <tr class="checkspan">
-        <th><input TYPE="RADIO" NAME="DOSYNC" VALUE="yes"/></th>
-        <td>Sync reading location for this device</td>
+        <th><input TYPE="CHECKBOX" NAME="CODEXDOSYNC" VALUE="yes"/></th>
+        <td>Sync your reading location with other devices</td>
         <th></th>
       </tr>
     </tbody>
