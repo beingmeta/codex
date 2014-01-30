@@ -137,7 +137,7 @@ div#CODEXFOOT div#CODEXPAGEINFO #CODEXPAGEPROGRESS {
   width: 33%; height: 50%;
   background-color: rgba(162,181,205,0.8);
   pointer-events: none;
-  z-index: 5;}
+  z-index: 15;}
 div#CODEXFOOT div#CODEXPAGEINFO .codexsectmarker {
   box-sizing: content-box;
   /* border-left: dotted rgba(0,0,255,0.5) 2px; border-right: dotted rgba(0,0,255,0.5) 2px; */

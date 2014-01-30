@@ -792,7 +792,7 @@ Codex.Paginate=
             if (update_progress) {
                 var page_progress=fdjtID("CODEXPAGEPROGRESS");
                 if (page_progress) page_progress.style.width=
-                    ((pagenum*100)/npages)+"%";}
+                    (((pagenum-1)*100)/npages)+"%";}
             if (update_progress) {
                 /* Update section markers */
                 var page=fdjtID("CODEXPAGE"+pagenum);
@@ -804,25 +804,26 @@ Codex.Paginate=
                     var head3=((head2)&&(head2.head));
                     var span1=(head1)&&getPageSpan(head1);
                     var span2=(head2)&&getPageSpan(head2);
-                    var span3=(head2)&&getPageSpan(head3);
-                    while ((span2)&&(span1.width<=1)) {
+                    var span3=(head3)&&getPageSpan(head3);
+                    while ((span3)&&(span2)&&(span1.width<=1)) {
+                        var nextspan=(head3.head)&&(getPageSpan(head3.head));
+                        if (!(nextspan)) break;
                         head1=head2; head2=head3; head3=head2.head;
-                        span1=span2; span2=span3;
-                        span3=(head3)&&(getPageSpan(head3));}
+                        span1=span2; span2=span3; span3=nextspan;}
                     var marker1=fdjtID("CODEXSECTMARKER1"), marker2=fdjtID("CODEXSECTMARKER2");
                     var marker3=fdjtID("CODEXSECTMARKER3");
                     if ((span1)&&(span1.width)) {
-                        marker1.style.left=(100*(span1.start/npages))+"%";
+                        marker1.style.left=(100*((span1.start-1)/npages))+"%";
                         marker1.style.width=(100*(span1.width/npages))+"%";
                         marker1.style.display='block';                    }
                     else marker1.style.display='none';
                     if ((span2)&&(span2.width)) {
-                        marker2.style.left=(100*(span2.start/npages))+"%";
+                        marker2.style.left=(100*((span2.start-1)/npages))+"%";
                         marker2.style.width=(100*(span2.width/npages))+"%";
                         marker2.style.display='block';                    }
                     else marker2.style.display='none';
                     if ((span3)&&(span3.width)) {
-                        marker3.style.left=(100*(span3.start/npages))+"%";
+                        marker3.style.left=(100*((span3.start-1)/npages))+"%";
                         marker3.style.width=(100*(span3.width/npages))+"%";
                         marker3.style.display='block';                    }
                     else marker3.style.display='none';}}
