@@ -907,7 +907,9 @@ Codex.Startup=
             if ((msg=getCookie("SBOOKSMESSAGE"))) {
                 fdjtUI.alertFor(10,msg);
                 fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}
-            if ((!(mode))&&(location.hash)) Codex.hideCover();
+            if ((!(mode))&&(location.hash)&&(Codex.state)&&
+                (location.hash.slice(1)!==Codex.state.target))
+                Codex.hideCover();
             else if ((!(mode))&&(Codex.user)) {
                 var opened=readLocal(
                     "codex.opened("+Codex.docuri+")",true);

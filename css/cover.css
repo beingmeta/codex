@@ -82,7 +82,7 @@ div#CODEXCOVERCONTROLS > .control > img {
 
 div#CODEXCOVERCONTROLS > span.control {
     font-size: 1.8em; color: silver; white-space: nowrap;
-    padding-left: 0.5ex; padding-right: 0.5ex;
+    padding-left: 0.5ex; padding-right: 0.5ex; padding-bottom: 0.5ex;
     cursor: pointer;}
 @media (max-width: 650px) {
     div#CODEXCOVERCONTROLS > span.control { font-size: 1.5em;}}
@@ -101,7 +101,7 @@ div#CODEXCOVER div.loginbox, div#CODEXCOVER div.userbox {
 
 body.cxNOUSER div#CODEXCOVER div.loginbox,
 body.cxUSER div#CODEXCOVER div.userbox {
-    margin-top: 0.7em; height: 40px;
+    margin-top: 1ex; height: 40px;
     vertical-align: top; color: gold;}
 
 div#CODEXCOVER div.loginbox {
