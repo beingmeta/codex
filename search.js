@@ -312,9 +312,12 @@
         var box=fdjtDOM.getParent(target,".searchbox");
         var input=getChild(box,".searchinput");
         fdjtUI.cancel(evt);
-        if (Codex.query.tags.length===0) {
+        if ((Codex.query.tags.length===0)&&
+            (input.value.length===0)) {
             Codex.setMode(false); return;}
-        else setQuery(Codex.empty_query);
+        else {
+            setQuery(Codex.empty_query);
+            input.value="";}
         input.focus();}
     Codex.UI.handlers.clearSearch=clearSearch;
     
