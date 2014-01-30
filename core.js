@@ -862,7 +862,7 @@ var Codex={
     var syncing=false;
     
     Codex.initState=function initState() {
-        var uri=Codex.docuri||Codex.refuri;
+        var uri=Codex.docuri;
         var state=readLocal("codex.state("+uri+")",true);
         var hash=window.location.hash;
         if (hash) {
@@ -913,7 +913,7 @@ var Codex={
                     skiphist,force,state);
         Codex.state=state;
         var statestring=JSON.stringify(state);
-        var uri=Codex.docuri||Codex.refuri;
+        var uri=Codex.docuri;
         saveLocal("codex.state("+uri+")",statestring);
         if ((!(syncing))&&(Codex.dosync)&&
             ((!(Codex.xstate))||(state.changed>Codex.xstate.changed)))
@@ -963,7 +963,7 @@ var Codex={
     } Codex.restoreState=restoreState;
 
     function clearState(){
-        var uri=Codex.docuri||Codex.refuri;
+        var uri=Codex.docuri;
         Codex.state=false;
         clearLocal("codex.state("+uri+")");
         Codex.xstate=false;
@@ -983,7 +983,7 @@ var Codex={
                 fdjtLog("Skipping state sync because page doesn't have focus");
             return;}
         if ((Codex.dosync)&&(navigator.onLine)) {
-            var uri=Codex.docuri||Codex.refuri;
+            var uri=Codex.docuri;
             var traced=(Codex.Trace.state)||(Codex.Trace.network);
             var state=Codex.state;
             var refuri=((Codex.target)&&(Codex.getRefURI(Codex.target)))||

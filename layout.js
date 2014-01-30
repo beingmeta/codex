@@ -415,7 +415,7 @@ Codex.Paginate=
             if (!(family)) family=Codex.bodyfamily||"serif";
             if (!(size)) size=Codex.bodysize||"normal";
             if (!(source_id))
-                source_id=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri||Codex.refuri);
+                source_id=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri);
             page.style.left=left; page.style.right=right;
             return fdjtString("%dx%d-%s-%s(%s)",
                               width,height,family,size,
@@ -455,7 +455,7 @@ Codex.Paginate=
             var container=fdjtDOM("div.codexpages#CODEXPAGES");
             var bodyfamily=Codex.bodyfamily||"serif";
             var bodysize=Codex.bodysize||"normal";
-            var sourceid=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri||Codex.refuri);
+            var sourceid=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri);
             var layout_id=fdjtString(
                 "%dx%d-%s-%s(%s)",
                 width,height,bodyfamily,bodysize,

@@ -378,7 +378,8 @@ Codex.Startup=
                      (Codex.sync_interval))
                 Codex.synctock=synctock=
                 setInterval(Codex.syncState,value*1000);
-            Codex.saveLocal("dosync("+Codex.docuri+")",value,true);
+            Codex.saveLocal("codex.dosync("+Codex.docuri+")",
+                            value,true);
             Codex.dosync=value;});
         
         function syncStartup(){
@@ -407,9 +408,6 @@ Codex.Startup=
             // Check for any trace settings passed as query arguments
             if (getQuery("cxtrace")) readTraceSettings();
 
-            // Get config information
-            initConfig();
-
             // Get various settings for the sBook from the HTML (META
             // tags, etc), including settings or guidance for
             // scanning, graphics, layout, glosses, etc.
@@ -418,7 +416,11 @@ Codex.Startup=
                     Codex.docref||"@??",Codex.bookbuild||"",
                     Codex.refuri,Codex.sourceid);
             
-            Codex.dosync=readLocal("dosync("+Codex.docuri+")",true);
+            // Get config information
+            initConfig();
+
+            Codex.dosync=readLocal(
+                "codex.dosync("+Codex.docuri+")",true);
 
             // This sets various aspects of the environment
             readEnvSettings();
@@ -590,7 +592,7 @@ Codex.Startup=
                             "Can't save glosses without a persistent login");
                         return;}
                     else if (value) {
-                        var uri=Codex.docuri||Codex.refuri;
+                        var uri=Codex.docuri;
                         if (!(Codex.sourcedb.storage))
                             Codex.sourcedb.storage=window.localStorage;
                         if (!Codex.glossdb.storage)
@@ -643,7 +645,7 @@ Codex.Startup=
             if ((cur)&&(cur>val)) return cur;
             Codex.sync=val;
             if (Codex.keepuser)
-                saveLocal("codex.sync("+Codex.docuri||Codex.refuri+")",val);
+                saveLocal("codex.sync("+Codex.docuri+")",val);
             return val;};
 
         function userSetup(){
@@ -920,7 +922,8 @@ Codex.Startup=
                 fdjtState.clearCookie("SBOOKSMESSAGE","sbooks.net","/");}
             if ((!(mode))&&(location.hash)) Codex.hideCover();
             else if ((!(mode))&&(Codex.user)) {
-                var opened=readLocal("Codex.opened("+Codex.refuri+")",true);
+                var opened=readLocal(
+                    "codex.opened("+Codex.docuri+")",true);
                 if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
                     Codex.hideCover();}
             fdjtDOM.addListener(window,"resize",resizeHandler);}
@@ -1194,7 +1197,7 @@ Codex.Startup=
             return getLink("SBOOKS.docuri",false)||
                 getLink("docuri",false)||
                 getLink("canonical",false)||
-                location.href;}
+                _getsbookrefuri();}
 
         function lookupServer(string){
             var sbook_servers=Codex.servers;

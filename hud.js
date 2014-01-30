@@ -387,12 +387,13 @@ Codex.setMode=
 
         function showCover(){
             if (Codex._setup)
-                fdjtState.dropLocal("Codex.opened("+Codex.refuri+")");
+                fdjtState.dropLocal("codex.opened("+Codex.docuri+")");
             addClass(document.body,"cxCOVER");}
         Codex.showCover=showCover;
         function hideCover(){
             if (Codex._setup)
-                fdjtState.setLocal("Codex.opened("+Codex.refuri+")",fdjtTime());
+                fdjtState.setLocal(
+                    "codex.opened("+Codex.docuri+")",fdjtTime());
             dropClass(document.body,"cxCOVER");}
         Codex.hideCover=hideCover;
         function toggleCover(){
