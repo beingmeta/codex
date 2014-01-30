@@ -286,7 +286,7 @@ Codex.Startup=
                     (req.status>=200)&&(req.status<300)) {
                     try {
                         var config=JSON.parse(req.responseText);
-                        fdjtState.setLocal("codex.config",req.responseText);
+                        saveLocal("codex.config",req.responseText);
                         fdjtLog("Got device config: %j",config);
                         fetching_config=false;
                         config_fetched=true;
@@ -889,7 +889,7 @@ Codex.Startup=
                     msgid="MSG_"+msg.slice(2,uuid_end);
                     if (getLocal(msgid)) {}
                     else {
-                        fdjtState.setLocal(msgid,"seen");
+                        saveLocal(msgid,"seen");
                         fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
                 else fdjtUI.alertFor(10,msg);}
             if ((msg=getQuery("SBOOKSMESSAGE"))) {
@@ -898,7 +898,7 @@ Codex.Startup=
                     msgid="MSG_"+msg.slice(2,uuid_end);
                     if (getLocal(msgid)) {}
                     else {
-                        fdjtState.setLocal(msgid,"seen");
+                        saveLocal(msgid,"seen");
                         fdjtUI.alertFor(10,msg.slice(uuid_end+1));}}
                 else fdjtUI.alertFor(10,msg);}
             if ((msg=getCookie("APPMESSAGE"))) {
@@ -2018,7 +2018,7 @@ Codex.Startup=
         Codex.loadInfo=loadInfo;
 
      function infoLoaded(info){
-         var keepdata=(Codex.persist)&&(!(Codex.nocache));
+         var keepdata=(!(Codex.nocache));
          if (info.etc) gotInfo("etc",info.etc,keepdata);
          if (info.sources) gotInfo("sources",info.sources,keepdata);
          if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
@@ -2172,12 +2172,11 @@ Codex.Startup=
                 userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (outlets) Codex.outlets=outlets;
             if (layers) Codex.layers=layers;
-            if (Codex.persist) {
-                // No callback needed
-                Codex.user.save();
-                setLocal("codex.user",Codex.user._id);
-                // We also save it locally so we can get it synchronously
-                setLocal(Codex.user._id,Codex.user.Export(),true);}
+            // No callback needed
+            Codex.user.save();
+            saveLocal("codex.user",Codex.user._id);
+            // We also save it locally so we can get it synchronously
+            saveLocal(Codex.user._id,Codex.user.Export(),true);
             if (getLocal("codex.nolocsync("+Codex.docuri+")"))
                 setConfig("locsync",false);
             else setConfig("locsync",true);
@@ -2308,7 +2307,7 @@ Codex.Startup=
             var refuri=Codex.refuri;
             Codex[name]=qids;
             if (!(Codex.nocache))
-                setLocal("codex."+name+"("+refuri+")",qids,true);}
+                saveLocal("codex."+name+"("+refuri+")",qids,true);}
             
         // Processes info loaded remotely
         function gotInfo(name,info,persist) {
@@ -2754,7 +2753,8 @@ Codex.Startup=
                     // For now, we clear layouts, because they might
                     //  contain personalized information
                     fdjt.CodexLayout.clearLayouts();}
-                fdjtState.clearLocal();}
+                fdjtState.clearLocal();
+                fdjtState.clearSession();}
             else {
                 if (typeof uri !== "string") uri=Codex.docuri;
                 Codex.sync=false;
@@ -2762,9 +2762,11 @@ Codex.Startup=
                 clearLocal("codex.outlets("+uri+")");
                 clearLocal("codex.layers("+uri+")");
                 clearLocal("codex.etc("+uri+")");
-                Codex.sourcedb.clearOffline(function(){
-                    Codex.glossdb.clearOffline(function(){
-                        clearLocal("codex.sync("+uri+")");});});}}
+                // We don't currently clear sources when doing book
+                // specific clearing because they might be shared
+                // between books
+                Codex.glossdb.clearOffline(function(){
+                    clearLocal("codex.sync("+uri+")");});}}
         Codex.clearOffline=clearOffline;
         
         /* Other setup */
