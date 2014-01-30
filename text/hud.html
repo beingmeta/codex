@@ -132,8 +132,7 @@
        displayed for help when there isn't an active reader mode) -->
   <img svg="{{bmg}}codex/redx.svgz"
        src="{{bmg}}codex/redx24x24.png"
-       alt="close" class="closebutton"
-       onclick="Codex.toggleHelp();"/>
+       alt="close" class="closebutton codextogglehelp"/>
   <h1><span class="adjustfont">Welcome to Codex,
       the <span class="sbooks"><em>s</em>Books</span> e-reader</span></h1>
   <div id="CODEXAPPHELP"></div>
@@ -143,7 +142,7 @@
   <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
   <span class="close" onclick="Codex.keyboardHelp(false);">close</span>
   <div id="CODEXKEYBOARDHELP"></div>
-  <div class="checkspan" onclick="fdjt.UI.CheckSpan.onclick(event);">
+  <div class="checkspan">
     <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
            CHECKED>
     Show keyboard help

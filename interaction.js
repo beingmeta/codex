@@ -2682,8 +2682,8 @@
              tap: hudmodebutton,release: hudmodebutton,slip: hudmodebutton},
          // GLOSSFORM rules
          ".codexglossform": {click: glossform_touch,touchstart: glossform_touch},
-         "span.codexsharegloss": {tap: fdjt.UI.CheckSpan.onclick},
-         // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
+         "span.codexsharegloss": {
+             tap: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
          ".codexglossform .response": {click: Codex.toggleHUD},
          ".addglossmenu": {
@@ -2692,9 +2692,11 @@
              slip: glossmode_slip,
              release: glossmode_release,
              click: cancel},
-         "div.glossetc": {click: fdjt.UI.CheckSpan.onclick},
+         "div.glossetc": {},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
-         "div.glossetc div.notetext": {click: editglossnote}});
+         "div.glossetc div.notetext": {click: editglossnote},
+         ".checkspan": {click: fdjt.UI.CheckSpan.onclick},
+         ".codextogglehelp": {click: Codex.toggleHelp}});
 
     fdjt.DOM.defListeners(
         Codex.UI.handlers.touch,
@@ -2798,12 +2800,11 @@
              slip: hudmodebutton},
          // GLOSSFORM rules
          ".codexglossform": {click: cancel,touchstart: glossform_touch},
-         "span.codexsharegloss": {touchend: fdjt.UI.CheckSpan.onclick},
+         "span.codexsharegloss": {},
          ".codexclosehud": {
              click: back_to_reading,
              touchmove: cancel,
              touchend: cancel},
-         // ".glossexposure": {click: fdjt.UI.CheckSpan.onclick},
          ".codexglossform .response": {click: Codex.toggleHUD},
          ".addglossmenu": {
              tap: glossmode_tap,
@@ -2811,14 +2812,19 @@
              slip: glossmode_slip,
              release: glossmode_release,
              click: cancel},
-         "div.glossetc": {
-             touchstart: fdjt.UI.CheckSpan.onclick},
+         "div.glossetc": {},
          "div.glossetc div.sharing": {
              touchend: glossform_outlets_tapped,
              click: cancel},
          "div.glossetc div.notetext": {
              touchend: editglossnote,
-             click: cancel}});
+             click: cancel},
+         ".checkspan": {
+             touchstart: cancel,
+             touchend: fdjt.UI.CheckSpan.onclick},
+         ".codextogglehelp": {
+             touchstart: cancel,
+             touchend: Codex.toggleHelp}});
     
 })();
 
