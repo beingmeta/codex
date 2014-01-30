@@ -863,8 +863,8 @@ Codex.setMode=
             var showconsole=fdjtDOM.getInputValues(settings,"CODEXSHOWCONSOLE");
             result.showconsole=
                 ((showconsole)&&(showconsole.length)&&(true))||false;
-            var dosync=fdjtDOM.getInputValues(settings,"CODEXDOSYNC");
-            if ((dosync)&&(dosync.length)) result.dosync=true;
+            var locsync=fdjtDOM.getInputValues(settings,"CODEXLOCSYNC");
+            if ((locsync)&&(locsync.length)) result.locsync=true;
             var animatecontent=fdjtDOM.getInputValues(
                 settings,"CODEXANIMATECONTENT");
             result.animatecontent=

@@ -1094,27 +1094,30 @@
                                   if (Codex._onconnect) Codex._onconnect.push(resubmit);
                                   else Codex._onconnect=[resubmit];
                                   login_message=true;}});
-            if ((Codex.user)&&(Codex.keepuser)) 
+            if ((Codex.user)&&(Codex.persist)) 
                 choices.push({label: "Queue",
-                              isdefault: ((!(navigator.onLine))&&(Codex.keepglosses)),
+                              isdefault: ((!(navigator.onLine))&&
+                                          (!(Codex.nocache))),
                               handler: function(){
-                                  if (!(Codex.keepglosses))
-                                      Codex.setConfig("keepglosses",true,true);
+                                  if (Codex.nocache)
+                                      Codex.setConfig("nocache",false);
                                   login_message=true;
                                   if (!((navigator.onLine)&&(Codex.connected)))
                                       queueGloss(arg,false,keep);
                                   else submitGloss(arg,keep);}});
             else {
                 choices.push({label: "Cache",
-                              isdefault: ((!(navigator.onLine))&&(Codex.keepglosses)),
+                              isdefault: ((!(navigator.onLine))&&
+                                          (!(Codex.nocache))),
                               handler: function(){
-                                  if (!(Codex.keepglosses))
-                                      Codex.setConfig("keepglosses",true,true);
+                                  if (Codex.nocache)
+                                      Codex.setConfig("nocache",false,true);
                                   login_message=true;
                                   queueGloss(arg,false,keep);}});
-                if (!(Codex.keepglosses))
+                if (Codex.nocache)
                     choices.push({label: "Lose",
-                                  isdefault: ((!(navigator.onLine))&&(!(Codex.keepglosses))),
+                                  isdefault:((!(navigator.onLine))&&
+                                             (Codex.nocache)),
                                   handler: function(){
                                       tempGloss(form); login_message=true;}});}
             choices.push({label: "Cancel",
@@ -1144,7 +1147,7 @@
                               fdjtDOM("p.smaller",
                                       "You may either login now, queue any changes you make until ",
                                      "you do login, or cancel the change you were trying to make.")]))),
-                          ((!(navigator.onLine))&&(!(Codex.keepglosses))&&
+                          ((!(navigator.onLine))&&(Codex.nocache)&&
                            ([fdjtDOM("p.smaller",
                                     "You are currently offline and have elected to not save ",
                                     "highlights or glosses locally on this computer."),
@@ -1219,7 +1222,7 @@
         var params=fdjt.Ajax.formParams(form);
         var queued=Codex.queued;
         queued.push(json.uuid);
-        if (Codex.keepglosses) {
+        if (!(Codex.nocache)) {
             fdjtState.setLocal("params("+json.uuid+")",params);
             fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);}
         else queued_data[json.uuid]=params;
@@ -1285,8 +1288,8 @@
             var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
                 getAttribute("ajaxaction");
             var queued=Codex.queued; var glossid=queued[0];
-            var post_data=((Codex.keepglosses)?(fdjtState.getLocal("params("+glossid+")")):
-                           (queued_data[glossid]));
+            var post_data=((Codex.nocache)?((queued_data[glossid])):
+                           (fdjtState.getLocal("params("+glossid+")")));
             if (post_data) {
                 var req=new XMLHttpRequest();
                 req.open('POST',ajax_uri);
@@ -1300,7 +1303,7 @@
                             var pos=pending.indexOf(glossid);
                             if (pos>=0) {
                                 pending.splice(pos,pos);
-                                if (Codex.keepglosses)
+                                if (!(Codex.nocache))
                                     fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);
                                 Codex.queued=pending;}}
                         addgloss_callback(req,false,false);

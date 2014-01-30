@@ -169,6 +169,9 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
     box-shadow: none; -webkit-box-shadow: none;
     -moz-box-shadow: none; -o-box-shadow: none;}
     
+#CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD {
+    display: none;}
+
 body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}
 body #CODEXHUD.tocscan #CODEXTOP,
@@ -1008,7 +1011,8 @@ div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
 
 div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
 div#CODEXHUD div#CODEXSOURCES.hudpanel {
-    overflow-y: hidden; overflow-x: auto; white-space: nowrap;}
+    overflow-y: hidden; overflow-x: auto; white-space: nowrap;
+    padding-top: 2px;}
 
 /* Buttons */
 

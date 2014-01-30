@@ -106,6 +106,7 @@ Codex.Startup=
 
         var readLocal=Codex.readLocal;
         var saveLocal=Codex.saveLocal;
+        var clearLocal=Codex.clearLocal;
 
         /* Whether to resize by default */
         var resize_default=true;
@@ -116,7 +117,6 @@ Codex.Startup=
         /* Configuration information */
 
         var config_handlers={};
-        var dont_save_configs={keepglosses: true};
         var default_config=
             {layout: 'bypage',forcelayout: false,
              bodysize: 'normal',bodyfamily: 'serif',
@@ -206,10 +206,9 @@ Codex.Startup=
             else setConfig(config);
             var saved={};
             for (var setting in config) {
-                if ((!(dont_save_configs[setting]))&&
-                    (((!(default_config.hasOwnProperty(setting)))||
-                      (config[setting]!==default_config[setting]))&&
-                     (!(getQuery(setting))))) {
+                if ((default_config.hasOwnProperty(setting))&&
+                    (config[setting]!==default_config[setting])&&
+                    (!(getQuery(setting)))) {
                     saved[setting]=config[setting];}}
             if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
             setLocal("codex.config",JSON.stringify(saved));
@@ -367,10 +366,11 @@ Codex.Startup=
             if (Codex.synctock) {
                 clearInterval(Codex.synctock);
                 Codex.synctock=synctock=false;}
-            if ((value)&&(Codex.dosync))
+            if ((value)&&(Codex.locsync))
                 Codex.synctock=synctock=
                 setInterval(Codex.syncState,value*1000);});
-        Codex.addConfig("dosync",function(name,value){
+        Codex.addConfig("locsync",function(name,value){
+            // Start or clear the sync check interval timer
             if ((!(value))&&(Codex.synctock)) {
                 clearInterval(Codex.synctock);
                 Codex.synctock=synctock=false;}
@@ -378,9 +378,11 @@ Codex.Startup=
                      (Codex.sync_interval))
                 Codex.synctock=synctock=
                 setInterval(Codex.syncState,value*1000);
-            Codex.saveLocal("codex.dosync("+Codex.docuri+")",
-                            value,true);
-            Codex.dosync=value;});
+            if (value)
+                clearLocal("codex.dontsync("+Codex.docuri+")");
+            else saveLocal(
+                "codex.dontsync("+Codex.docuri+")",fdjtTime(),true);
+            Codex.locsync=value;});
         
         function syncStartup(){
             // This is the startup code which is run
@@ -398,7 +400,7 @@ Codex.Startup=
 
             // Figure out if we have a user and whether we can keep
             // user information
-            if (getLocal("codex.user")) Codex.keepuser=true;
+            if (getLocal("codex.user")) Codex.persist=true;
 
             // Get window outer dimensions (this doesn't count Chrome,
             // onscreen keyboards, etc)
@@ -418,9 +420,6 @@ Codex.Startup=
             
             // Get config information
             initConfig();
-
-            Codex.dosync=readLocal(
-                "codex.dosync("+Codex.docuri+")",true);
 
             // This sets various aspects of the environment
             readEnvSettings();
@@ -584,19 +583,19 @@ Codex.Startup=
             addConfig(
                 "keepglosses",
                 function(name,value){
-                    var refuri=Codex.refuri;
-                    if ((value)&&(Codex.keepglosses)) return;
-                    else if ((!(value))&&(!(Codex.keepglosses))) return;
-                    else if ((value)&&(!(Codex.keepuser))) {
-                        fdjtLog.warn(
-                            "Can't save glosses without a persistent login");
+                    var uri=Codex.docuri;
+                    if ((value)&&(Codex.nocache)) return;
+                    else if ((!(value))&&(!(Codex.nocache))) return;
+                    else if ((value)&&(!(Codex.user))) {
+                        // ?? Add dialog, possibly update userinfo to check
+                        // if the login is now persistent
+                        fdjtLog.warn("Login required for caching");
                         return;}
                     else if (value) {
-                        var uri=Codex.docuri;
-                        if (!(Codex.sourcedb.storage))
-                            Codex.sourcedb.storage=window.localStorage;
-                        if (!Codex.glossdb.storage)
-                            Codex.glossdb.storage=window.localStorage;
+                        var storage=((Codex.persist)?(window.localStorage):
+                                     (window.sessionStorage));
+                        if (!(Codex.sourcedb.storage)) Codex.sourcedb.storage=storage;
+                        if (!Codex.glossdb.storage) Codex.glossdb.storage=storage;
                         var props=saveprops, i=0, lim=props.length;
                         while (i<lim) {
                             var prop=saveprops[i++];
@@ -608,13 +607,14 @@ Codex.Startup=
                             Codex.queued=Codex.queued.concat(
                                 getLocal("queued("+uri+")",true)||[]);
                         else Codex.queued=getLocal("queued("+uri+")",true)||[];
-                        Codex.setLocal("keepglosses("+uri+")",true,true);}
-                    else if (!(value)) {
+                        Codex.dropLocal("nocache("+uri+")");
+                        Codex.nocache=false;}
+                    else {
                         clearOffline();
                         fdjtState.dropLocal("queued("+Codex.refuri+")");
-                        Codex.setLocal("keepglosses("+uri+")",false,true);
-                        Codex.queued=[];}
-                    Codex.keepglosses=value;});
+                        Codex.setLocal("nocache("+uri+")",fdjtTime(),true);
+                        Codex.queued=[];
+                        Codex.nocache=true;}});
 
             // Setup the reticle (if desired)
             if ((typeof (body.style["pointer-events"])!== "undefined")&&
@@ -644,7 +644,7 @@ Codex.Startup=
             var cur=Codex.sync;
             if ((cur)&&(cur>val)) return cur;
             Codex.sync=val;
-            if (Codex.keepuser)
+            if (Codex.persist)
                 saveLocal("codex.sync("+Codex.docuri+")",val);
             return val;};
 
@@ -656,15 +656,15 @@ Codex.Startup=
 
             // If the configuration is set to not persist, but there's
             //  a sync timestamp, we should erase what's there.
-            if ((Codex.sync)&&(!(Codex.keepuser))) clearOffline();
+            if ((Codex.sync)&&(!(Codex.persist))) clearOffline();
 
             if (Codex.nologin) {}
-            else if ((Codex.keepuser)&&(sync)&&(getLocal("codex.user"))) {
+            else if ((Codex.persist)&&(sync)&&(getLocal("codex.user"))) {
                 initUserOffline();
                 if (Codex.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);
-                if ((Codex.user)&&(Codex.sync)&&(Codex.keepglosses)&&
+                if ((Codex.user)&&(Codex.sync)&&(!(Codex.nocache))&&
                     (window._sbook_loadinfo))
                     // Clear the loadinfo "left over" from startup,
                     //  which should now be in the database
@@ -788,7 +788,7 @@ Codex.Startup=
                 // Process locally stored (offline data) glosses
                 function(){
                     if (Codex.sync) {
-                        if (Codex.keepglosses) return initGlossesOffline();}
+                        if (!(Codex.nocache)) return initGlossesOffline();}
                     else if (window._sbook_loadinfo) {
                         loadInfo(window._sbook_loadinfo);
                         window._sbook_loadinfo=false;}},
@@ -1005,7 +1005,7 @@ Codex.Startup=
                 Codex.mycopyid=getMeta("SBOOKS.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
                     false;}
-            if (Codex.keepuser) saveLocal("codex.refuris",refuris,true);}
+            if (Codex.persist) saveLocal("codex.refuris",refuris,true);}
 
         function deviceSetup(){
             var useragent=navigator.userAgent;
@@ -1968,7 +1968,7 @@ Codex.Startup=
                 return;}
             if (window._sbook_loadinfo!==info)
                 Codex.setConnected(true);
-            if (info.sticky) Codex.keepuser=true;
+            if (info.sticky) Codex.persist=true;
             if (!((Codex.user)&&(Codex._user_setup))) {
                 if (info.userinfo)
                     setUser(info.userinfo,
@@ -2003,8 +2003,7 @@ Codex.Startup=
                 window._sbook_newinfo=info;
                 return;}
             var refuri=Codex.refuri;
-            if ((Codex.keepuser)&&
-                (Codex.keepglosses)&&
+            if ((Codex.persist)&&(!(Codex.nocache))&&
                 (info)&&(info.userinfo)&&(Codex.user)&&
                 (info.userinfo._id!==Codex.user._id)) {
                 clearOffline();}
@@ -2030,7 +2029,7 @@ Codex.Startup=
         Codex.loadInfo=loadInfo;
 
      function infoLoaded(info){
-         var keepdata=(Codex.keepuser)&&(Codex.keepglosses);
+         var keepdata=(Codex.persist)&&(!(Codex.nocache));
          if (info.etc) gotInfo("etc",info.etc,keepdata);
          if (info.sources) gotInfo("sources",info.sources,keepdata);
          if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
@@ -2184,7 +2183,7 @@ Codex.Startup=
                 userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             if (outlets) Codex.outlets=outlets;
             if (layers) Codex.layers=layers;
-            if (Codex.keepuser) {
+            if (Codex.persist) {
                 // No callback needed
                 Codex.user.save();
                 setLocal("codex.user",Codex.user._id);
@@ -2205,7 +2204,7 @@ Codex.Startup=
             var refuri=Codex.refuri;
             if (!(Codex.nodeid)) {
                 Codex.nodeid=nodeid;
-                if ((nodeid)&&(Codex.keepuser))
+                if ((nodeid)&&(Codex.persist))
                     setLocal("codex.nodeid("+refuri+")",nodeid,true);}}
         Codex.setNodeID=setNodeID;
 
@@ -2302,7 +2301,7 @@ Codex.Startup=
         function gotItem(item,qids){
             if (typeof item === 'string') {
                 var load_ref=Codex.sourcedb.ref(item);
-                if (Codex.keepuser) load_ref.load();
+                if (Codex.persist) load_ref.load();
                 qids.push(load_ref._id);}
             else {
                 var import_ref=Codex.sourcedb.Import(
@@ -2313,7 +2312,7 @@ Codex.Startup=
         function saveItems(qids,name){
             var refuri=Codex.refuri;
             Codex[name]=qids;
-            if (Codex.keepdata)
+            if (!(Codex.nocache))
                 setLocal("codex."+name+"("+refuri+")",qids,true);}
             
         // Processes info loaded remotely
@@ -2448,7 +2447,7 @@ Codex.Startup=
                     {label: "stop syncing",
                      title: "stop syncing this book on this device",
                      handler: function(){
-                         setConfig("dosync",false);}});
+                         setConfig("locsync",false);}});
             if (choices.length)
                 Codex.statedialog=fdjtUI.choose(
                     {choices: choices,cancel: true,timeout: 7,nodefault: true,
@@ -2752,9 +2751,9 @@ Codex.Startup=
         
         /* Clearing offline data */
 
-        function clearOffline(refuri){
+        function clearOffline(uri){
             var dropLocal=fdjtState.dropLocal;
-            if (!(refuri)) {
+            if (!(uri)) {
                 dropLocal("codex.user");
                 if (Codex.user) {
                     // For now, we clear layouts, because they might
@@ -2762,18 +2761,18 @@ Codex.Startup=
                     fdjt.CodexLayout.clearLayouts();}
                 fdjtState.clearLocal();}
             else {
-                if (typeof refuri !== "string") refuri=Codex.refuri;
+                if (typeof uri !== "string") uri=Codex.docuri;
                 Codex.sync=false;
-                dropLocal("codex.sync("+refuri+")");
-                dropLocal("codex.sourceid("+refuri+")");
-                dropLocal("codex.sources("+refuri+")");
-                dropLocal("codex.outlets("+refuri+")");
-                dropLocal("codex.layers("+refuri+")");
-                dropLocal("codex.state("+refuri+")");
-                dropLocal("codex.etc("+refuri+")");
+                dropLocal("codex.sync("+uri+")");
+                dropLocal("codex.sourceid("+uri+")");
+                dropLocal("codex.sources("+uri+")");
+                dropLocal("codex.outlets("+uri+")");
+                dropLocal("codex.layers("+uri+")");
+                dropLocal("codex.state("+uri+")");
+                dropLocal("codex.etc("+uri+")");
                 Codex.sourcedb.clearOffline(function(){
                     Codex.glossdb.clearOffline(function(){
-                        fdjtState.dropLocal("codex.sync("+refuri+")");});});}}
+                        fdjtState.dropLocal("codex.sync("+uri+")");});});}}
         Codex.clearOffline=clearOffline;
         
         /* Other setup */

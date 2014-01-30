@@ -44,7 +44,7 @@
 var Codex={
     mode: false,hudup: false,scrolling: false,query: false,
     head: false,target: false,glosstarget: false,location: false,
-    root: false,start: false,HUD: false,dosync: true,
+    root: false,start: false,HUD: false,locsync: false,
     user: false, loggedin: false, cxthelp: false,
     _setup: false,_user_setup: false,_gloss_setup: false,_social_setup: false,
     // Whether we have a real connection to the server
@@ -75,9 +75,9 @@ var Codex={
     // on-screen keyboard appears)
     freezelayout: false,
     // Whether to locally store user information for offline availability
-    keepuser: false,
+    persist: false,
     // Whether to locally save glosses, etc for offline availability,
-    keepglosses: true,
+    nocache: true,
     // Whether to store glosses, etc for offline access and improved
     // performance.  This is no longer used, replaced by the two values
     // above.
@@ -178,15 +178,15 @@ var Codex={
     Codex.tagweights=new ObjectMap();
 
     function hasLocal(key){
-        if (Codex.keepuser) return fdjtState.existsLocal(key);
+        if (Codex.persist) return fdjtState.existsLocal(key);
         else return fdjtState.existsSession(key);}
     Codex.hasLocal=hasLocal;
     function saveLocal(key,value,unparse){
-        if (Codex.keepuser) setLocal(key,value,unparse);
+        if (Codex.persist) setLocal(key,value,unparse);
         else fdjtState.setSession(key,value,unparse);}
     Codex.saveLocal=saveLocal;
     function readLocal(key,parse){
-        if (Codex.keepuser) return getLocal(key,parse)||
+        if (Codex.persist) return getLocal(key,parse)||
             fdjtState.getSession(key,parse);
         else return fdjtState.getSession(key,parse)||getLocal(key,parse);}
     Codex.readLocal=readLocal;
@@ -277,8 +277,7 @@ var Codex={
                                     Codex.addTags(item.replyto,tags,fragslot);}
                             if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
                                  "initgloss");
-            if ((Codex.user)&&(Codex.keepuser)&&(Codex.keepglosses)&&
-                (!(Codex.force_online)))
+            if ((Codex.user)&&(Codex.persist)&&(!(Codex.nocache)))
                 Codex.glossdb.storage=window.localStorage;}
         
         function Gloss(){return Ref.apply(this,arguments);}
@@ -321,7 +320,7 @@ var Codex={
             Codex.anonymous=anonymous;
             anonymous.name="anonymous";}
 
-        Codex.queued=((Codex.keepglosses)&&
+        Codex.queued=((!(Codex.nocache))&&
                       (getLocal("queued("+Codex.refuri+")",true)))||
             [];
 
@@ -915,7 +914,7 @@ var Codex={
         var statestring=JSON.stringify(state);
         var uri=Codex.docuri;
         saveLocal("codex.state("+uri+")",statestring);
-        if ((!(syncing))&&(Codex.dosync)&&
+        if ((!(syncing))&&(Codex.locsync)&&
             ((!(Codex.xstate))||(state.changed>Codex.xstate.changed)))
             syncState(true);
         if ((!(skiphist))&&(frag)&&(window.history)&&(window.history.pushState))
@@ -973,7 +972,7 @@ var Codex={
     // Post the current state and update synced state from what's
     // returned
     function syncState(force){
-        if ((syncing)||(!(Codex.dosync))) return;
+        if ((syncing)||(!(Codex.locsync))) return;
         if ((!(force))&&(last_sync)&&((fdjtTime.tick()-last_sync)<Codex.sync_interval)) {
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because it's too soon");
@@ -982,7 +981,7 @@ var Codex={
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because page doesn't have focus");
             return;}
-        if ((Codex.dosync)&&(navigator.onLine)) {
+        if ((Codex.locsync)&&(navigator.onLine)) {
             var uri=Codex.docuri;
             var traced=(Codex.Trace.state)||(Codex.Trace.network);
             var state=Codex.state;
@@ -1045,8 +1044,8 @@ var Codex={
                     fdjtLog.warn(
                         "Sync request %s returned status %d, pausing",
                         uri,req.status);}
-                Codex.dosync=false;
-                setTimeout(function(){Codex.dosync=true;},15*60*1000);}}
+                Codex.locsync=false;
+                setTimeout(function(){Codex.locsync=true;},15*60*1000);}}
     } Codex.syncState=syncState;
 
     function forceSync(){
