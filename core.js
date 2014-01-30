@@ -973,7 +973,8 @@ var Codex={
     // returned
     function syncState(force){
         if ((syncing)||(!(Codex.locsync))) return;
-        if ((!(force))&&(last_sync)&&((fdjtTime.tick()-last_sync)<Codex.sync_interval)) {
+        if ((!(force))&&(last_sync)&&
+            ((fdjtTime.tick()-last_sync)<Codex.sync_interval)) {
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because it's too soon");
             return;}

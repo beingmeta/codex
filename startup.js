@@ -2411,6 +2411,13 @@ Codex.Startup=
                 Codex.restoreState(xstate);
                 return;}
             else if (state.changed>=xstate.changed) return;
+            if ((fdjtTime()-state.changed)<(600)) {
+                if (xstate.maxloc>state.maxloc) {
+                    state.maxloc=xstate.maxloc;
+                    var statestring=JSON.stringify(state);
+                    var uri=Codex.docuri;
+                    saveLocal("codex.state("+uri+")",statestring);
+                    return;}}
             var msg1="Sync To";
             var choices=[];
             var latest=xstate.location, farthest=xstate.maxloc;
