@@ -1,57 +1,3 @@
-<div id="CODEXCOVERMESSAGE">
-  <div id="CODEXREADYMESSAGE">
-    <span class="fortouch">Tap to </span>
-    <span class="notouch">Click to </span>
-    read
-  </div>
-  <div class="codexstatus" id="CODEXLAYOUTMESSAGE">
-    <div class="box"><div class="indicator"></div></div>
-    <div class="message"></div>
-  </div>
-</div>
-<div id="CODEXBOOKCOVERHOLDER"
-     style="position: absolute; top: 50px; left: 0px; width: 100%; bottom: 120px;">
-  <img src="{{coverimage|}}" alt="A display cover page"
-       style="max-width: 90%; max-height: 90%; width: auto; height: auto;"
-       id="CODEXBOOKCOVERIMAGE"/>
-</div>
-<div id="CODEXTITLEPAGEHOLDER" class="codextitlepage"
-     style="position: absolute; top: 50px; left: 0px; width: 100%; bottom: 120px;">
-</div>
-<div id="CODEXCREDITSPAGEHOLDER"
-     style="position: absolute; top: 50px; left: 0px; width: 100%; bottom: 120px;">
-</div>
-<div id="CODEXINFOPAGEHOLDER" class="codexbibpage"></div>
-<div id="CODEXAPPHELP" class="codexhelp">
-  <h1><span class="adjustfont">Welcome to Codex,
-      the <span class="sbooks"><em>s</em>Books</span>
-      e-reader</span></h1>
-  <p>You're using <span class="codex">Codex</span>, a web-based
-    e-reader created to deepen reading and engagement while connecting
-    to networks of knowledge, conversation, and
-    commmunity.  <span class="codex">Codex</span> aims to reclaim the
-    virtues of physical books for electronic books, making them
-    natural to navigate, annotate, search, and personalize.</p>
-  <div id="CODEXCOVERHELP"></div>
-</div>
-<div id="CODEXSETTINGS"></div>
-<div id="CODEXABOUTBOOKHOLDER">
-  <div id='CODEXABOUTBOOKCONTENT'>
-    <div class='title'></div>
-    <div class='byline'></div>
-    <div class='cover'></div>
-    <div class='publisher'></div>
-    <div class='copyright'></div>
-    <div class='description'></div>
-    <div class='digitized'></div>
-    <div class='sbookified'></div>
-    <div class='about'></div>
-  </div>
-</div>
-<div id="CODEXCONSOLE"></div>
-<div id="CODEXLAYERS">
-  <iframe name="SBOOKSAPP" id="SBOOKSAPP" frameborder="0" scrolling="auto"></iframe>
-</div>
 <div id="CODEXCOVERCONTROLS">
   <span class="control" data-mode="bookcover" title="see the cover"
         tabindex="1">
@@ -86,89 +32,151 @@
 	title="simple help for using Codex"
         tabindex="8">
     Help</span>
-  <div class="userbox">
-    <span class="bookplate">
-      This <a class="sbooks" href="https://www.sbooks.net/" target="_blank"
-              title="Learn more about sBooks" tabindex="9">
-        <em>s</em>Book</a> is personalized for
-      <a href="https://admin.sbooks.net/account/" class="codexusername"
-         title="Edit your profile, add social networks, etc"
-         target="_blank" tabindex="10">
-        you</a></span>
+<div class="userbox">
+  <span class="bookplate">
+    This <a class="sbooks" href="https://www.sbooks.net/" target="_blank"
+            title="Learn more about sBooks" tabindex="9">
+      <em>s</em>Book</a> is personalized for
+    <a href="https://admin.sbooks.net/account/" class="codexusername"
+       title="Edit your profile, add social networks, etc"
+       target="_blank" tabindex="10">
+      you</a></span>
+</div>
+<div class="loginbox">
+  <form action="https://auth.sbooks.net/auth" method="POST">
+    <input TYPE="HIDDEN" NAME="FRESHLOGIN" VALUE="yes"/>
+    <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
+    <input TYPE="TEXT" NAME="LOGIN" VALUE=""
+           PLACEHOLDER="login with your email"
+	   ONKEYPRESS="fdjt.UI.submitOnEnter(event);"
+           tabindex="9"/>
+    <span>or use</span>
+    <button name="AUTHORITY" TABINDEX="11"
+	    value=":FACEBOOK">
+      <img src="{{bmg}}sbooks/facebook64x64.png" class="nosvg"
+           alt="Facebook" class="noautoscale"/>
+      <img src="{{bmg}}sbooks/facebook.svgz" class="svg"
+           alt="Facebook" class="noautoscale"/>
+    </button>
+    <button NAME="AUTHORITY" TABINDEX="12"
+	    VALUE=":TWITTER">
+      <img src="{{bmg}}sbooks/twitter64x64.png"
+	   alt="Twitter" title="login with Twitter"
+	   class="nosvg"/>
+      <img src="{{bmg}}sbooks/twitter.svgz"
+	   alt="Twitter" title="login with Twitter"
+	   class="svg"/>
+    </button>
+    <button NAME="AUTHORITY" TABINDEX="13"
+	    VALUE="https://open.login.yahooapis.com/openid/op/auth">
+      <img src="{{bmg}}sbooks/yahoo64x64.png" class="nosvg"
+	   alt="Yahoo!" title="login using Yahoo!"/>
+      <img src="{{bmg}}sbooks/yahoo.svgz" class="svg"
+	   alt="Yahoo!" title="login using Yahoo!"/>
+    </button>
+    <button NAME="AUTHORITY" TABINDEX="14"
+	    VALUE=":GOOGLE">
+      <img src="{{bmg}}sbooks/google64x64.png"
+	   alt="Google" title="login using your Google account"
+	   class="nosvg"/>
+      <img src="{{bmg}}sbooks/google.svgz"
+	   alt="Google" title="login using your Google account"
+	   class="svg"/>
+    </button>
+    <button NAME="AUTHORITY" TABINDEX="15"
+	    VALUE=":GPLUS">
+      <img src="{{bmg}}sbooks/googleplus64x64.png"
+	   alt="Google" title="login using Google+"
+	   class="nosvg"/>
+      <img src="{{bmg}}sbooks/googleplus.svgz"
+	   alt="Google" title="login using Google+"
+	   class="svg"/>
+    </button>
+    <button NAME="AUTHORITY" VALUE=":LINKEDIN" TABINDEX="16">
+      <img src="{{bmg}}sbooks/linkedin64x64.png"
+	   alt="Linked In" title="login with Linked In"
+	   class="nosvg"/>
+      <img src="{{bmg}}sbooks/linkedin.svgz"
+	   alt="Linked In" title="login with Linked In"
+	   class="svg"/>
+    </button>
+    <button name="AUTHORITY" TABINDEX="17"
+	    value=":AMAZON">
+      <img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
+           alt="Amazon" title="login with your Amazon account"/>
+    </button>
+    <!--
+        <button name="AUTHORITY" TABINDEX="18"
+	        value=":PAYPAL">
+	  <img src="{{bmg}}sbooks/paypalsquare64x64.png" class="nosvg"
+               alt="PayPal" title="login with PayPal"/>
+	  <img src="{{bmg}}sbooks/paypalsquare.svgz" class="svg"
+               alt="PayPal" title="login with PayPal"/>
+        </button>
+        -->
+  </form>
+</div>
+</div>
+<div id="CODEXBOOKCOVERHOLDER"
+     style="position: absolute; top: 120px; left: 0px; width: 100%; bottom: 50px;">
+  <img src="{{coverimage|}}" alt="A display cover page"
+       style="max-width: 90%; max-height: 90%; width: auto; height: auto;"
+       id="CODEXBOOKCOVERIMAGE"/>
+</div>
+<div id="CODEXTITLEPAGEHOLDER" class="codextitlepage"
+     style="position: absolute; top: 120px; left: 0px; width: 100%; bottom: 50px;">
+</div>
+<div id="CODEXCREDITSPAGEHOLDER"
+     style="position: absolute; top: 120px; left: 0px; width: 100%; bottom: 50px;">
+</div>
+<div id="CODEXINFOPAGEHOLDER" class="codexbibpage"></div>
+<div id="CODEXAPPHELP" class="codexhelp">
+  <h1><span class="adjustfont">Welcome to Codex,
+      the <span class="sbooks"><em>s</em>Books</span>
+      e-reader</span></h1>
+  <p>You're using <span class="codex">Codex</span>, a web-based
+    e-reader created to deepen reading and engagement while connecting
+    to networks of knowledge, conversation, and
+    commmunity.  <span class="codex">Codex</span> aims to reclaim the
+    virtues of physical books for electronic books, making them
+    natural to navigate, annotate, search, and personalize.</p>
+  <div id="CODEXCOVERHELP"></div>
+</div>
+<div id="CODEXSETTINGS"></div>
+<div id="CODEXABOUTBOOKHOLDER">
+  <div id='CODEXABOUTBOOKCONTENT'>
+    <div class='title'></div>
+    <div class='byline'></div>
+    <div class='cover'></div>
+    <div class='publisher'></div>
+    <div class='copyright'></div>
+    <div class='description'></div>
+    <div class='digitized'></div>
+    <div class='sbookified'></div>
+    <div class='about'></div>
   </div>
-  <div class="loginbox">
-    <form action="https://auth.sbooks.net/auth" method="POST">
-      <input TYPE="HIDDEN" NAME="FRESHLOGIN" VALUE="yes"/>
-      <input TYPE="HIDDEN" NAME="LOGINFORM" VALUE="yes"/>
-      <input TYPE="TEXT" NAME="LOGIN" VALUE=""
-             PLACEHOLDER="login with your email"
-	     ONKEYPRESS="fdjt.UI.submitOnEnter(event);"
-             tabindex="9"/>
-      <span>or use</span>
-      <button name="AUTHORITY" TABINDEX="11"
-	      value=":FACEBOOK">
-	<img src="{{bmg}}sbooks/facebook64x64.png" class="nosvg"
-             alt="Facebook" class="noautoscale"/>
-	<img src="{{bmg}}sbooks/facebook.svgz" class="svg"
-             alt="Facebook" class="noautoscale"/>
-      </button>
-      <button NAME="AUTHORITY" TABINDEX="12"
-	      VALUE=":TWITTER">
-	<img src="{{bmg}}sbooks/twitter64x64.png"
-	     alt="Twitter" title="login with Twitter"
-	     class="nosvg"/>
-	<img src="{{bmg}}sbooks/twitter.svgz"
-	     alt="Twitter" title="login with Twitter"
-	     class="svg"/>
-      </button>
-      <button NAME="AUTHORITY" TABINDEX="13"
-	      VALUE="https://open.login.yahooapis.com/openid/op/auth">
-	<img src="{{bmg}}sbooks/yahoo64x64.png" class="nosvg"
-	     alt="Yahoo!" title="login using Yahoo!"/>
-	<img src="{{bmg}}sbooks/yahoo.svgz" class="svg"
-	     alt="Yahoo!" title="login using Yahoo!"/>
-      </button>
-      <button NAME="AUTHORITY" TABINDEX="14"
-	      VALUE=":GOOGLE">
-	<img src="{{bmg}}sbooks/google64x64.png"
-	     alt="Google" title="login using your Google account"
-	     class="nosvg"/>
-	<img src="{{bmg}}sbooks/google.svgz"
-	     alt="Google" title="login using your Google account"
-	     class="svg"/>
-      </button>
-      <button NAME="AUTHORITY" TABINDEX="15"
-	      VALUE=":GPLUS">
-	<img src="{{bmg}}sbooks/googleplus64x64.png"
-	     alt="Google" title="login using Google+"
-	     class="nosvg"/>
-	<img src="{{bmg}}sbooks/googleplus.svgz"
-	     alt="Google" title="login using Google+"
-	     class="svg"/>
-      </button>
-      <button NAME="AUTHORITY" VALUE=":LINKEDIN" TABINDEX="16">
-        <img src="{{bmg}}sbooks/linkedin64x64.png"
-	     alt="Linked In" title="login with Linked In"
-	     class="nosvg"/>
-        <img src="{{bmg}}sbooks/linkedin.svgz"
-	     alt="Linked In" title="login with Linked In"
-	     class="svg"/>
-      </button>
-      <button name="AUTHORITY" TABINDEX="17"
-	      value=":AMAZON">
-	<img src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_64x64.png"
-             alt="Amazon" title="login with your Amazon account"/>
-      </button>
-      <!--
-          <button name="AUTHORITY" TABINDEX="18"
-	          value=":PAYPAL">
-	    <img src="{{bmg}}sbooks/paypalsquare64x64.png" class="nosvg"
-                 alt="PayPal" title="login with PayPal"/>
-	    <img src="{{bmg}}sbooks/paypalsquare.svgz" class="svg"
-                 alt="PayPal" title="login with PayPal"/>
-          </button>
-          -->
-    </form>
+</div>
+<div id="CODEXCONSOLE"></div>
+<div id="CODEXLAYERS">
+  <iframe name="SBOOKSAPP" id="SBOOKSAPP" frameborder="0" scrolling="auto"></iframe>
+</div>
+<div id="CODEXCOVERMESSAGE">
+  <div id="CODEXREADYMESSAGE">
+    <span class="fortouch">Tap to </span>
+    <span class="notouch">Click to </span>
+    read
+  </div>
+  <div class="codexstatus" id="CODEXLAYOUTMESSAGE">
+    <div class="message"></div>
+    <div class="box"><div class="indicator"></div></div>
+  </div>
+  <div class="codexstatus" id="CODEXINDEXMESSAGE">
+    <div class="message"></div>
+    <div class="box"><div class="indicator"></div></div>
+  </div>
+  <div class="codexstatus" id="CODEXGLOSSMESSAGE">
+    <div class="message"></div>
+    <div class="box"><div class="indicator"></div></div>
   </div>
 </div>
 

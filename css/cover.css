@@ -43,8 +43,8 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 
 div#CODEXCOVER > div {
     position: absolute;
-    top: 50px; left: 50px; right: 50px;
-    bottom: 120px; height: auto; width: auto;
+    top: 120px; left: 50px; right: 50px;
+    bottom: 50px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
     transition-property: opacity; transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
@@ -56,21 +56,11 @@ div#CODEXCOVER > div {
 div#CODEXCOVER > div > div.fdjtadjusted {
     height: 100%; width: 100%;}
 
-div#CODEXCOVER > div#CODEXTAPMESSAGE {
+div#CODEXCOVER >  div#CODEXCOVERMESSAGE {
     position: absolute; white-space: nowrap;
     font-size: 1.5em; font-style: italic; opacity: 1.0;
     font-family: Arial,Verdana,Helvetica,sans-serif;
-    top: 0px; left: 30%; right: 30%; bottom: auto;
-    text-align: center; overflow: visible; 
-    background-color: black; color: silver;
-    cursor: pointer; display: block;
-    z-index: 50;
-    display: block;}
-div#CODEXCOVER > div#CODEXCOVERMESSAGE {
-    position: absolute; white-space: nowrap;
-    font-size: 1.5em; font-style: italic; opacity: 1.0;
-    font-family: Arial,Verdana,Helvetica,sans-serif;
-    top: 0px; left: 30%; right: 30%; bottom: auto;
+    bottom: 0px; left: 30%; right: 30%; top: auto;
     text-align: center; overflow: visible; 
     background-color: black; color: silver;
     cursor: pointer; display: block;
@@ -80,9 +70,9 @@ div#CODEXCOVER > div#CODEXCOVERMESSAGE {
 div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     box-sizing: border-box; -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box; 
-    position: absolute; width: 94%; bottom: 0px; left: 3%; right: 3%;
+    position: absolute; width: 94%; top: 0px; left: 3%; right: 3%;
     padding-left: 1ex; padding-right: 1ex;
-    height: 120px; top: auto;
+    height: 120px; bottom: auto;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     opacity: 1; display: block;}
 div#CODEXCOVERCONTROLS > .username {
@@ -91,7 +81,7 @@ div#CODEXCOVERCONTROLS > .control > img {
     width: 90%; height: auto; clear: both;}
 
 div#CODEXCOVERCONTROLS > span.control {
-    font-size: 2em; color: silver; white-space: nowrap;
+    font-size: 1.8em; color: silver; white-space: nowrap;
     padding-left: 0.5ex; padding-right: 0.5ex;
     cursor: pointer;}
 @media (max-width: 650px) {
@@ -100,21 +90,30 @@ div#CODEXCOVERCONTROLS > span.control {
 div#CODEXCOVERCONTROLS > span.control:hover {
     text-decoration: underline;}
 
-div#CODEXCOVER > div#CODEXCOVERCONTROLS > div.loginbox {
-    clear: both; width: 100%;}
+div#CODEXCOVER div.loginbox, div#CODEXCOVER div.userbox { 
+    transition-property: height; transition-duration: 2s;
+    -webkit-transition-property: height; -webkit-transition-duration: 2s;
+    -moz-transition-property: height; -moz-transition-duration: 2s;
+    -o-transition-property: height; -o-transition-duration: 2s;}
+div#CODEXCOVER div.loginbox, div#CODEXCOVER div.userbox {
+    position: static; height: 0px; z-index: 50; font-size: 1.5em;
+    color: gold; }
+
+body.cxNOUSER div#CODEXCOVER div.loginbox,
+body.cxUSER div#CODEXCOVER div.userbox {
+    margin-top: 0.7em; height: 40px;
+    vertical-align: top; color: gold;}
+
 div#CODEXCOVER div.loginbox {
     margin: 0px; padding: 0px;
     height: 0px; overflow: hidden;}
-body.cxNOUSER div#CODEXCOVER div.loginbox {
-    margin-top: 1em; padding-top: 0.5ex; height: auto;
-    vertical-align: top; color: white;}
 div#CODEXCOVER div.loginbox button { padding: 1px;}
 div#CODEXCOVER div.loginbox button > img { height: 1.5em; width: auto;}
 div.loginbox form > button, div.loginbox form > input[TYPE="TEXT"],
 div.loginbox form > span {
     vertical-align: top;}
 
-div#CODEXCOVER div.userbox {
+div#CODEXCOVER > div.userbox {
     background-color: black; color: gold;
     text-align: center;
     font-size: 1.5em;}
@@ -122,18 +121,8 @@ div#CODEXCOVER div.userbox a, div#CODEXCOVER div.userbox a:visited {
     color: silver;}
 div#CODEXCOVER div.userbox span.sbooks em { color: silver;}
 div#CODEXCOVER div.userbox a.sbooks em { color: lightblue;}
-div#CODEXCOVER div.userbox {
-    position: absolute; bottom: 0px; width: 100%;
-    margin: 0px; padding: 0px; height: 0px;
-    overflow: hidden;}
 body.cxUSER div#CODEXCOVER div.userbox {
-    height: auto;}
-
-div#CODEXCOVER div.loginbox, div#CODEXCOVER div.userbox { 
-    transition-property: height; transition-duration: 2s;
-    -webkit-transition-property: height; -webkit-transition-duration: 2s;
-    -moz-transition-property: height; -moz-transition-duration: 2s;
-    -o-transition-property: height; -o-transition-duration: 2s;}
+    height: 40px;}
 
 div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER,
 div#CODEXCOVER.bookcover > div#CODEXBOOKCOVERHOLDER,
@@ -364,7 +353,7 @@ div#CODEXCOVERMESSAGE {
 div#CODEXCOVERMESSAGE > div {
     color: silver; display: none;
     padding-left: 1em; padding-right: 1em;
-    padding-bottom: 0px;
+    padding-top: 0px;
     box-sizing: border-box;
     width: 100%;}
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
@@ -373,8 +362,10 @@ body div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
     display: none;}
 
+div#CODEXREADYMESSAGE { padding-bottom: 1ex; }
+
 div#CODEXCOVERMESSAGE > div > div.box {
-    width: 100%; border: solid silver 2px; border-top: 0px;}
+    width: 100%; border: solid silver 2px; border-bottom: 0px;}
 div#CODEXCOVERMESSAGE div.indicator {
     height: 1ex; background-color: gold;}
 
