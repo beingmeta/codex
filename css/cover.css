@@ -187,7 +187,7 @@ div#CODEXCOVER > div#CODEXLAYERS iframe#SBOOKSAPP {
 /* The book cover */
 
 div#CODEXBOOKCOVER img {
-    max-width: 90%; max-height: 90%;
+    max-width: 95%; max-height: 95%;
     width: auto; height: auto;}
 
 /* Help */
