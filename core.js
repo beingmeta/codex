@@ -321,7 +321,7 @@ var Codex={
             anonymous.name="anonymous";}
 
         Codex.queued=((!(Codex.nocache))&&
-                      (getLocal("queued("+Codex.refuri+")",true)))||
+                      (getLocal("codex.queued("+Codex.refuri+")",true)))||
             [];
 
         function Query(tags,base_query){
@@ -846,7 +846,7 @@ var Codex={
             if ((onconnect)&&(onconnect.length)) {
                 var i=0; var lim=onconnect.length;
                 while (i<lim) (onconnect[i++])();}
-            if (fdjtState.getLocal("queued("+Codex.refuri+")"))
+            if (fdjtState.getLocal("codex.queued("+Codex.refuri+")"))
                 Codex.writeQueuedGlosses();}
         if (((val)&&(!(Codex.connected)))||
             ((!(val))&&(Codex.connected)))

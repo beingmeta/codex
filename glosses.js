@@ -1100,7 +1100,7 @@
                                           (!(Codex.nocache))),
                               handler: function(){
                                   if (Codex.nocache)
-                                      Codex.setConfig("nocache",false);
+                                      Codex.setConfig("cacheglosses",true);
                                   login_message=true;
                                   if (!((navigator.onLine)&&(Codex.connected)))
                                       queueGloss(arg,false,keep);
@@ -1111,7 +1111,7 @@
                                           (!(Codex.nocache))),
                               handler: function(){
                                   if (Codex.nocache)
-                                      Codex.setConfig("nocache",false,true);
+                                      Codex.setConfig("cacheglosses",true,true);
                                   login_message=true;
                                   queueGloss(arg,false,keep);}});
                 if (Codex.nocache)
@@ -1223,8 +1223,8 @@
         var queued=Codex.queued;
         queued.push(json.uuid);
         if (!(Codex.nocache)) {
-            fdjtState.setLocal("params("+json.uuid+")",params);
-            fdjtState.setLocal("queued("+Codex.refuri+")",queued,true);}
+            fdjtState.setLocal("codex.params("+json.uuid+")",params);
+            fdjtState.setLocal("codex.queued("+Codex.refuri+")",queued,true);}
         else queued_data[json.uuid]=params;
         // Now save it to the in-memory database
         var glossdata=
@@ -1289,7 +1289,7 @@
                 getAttribute("ajaxaction");
             var queued=Codex.queued; var glossid=queued[0];
             var post_data=((Codex.nocache)?((queued_data[glossid])):
-                           (fdjtState.getLocal("params("+glossid+")")));
+                           (fdjtState.getLocal("codex.params("+glossid+")")));
             if (post_data) {
                 var req=new XMLHttpRequest();
                 req.open('POST',ajax_uri);
@@ -1297,18 +1297,18 @@
                 req.onreadystatechange=function () {
                     if ((req.readyState === 4) &&
                         (req.status>=200) && (req.status<300)) {
-                        fdjtState.dropLocal("params("+glossid+")");
+                        fdjtState.dropLocal("codex.params("+glossid+")");
                         var pending=Codex.queued;
                         if ((pending)&&(pending.length)) {
                             var pos=pending.indexOf(glossid);
                             if (pos>=0) {
                                 pending.splice(pos,pos);
                                 if (!(Codex.nocache))
-                                    fdjtState.setLocal("queued("+Codex.refuri+")",pending,true);
+                                    fdjtState.setLocal("codex.queued("+Codex.refuri+")",pending,true);
                                 Codex.queued=pending;}}
                         addgloss_callback(req,false,false);
                         if (pending.length) setTimeout(writeQueuedGlosses,200);
-                        fdjtState.dropLocal("queued("+Codex.refuri+")");}
+                        fdjtState.dropLocal("codex.queued("+Codex.refuri+")");}
                     else if (req.readyState===4) {
                         Codex.setConnected(false);}
                     else {}};
