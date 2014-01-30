@@ -58,7 +58,6 @@ Codex.Paginate=
         var fdjtTime=fdjt.Time;
         var fdjtLog=fdjt.Log;
         var fdjtDOM=fdjt.DOM;
-        var fdjtUI=fdjt.UI;
         var fdjtID=fdjt.ID;
         var cxID=Codex.ID;
         var CodexLayout=fdjt.CodexLayout;
@@ -1024,7 +1023,7 @@ Codex.Paginate=
         Codex.getPage=getPage;
         
         function refreshLayout(why){
-            Paginate(why,{forced: true});}
+            Codex.Paginate(why,{forced: true});}
         Codex.refreshLayout=refreshLayout;
         
         function displaySync(){
