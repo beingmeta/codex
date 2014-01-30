@@ -328,7 +328,7 @@ Codex.Paginate=
                 
                 rootloop();}
             
-            if ((Codex.cache_layout_thresh)&&( !((Codex.forcelayout)))) {
+            if ((Codex.cache_layout_thresh)&&(!((Codex.forcelayout)))&&(!(forced))) {
                 if (Codex.Trace.layout)
                     fdjtLog("Fetching layout %s",layout_id);
                 CodexLayout.fetchLayout(layout_id,function(content){
@@ -1021,6 +1021,10 @@ Codex.Paginate=
                 else i++;}
             return page;}
         Codex.getPage=getPage;
+        
+        function refreshLayout(why){
+            Paginate(why,{forced: true});}
+        Codex.refreshLayout=refreshLayout;
         
         function displaySync(){
             if ((Codex.pagecount)&&(Codex.curpage))

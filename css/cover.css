@@ -270,7 +270,7 @@ div#CODEXSETTINGS div.setting span.checkspan input[type='CHECKBOX'] {
 div#CODEXSETTINGS div.setting div.explanation { 
       font-style: italic; clear: both; margin-left: 3em;}
 div#CODEXSETTINGS table.settings {
-    width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
+    width: 98%; margin-left: auto; margin-right: auto; vertical-align: top;}
 div#CODEXSETTINGS table.settings .codexhighlightsetting {
     font-size: 120%; background-color: yellow;}
 div#CODEXSETTINGS table.settings tbody { margin-bottom: 1ex;}
@@ -284,9 +284,11 @@ div#CODEXSETTINGS table.settings td input[type='TEXT'] {
     width: 100%;}
 div#CODEXSETTINGS table.settings tr.buttons td {
     text-align: right;}
+div#CODEXSETTINGS table.settings th.buttons button {
+    min-width: 5em;}
 
 table.settings .checkspan.ischecked {
-    font-weight: normal; color: rgb(0,61,111); font-size: 110%;}
+    font-weight: normal; color: rgb(0,61,111); font-size: 100%;}
 
 div#CODEXSETTINGS table.settings .smallbutton {
     cursor: pointer;

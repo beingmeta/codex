@@ -2769,6 +2769,21 @@ Codex.Startup=
                     clearLocal("codex.sync("+uri+")");});}}
         Codex.clearOffline=clearOffline;
         
+        function refreshOffline(){
+            var uri=Codex.docuri;
+            Codex.sync=false;
+            clearLocal("codex.sources("+uri+")");
+            clearLocal("codex.outlets("+uri+")");
+            clearLocal("codex.layers("+uri+")");
+            clearLocal("codex.etc("+uri+")");
+            // We don't currently clear sources when doing book
+            // specific clearing because they might be shared
+            // between books
+            Codex.glossdb.clearOffline(function(){
+                clearLocal("codex.sync("+uri+")");
+                setTimeout(updateInfo,25);});}
+             Codex.refreshOffline=refreshOffline;
+
         /* Other setup */
         
         Codex.StartupHandler=function(){

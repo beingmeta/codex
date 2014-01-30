@@ -16,13 +16,10 @@
         <th><input TYPE="CHECKBOX" NAME="CODEXCACHEGLOSSES"
                    VALUE="yes" CHECKED/></th>
         <td>Save copies of this book's glosses on this device</td>
-        <th>
-          <button onclick="Codex.UI.forceSyncAction(event);"
+        <th class="buttons">
+          <button onclick="Codex.refreshOffline();"
                   title="Update glosses and other information for this book from the sBooks cloud.">
-            Sync</button>
-          <button onclick="return Codex.UI.clearOfflineAction(event);"
-                  title="Clear the glosses for this book which are cached on this computer.">
-            Clear</button></th>
+            Refresh</button></th>
       </tr>
       <tr class="checkspan">
         <th><input TYPE="CHECKBOX" NAME="CODEXLOCSYNC" VALUE="yes"/></th>
@@ -33,7 +30,7 @@
     <tr class="padding"></tr>
     <tbody id="CODEXFONTSETTINGS">
       <tr><th rowspan="2">Body font</th>
-        <td colspan="2">
+        <td>
           <span class="checkspan">
             <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="xlarge"/>x-large</span>
           <span class="checkspan">
@@ -44,9 +41,15 @@
             <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="small"/>small</span>
           <span class="checkspan">
             <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="tiny"/>tiny</span>
-      </td></tr>
+      </td>
+        <th class="buttons">
+          <button onclick="Codex.refreshLayout();"
+                  title="Update the page layout for this book.">
+            Layout</button></th>
+
+      </tr>
       <tr>
-        <td colspan="2">
+        <td>
           <span class="checkspan">
             <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="sans"/>sans-serif</span>
           <span class="checkspan">
@@ -97,10 +100,6 @@
     </tbody>
     -->
     <tbody id="CODEXHACKERSETTINGS">
-      <tr class="checkspan">
-        <th><input TYPE="CHECKBOX" NAME="CODEXSHOWCONSOLE" VALUE="yes"/></th>
-        <td colspan="2">Show the Codex console</td></tr>
-      <tr class="padding"></tr>
       <tr title="A name to display for this device when recording changes">
         <th>Device name</th>
         <td colspan="2">
@@ -109,6 +108,10 @@
                  onfocus="Codex.UI.focus(event);"
                  onblur="Codex.UI.blur(event);"/></td>
       </tr>
+      <tr class="padding"></tr>
+      <tr class="checkspan">
+        <th><input TYPE="CHECKBOX" NAME="CODEXSHOWCONSOLE" VALUE="yes"/></th>
+        <td colspan="2">Show the Codex console</td></tr>
     </tbody>
     <tr class="padding"></tr>
     <tbody class="buttons">
