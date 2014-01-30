@@ -112,6 +112,13 @@ div#CODEXCOVER {
     z-index: 100;}
 body.cxCOVER #CODEXFRAME > #CODEXCOVER { pointer-events: all; }
 
+#CODEXFRAME.codexuifontlarge #CODEXCOVER { font-size: 2em; }
+#CODEXFRAME.codexuifontnormal #CODEXCOVER { font-size: 1.5em; }
+#CODEXFRAME.codexuifontsmall #CODEXCOVER { font-size: 1em; }
+
+#CODEXFRAME.codexuifontlarge div#CODEXCOVER > div#CODEXCOVERCONTROLS {
+    font-size: 0.8em; }
+
 body.cxCOVER div#CODEXCOVER {
     opacity: 1.0; z-index: 100; pointer-events: all;}
 body.cxCOVER #CODEXBODY {

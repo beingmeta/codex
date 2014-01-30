@@ -1309,6 +1309,7 @@ Codex.Startup=
             if (!(frame)) {
                 frame=fdjtDOM("div#CODEXFRAME");
                 fdjtDOM.prepend(document.body,frame);}
+            Codex.Frame=frame;
             if (existing_cover) {
                 frame.appendChild(existing_cover);
                 cover=existing_cover;}

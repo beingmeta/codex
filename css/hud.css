@@ -13,9 +13,9 @@
 /* Size rules */
 
 #CODEXHUD { font-size: 2em; }
-#CODEXHUD.codexuifontlarge { font-size: 2.5em; }
-#CODEXHUD.codexuifontnormal { font-size: 2em; }
-#CODEXHUD.codexuifontsmall { font-size: 1em; }
+#CODEXFRAME.codexuifontlarge #CODEXHUD { font-size: 2.5em; }
+#CODEXFRAME.codexuifontnormal #CODEXHUD { font-size: 2em; }
+#CODEXFRAME.codexuifontsmall #CODEXHUD { font-size: 1em; }
 
 #CODEXHUD .codexhelp, #CODEXHUD .helpbox { font-size: 80%;}
 #CODEXHUD #CODEXRIBBON, #CODEXHUD #CODEXTOP, #CODEXHUD #CODEXFOOT {

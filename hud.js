@@ -75,7 +75,7 @@ Codex.setMode=
         var CodexHUD=false;
 
         // This will contain the interactive input console (for debugging)
-        var hud=false, allglosses=false, sbooksapp=false;
+        var frame=false, hud=false, allglosses=false, sbooksapp=false;
 
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
@@ -87,10 +87,12 @@ Codex.setMode=
             hud.codexui=true;
             hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
             fdjtDOM.append(messages);
-            if (fdjtID("CODEXFRAME")) {
-                var frame=fdjtID("CODEXFRAME");
-                frame.appendChild(messages); frame.appendChild(hud);}
-            else fdjtDOM.prepend(document.body,messages,hud);
+            if (fdjtID("CODEXFRAME")) frame=fdjtID("CODEXFRAME");
+            else {
+                frame=fdjtDOM("#CODEXFRAME");
+                fdjtDOM.prepend(document.body,frame);}
+            frame.appendChild(messages); frame.appendChild(hud);
+            Codex.Frame=frame;
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");
             hudhelp.innerHTML=fixStaticRefs(Codex.HTML.hudhelp);
@@ -827,7 +829,8 @@ Codex.setMode=
         Codex.stopScanning=stopScanning;
         
         Codex.addConfig("uisize",function(name,value){
-            fdjtDOM.swapClass(CodexHUD,/codexuifont\w+/,"codexuifont"+value);});
+            fdjtDOM.swapClass(
+                Codex.Frame,/codexuifont\w+/,"codexuifont"+value);});
         Codex.addConfig("animatecontent",function(name,value){
             if (Codex.dontanimate) {}
             else if (value) addClass(document.body,"cxANIMATE");

@@ -158,7 +158,8 @@ div#CODEXCOVER.settings .control[data-mode='settings'],
 div#CODEXCOVER.help .control[data-mode='help'],
 div#CODEXCOVER.console .control[data-mode='console'],
 div#CODEXCOVER.login .control[data-mode='login'] {
-    color: gold; border-color: blue;}
+    outline-color: transparent;
+    color: gold;}
 
 .control[data-mode='console'], .control[data-mode='aboutsbooks'],
 .control[data-mode='creditspage'] {
@@ -334,7 +335,7 @@ table.settings td .checkspan {
     padding-right: 0.5ex;}
 table.settings td .checkspan input[TYPE='CHECKBOX'],
 table.settings td .checkspan input[TYPE='RADIO'] {
-    padding-right: 3px;}
+    margin-right: 0.5ex;}
 
 table.settings tbody.buttons { border-top: solid black 2px;}
 table.settings tr.buttons td, table.settings tr.buttons th { padding-top: 1ex;}
@@ -363,7 +364,7 @@ div#CODEXCOVERMESSAGE {
 div#CODEXCOVERMESSAGE > div {
     color: silver; display: none;
     padding-left: 1em; padding-right: 1em;
-    padding-bottom: 1ex;
+    padding-bottom: 0px;
     box-sizing: border-box;
     width: 100%;}
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
