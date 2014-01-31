@@ -1131,7 +1131,7 @@ Codex.Startup=
             var sync=Codex.sync;
             if (!(sync)) return;
             if ((Codex.Trace.glosses)||(Codex.Trace.startup))
-                fdjtLog("Starting initializing glosses from offline storage");
+                fdjtLog("Starting initializing glosses from local storage");
             Codex.glosses.setLive(false);
             Codex.sourcedb.load(true);
             Codex.glossdb.load(true,function(){
@@ -1140,7 +1140,7 @@ Codex.Startup=
                     Codex.heartscroller.refresh();
                 if ((Codex.glossdb.allrefs.length)||
                     (Codex.sourcedb.allrefs.length))
-                    fdjtLog("Initialized %d glosses (%d sources) from offline storage",
+                    fdjtLog("Initialized %d glosses (%d sources) from local storage",
                             Codex.glossdb.allrefs.length,
                             Codex.sourcedb.allrefs.length);});}
 

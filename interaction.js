@@ -2597,6 +2597,21 @@
         return false;}
     Codex.lowerHUD=lowerHUD;
 
+    function refreshLayout(evt){
+        evt=evt||event; Codex.refreshLayout();}
+    function refreshOffline(evt){
+        evt=evt||event; Codex.refreshOffline();}
+    function clearOffline(evt){
+        evt=evt||event; Codex.clearOffline();}
+    function consolefn(evt){
+        evt=evt||event; Codex.consolefn();}
+    function saveSettings(evt){
+        evt=evt||event; Codex.settingsSave();}
+    function resetSettings(evt){
+        evt=evt||event; Codex.settingsReset();}
+    function updateSettings(evt){
+        evt=evt||event; Codex.settingsUpdate();}
+
     fdjt.DOM.defListeners(
         Codex.UI.handlers.mouse,
         {window: {
@@ -2703,15 +2718,13 @@
          "div.glossetc div.notetext": {click: editglossnote},
          ".checkspan": {click: fdjt.UI.CheckSpan.onclick},
          ".codextogglehelp": {click: Codex.toggleHelp},
-         "#CODEXCONSOLEBUTTON": {click: Codex.consolefn},
-         "#CODEXSAVESETTINGS": {click: Codex.UI.settingsSave},
-         "#CODEXRESETSETTINGS": {click: Codex.UI.settingsReset},
-         "#CODEXSETTINGSTABLE": {
-             click: Codex.UI.settingsUpdate,
-             blur: Codex.UI.settingsUpdate},
-         "#CODEXREFRESHOFFLINE": {click: Codex.refreshOffline},
-         "#CODEXREFRESHLAYOUT": {click: Codex.refreshLayout},
-         ".clearoffline": {click: Codex.clearOffline},
+         "#CODEXCONSOLEBUTTON": {click: consolefn},
+         "#CODEXSAVESETTINGS": {click: saveSettings},
+         "#CODEXRESETSETTINGS": {click: resetSettings},
+         "#CODEXSETTINGSTABLE": {click: updateSettings, blur: updateSettings},
+         "#CODEXREFRESHOFFLINE": {click: refreshOffline},
+         "#CODEXREFRESHLAYOUT": {click: refreshLayout},
+         ".clearoffline": {click: clearOffline},
          ".codexclearmode": {click: clearMode},
          "#CODEXGOTOPAGEHELP": {click: clearMode},
          "#CODEXGOTOLOCHELP": {click: clearMode},
@@ -2866,21 +2879,16 @@
              touchstart: cancel,
              touchend: Codex.toggleHelp},
         
-         "#CODEXCONSOLEBUTTON": {
-             touchstart: cancel, touchend: Codex.consolefn},
-         "#CODEXSAVESETTINGS": {
-             touchstart: cancel, touchend: Codex.UI.settingsSave},
-         "#CODEXRESETSETTINGS": {
-             touchstart: cancel, touchend: Codex.UI.settingsReset},
+         "#CODEXCONSOLEBUTTON": {touchstart: cancel, touchend: consolefn},
+         "#CODEXSAVESETTINGS": {touchstart: cancel, touchend: saveSettings},
+         "#CODEXRESETSETTINGS": {touchstart: cancel, touchend: resetSettings},
          "#CODEXSETTINGSTABLE": {
              touchstart:cancel,
-             touchend: Codex.UI.settingsUpdate,
-             blur: Codex.UI.settingsUpdate},
-         "#CODEXREFRESHOFFLINE": {
-             touchstart: cancel, touchend: Codex.refreshOffline},
-         "#CODEXREFRESHLAYOUT": {
-             touchstart: cancel, touchend: Codex.refreshLayout},
-         ".clearoffline": {touchstart: cancel, touchend: Codex.clearOffline},
+             touchend: updateSettings,
+             blur: updateSettings},
+         "#CODEXREFRESHOFFLINE": {touchstart: cancel, touchend: refreshOffline},
+         "#CODEXREFRESHLAYOUT": {touchstart: cancel, touchend: refreshLayout},
+         ".clearoffline": {touchstart: cancel, touchend: clearOffline},
          ".codexclearmode": {touchstart: cancel, touchend: clearMode},
          "#CODEXGOTOPAGEHELP": {touchstart: cancel, touchend: clearMode},
          "#CODEXGOTOLOCHELP": {touchstart: cancel, touchend: clearMode},
