@@ -1,23 +1,21 @@
 <form onsubmit="fdjt.UI.cancel(event); return false;">
-  <h1><a class="button exit" onclick="Codex.clearOffline();"
+  <h1><a class="button exit clearoffline"
          href="https://auth.sbooks.net/admin/logout"
          title="Logout of sBooks and erase any local data">Logout</a>
-    <span class="button" onclick="Codex.UI.settingsSave(event);">Save</span>
-    <span class="button" onclick="Codex.UI.settingsReset(event);">Reset</span>
+    <span class="button" id="CODEXSAVESETTINGS">Save</span>
+    <span class="button" id="CODEXRESETSETTINGS>Reset</span>
     Settings
     <span class="message codexsettingschanged">
       Your changes have been applied but not saved</span>
     <span class="message" ID="CODEXSETTINGSMESSAGE"></span></h1>
-  <table class="settings"
-         onclick="Codex.UI.settingsUpdate(event);"
-         onblur="Codex.UI.settingsUpdate(event);">
+  <table class="settings" id="CODEXSETTINGSTABLE">
     <tbody id="CODEXSYNCSETTINGS">
       <tr class="checkspan ischecked">
         <th><input TYPE="CHECKBOX" NAME="CODEXCACHEGLOSSES"
                    VALUE="yes" CHECKED/></th>
         <td>Save copies of this book's glosses on this device</td>
         <th class="buttons">
-          <button onclick="Codex.refreshOffline();"
+          <button id="CODEXREFRESHOFFLINE"
                   title="Update glosses and other information for this book from the sBooks cloud.">
             Refresh</button></th>
       </tr>
@@ -43,7 +41,7 @@
             <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="tiny"/>tiny</span>
       </td>
         <th class="buttons">
-          <button onclick="Codex.refreshLayout();"
+          <button id="CODEXREFRESHLAYOUT"
                   title="Update the page layout for this book.">
             Layout</button></th>
 

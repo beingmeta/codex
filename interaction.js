@@ -2440,6 +2440,9 @@
         Codex.setMode(false);
         fdjtDOM.dropClass(document.body,"codexhelp");}
 
+    function clearMode(evt){
+        Codex.setMode(false);}
+
     /* Tracking text input */
 
     function setFocus(target){
@@ -2647,8 +2650,8 @@
                             hold: left_margin_hold,
                             release: left_margin_release},
          "#CODEXPAGERIGHT": {tap: right_margin_tap,
-                            hold: right_margin_hold,
-                            release: right_margin_release},
+                             hold: right_margin_hold,
+                             release: right_margin_release},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
          "#CODEXATTACHFORM": {submit: attach_submit},
@@ -2696,7 +2699,38 @@
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc div.notetext": {click: editglossnote},
          ".checkspan": {click: fdjt.UI.CheckSpan.onclick},
-         ".codextogglehelp": {click: Codex.toggleHelp}});
+         ".codextogglehelp": {click: Codex.toggleHelp},
+         "#CODEXCONSOLEBUTTON": {click: Codex.consolefn},
+         "#CODEXSAVESETTINGS": {click: Codex.UI.settingsSave},
+         "#CODEXRESETSETTINGS": {click: Codex.UI.settingsReset},
+         "#CODEXSETTINGSTABLE": {
+             click: Codex.UI.settingsUpdate,
+             blur: Codex.UI.settingsUpdate},
+         "#CODEXREFRESHOFFLINE": {click: Codex.refreshOffline},
+         "#CODEXREFRESHLAYOUT": {click: Codex.refreshLayout},
+         ".clearoffline": {click: Codex.clearOffline},
+         ".codexclearmode": {click: clearMode},
+         "#CODEXGOTOPAGEHELP": {click: clearMode},
+         "#CODEXGOTOLOCHELP": {click: clearMode},
+         ".codexshowsearch": {click: function(evt){
+             Codex.showSearchResults(); fdjt.UI.cancel(event);}},
+         ".codexrefinesearch": {click: function(evt){
+             Codex.setMode('refinesearch'); fdjt.UI.cancel(event);}},
+         ".codexexpandsearch": {click: function(evt){
+             Codex.setMode('expandsearch'); fdjt.UI.cancel(event);}},
+         ".codexclearsearch": {click: function(evt){
+             evt=evt||event;
+             Codex.UI.handlers.clearSearch(evt);
+             fdjt.UI.cancel(evt);
+             return false;}},
+         "#CODEXSOURCES .button.everyone": {
+             click: function(evt){
+                 evt=evt||event;
+                 Codex.UI.handlers.everyone_ontap(evt);
+                 fdjt.UI.cancel(event);}},
+         "#CODEXSCANNER .codexscaninfo": {
+             click: function(evt){
+                 evt=evt||event; Codex.stopScanning(); cancel(evt);}}});
 
     fdjt.DOM.defListeners(
         Codex.UI.handlers.touch,
@@ -2735,6 +2769,9 @@
          "#CODEXSTARTPAGE": {touchend: Codex.UI.dropHUD},
          "#CODEXHEAD": {tap: raiseHUD},
          "#CODEXSHOWCOVER": {tap: showcover_tapped, release: showcover_released},
+         "#CODEXSOURCES": {
+             touchstart: cancel,
+             touchend: Codex.UI.handlers.sources_ontap},
          "#CODEXHUDHELP": {touchend: Codex.UI.dropHUD},
          ".helphud": {touchend: Codex.UI.dropHUD},
          "#CODEXPAGEFOOT": {},
@@ -2824,7 +2861,55 @@
              touchend: fdjt.UI.CheckSpan.onclick},
          ".codextogglehelp": {
              touchstart: cancel,
-             touchend: Codex.toggleHelp}});
+             touchend: Codex.toggleHelp},
+        
+         "#CODEXCONSOLEBUTTON": {
+             touchstart: cancel, touchend: Codex.consolefn},
+         "#CODEXSAVESETTINGS": {
+             touchstart: cancel, touchend: Codex.UI.settingsSave},
+         "#CODEXRESETSETTINGS": {
+             touchstart: cancel, touchend: Codex.UI.settingsReset},
+         "#CODEXSETTINGSTABLE": {
+             touchstart:cancel,
+             touchend: Codex.UI.settingsUpdate,
+             blur: Codex.UI.settingsUpdate},
+         "#CODEXREFRESHOFFLINE": {
+             touchstart: cancel, touchend: Codex.refreshOffline},
+         "#CODEXREFRESHLAYOUT": {
+             touchstart: cancel, touchend: Codex.refreshLayout},
+         ".clearoffline": {touchstart: cancel, touchend: Codex.clearOffline},
+         ".codexclearmode": {touchstart: cancel, touchend: clearMode},
+         "#CODEXGOTOPAGEHELP": {touchstart: cancel, touchend: clearMode},
+         "#CODEXGOTOLOCHELP": {touchstart: cancel, touchend: clearMode},
+         ".codexshowsearch": {
+             touchstart: cancel,
+             touchend: function(evt){
+                 Codex.showSearchResults(); fdjt.UI.cancel(event);}},
+         ".codexrefinesearch": {
+             touchstart: cancel,
+             touchend: function(evt){
+                 Codex.setMode('refinesearch'); fdjt.UI.cancel(event);}},
+         ".codexexpandsearch": {
+             touchstart: cancel,
+             touchend: function(evt){
+                 Codex.setMode('expandsearch'); fdjt.UI.cancel(event);}},
+         ".codexclearsearch": {
+             touchstart: cancel,
+             touchend: function(evt){
+                 evt=evt||event;
+                 Codex.UI.handlers.clearSearch(evt);
+                 fdjt.UI.cancel(evt);
+                 return false;}},
+         "#CODEXSOURCES .button.everyone": {
+             touchstart: cancel,
+             touchend: function(evt){
+                 evt=evt||event;
+                 Codex.UI.handlers.everyone_ontap(evt);
+                 fdjt.UI.cancel(event);}},
+         "#CODEXSCANNER .codexscaninfo": {
+             touchstart: cancel,
+             touchend: function(evt){
+                 evt=evt||event; Codex.stopScanning(); cancel(evt);}}});
     
 })();
 

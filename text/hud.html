@@ -50,17 +50,16 @@
       <!-- This is generated on demand -->
     </div>
   </div>
-  <div id="CODEXSOURCES" class="hudpanel codexsources"
-       onclick="Codex.UI.handlers.sources_ontap(event);">
+  <div id="CODEXSOURCES" class="hudpanel codexsources">
     <img svg="{{bmg}}codex/sbookspeople.svgz"
          src="{{bmg}}codex/sbookspeople50x50.png"
          class="button everyone selected"
-         alt="show all" title="show all glosses"
-         onclick="Codex.UI.handlers.everyone_ontap(event); fdjt.UI.cancel(event);"/>
+         alt="show all" title="show all glosses"/>
   </div>
 </div>
 <div id="CODEXSCANNER">
-  <span class="codexscaninfo" id="CODEXSCANINFO" onclick="Codex.stopScanning();">scan info</span>
+  <span class="codexscaninfo" id="CODEXSCANINFO">
+    scan info</span>
   <div id="CODEXSCAN"></div>
 </div>
 <div id="CODEXSEETHRUHELP" class="codexhelp helpbox">
@@ -107,16 +106,13 @@
     <div class="resultinfo notags noresults" id="CODEXSEARCHINFO">
       <div class="noresults">No results</div>
       <div class="noquery">Add tags to see or refine results</div>
-      <span class="resultcount"
-            onclick="Codex.showSearchResults(); fdjt.UI.cancel(event);">
+      <span class="resultcount codexshowsearch">
       </span>
       <span class="sep vbar">|</span>
-      <span class="refinecount"
-            onclick="Codex.setMode('refinesearch'); fdjt.UI.cancel(event);">
+      <span class="refinecount codexrefinesearch">
       </span>
       <span class="sep vbar">|</span>
-      <span class="showalltags"
-            onclick="Codex.setMode('expandsearch'); fdjt.UI.cancel(event);">
+      <span class="showalltags codexexpandsearch">
         all tags
       </span>
     </div>
