@@ -197,12 +197,16 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
+#CODEXHUD #CODEXSHOWTEXT span.stopscanning,
 #CODEXHUD #CODEXSHOWTEXT span.cancelgloss,
 #CODEXHUD #CODEXSHOWTEXT span.cancelchanges {
     display: none;}
 #CODEXHUD.addgloss #CODEXSHOWTEXT { color: red; }
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.justreading { display: none;}
+
+#CODEXHUD.scanning #CODEXSHOWTEXT span.justreading { display: none;}
+#CODEXHUD.scanning #CODEXSHOWTEXT span.stopscanning { display: inline;}
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.cancelgloss,
 #CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelchanges {

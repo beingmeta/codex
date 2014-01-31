@@ -28,7 +28,8 @@ div.searchbox div.query input[type='TEXT'],
 div.searchbox div.query .codexclearsearch {
     float: right;}
 div.searchbox div.query .ampersand { margin-right: 0.5ex;}
-div.searchbox div.query .codexclearsearch { margin: 0.5ex; margin-top: 0px;}
+div.searchbox div.query .codexclearsearch {
+    height: 2em; width: auto; margin: 0.5ex; margin-top: 0px;}
 
 div.searchbox div.query input[type='TEXT'] {
     max-width: 50%; min-width: 33%;

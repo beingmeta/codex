@@ -1323,8 +1323,17 @@ Codex.Startup=
                 fdjtID("CODEXBOOKCOVERIMAGE").removeAttribute("style");
             if (fdjtID("CODEXTITLEPAGEHOLDER"))
                 fdjtID("CODEXTITLEPAGEHOLDER").removeAttribute("style");
+            if (fdjtID("CODEXINFOPAGEHOLDER"))
+                fdjtID("CODEXINFOPAGEHOLDER").removeAttribute("style");
             if (fdjtID("CODEXCREDITSPAGEHOLDER"))
                 fdjtID("CODEXCREDITSPAGEHOLDER").removeAttribute("style");
+            if (fdjtID("CODEXABOUTBOOKHOLDER"))
+                fdjtID("CODEXABOUTBOOKHOLDER").removeAttribute("style");
+            if (fdjtID("CODEXLAYERS")) fdjtID("CODEXLAYERS").removeAttribute("style");
+            if (fdjtID("CODEXCONSOLE")) fdjtID("CODEXCONSOLE").removeAttribute("style");
+            if (fdjtID("CODEXSETTINGS")) fdjtID("CODEXSETTINGS").removeAttribute("style");
+            if (fdjtID("CODEXAPPHELP")) fdjtID("CODEXSETTINGS").removeAttribute("style");
+            
 
             var coverpage=fdjtID("CODEXCOVERPAGE");
             if (coverpage) 

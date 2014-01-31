@@ -2606,11 +2606,11 @@
     function consolefn(evt){
         evt=evt||event; Codex.consolefn();}
     function saveSettings(evt){
-        evt=evt||event; Codex.settingsSave();}
+        evt=evt||event; Codex.UI.settingsSave();}
     function resetSettings(evt){
-        evt=evt||event; Codex.settingsReset();}
+        evt=evt||event; Codex.UI.settingsReset();}
     function updateSettings(evt){
-        evt=evt||event; Codex.settingsUpdate();}
+        evt=evt||event; Codex.UI.settingsUpdate();}
 
     fdjt.DOM.defListeners(
         Codex.UI.handlers.mouse,

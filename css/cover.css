@@ -43,8 +43,8 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 
 div#CODEXCOVER > div {
     position: absolute;
-    top: 80px; left: 50px; right: 50px;
-    bottom: 80px; height: auto; width: auto;
+    top: 50px; left: 50px; right: 50px;
+    bottom: 100px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
     transition-property: opacity; transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
@@ -61,7 +61,7 @@ div#CODEXCOVER >  div#CODEXCOVERMESSAGE {
     font-size: 1.5em; font-style: italic; opacity: 1.0;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     width: 80%; left: 10%; right: 10%;
-    height: 40px; top: 0px; bottom: auto;
+    height: 50px; top: 0px; bottom: auto;
     text-align: center; overflow: visible; 
     background-color: black; color: silver;
     cursor: pointer; display: block;
@@ -72,7 +72,7 @@ div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     box-sizing: border-box; -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box; 
     position: absolute;
-    height: 120px; bottom: 40px; top: auto;
+    height: 60px; bottom: 40px; top: auto;
     width: 94%; left: 3%; right: 3%; 
     padding-left: 1ex; padding-right: 1ex;
     font-family: Arial,Verdana,Helvetica,sans-serif;
@@ -101,6 +101,9 @@ div#CODEXCOVER div.loginbox, div#CODEXCOVER div.userbox {
     position: absolute; left: 0px; right: 0px; bottom: 0px; top: auto;
     z-index: 50; font-size: 1.5em; color: gold;
     opacity: 1.0;}
+div#CODEXCOVER #CODEXCOVERCONTROLS div.userbox,
+div#CODEXCOVER #CODEXCOVERCONTROLS div.loginbox {
+    bottom: -40px;}
 
 body.cxNOUSER div#CODEXCOVER div.loginbox,
 body.cxUSER div#CODEXCOVER div.userbox {
@@ -303,7 +306,7 @@ div#CODEXSETTINGS table.settings .smallbutton {
     -moz-border-radius: 4px;}
 
 div#CODEXSETTINGS .button {
-    float: right; font-size: 125%; cursor: pointer;
+    font-size: 125%; cursor: pointer;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     color: white; background-color: silver;
     margin-left: 6px; padding: 4px; border: solid black 2px;
@@ -312,9 +315,11 @@ div#CODEXSETTINGS .button {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;}
 div#CODEXSETTINGS h1 .button, div#CODEXSETTINGS h1 .message {
-    font-size: 50%;}
+    font-size: 50%; float: right;}
 div#CODEXSETTINGS .button.exit {
     color: red; background-color: white;}
+div#CODEXSETTINGS h1 #CODEXSETTINGSMESSAGE {
+    float: right;}
 div#CODEXSETTINGS .codexsettingschanged {
     float: right; color: red; display: none;}
 div#CODEXSETTINGS.changed .codexsettingschanged { display: block;}
@@ -369,7 +374,7 @@ body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
 div#CODEXREADYMESSAGE { padding-bottom: 1ex; }
 
 div#CODEXCOVERMESSAGE > div > div.box {
-    width: 100%; border: solid silver 2px; border-bottom: 0px;}
+    width: 100%; border: solid silver 2px; border-top: 0px;}
 div#CODEXCOVERMESSAGE div.indicator {
     height: 1ex; background-color: gold;}
 

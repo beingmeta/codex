@@ -895,7 +895,7 @@ Codex.setMode=
             Codex.saveConfig(settings);
             fdjtDOM.dropClass("CODEXSETTINGS","changed");
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
-                            fdjtDOM("span#CODEXSETTINGSMESSAGE",
+                            fdjtDOM("span.message#CODEXSETTINGSMESSAGE",
                                     "Your settings have been saved."));};
 
         Codex.UI.settingsReset=function(evt){
@@ -904,7 +904,7 @@ Codex.setMode=
             Codex.resetConfig();
             fdjtDOM.dropClass("CODEXSETTINGS","changed");
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
-                            fdjtDOM("span#CODEXSETTINGSMESSAGE",
+                            fdjtDOM("span.message#CODEXSETTINGSMESSAGE",
                                     "Your settings have been reset."));};
 
         Codex.UI.settingsOK=function(evt){
@@ -914,7 +914,7 @@ Codex.setMode=
             Codex.setConfig(settings);
             Codex.saveConfig(settings);
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
-                            fdjtDOM("span#CODEXSETTINGSMESSAGE",
+                            fdjtDOM("span.message#CODEXSETTINGSMESSAGE",
                                     "Your settings have been saved."));};
         
         Codex.UI.settingsCancel=function(evt){
@@ -922,7 +922,7 @@ Codex.setMode=
             if (evt) fdjt.UI.cancel(evt);
             Codex.setConfig(Codex.getConfig());
             fdjtDOM.replace("CODEXSETTINGSMESSAGE",
-                            fdjtDOM("span#CODEXSETTINGSMESSAGE",
+                            fdjtDOM("span.message#CODEXSETTINGSMESSAGE",
                                     "Your changes have been discarded."));};
 
         function keyboardHelp(arg,force){
