@@ -60,7 +60,7 @@ div#CODEXCOVER >  div#CODEXCOVERMESSAGE {
     position: absolute; white-space: nowrap;
     font-size: 1.5em; font-style: italic; opacity: 1.0;
     font-family: Arial,Verdana,Helvetica,sans-serif;
-    width: 80%; left: 10%; right: 10%;
+    width: 80%; left: 10%; right: 10%; border: 0px;
     height: 50px; top: 0px; bottom: auto;
     text-align: center; overflow: visible; 
     background-color: black; color: silver;
