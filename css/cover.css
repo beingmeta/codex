@@ -60,19 +60,21 @@ div#CODEXCOVER >  div#CODEXCOVERMESSAGE {
     position: absolute; white-space: nowrap;
     font-size: 1.5em; font-style: italic; opacity: 1.0;
     font-family: Arial,Verdana,Helvetica,sans-serif;
-    bottom: 40px; left: 10%; right: 10%; height: 40px; top: auto;
+    width: 80%; left: 10%; right: 10%;
+    height: 40px; top: 0px; bottom: auto;
     text-align: center; overflow: visible; 
     background-color: black; color: silver;
     cursor: pointer; display: block;
-    z-index: 50;
-    display: block;}
+    display: block;
+    z-index: 50;}
 
 div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     box-sizing: border-box; -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box; 
-    position: absolute; width: 94%; top: 0px; left: 3%; right: 3%;
+    position: absolute;
+    height: 120px; bottom: 40px; top: auto;
+    width: 94%; left: 3%; right: 3%; 
     padding-left: 1ex; padding-right: 1ex;
-    height: 120px; bottom: auto;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     opacity: 1; display: block;}
 div#CODEXCOVERCONTROLS > .username {
