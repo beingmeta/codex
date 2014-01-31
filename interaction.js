@@ -198,7 +198,8 @@
         if (gloss_blur_timeout) clearTimeout(gloss_blur_timeout);
         glossform_focus(evt);}
     function glossform_focusout(evt){
-        gloss_blur_timeout=setTimeout(function(e){glossform_blur(evt);},500);}
+        gloss_blur_timeout=setTimeout(function(){
+            glossform_blur(evt);},500);}
 
     function glossform_focus(evt){
         evt=evt||event;
@@ -1390,12 +1391,13 @@
         if (hasClass("CODEXHUD","glossattach")) {
             if (!(fileinput.files.length)) {
                 fdjtUI.cancel(evt);
-                alert("You need to specify a file!");
+                fdjtUI.alert("You need to specify a file!");
                 return;}
             else path=fileinput.files[0].name;
             if (!(isokay.checked)) {
                 fdjtUI.cancel(evt);
-                alert("You need to confirm that the file satisfies our restrictions!");
+                fdjtUI.alert(
+                    "You need to confirm that the file satisfies our restrictions!");
                 return;}
             glossidinput.value=glossid;
             itemidinput.value=itemid;}
@@ -1410,6 +1412,7 @@
             var glossdata_url="https://glossdata.sbooks.net/"+glossid+"/"+itemid+"/"+path;
             var commframe=fdjtID("CODEXGLOSSCOMM");
             var listener=function(evt){
+                evt=evt||event;
                 Codex.addLink2Form(glossform,glossdata_url,title);
                 titleinput.value="";
                 fileinput.value="";
@@ -2441,7 +2444,7 @@
         fdjtDOM.dropClass(document.body,"codexhelp");}
 
     function clearMode(evt){
-        Codex.setMode(false);}
+        evt=evt||event; Codex.setMode(false);}
 
     /* Tracking text input */
 
@@ -2713,11 +2716,11 @@
          "#CODEXGOTOPAGEHELP": {click: clearMode},
          "#CODEXGOTOLOCHELP": {click: clearMode},
          ".codexshowsearch": {click: function(evt){
-             Codex.showSearchResults(); fdjt.UI.cancel(event);}},
+             Codex.showSearchResults(); fdjt.UI.cancel(evt);}},
          ".codexrefinesearch": {click: function(evt){
-             Codex.setMode('refinesearch'); fdjt.UI.cancel(event);}},
+             Codex.setMode('refinesearch'); fdjt.UI.cancel(evt);}},
          ".codexexpandsearch": {click: function(evt){
-             Codex.setMode('expandsearch'); fdjt.UI.cancel(event);}},
+             Codex.setMode('expandsearch'); fdjt.UI.cancel(evt);}},
          ".codexclearsearch": {click: function(evt){
              evt=evt||event;
              Codex.UI.handlers.clearSearch(evt);
@@ -2884,15 +2887,15 @@
          ".codexshowsearch": {
              touchstart: cancel,
              touchend: function(evt){
-                 Codex.showSearchResults(); fdjt.UI.cancel(event);}},
+                 Codex.showSearchResults(); fdjt.UI.cancel(evt);}},
          ".codexrefinesearch": {
              touchstart: cancel,
              touchend: function(evt){
-                 Codex.setMode('refinesearch'); fdjt.UI.cancel(event);}},
+                 Codex.setMode('refinesearch'); fdjt.UI.cancel(evt);}},
          ".codexexpandsearch": {
              touchstart: cancel,
              touchend: function(evt){
-                 Codex.setMode('expandsearch'); fdjt.UI.cancel(event);}},
+                 Codex.setMode('expandsearch'); fdjt.UI.cancel(evt);}},
          ".codexclearsearch": {
              touchstart: cancel,
              touchend: function(evt){

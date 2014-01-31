@@ -201,7 +201,7 @@ var Codex={
         var refuri=(Codex.refuri||document.location.href);
         if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
 
-        var docdb=Codex.docdb=new RefDB(
+        Codex.docdb=new RefDB(
             refuri+"#",{indices: ["frag","head","heads",
                                   "tags","tags*",
                                   "*tags","**tags","~tags",
@@ -224,7 +224,7 @@ var Codex={
                       "tags","*tags","**tags",
                       "tags*","*tags*","**tags*"]};
         var stdspace=fdjtString.stdspace;
-        var glossdb=Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init); {
+        Codex.glossdb=new RefDB("glosses@"+Codex.refuri,glosses_init); {
             Codex.glossdb.absrefs=true;
             Codex.glossdb.addAlias("glossdb");
             Codex.glossdb.addAlias("-UUIDTYPE=61");

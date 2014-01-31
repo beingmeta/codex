@@ -804,6 +804,7 @@ Codex.Startup=
                     else if (fdjtID("SBOOKAUTOINDEX")) {
                         var elt=fdjtID("SBOOKAUTOINDEX");
                         fdjtDOM.addListener(elt,"load",function(evt){
+                            evt=evt||event;
                             handlePublisherIndex(false,function(){
                                 applyTagAttributes(metadata,indexingDone);});
                             Codex._publisher_index=false;
@@ -815,7 +816,7 @@ Codex.Startup=
                             script_elt.setAttribute("src",indexref);
                             script_elt.setAttribute("language","javascript");
                             script_elt.setAttribute("async","async");
-                            fdjtDOM.addListener(script_elt,"load",function(evt){
+                            fdjtDOM.addListener(script_elt,"load",function(){
                                 handlePublisherIndex(false,function(){
                                     applyTagAttributes(metadata,indexingDone);});
                                 Codex._publisher_index=false;
@@ -1869,6 +1870,7 @@ Codex.Startup=
         var choosing_resize=false;
         
         function resizeHandler(evt){
+            evt=evt||event;
             if (resize_wait) clearTimeout(resize_wait);
             if (choosing_resize) {
                 fdjt.Dialog.close(choosing_resize);
@@ -2610,7 +2612,8 @@ Codex.Startup=
                                  fdjtLog("Processed provided index of %d keys over %d items",
                                          ntags,nitems);
                                  dropClass(document.body,"cxINDEXING");
-                                 if (whendone) whendone();},
+                                 if (whendone) whendone();
+                                 else return state;},
                             200,5);}
         Codex.useIndexData=useIndexData;
         
