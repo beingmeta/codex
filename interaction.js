@@ -2562,8 +2562,12 @@
     function showcover_tapped(evt){
         evt=evt||event;
         if ((Codex.touch)&&(!(Codex.hudup))) return;
-        if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
-            fdjtID("CODEXCOVER").className="bookcover";
+        if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2)))) {
+            var opened=Codex.readLocal("codex.opened("+Codex.docuri+")",true);
+            if ((opened)&&((opened-fdjtTime())>(60*10*1000))) {
+                if (fdjtID("CODEXBOOKCOVERHOLDER"))
+                    fdjtID("CODEXCOVER").className="bookcover";
+                else fdjtID("CODEXCOVER").className="titlepage";}}
         Codex.showCover();
         fdjtUI.cancel(evt);}
     function showcover_released(evt){
