@@ -199,6 +199,13 @@ span.note.ellipsis span.elision, span.note.ellipsis span.delision {
     color: purple; font-family: Arial,Verdana,Helvetica,sans-serif;
     font-style: italic;}
 
+/* Define some rules inside of the HUD */
+
+div#CODEXFRAME table tr {
+    /* Some documents may define style rules for TR which we want to override */
+    background-color: transparent;
+    border: 0px transparent;}
+
 /* Fuzzy selections */
 
 body.cxTOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
