@@ -871,15 +871,13 @@ Codex.setMode=
             var animatecontent=fdjtDOM.getInputValues(
                 settings,"CODEXANIMATECONTENT");
             result.animatecontent=
-                ((animatecontent)&&(animatecontent.length)&&
-                 (animatecontent[0]))||
-                false;
+                (((animatecontent)&&(animatecontent.length)&&(animatecontent[0]))?
+                 (true):(false));
             var animatehud=fdjtDOM.getInputValues(
                 settings,"CODEXANIMATEHUD");
             result.animatehud=
-                ((animatehud)&&(animatehud.length)&&
-                 (animatehud[0]))||
-                false;
+                 (((animatehud)&&(animatehud.length)&&(animatehud[0]))?
+                  (true):(false));
             
             return result;}
 

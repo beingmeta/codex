@@ -124,7 +124,8 @@ Codex.Startup=
              animatecontent: true,animatehud: true,
              hidesplash: false,keyboardhelp: true,
              holdmsecs: 400,wandermsecs: 1500,
-             syncinterval: 60,glossupdate: 5*60};
+             syncinterval: 60,glossupdate: 5*60,
+             locsync: true, cacheglosses: true};
         var current_config={};
         var saved_config={};
 
@@ -187,9 +188,10 @@ Codex.Startup=
             else if (Codex.Trace.config)
                 fdjtLog("Redundant setConfig %o=%o",name,value);
             else {}
-            current_config[name]=value;
-            if ((!(save))&&(inputs.length))
-                fdjtDOM.addClass("CODEXSETTINGS","changed");
+            if (current_config[name]!==value) {
+                current_config[name]=value;
+                if ((!(save))&&(inputs.length))
+                    fdjtDOM.addClass("CODEXSETTINGS","changed");}
             if ((save)&&(saved_config[name]!==value)) {
                 saved_config[name]=value;
                 saveConfig(saved_config);}}
@@ -211,7 +213,7 @@ Codex.Startup=
                     (!(getQuery(setting)))) {
                     saved[setting]=config[setting];}}
             if (Codex.Trace.config) fdjtLog("Saving config %o",saved);
-            saveLocal("codex.config",JSON.stringify(saved));
+            saveLocal("codex.config("+Codex.docuri+")",JSON.stringify(saved));
             if ((toserver)&&(navigator.onLine)) {
                 var req=new XMLHttpRequest();
                 req.onreadystatechange=function(evt){
@@ -238,20 +240,19 @@ Codex.Startup=
             saved_config=saved;}
         Codex.saveConfig=saveConfig;
 
-        function initConfig(fetch){
-            var setting, config, started=fdjtTime();
-            if (!(fetch)) {
-                if (navigator.onLine) fetchConfig();
-                config=(saved_config=(readLocal("codex.config",true)||{}));
-                if ((config)&&((Codex.Trace.config)||(Codex.Trace.startup)))
-                    fdjtLog("Starting with cached config %j",config);}
-            else config=fetch;
+        function initConfig(){
+            var setting, started=fdjtTime(), changed=false;
+            var config=getLocal("codex.config("+Codex.docuri+")",true)||
+                fdjtState.getSession("codex.config("+Codex.docuri+")",true);
             Codex.postconfig=[];
             if (config) {
                 for (setting in config) {
                     if ((config.hasOwnProperty(setting))&&
-                        (!(getQuery(setting))))
-                        setConfig(setting,config[setting]);}}
+                        (!(getQuery(setting)))) {
+                        if ((!(default_config.hasOwnProperty(setting)))||
+                            (config[setting]!==default_config[setting]))
+                            changed=true;
+                        setConfig(setting,config[setting]);}}}
             else config={};
             if (Codex.Trace.config)
                 fdjtLog("initConfig (default) %j",default_config);
@@ -260,61 +261,22 @@ Codex.Startup=
                     if (default_config.hasOwnProperty(setting)) {
                         if (getQuery(setting))
                             setConfig(setting,getQuery(setting));
-                        else if (getMeta("Codex."+setting))
-                            setConfig(setting,getMeta("Codex."+setting));
+                        else if (getMeta("CODEX."+setting))
+                            setConfig(setting,getMeta("CODEX."+setting));
                         else setConfig(setting,default_config[setting]);}}
             var dopost=Codex.postconfig;
             Codex.postconfig=false;
             var i=0; var lim=dopost.length;
             while (i<lim) dopost[i++]();
             
-            fdjtDOM.addClass("CODEXSETTINGS","changed");
+            if (changed)
+                fdjtDOM.addClass("CODEXSETTINGS","changed");
             
             var devicename=current_config.devicename;
             if ((devicename)&&(!(fdjtString.isEmpty(devicename))))
                 Codex.deviceName=devicename;
             if (Codex.Trace.startup>1)
                 fdjtLog("initConfig took %dms",fdjtTime()-started);}
-
-        var fetching_config=false, config_fetched=false;
-        var on_fetched_config=false;
-        function fetchConfig(){
-            var req=new XMLHttpRequest();
-            fetching_config=true; var onfetch=false;
-            req.onreadystatechange=function(evt){
-                if ((req.readyState===4)&&
-                    (req.status>=200)&&(req.status<300)) {
-                    try {
-                        var config=JSON.parse(req.responseText);
-                        saveLocal("codex.config",req.responseText);
-                        fdjtLog("Got device config: %j",config);
-                        fetching_config=false;
-                        config_fetched=true;
-                        saveConfig(config,false);
-                        if (on_fetched_config) {
-                            onfetch=on_fetched_config;
-                            on_fetched_config=false;
-                            onfetch();}}
-                    catch (ex) {}}
-                else if (req.readyState===4) {
-                    fetching_config=false;
-                    config_fetched=false;
-                    if (on_fetched_config) {
-                        onfetch=on_fetched_config;
-                        on_fetched_config=false;
-                        onfetch();}}
-                else {}
-                if (Codex.Trace.state)
-                    fdjtLog("configSave(callback) %o ready=%o status=%o %j",
-                            evt,req.readyState,
-                            ((req.readyState===4)&&(req.status)),
-                            saved_config);};
-            var uri="https://config.sbooks.net/config";
-            try {
-                req.open("GET",uri,true);
-                req.withCredentials=true;
-                req.send(); }
-            catch (ex) {}}
         
         var getParent=fdjtDOM.getParent;
         var hasParent=fdjtDOM.hasParent;
@@ -378,10 +340,7 @@ Codex.Startup=
                      (Codex.sync_interval))
                 Codex.synctock=synctock=
                 setInterval(Codex.syncState,value*1000);
-            if (value)
-                clearLocal("codex.nolocsync("+Codex.docuri+")");
-            else saveLocal(
-                "codex.nolocsync("+Codex.docuri+")",fdjtTime(),true);
+            else {}
             Codex.locsync=value;});
         
         function syncStartup(){
@@ -594,12 +553,10 @@ Codex.Startup=
                             Codex.queued=Codex.queued.concat(
                                 getLocal("codex.queued("+uri+")",true)||[]);
                         else Codex.queued=getLocal("codex.queued("+uri+")",true)||[];
-                        Codex.clearLocal("codex.nocache("+uri+")");
                         Codex.nocache=false;}
                     else {
                         clearOffline(Codex.docuri);
                         fdjtState.dropLocal("codex.queued("+Codex.refuri+")");
-                        fdjtState.setLocal("codex.nocache("+uri+")",fdjtTime(),true);
                         Codex.queued=[];
                         Codex.nocache=true;}});
 
@@ -2188,12 +2145,9 @@ Codex.Startup=
             saveLocal("codex.user",Codex.user._id);
             // We also save it locally so we can get it synchronously
             saveLocal(Codex.user._id,Codex.user.Export(),true);
-            if (getLocal("codex.nolocsync("+Codex.docuri+")"))
-                setConfig("locsync",false);
-            else setConfig("locsync",true);
-            if (getLocal("codex.nocache("+Codex.docuri+")"))
-                setConfig("cacheglosses",false);
-            else setConfig("cacheglosses",true);
+            if (Codex.locsync) setConfig("locsync",true);
+            if (!(Codex.nocache))
+                setConfig("cacheglosses",true);
             
             var startui=fdjtTime();
             setupUI4User();
