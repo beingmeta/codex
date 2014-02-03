@@ -702,7 +702,7 @@
     function findTag(string,pos,partialok){
         if ((string)&&(string.length)&&(pos>0)) {
             var space=false, start=pos-1, delim=false, need=false;
-            var c=string[start], pc=string[start-1];
+            var c=string[start], pc=string[start-1], cstart=start;
             while (start>=0) {
                 if (pc==='\\') {}
                 else if (/\s/.test(c)) space=start;
@@ -712,17 +712,18 @@
             var prefix=string[start];
             var sc=string[start+1], end=string.length;
             if (tag_delims[sc]) {
-                var matching=tag_delims[sc]; delim=sc;
+                var matching=tag_delims[sc]; delim=sc; cstart=start+2;
                 var match_off=string.slice(start+2).indexOf(matching);
                 if (match_off<0) {
                     if (partialok) {end=pos; need=matching;}
                     else return false;}
-                else end=start+2+match_off+1;
+                else end=start+2+match_off;
                 if (end<pos) return false;}
             else if (space) return false;
             else {
                 var end_off=string.slice(start).search(tag_ends);
-                if (end_off>0) end=start+end_off;}
+                if (end_off>0) end=start+end_off;
+                cstart=start+1;}
             var result={text: string.slice(start,end),
                         start: start,end: end,pos: pos,prefix: prefix,
                         content: (((delim)&&(need))?(string.slice(start+2,end)):
@@ -756,7 +757,7 @@
         var target=fdjtUI.T(evt), form=getParent(target,"FORM");
         var text=target.value, pos=target.selectionStart||0;
         var ch=evt.charCode, charstring=String.fromCharCode(ch);
-        var taginfo=findTag(text,pos);
+        var taginfo=findTag(text,pos,true);
         if (ch!==13) addClass(getParent(form,".codexglossform"),"focused");
         if (ch===13) {
             if (taginfo) {
@@ -839,7 +840,7 @@
     function glosstag_complete(input_elt){
         var text=input_elt.value;
         var pos=input_elt.selectionStart||0;
-        var taginfo=findTag(text,pos);
+        var taginfo=findTag(text,pos,true);
         if (taginfo) {
             var completions;
             var isoutlet=(taginfo.prefix==="@");
