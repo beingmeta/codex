@@ -103,7 +103,7 @@ Codex.Startup=
 
         var readLocal=Codex.readLocal;
         var saveLocal=Codex.saveLocal;
-        var clearLocal=Codex.clearLocal;
+        var clearOffline=Codex.clearOffline;
 
         /* Whether to resize by default */
         var resize_default=true;
@@ -1910,7 +1910,7 @@ Codex.Startup=
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
             else if (info.wronguser) {
-                Codex.clearOffline();
+                clearOffline();
                 window.location=window.location.href;
                 return;}
             if (info.mycopyid) {
@@ -2065,6 +2065,7 @@ Codex.Startup=
                 fdjtLog.warn(
                     "Ajax call to %s failed on transmission, falling back to JSONP",uri);
                 updateInfoJSONP(uri);}}
+        Codex.updateInfo=updateInfo;
         function updatedInfoJSONP(data){
             var elt=fdjtID("CODEXUPDATEINFO");
             Codex.updatedInfo(data,(((elt)&&(elt.src))||"JSON"));}
@@ -2686,47 +2687,6 @@ Codex.Startup=
             if (outlet._live) init();
             else outlet.onLoad(init,"addoutlet2cloud");}
         
-        /* Clearing offline data */
-
-        function clearOffline(uri){
-            var dropLocal=fdjtState.dropLocal;
-            if (!(uri)) {
-                dropLocal("codex.user");
-                if (Codex.user) {
-                    // For now, we clear layouts, because they might
-                    //  contain personalized information
-                    fdjt.CodexLayout.clearLayouts();}
-                fdjtState.clearLocal();
-                fdjtState.clearSession();}
-            else {
-                if (typeof uri !== "string") uri=Codex.docuri;
-                Codex.sync=false;
-                clearLocal("codex.sources("+uri+")");
-                clearLocal("codex.outlets("+uri+")");
-                clearLocal("codex.layers("+uri+")");
-                clearLocal("codex.etc("+uri+")");
-                // We don't currently clear sources when doing book
-                // specific clearing because they might be shared
-                // between books
-                Codex.glossdb.clearOffline(function(){
-                    clearLocal("codex.sync("+uri+")");});}}
-        Codex.clearOffline=clearOffline;
-        
-        function refreshOffline(){
-            var uri=Codex.docuri;
-            Codex.sync=false;
-            clearLocal("codex.sources("+uri+")");
-            clearLocal("codex.outlets("+uri+")");
-            clearLocal("codex.layers("+uri+")");
-            clearLocal("codex.etc("+uri+")");
-            // We don't currently clear sources when doing book
-            // specific clearing because they might be shared
-            // between books
-            Codex.glossdb.clearOffline(function(){
-                clearLocal("codex.sync("+uri+")");
-                setTimeout(updateInfo,25);});}
-             Codex.refreshOffline=refreshOffline;
-
         /* Other setup */
         
         Codex.StartupHandler=function(){

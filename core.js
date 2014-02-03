@@ -353,6 +353,47 @@ var Codex={
                 Codex.cacheglosses=false;}}
         Codex.cacheGlosses=cacheGlosses;
         
+        /* Clearing offline data */
+
+        function clearOffline(uri){
+            var dropLocal=fdjtState.dropLocal;
+            if (!(uri)) {
+                dropLocal("codex.user");
+                if (Codex.user) {
+                    // For now, we clear layouts, because they might
+                    //  contain personalized information
+                    fdjt.CodexLayout.clearLayouts();}
+                fdjtState.clearLocal();
+                fdjtState.clearSession();}
+            else {
+                if (typeof uri !== "string") uri=Codex.docuri;
+                Codex.sync=false;
+                clearLocal("codex.sources("+uri+")");
+                clearLocal("codex.outlets("+uri+")");
+                clearLocal("codex.layers("+uri+")");
+                clearLocal("codex.etc("+uri+")");
+                // We don't currently clear sources when doing book
+                // specific clearing because they might be shared
+                // between books
+                Codex.glossdb.clearOffline(function(){
+                    clearLocal("codex.sync("+uri+")");});}}
+        Codex.clearOffline=clearOffline;
+        
+        function refreshOffline(){
+            var uri=Codex.docuri;
+            Codex.sync=false;
+            clearLocal("codex.sources("+uri+")");
+            clearLocal("codex.outlets("+uri+")");
+            clearLocal("codex.layers("+uri+")");
+            clearLocal("codex.etc("+uri+")");
+            // We don't currently clear sources when doing book
+            // specific clearing because they might be shared
+            // between books
+            Codex.glossdb.clearOffline(function(){
+                clearLocal("codex.sync("+uri+")");
+                setTimeout(Codex.updateInfo,25);});}
+             Codex.refreshOffline=refreshOffline;
+
         function Query(tags,base_query){
             if (!(this instanceof Query))
                 return new Query(tags,base_query);
