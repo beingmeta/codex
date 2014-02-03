@@ -652,15 +652,15 @@
         var i=0; var lim=checkspans.length;
         while (i<lim) {
             var cspan=checkspans[i++];
-            if (((cspan.getAttribute("varname"))===varname)&&
-                ((cspan.getAttribute("tagval"))===tagval)) {
+            if (((cspan.getAttribute("data-varname"))===varname)&&
+                ((cspan.getAttribute("data-tagval"))===tagval)) {
                 if (checked) addClass(cspan,"waschecked");
                 return cspan;}}
         var span=fdjtUI.CheckSpan("span.checkspan",varname,tagval,checked);
         if (checked) addClass(span,"waschecked");
         if (title) span.title=title;
-        span.setAttribute("varname",varname);
-        span.setAttribute("tagval",tag);
+        span.setAttribute("data-varname",varname);
+        span.setAttribute("data-tagval",tag);
         addClass(span,("glosstag"));
         addClass(span,((varname.toLowerCase())+"var"));
         if (typeof text === 'string')
@@ -876,7 +876,7 @@
         dropClass("CODEXHUD",/gloss(tagging|addoutlet)/);}
     
     function getTagString(span,content){
-        var tagval=span.getAttribute("tagval");
+        var tagval=span.getAttribute("data-tagval");
         if (tagval) {
             var at=tagval.indexOf('@');
             if ((Codex.knodule)&&(at>0)&&
