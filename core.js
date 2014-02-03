@@ -309,6 +309,7 @@ var Codex={
         
         Codex.sourcedb=new RefDB("sources@"+Codex.refuri);{
             Codex.sourcedb.absrefs=true;
+            Codex.sourcedb.oidrefs=true;
             Codex.sourcedb.addAlias("@1961/");
             Codex.sourcedb.addAlias(":@1961/");            
             Codex.sourcedb.forDOM=function(source){

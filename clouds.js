@@ -178,18 +178,22 @@
                         variation.setAttribute("data-key",synonym);
                         if (!(variations)) variations=fdjtDOM("span.variations");
                         variations.appendChild(variation);}}
-                if (knode.weak) addClass(entry,"weak");
+                if (knode.weak) 
                 if (knode.prime) {
-                    entry.title="prime concept (from "+origin+"); ";
                     addClass(entry,"prime");
                     addClass(entry,"cue");}
-                else if (knode.weak)
-                    entry.title="weak concept (from "+origin+"); ";
-                else entry.title="concept (from "+origin+"); ";
+                else if (knode.weak) addClass(entry,"weak");
+                else {}
+                entry.title=
+                    ((knode.prime)?("key "):
+                     (knode.weak)?("weak "):(""))+
+                    ((origin==="index")?("index concept"):
+                     ("concept "+"(from "+origin+")"));
                 if (knode.about) {
                     if (entry.title)
-                        entry.title=entry.title+"; "+knode.about;
-                    else entry.title=knode.about;}}
+                        entry.title=entry.title+" "+knode.dterm+": "+knode.about;
+                    else entry.title=knode.about;}
+                else entry.title=entry.title+" "+knode.dterm+"="+knode.toPlaintext();}
             else if (tag.name) {
                 addClass(entry,"source"); addClass(entry,"account");
                 entry.setAttribute("data-key",tag.name);

@@ -71,13 +71,6 @@ div.codexglossform div .respdate {
     font-weight: bold; font-variant: small-caps;
     color: purple;}
 
-div.codexglossform form div.glossetc .modebuttons,
-div.codexglossform form div.glossetc .networks,
-div.codexglossform form div.glossetc .tags,
-div.codexglossform form div.glossetc .links,
-div.codexglossform form div.glossetc .sharing,
-div.codexglossform form div.checkspan.postgloss {
-    display: none;}
 body.hudup div.codexglossform form div.glossetc .modebuttons,
 body.hudup div.codexglossform form div.glossetc .tags,
 body.hudup div.codexglossform form div.glossetc .links,
