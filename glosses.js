@@ -508,8 +508,8 @@
                 if (!(formvar)) formvar="EMAIL";}}
         else if (outlet.nodeType) {
             if (!(formvar)) formvar="NETWORK";
-            outlet_id=outlet.getAttribute("value");
-            outlet={name: outlet.getAttribute("key")||outlet_id};}
+            outlet_id=outlet.getAttribute("data-value");
+            outlet={name: outlet.getAttribute("data-key")||outlet_id};}
         else {}
         if (!(formvar)) formvar="SHARE";
         var inputs=getInputs(form,formvar);
@@ -1022,7 +1022,7 @@
         if (completion) {
             var live=fdjtID("CODEXLIVEGLOSS");
             var form=((live)&&(getChild(live,"form")));
-            var value=completion.getAttribute("value");
+            var value=completion.getAttribute("data-value");
             if (hasClass(completion,"source")) {
                 if (value) addOutlet(form,Codex.sourcedb.ref(value),"SHARE");}
             else if (hasClass(completion,"network")) 

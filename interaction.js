@@ -1090,7 +1090,7 @@
             var input=fdjt.DOM.getInput(Codex.glossform,"NOTE");
             glossform_focus(Codex.glossform); Codex.setFocus(input); input.focus();
             var new_evt=document.createEvent("UIEvent");
-            new_evt.type="keydown"; new_evt.keyCode=kc;
+            new_evt.initUIEvent("keydown",true,true,window); new_evt.keyCode=kc;
             input.dispatchEvent(new_evt);
             fdjtUI.cancel(evt);
             return;}
@@ -1273,7 +1273,7 @@
         if ((fdjtString.isEmpty(content))&&(ch===13)) {
             if (share_cloud.selection) 
                 Codex.addOutlet2Form(
-                    form,share_cloud.selection.getAttribute("value"));
+                    form,share_cloud.selection.getAttribute("data-value"));
             else Codex.setGlossMode("editnote");
             return;}
         else if ((ch===13)&&(share_cloud.selection)) {
@@ -1284,7 +1284,7 @@
             var completions=share_cloud.complete(content);
             if (completions.length)
                 Codex.addOutlet2Form(
-                    form,completions[0].getAttribute("value"));
+                    form,completions[0].getAttribute("data-value"));
             else Codex.addOutlet2Form(form,content);
             fdjtUI.cancel(evt);
             target.value="";

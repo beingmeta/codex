@@ -2672,8 +2672,8 @@ Codex.Startup=
             var completion=fdjtDOM("span.completion.cue.source",outlet._id);
             function init(){
                 completion.id="cxOUTLET"+outlet.humid;
-                completion.setAttribute("value",outlet._id);
-                completion.setAttribute("key",outlet.name);
+                completion.setAttribute("data-value",outlet._id);
+                completion.setAttribute("data-key",outlet.name);
                 completion.innerHTML=outlet.name;
                 if ((outlet.description)&&(outlet.nick))
                     completion.title=outlet.name+": "+

@@ -164,7 +164,7 @@
                     else {
                         origin="glosses";
                         suffix=" (+)";}}
-                entry.setAttribute("key",dterm);
+                entry.setAttribute("data-key",dterm);
                 if (suffix) entry.innerHTML=dterm+suffix;
                 else entry.innerHTML=dterm;
                 var synonyms=knode[lang];
@@ -175,7 +175,7 @@
                         var synonym=synonyms[i++];
                         if (synonym===dterm) continue;
                         var variation=fdjtDOM("span.variation",synonym,"=");
-                        variation.setAttribute("key",synonym);
+                        variation.setAttribute("data-key",synonym);
                         if (!(variations)) variations=fdjtDOM("span.variations");
                         variations.appendChild(variation);}}
                 if (knode.weak) addClass(entry,"weak");
@@ -192,11 +192,11 @@
                     else entry.title=knode.about;}}
             else if (tag.name) {
                 addClass(entry,"source"); addClass(entry,"account");
-                entry.setAttribute("key",tag.name);
+                entry.setAttribute("data-key",tag.name);
                 entry.innerHTML=tag.name;}
             else if (tag.refuri) {
                 addClass(entry,"doc");
-                entry.setAttribute("key",tag.refuri);
+                entry.setAttribute("data-key",tag.refuri);
                 if (entry.title) cloud.addKeys(entry,entry.title);
                 entry.innerHTML=tag.refuri;}
             else {}
@@ -206,7 +206,7 @@
         if ((existing)&&(existing.length)) return existing[0];
         else if (typeof tag === "string") {
             entry=fdjtDOM("span.completion.rawterm",tag);
-            entry.setAttribute("value",tag);
+            entry.setAttribute("data-value",tag);
             cloud.addCompletion(entry,tag,tag);
             return entry;}
         else if (!(tag instanceof Ref)) {
@@ -220,7 +220,7 @@
                 entry=fdjtDOM("span.completion.dterm",qid);}
             else entry=fdjtDOM("span.completion",qid);
             if (tag.cssclass) addClass(entry,tag.cssclass);
-            entry.setAttribute("value",qid);
+            entry.setAttribute("data-value",qid);
             cloud.addCompletion(entry,false,tag);
             if (tag._live) {
                 initCloudEntry();
