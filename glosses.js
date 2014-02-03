@@ -172,10 +172,10 @@
         if (!(div)) {
             div=proto.cloneNode(true); div.id=null;
             fdjtDOM(fdjtID("CODEXGLOSSFORMS"),div);
-            Codex.setupGestures(div);
             form=getChildren(div,"form")[0];
             form.id=formid;
-            form=setupGlossForm(form,passage,gloss,response||false);}
+            form=setupGlossForm(form,passage,gloss,response||false);
+            Codex.setupGestures(div);}
         else form=getChildren(div,"form")[0];
         if (gloss) {
             if (response) addClass(div,"glossreply");
@@ -305,7 +305,6 @@
         var container=getParent(form,".codexglossform");
         if (container) dropClass(container,"modified");
         return form;}
-    Codex.setupGlossForm=setupGlossForm;
 
     /***** Setting the gloss target ******/
 
@@ -633,9 +632,7 @@
         var ref=
             ((tag instanceof Ref)?(tag):
              ((typeof tag === 'string')&&
-              ((tag.indexOf('|')>0)?
-               (knodule.handleSubjectEntry(tag)):
-               (Knodule.ref(tag)))));
+              (knodule.handleSubjectEntry(tag))));
         var text=
             ((ref)?
              (((ref.toHTML)&&(ref.toHTML()))||

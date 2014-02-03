@@ -2720,7 +2720,8 @@
          "div.glossetc": {},
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc div.notetext": {click: editglossnote},
-         ".checkspan": {click: fdjt.UI.CheckSpan.onclick},
+         // For checkspans
+         ".codexglossform, #CODEXSETTINGS": {click: fdjt.UI.CheckSpan.onclick},
          ".codextogglehelp": {click: Codex.toggleHelp},
          "#CODEXCONSOLEBUTTON": {click: consolefn},
          "#CODEXSAVESETTINGS": {click: saveSettings},
@@ -2876,7 +2877,7 @@
          "div.glossetc div.notetext": {
              touchend: editglossnote,
              click: cancel},
-         ".checkspan": {
+         ".codexglossform, #CODEXSETTINGS": {
              touchstart: cancel,
              touchend: fdjt.UI.CheckSpan.onclick},
          ".codextogglehelp": {

@@ -219,10 +219,11 @@ div.codexglossform form div.glossetc.expanded .twisty { display: none;}
 div.codexglossform form div.glossetc.expanded { max-height: inherit;}
 
 body.hudup div.codexglossform form div.glossetc {
-    overflow: visible; max-height: inherit;}
-
+    max-height: inherit;}
+body.hudup div.codexglossform.focused form div.glossetc {
+    overflow: visible;}
 div.codexglossform form div.glossetc .glossexposure .checkspan input {
-    vertical-align: bottom;}
+    vertical-align: top;}
 
 div.codexglossform form div.glossetc .notespan {
     color: purple; font-weight: bold;}
@@ -237,19 +238,22 @@ div.codexglossform form div.glossetc .checkspan.excerpt.ischecked {
 div.codexglossform form div.glossetc .links,
 div.codexglossform form div.glossetc .tags {}
 
+div.codexglossform form div.glossetc .tags span.checkspan .term {
+    color: black;}
+
 div.codexglossform form div.glossetc .tags span.checkspan {
     padding: 2px; padding-top: 0px;}
-div.codexglossform form div.glossetc span.checkspan.waschecked {
-    text-decoration: line-through;}
-div.codexglossform form div.glossetc span.checkspan.ischecked {
+div.codexglossform form div.glossetc .checkspan.waschecked {
+    text-decoration: line-through; text-decoration-color: red;}
+div.codexglossform form div.glossetc .checkspan.ischecked {
     text-decoration: none;}
-div.codexglossform form div.glossetc span.checkspan.waschecked.ischecked {
+div.codexglossform form div.glossetc .checkspan.waschecked.ischecked {
     text-decoration: none;}
 div.codexglossform form div.glossetc .outlets { padding-left: 1px;}
 div.codexglossform form div.glossetc .links { padding-left: 1px;}
 div.codexglossform form div.glossetc .checkspan img {
-    height: 1.5ex; width: auto; vertical-align: baseline;
-    padding-left: 3px;}
+    height: 1.7ex; width: auto; vertical-align: baseline;
+    padding-left: 3px; padding-top: 2px;}
 div.codexglossform form div.glossetc .checkspan input {
     margin-left: 0px;}
 div.codexglossform form div.glossetc .checkspan.anchor input,
@@ -308,7 +312,7 @@ div.codexglossform form div.checkspan.postgloss {
     white-space: nowrap; font-size: 80%;}
 div.codexglossform div.glossetc .networks img {
     height: 3ex; width: auto;}
-div.codexglossform form div.glossetc .links span.checkspan {
+div.codexglossform form div.glossetc .links span.checkspan a {
     color: darkblue;}
 div.codexglossform form div.glossetc span.checkspan input {}
 
@@ -429,9 +433,6 @@ div.codexglossform div.textbox input[type="TEXT"][name='LINK'] {
 
 div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
     margin-top: 0px;}
-
-div.codexglossform form div.glossetc .tags span.checkspan {
-    font-size: 80%;}
 
 /* The add gloss panel */
 
