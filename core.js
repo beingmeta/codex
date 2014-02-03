@@ -77,7 +77,9 @@ var Codex={
     // Whether to locally store user information for offline availability
     persist: false,
     // Whether to locally save glosses, etc for offline availability,
-    nocache: true,
+    cacheglosses: false,
+    // Which properties of the Codex object to save
+    saveprops: ["sources","outlets","layers","sync","nodeid","state"],
     // Whether to store glosses, etc for offline access and improved
     // performance.  This is no longer used, replaced by the two values
     // above.
@@ -277,7 +279,7 @@ var Codex={
                                     Codex.addTags(item.replyto,tags,fragslot);}
                             if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
                                  "initgloss");
-            if ((Codex.user)&&(Codex.persist)&&(!(Codex.nocache)))
+            if ((Codex.user)&&(Codex.persist)&&(Codex.cacheglosses))
                 Codex.glossdb.storage=window.localStorage;}
         
         function Gloss(){return Ref.apply(this,arguments);}
@@ -320,10 +322,36 @@ var Codex={
             Codex.anonymous=anonymous;
             anonymous.name="anonymous";}
 
-        Codex.queued=((!(Codex.nocache))&&
-                      (getLocal("codex.queued("+Codex.refuri+")",true)))||
-            [];
+        Codex.queued=((Codex.cacheglosses)&&
+                      (getLocal("codex.queued("+Codex.refuri+")",true)))||[];
 
+        function cacheGlosses(value){
+            var saveprops=Codex.saveprops, uri=Codex.docuri;
+            if (value) {
+                if (Codex.user) {
+                    var storage=((Codex.persist)?(window.localStorage):
+                                 (window.sessionStorage));
+                    if (!(Codex.sourcedb.storage)) Codex.sourcedb.storage=storage;
+                    if (!Codex.glossdb.storage) Codex.glossdb.storage=storage;
+                    var props=Codex.saveprops, i=0, lim=props.length;
+                    while (i<lim) {
+                        var prop=saveprops[i++];
+                        if (Codex[prop]) saveLocal(
+                            "codex."+prop+"("+uri+")",Codex[prop],true);}
+                    Codex.glossdb.save(true);
+                    Codex.sourcedb.save(true);
+                    if ((Codex.queued)&&(Codex.queued.length)) 
+                        Codex.queued=Codex.queued.concat(
+                            getLocal("codex.queued("+uri+")",true)||[]);
+                    else Codex.queued=getLocal("codex.queued("+uri+")",true)||[];}
+                Codex.cacheglosses=true;}
+            else {
+                clearOffline(Codex.docuri);
+                if (uri) fdjtState.dropLocal("codex.queued("+uri+")");
+                Codex.queued=[];
+                Codex.cacheglosses=false;}}
+        Codex.cacheGlosses=cacheGlosses;
+        
         function Query(tags,base_query){
             if (!(this instanceof Query))
                 return new Query(tags,base_query);

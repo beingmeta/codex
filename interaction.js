@@ -2602,11 +2602,11 @@
     Codex.lowerHUD=lowerHUD;
 
     function refreshLayout(evt){
-        evt=evt||event; Codex.refreshLayout();}
+        evt=evt||event; cancel(evt); Codex.refreshLayout();}
     function refreshOffline(evt){
-        evt=evt||event; Codex.refreshOffline();}
+        evt=evt||event; cancel(evt); Codex.refreshOffline();}
     function clearOffline(evt){
-        evt=evt||event; Codex.clearOffline();}
+        evt=evt||event; cancel(evt); Codex.clearOffline();}
     function consolefn(evt){
         evt=evt||event; Codex.consolefn();}
     function saveSettings(evt){

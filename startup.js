@@ -80,9 +80,6 @@ Codex.Startup=
 
         var fixStaticRefs=Codex.fixStaticRefs;
 
-        var saveprops=Codex.saveprops=
-            ["sources","outlets","layers","sync","nodeid","state"];
-        
         // This is the window outer dimensions, which is stable across
         // most chrome changes, especially on-screen keyboards.  We
         // track so that we can avoid resizes which shouldn't force
@@ -134,7 +131,12 @@ Codex.Startup=
         function addConfig(name,handler){
             if (Codex.Trace.config>1)
                 fdjtLog("Adding config handler for %s: %s",name,handler);
-            config_handlers[name]=handler;}
+            config_handlers[name]=handler;
+            if (current_config.hasOwnProperty(name)) {
+                if (Codex.Trace.config>1)
+                    fdjtLog("Applying config handler to current %s=%s",
+                            name,current_config[name]);
+                handler(name,current_config[name]);}}
         Codex.addConfig=addConfig;
 
         function getConfig(name){
@@ -527,38 +529,7 @@ Codex.Startup=
                         else j++;}}}
 
             addConfig(
-                "cacheglosses",
-                function(name,value){
-                    var uri=Codex.docuri;
-                    if ((value)&&(!(Codex.nocache))) return;
-                    else if ((!(value))&&(Codex.nocache)) return;
-                    else if ((value)&&(!(Codex.user))) {
-                        // ?? Add dialog, possibly update userinfo to check
-                        // if the login is now persistent
-                        fdjtLog.warn("Login required for caching");
-                        return;}
-                    else if (value) {
-                        var storage=((Codex.persist)?(window.localStorage):
-                                     (window.sessionStorage));
-                        if (!(Codex.sourcedb.storage)) Codex.sourcedb.storage=storage;
-                        if (!Codex.glossdb.storage) Codex.glossdb.storage=storage;
-                        var props=saveprops, i=0, lim=props.length;
-                        while (i<lim) {
-                            var prop=saveprops[i++];
-                            if (Codex[prop]) saveLocal(
-                                "codex."+prop+"("+uri+")",Codex[prop],true);}
-                        Codex.glossdb.save(true);
-                        Codex.sourcedb.save(true);
-                        if ((Codex.queued)&&(Codex.queued.length)) 
-                            Codex.queued=Codex.queued.concat(
-                                getLocal("codex.queued("+uri+")",true)||[]);
-                        else Codex.queued=getLocal("codex.queued("+uri+")",true)||[];
-                        Codex.nocache=false;}
-                    else {
-                        clearOffline(Codex.docuri);
-                        fdjtState.dropLocal("codex.queued("+Codex.refuri+")");
-                        Codex.queued=[];
-                        Codex.nocache=true;}});
+                "cacheglosses",function(name,value){Codex.cacheGlosses(value);});
 
             // Setup the reticle (if desired)
             if ((typeof (body.style["pointer-events"])!== "undefined")&&
@@ -608,7 +579,7 @@ Codex.Startup=
                 if (Codex.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);
-                if ((Codex.user)&&(Codex.sync)&&(!(Codex.nocache))&&
+                if ((Codex.user)&&(Codex.sync)&&(Codex.cacheglosses)&&
                     (window._sbook_loadinfo))
                     // Clear the loadinfo "left over" from startup,
                     //  which should now be in the database
@@ -732,7 +703,7 @@ Codex.Startup=
                 // Process locally stored (offline data) glosses
                 function(){
                     if (Codex.sync) {
-                        if (!(Codex.nocache)) return initGlossesOffline();}
+                        if (Codex.cacheglosses) return initGlossesOffline();}
                     else if (window._sbook_loadinfo) {
                         loadInfo(window._sbook_loadinfo);
                         window._sbook_loadinfo=false;}},
@@ -1960,7 +1931,7 @@ Codex.Startup=
                 window._sbook_newinfo=info;
                 return;}
             var refuri=Codex.refuri;
-            if ((Codex.persist)&&(!(Codex.nocache))&&
+            if ((Codex.persist)&&(Codex.cacheglosses)&&
                 (info)&&(info.userinfo)&&(Codex.user)&&
                 (info.userinfo._id!==Codex.user._id)) {
                 clearOffline();}
@@ -1986,7 +1957,7 @@ Codex.Startup=
         Codex.loadInfo=loadInfo;
 
      function infoLoaded(info){
-         var keepdata=(!(Codex.nocache));
+         var keepdata=(Codex.cacheglosses);
          if (info.etc) gotInfo("etc",info.etc,keepdata);
          if (info.sources) gotInfo("sources",info.sources,keepdata);
          if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
@@ -2146,8 +2117,7 @@ Codex.Startup=
             // We also save it locally so we can get it synchronously
             saveLocal(Codex.user._id,Codex.user.Export(),true);
             if (Codex.locsync) setConfig("locsync",true);
-            if (!(Codex.nocache))
-                setConfig("cacheglosses",true);
+            Codex.cacheGlosses(Codex.cacheglosses);
             
             var startui=fdjtTime();
             setupUI4User();
@@ -2271,7 +2241,7 @@ Codex.Startup=
         function saveItems(qids,name){
             var refuri=Codex.refuri;
             Codex[name]=qids;
-            if (!(Codex.nocache))
+            if (Codex.cacheglosses)
                 saveLocal("codex."+name+"("+refuri+")",qids,true);}
             
         // Processes info loaded remotely
