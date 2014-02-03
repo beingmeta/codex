@@ -635,9 +635,7 @@ var Codex={
     /* Navigation functions */
 
     function setHead(head){
-        if (!(head)) {
-            if (Codex.mode==="tocscan") Codex.setMode(false);
-            return;}
+        if (!(head)) return;
         else if (typeof head === "string") 
             head=getHead(cxID(head))||Codex.content;
         else {}
@@ -1224,8 +1222,9 @@ var Codex={
     function CodexScanTo(target){
         if (Codex.hudup) { // Figure out what mode to go to
             var headinfo=Codex.docinfo[target]||Codex.docinfo[target.id];
-            if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0)))
-                Codex.setMode("tocscan");}
+            if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0))) {
+                Codex.setMode("statictoc"); Codex.setHUD(false,false);
+                addClass(document.body,"cxSCANNING");}}
         Codex.GoTo(target,"CodexScanTo");}
     Codex.ScanTo=CodexScanTo;
 

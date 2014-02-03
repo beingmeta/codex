@@ -673,11 +673,11 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (dx<-10) {
-                if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
+                if (hasClass(document.body,"cxSCANNING"))
                     Codex.scanForward(evt);
                 else Codex.Forward(evt);}
             else if (dx>10) {
-                if ((Codex.mode==="scanning")||(Codex.mode==="tocscan"))
+                if (hasClass(document.body,"cxSCANNING"))
                     Codex.scanBackward(evt);
                 else Codex.Backward(evt);}}
         else if (ady>(adx*2)) {
@@ -914,8 +914,6 @@
             fdjtLog("slice_held %o: %o, scanning=%o",
                     evt,card,Codex.scanning);
         if (!(card)) return;
-        // This is the case where we're already scanning this card
-        // if ((Codex.scanning===card)&&(Codex.mode==="scanning")) return;
         // Put a clone of the card in the scanner
         var clone=card.cloneNode(true);
         clone.id="CODEXSCAN"; fdjtDOM.replace("CODEXSCAN",clone);
@@ -1698,20 +1696,15 @@
                 Codex.setMode(false);}
             cancel(evt);
             return;}
-        if ((Codex.hudup)&&
-            (Codex.mode!=="scanning")&&
-            (Codex.mode!=="tocscan"))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
             Codex.setMode(false);
-        if ((Codex.mode==="scanning")||
-            (Codex.mode==="tocscan"))
+        else if (hasClass(document.body,"cxSCANNING"))
             scanForward(evt);
         else forward(evt);
         cancel(evt);}
     function right_margin_hold(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-        if ((Codex.hudup)&&
-            (Codex.mode!=="scanning")&&
-            (Codex.mode!=="tocscan"))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
             Codex.setMode(false);
         if (Codex.page_turner) {
             clearInterval(Codex.page_turner);
@@ -1733,8 +1726,7 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (adx<10) return;
-            else if ((Codex.mode==="scanning")||
-                     (Codex.mode==="tocscan"))
+            else if (hasClass(document.body,"cxSCANNING"))
                 scanForward(evt);
             else forward(evt);}
         else if (ady>(adx*2)) {
@@ -1768,20 +1760,15 @@
                 Codex.setMode(false);}
             cancel(evt);
             return;}
-        if ((Codex.hudup)&&
-            (Codex.mode!=="scanning")&&
-            (Codex.mode!=="tocscan"))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
             Codex.setMode(false);
-        else if ((Codex.mode==="scanning")||
-                 (Codex.mode==="tocscan"))
+        else if (hasClass(document.body,"cxSCANNING"))
             scanBackward(evt);
         else backward(evt);
         cancel(evt);}
     function left_margin_hold(evt){
         if (Codex.Trace.gestures) tracetouch("left_margin",evt);
-        if ((Codex.hudup)&&
-            (Codex.mode!=="scanning")&&
-            (Codex.mode!=="tocscan"))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
             Codex.setMode(false);
         stopPageTurner();
         // Codex.page_turner=setInterval(function(){backward();},800);
@@ -1800,8 +1787,7 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (adx<10) return;
-            else if ((Codex.mode==="scanning")||
-                     (Codex.mode==="tocscan"))
+            else if (hasClass(document.body,"cxSCANNING"))
                 scanForward(evt);
             else forward(evt);}
         else if (ady>(adx*2)) {
@@ -1861,8 +1847,7 @@
 
     function scanForward(evt){
         evt=evt||event;
-        if (Codex.mode==="scanning") {}
-        else if (Codex.mode==="tocscan") {}
+        if (hasClass(document.body,"cxSCANNING")) {}
         else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
@@ -1880,15 +1865,15 @@
                     else i++;}}
             Codex.setMode(false);
             return;}
-        else if (Codex.scanning) Codex.setMode("scanning");
-        else Codex.setMode("tocscan");
+        else if (Codex.scanning) {}
+        else return; /* Need default */
         addClass("CODEXSCANNER","flash");
         addClass("CODEXNEXTSCAN","flash");
         setTimeout(function(){
             dropClass("CODEXSCANNER","flash");
             dropClass("CODEXNEXTSCAN","flash");},
                    200);
-        if (Codex.mode==="tocscan") {
+        if (Codex.mode==="statictoc") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
             var headinfo=Codex.docinfo[headid];
@@ -1919,8 +1904,7 @@
     Codex.scanForward=scanForward;
 
     function scanBackward(evt){
-        if (Codex.mode==="scanning") {}
-        else if (Codex.mode==="tocscan") {}
+        if (hasClass(document.body,"cxSCANNING")) {}
         else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
@@ -1938,15 +1922,15 @@
                     else i--;}}
             Codex.setMode(false);
             return;}
-        else if (Codex.scanning) Codex.setMode("scanning");
-        else Codex.setMode("tocscan");
+        else if (Codex.scanning) {}
+        else return false;
         addClass("CODEXPREVSCAN","flash");
         addClass("CODEXSCANNER","flash");
         setTimeout(function(){
             dropClass("CODEXSCANNER","flash");
             dropClass("CODEXPREVSCAN","flash");},
                    200);
-        if (Codex.mode==="tocscan") {
+        if (Codex.mode==="statictoc") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
             var headinfo=Codex.docinfo[headid];
@@ -2020,7 +2004,6 @@
         Codex.stopScanning();
         cancel(evt);
         return;}
-
 
     /* Entering page numbers and locations */
 

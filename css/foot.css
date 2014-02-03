@@ -63,16 +63,6 @@ body.hudup div#CODEXFOOT div#CODEXPAGELEAP {
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
 
-/*
-body.cxTOUCH #CODEXHUD.overtoc div#CODEXFOOT div#CODEXPAGEINFO,
-body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO {
-    top: 0px; bottom: auto;}
-body.cxTOUCH #CODEXHUD.overtoc div#CODEXFOOT div#CODEXPAGEINFO div.textfoot,
-body.cxTOUCH #CODEXHUD.tocscan div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
-    top: 0px; bottom: auto;
-    border-top: 0px; border-bottom: solid black 1px;}
-*/
-
 /* Page spans */
 
 div#CODEXFOOT div#CODEXPAGEINFO div.textfoot {
@@ -205,8 +195,8 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.justreading { display: none;}
 
-#CODEXHUD.scanning #CODEXSHOWTEXT span.justreading { display: none;}
-#CODEXHUD.scanning #CODEXSHOWTEXT span.stopscanning { display: inline;}
+body.cxSCANNING #CODEXHUD #CODEXSHOWTEXT span.justreading { display: none;}
+body.cxSCANNING #CODEXHUD #CODEXSHOWTEXT span.stopscanning { display: inline;}
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.cancelgloss,
 #CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelchanges {
@@ -215,7 +205,7 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
     display: none;}
 
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
-body.codexscanning div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.cxSCANNING div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
 body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {

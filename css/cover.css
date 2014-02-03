@@ -316,6 +316,9 @@ div#CODEXSETTINGS .button {
     -webkit-border-radius: 5px;}
 div#CODEXSETTINGS h1 .button, div#CODEXSETTINGS h1 .message {
     font-size: 50%; float: right;}
+@media (pointer: coarse) {
+    div#CODEXSETTINGS h1 .button { font-size: 80%;}
+    div#CODEXSETTINGS .button, div#CODEXSETTINGS button { font-size: 120%;}}
 div#CODEXSETTINGS .button.exit {
     color: red; background-color: white;}
 div#CODEXSETTINGS h1 #CODEXSETTINGSMESSAGE {

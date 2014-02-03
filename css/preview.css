@@ -18,8 +18,7 @@ body.cxPREVIEW #CODEXHUD.openhead #CODEXTOP { display: none; }
 
 body.cxPREVIEW .hudbutton { display: none; }
 
-body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXTOP,
-body.cxPREVIEW #CODEXHUD.tocscan #CODEXTOP {
+body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXTOP {
     display: block; }
 
 body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP, body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
@@ -91,10 +90,9 @@ body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXTOP {
     background-color: transparent;}
 
 body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
-body.cxPREVIEW #CODEXHUD.tocscan #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.addgloss #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.openglossmark #CODEXSCANNER,
-body.cxPREVIEW #CODEXHUD.scanning #CODEXSCANNER,
+body.cxPREVIEW.cxSCANNING #CODEXHUD #CODEXSCANNER,
 body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
     box-shadow: none;
     -webkit-box-shadow: none;

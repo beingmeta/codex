@@ -374,9 +374,9 @@ Codex.setMode=
                     dropClass(CodexHUD,"openhead");
                     dropClass(CodexHUD,"full");
                     dropClass(CodexHUD,CodexModes);
-                    dropClass(document.body,"codexscanning");
-                    dropClass(document.body,"codexscanstart");
-                    dropClass(document.body,"codexscanend");
+                    dropClass(document.body,"cxSCANNING");
+                    dropClass(document.body,"cxSCANSTART");
+                    dropClass(document.body,".cxSCANEND");
                     Codex.mode=false;}
                 dropClass(document.body,"hudup");
                 dropClass(document.body,"hudopen");
@@ -403,9 +403,9 @@ Codex.setMode=
         
         /* Mode controls */
         
-        var CodexModes=/\b((scanning)|(tocscan)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
+        var CodexModes=/\b((search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
         var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossdetail))\b/g;
-        var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(scanning)|(tocscan)|(shownote))\b/g;
+        var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(shownote))\b/g;
         var CodexSubModes=/\b((glossaddtag)|(glossaddoutlet)|(glossattach)|(glosstagging)|(glosseditdetail)|(glossediting))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
@@ -494,18 +494,8 @@ Codex.setMode=
                     (mode==='expandsearch'))
                     Codex.search_mode=mode;
 
-                if ((mode==='scanning')||(mode==='tocscan'))
-                    addClass(document.body,"codexscanning");
-                else dropClass(document.body,/\b(codexscan[a-z0-9]*)\b/);
 
-                // These are modes that require the HUD to be down
-                if ((mode==='scanning')||(mode==='tocscan')) {
-                    if (mode!==oldmode) {
-                        Codex.hudup=false;
-                        dropClass(CodexHUD,"openheart");
-                        dropClass(CodexHUD,"full");
-                        dropClass(document.body,"hudup");}}
-                else if ((mode==='addgloss')||(mode==="openglossmark")) 
+                if ((mode==='addgloss')||(mode==="openglossmark")) 
                     addClass(document.body,"openhud");
                 else if (nohud) {}
                 // And if we're not scanning, we just raise the hud
@@ -561,11 +551,14 @@ Codex.setMode=
                                 500);}}
         
         function changeMode(mode){      
+            if (Codex.Trace.mode)
+                fdjtLog("changeMode %o, cur=%o dbc=%o",
+                        mode,Codex.mode,document.body.className);
             fdjtDOM.dropClass(CodexHUD,CodexModes);
             fdjtDOM.dropClass(CodexHUD,CodexSubModes);
             fdjtDOM.addClass(CodexHUD,mode);
             // This updates scanning state
-            if ((Codex.scanning)&&(mode!=="scanning")) {
+            if (Codex.scanning) {
                 // Scroll the scanned content (glosses, search
                 // results, etc) to reflect any motion
                 var heart=Codex.DOM.heart;
@@ -591,8 +584,10 @@ Codex.setMode=
                              (Codex.docinfo[Codex.head.id]));
                 var hhinfo=headinfo.head, pinfo=headinfo.prev;
                 var static_head=fdjt.ID("CODEXSTATICTOC4"+headinfo.frag);
-                var static_hhead=((hhinfo)&&(fdjt.ID("CODEXSTATICTOC4"+hhinfo.frag)));
-                var static_phead=((pinfo)&&(fdjt.ID("CODEXSTATICTOC4"+pinfo.frag)));
+                var static_hhead=
+                    ((hhinfo)&&(fdjt.ID("CODEXSTATICTOC4"+hhinfo.frag)));
+                var static_phead=
+                    ((pinfo)&&(fdjt.ID("CODEXSTATICTOC4"+pinfo.frag)));
                 if ((static_head)&&(static_head.scrollIntoView)) {
                     if (static_hhead) static_hhead.scrollIntoView();
                     if ((static_phead)&&(static_phead.scrollIntoViewIfNeeded))
@@ -649,10 +644,12 @@ Codex.setMode=
             
             if (mode==="allglosses") {
                 if ((Codex.scanning)||(Codex.point))
-                    Codex.UI.scrollGlosses(Codex.scanning||Codex.point,Codex.glosses);}
+                    Codex.UI.scrollGlosses(
+                        Codex.scanning||Codex.point,Codex.glosses);}
             else if (mode==="searchresults") {
                 if ((Codex.scanning)||(Codex.point))
-                    Codex.UI.scrollGlosses(Codex.scanning||Codex.point,Codex.query.listing);}
+                    Codex.UI.scrollGlosses(
+                        Codex.scanning||Codex.point,Codex.query.listing);}
             else {}
             if (display_sync) Codex.displaySync();}
 
@@ -732,6 +729,7 @@ Codex.setMode=
             var nextSlice=Codex.nextSlice, prevSlice=Codex.prevSlice;
             var pelt=Codex.scanning;
             var i=0, lim=0;
+            addClass(document.body,"cxSCANNING"); setHUD(false,false);
             if (Codex.Trace.mode)
                 fdjtLog("CodexScan() %o (src=%o) mode=%o scn=%o/%o",
                         elt,src,Codex.mode,Codex.scanning,Codex.target);
@@ -745,10 +743,10 @@ Codex.setMode=
                 fdjtDOM.replace("CODEXSCAN",clone);
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
-                if (next) dropClass(document.body,"codexscanend");
-                else addClass(document.body,"codexscanend");
-                if (prev) dropClass(document.body,"codexscanstart");
-                else addClass(document.body,"codexscanstart");
+                if (next) dropClass(document.body,".cxSCANEND");
+                else addClass(document.body,".cxSCANEND");
+                if (prev) dropClass(document.body,"cxSCANSTART");
+                else addClass(document.body,"cxSCANSTART");
                 while (slice) {before++; slice=prevSlice(slice);}
                 slice=next; while (slice) {
                     after++; slice=nextSlice(slice);}
@@ -815,8 +813,7 @@ Codex.setMode=
                     else Codex.scanoff=0;
                     Codex.GoTo(Codex.scanpoints[Codex.scanoff]);}
                 else Codex.GoTo(elt,"Scan");}
-            else Codex.GoTo(elt,"Scan");
-            setMode("scanning");}
+            else Codex.GoTo(elt,"Scan");}
         Codex.Scan=CodexScan;
         function stopScanning(){
             // Tapping the tochead returns to results/glosses/etc

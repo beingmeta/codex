@@ -90,19 +90,6 @@ div.codextoc div.sub {
 div.codextoc.codexcurhead div.head { }
 div.codextoc.codexcurhead div.sub { display: block;}
 
-/* TOCSCAN */
-
-div#CODEXHUD.tocscan div.codextoc.codexcurhead div.sub { display: none;}
-
-body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead div.head,
-body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead img {
-    height: 0px;}
-body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > div.head,
-body.hudup.cxPREVIEW div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img,
-body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > div.head,
-body.hudup div#CODEXHUD.tocscan div.codextoc.codexlivehead.codexcurhead > img {
-    height: inherit;}
-
 div#CODEXHEART div#CODEXSTATICTOC {
     margin-left: 0.1em; margin-right: 0.1em;
     font-size: 2em;}
@@ -151,33 +138,14 @@ div#CODEXHUD div.codextoc div.spanbar { display: none;}
 div#CODEXHUD div.codextoc img { display: none;}
 
 div#CODEXHUD.overtoc div.codextoc div.head { display: block;}
-div#CODEXHUD.overtoc div.codextoc div.spanbar,
-div#CODEXHUD.tocscan div.codextoc div.spanbar {
+div#CODEXHUD.overtoc div.codextoc div.spanbar {
     display: block;
     border-left: solid darkgray 2px;
     border-right: solid darkgray 2px;}
-div#CODEXHUD.tocscan div.codextoc div.spanbar {
-    border-bottom: solid darkgray 2px;}
 div#CODEXHUD.overtoc div.codextoc img { display: inherit;}
 div#CODEXHUD.overtoc div.codextoc.codexcurhead div.sub { display: block;}
-div#CODEXHUD div#CODEXTOC.hover div.codextoc.codexcurhead div.sub { display: none;}
-
-div#CODEXHUD.tocscan div.hudpanel#CODEXTOC {
-    opacity: 0.9;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-    filter: alpha(opacity=90);
-    -webkit-opacity: 0.90;
-    -khtml-opacity: 0.90;
-    -moz-opacity: 0.90;
-    -o-opacity: 0.90;}
-div#CODEXHUD.tocscan div.codextoc.codexcurhead > div.head { display: block;}
-div#CODEXHUD.tocscan div.codextoc.codexcurhead > img { display: inherit;}
-div#CODEXHUD.tocscan div.codextoc div.spanbar { display: none;}
-div#CODEXHUD.tocscan div.codextoc.codexcxthead > div.spanbar { display: block;}
-div#CODEXHUD.tocscan div.codextoc div.spans { border-top: 0px; border-bottom: 0px;}
-div#CODEXHUD.tocscan div#CODEXTOC div.spanbar div.progressbox {
-    border-top: 0px; top: 0px; height: 100%;}
-div#CODEXHUD.tocscan div#CODEXTOC div.spanbar { height: 40px;}
+div#CODEXHUD div#CODEXTOC.hover div.codextoc.codexcurhead div.sub {
+    display: none;}
 
 div#CODEXHUD.overtoc div#CODEXTOC div.spanbar div.progressbox {
     border-top: 0px; top: 0px; border-bottom: 4px; height: 100%;}
@@ -206,7 +174,6 @@ div#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 100%;}
 div#CODEXTOC div.spanbar div.progressbox {
     vertical-align: top; height: auto; top: 4px; bottom: 4px;}
-div#CODEXTOC.tocscan div.spanbar div.progressbox { top: 0px; bottom: 0px;}
 div#CODEXTOC div.toc0 > div.spanbar div.progressbox {
     vertical-align: top; top: 0px;}
 div#CODEXTOC div.spanbar div.spans { font-size: 30px;}

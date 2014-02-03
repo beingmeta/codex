@@ -100,7 +100,12 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard span.audience .outlet { color: forestgreen; }
 .codexcard .audience .outlet:before {
     content: "→ "; font-weight: bold;}
-.codexcard .codexcardbody { padding-top: 3px;}
+
+.codexcardbody { padding-top: 3px;}
+.codexcardbody:before, .codexcard .codexcardbody:after {
+    content: " "; display: table;}
+.codexcardbody:after { clear: both; }
+
 .codexcard .fdjtclearfloats { margin-bottom: 3px;}
 .codexcard.gloss .codexcardbody {
     border-top: solid purple 2px;}

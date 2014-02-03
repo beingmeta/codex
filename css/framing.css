@@ -69,14 +69,14 @@ body {
     z-index: -50;}
 #CODEXFRAME > *, #CODEXFRAME > * > * { box-sizing: border-box;}
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
-body.codexscanning #CODEXFRAME, body.openhud #CODEXFRAME {
+body.cxSCANNING #CODEXFRAME, body.openhud #CODEXFRAME {
     display: block;}
-body.hudup #CODEXHUD, body.codexscanning #CODEXHUD,
+body.hudup #CODEXHUD, body.cxSCANNING #CODEXHUD,
 body.openhud #CODEXHUD, body.cxCOVER #CODEXCOVER {
     display: block;}
 
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
-body.openhud #CODEXFRAME, body.codexscanning #CODEXFRAME,
+body.openhud #CODEXFRAME, body.cxSCANNING #CODEXFRAME,
 body.codexhelp #CODEXFRAME {
     z-index: 50;}
 
@@ -90,7 +90,8 @@ body.codexhelp #CODEXFRAME {
 body.cxTOUCH #CODEXFRAME > #CODEXHUD > * {
     pointer-events: none;}
 body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > *,
-body.cxTOUCH #CODEXFRAME > #CODEXHUD.addgloss > * {
+body.cxTOUCH #CODEXFRAME > #CODEXHUD.addgloss > *,
+body.cxTOUCH.cxSCANNING #CODEXFRAME > #CODEXHUD > div#CODEXSCANNER {
     pointer-events: all;}
 
 body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHEAD,
