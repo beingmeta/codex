@@ -88,7 +88,7 @@ div#CODEXHUD div.resultinfo span.showalltags {
 div#CODEXHUD.refinesearch div.resultinfo span.refinecount, 
 div#CODEXHUD.expandsearch div.resultinfo span.showalltags,
 div#CODEXHUD.searchresults div.resultinfo span.resultcount {
-    font-weight: bold; text-decoration: none;}
+    font-weight: bold; text-decoration: none; cursor: default;}
 
 div#CODEXHUD div#CODEXSEARCHINFO { display: none;}
 div#CODEXHUD.refinesearch div#CODEXSEARCHINFO,

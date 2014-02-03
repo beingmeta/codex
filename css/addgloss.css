@@ -466,11 +466,10 @@ body.hudup div#CODEXHUD.addgloss.glossattach div#CODEXGLOSSATTACH {
 
 div#CODEXGLOSSATTACH table { color: black; }
 div#CODEXGLOSSATTACH table tr th:first-child {
-    width: 5em; padding-right: 0.5ex;}
+    width: 4em; padding-right: 0.5ex;}
 div#CODEXGLOSSATTACH th.headcell {
-    font-size: 125%; width: 5em;
-    color: #4682b4;}
-div#CODEXGLOSSATTACH th.button { width: 7em;}
+    width: 4em; color: #4682b4;}
+div#CODEXGLOSSATTACH th.button { width: 5em;}
 div#CODEXGLOSSATTACH th.headcell img { height: 0.75em; width: auto;}
 
 div#CODEXGLOSSATTACH .attachtype td .checkspan.ischecked { font-size: 100%;}
@@ -493,7 +492,8 @@ div#CODEXGLOSSATTACH tr.fileokay a { color: blue; text-decoration: underline;}
 div#CODEXGLOSSATTACH tr.fileokay.ischecked {
     color: green; font-weight: normal;}
 div#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"],
-div#CODEXGLOSSATTACH table.fdjtform td input[type="URL"] { width: 95%;}
+div#CODEXGLOSSATTACH table.fdjtform td input[type="URL"] {
+    box-sizing: border-box; width: 100%;}
 div#CODEXGLOSSATTACH th button { width: 5em; }
 
 #CODEXNETWORKBUTTONS { text-align: center;}
