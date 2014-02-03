@@ -115,7 +115,7 @@ div.codexglossform form div.textbox input[TYPE='TEXT'] {
     width: 99%; max-width: 99%; 
     background-position: right top;
     background-position-x: right; background-position-y: top;
-    background-size: 24px 24px;
+    background-size: 1em 1em;
     background-repeat: no-repeat;}
 
 div.codexglossform form div.glossbox {}
@@ -510,9 +510,9 @@ div#CODEXRIBBON > div.inputbox span.head {
 div#CODEXRIBBON div.inputbox input[type="TEXT"] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
-    background-size: 24px 24px;
+    background-size: 1.2em 1.2em;
     background-repeat: no-repeat;
-    padding-bottom: 1px; padding-top: 1px;
+    height: 1.2em; padding-bottom: 1px; padding-top: 1px;
     font-size: 20px;
     width: 90%;}
 div#CODEXRIBBON div.inputbox#CODEXGLOSSTAGINPUT input[TYPE="TEXT"] {
