@@ -2,7 +2,7 @@
 
 /* ###################### codex/glosses.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file implements the interface for adding and editing **glosses**,
    which are annotations associated with text passages in a document.
@@ -635,8 +635,7 @@
              ((typeof tag === 'string')&&
               ((tag.indexOf('|')>0)?
                (knodule.handleSubjectEntry(tag)):
-               (tag.indexOf('@')>=0)?(Knodule.ref(tag)):
-               (knodule.probe(tag)))));
+               (Knodule.ref(tag)))));
         var text=
             ((ref)?
              (((ref.toHTML)&&(ref.toHTML()))||
@@ -894,11 +893,10 @@
     var stdspace=fdjtString.stdspace;
 
     function handleTagInput(tagstring,form,exact){
-        var quoted=tag_delims[tagstring[1]];
-        var taglen=((quoted)?(tagstring.slice(2).indexOf(quoted)):(tagstring.length-1));
         var isoutlet=(tagstring[0]==="@");
         var cloud=((isoutlet)?(Codex.share_cloud):(Codex.gloss_cloud));
-        var text=((quoted)?(tagstring.slice(2,2+taglen)):(tagstring.slice(1)));
+        var text=(((tagstring[0]==='@')||(tagstring[0]==='#'))?
+            (tagstring.slice(1)):(tagstring));
         var completions=cloud.complete(text);
         var std=stdspace(text);
         if (isoutlet) {
@@ -1097,7 +1095,7 @@
             if ((Codex.user)&&(Codex.persist)) 
                 choices.push({label: "Queue",
                               isdefault: ((!(navigator.onLine))&&
-                                          (!(Codex.nocache))),
+                                          (Codex.cacheglosses)),
                               handler: function(){
                                   if (Codex.nocache)
                                       Codex.setConfig("cacheglosses",true);
@@ -1108,7 +1106,7 @@
             else {
                 choices.push({label: "Cache",
                               isdefault: ((!(navigator.onLine))&&
-                                          (!(Codex.nocache))),
+                                          (Codex.cacheglosses)),
                               handler: function(){
                                   if (Codex.nocache)
                                       Codex.setConfig("cacheglosses",true,true);
@@ -1222,7 +1220,7 @@
         var params=fdjt.Ajax.formParams(form);
         var queued=Codex.queued;
         queued.push(json.uuid);
-        if (!(Codex.nocache)) {
+        if (Codex.cacheglosses) {
             fdjtState.setLocal("codex.params("+json.uuid+")",params);
             fdjtState.setLocal("codex.queued("+Codex.refuri+")",queued,true);}
         else queued_data[json.uuid]=params;
@@ -1303,7 +1301,7 @@
                             var pos=pending.indexOf(glossid);
                             if (pos>=0) {
                                 pending.splice(pos,pos);
-                                if (!(Codex.nocache))
+                                if (Codex.cacheglosses)
                                     fdjtState.setLocal("codex.queued("+Codex.refuri+")",pending,true);
                                 Codex.queued=pending;}}
                         addgloss_callback(req,false,false);
