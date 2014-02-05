@@ -146,7 +146,8 @@ body.codexhelp.cxSHRINK div#CODEXHUD.addgloss div#CODEXSTARTPAGE {
 
 body.codexhelp.hudup div#CODEXHUD.overtoc div#CODEXTOCHELP.helpbox,
 body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox,
-body.codexhelp.cxSCANNING div#CODEXHUD div#CXSCANNINGHELP.helpbox,
+body.codexhelp.cxSCANNING div#CODEXHUD.allglosses div#CODEXSCANNINGHELP.helpbox,
+body.codexhelp.cxSCANNING div#CODEXHUD.searchresults div#CODEXSCANNINGHELP.helpbox,
 body.codexhelp div#CODEXHUD.refinesearch div#CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp div#CODEXHUD.expandsearch div#CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
@@ -160,6 +161,10 @@ body.codexhelp div#CODEXHUD.statictoc div#CODEXSTATICTOCHELP.helpbox {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;
     display: block;}
+
+body.codexhelp.cxSCANNING div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
+body.codexhelp.cxSCANNING div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
+    display: none;}
 
 /* Goto page and goto loc always display their help. */
 body div#CODEXHUD.gotopage div#CODEXHUDHELP,
