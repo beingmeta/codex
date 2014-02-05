@@ -120,7 +120,7 @@ Codex.Startup=
              uisize: 'normal',showconsole: false,
              animatecontent: true,animatehud: true,
              hidesplash: false,keyboardhelp: true,
-             holdmsecs: 400,wandermsecs: 1500,
+             holdmsecs: 200,wandermsecs: 1500,
              syncinterval: 60,glossupdate: 5*60,
              locsync: true, cacheglosses: true};
         var current_config={};
