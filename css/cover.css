@@ -290,7 +290,9 @@ div#CODEXSETTINGS table.settings td input[type='TEXT'] {
 div#CODEXSETTINGS table.settings tr.buttons td {
     text-align: right;}
 div#CODEXSETTINGS table.settings th.buttons button {
-    min-width: 5em;}
+    min-width: 6em; text-align: left;}
+div#CODEXSETTINGS table.settings th.buttons button img {
+    height: 1em; width: auto;}
 
 table.settings .checkspan.ischecked {
     font-weight: normal; color: rgb(0,61,111); font-size: 100%;}
