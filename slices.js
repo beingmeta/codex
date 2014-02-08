@@ -585,7 +585,8 @@ Codex.Slice=(function () {
             else named_slices[container.id]=container;}
         else if ((container.nodeType)&&(container.nodeType===1))  {}
         else return false;
-        var settings=((Codex.iscroll)?({override: true,bubble: true}):({}));
+        var settings=((Codex.iscroll)?({override: true,bubble: true,noslip: true}):
+                      ({noslip: true}));
         if (container.id)
             Codex.TapHold[container.id]=new fdjtUI.TapHold(container,settings);
         else fdjtUI.TapHold(container,settings);
