@@ -10,7 +10,7 @@ div.codexglossformbody { position: relative; }
 
 div#CODEXADDGLOSS div.codexglossform {
     box-sizing: border-box;
-    min-height: 40px; max-height: 50px;}
+    min-height: 50px; max-height: 60px;}
 
 div#CODEXADDGLOSS div.codexglossform.focused {
     min-height: 75px; max-height: inherit;
@@ -23,7 +23,8 @@ div.codexglossform form div.textbox,
 div.codexglossform form div.glossetc {
     max-height: 40%;
     clear: left; text-align: left;
-    margin-left: 0.5em; margin-right: 60px;}
+    margin-left: 0.5em; margin-right: 60px;
+    box-sizing: border-box;}
 div.codexglossform.focused form div.textbox,
 div.codexglossform.focused form div.glossetc {
     max-height: inherit;}
@@ -32,7 +33,7 @@ div.codexglossform form div.glossetc {
     overflow: hidden;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {
-    min-height: 1em; max-height: 1.5em; padding: 2px;}
+    min-height: 1.5em; max-height: 2em; padding: 2px;}
 div.codexglossform.focused form div.textbox textarea,
 div.codexglossform.focused form div.textbox input[type="TEXT"] {
     max-height: inherit;}
@@ -116,7 +117,8 @@ div.codexglossform form div.textbox input[TYPE='TEXT'] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-size: 1em 1em;
-    background-repeat: no-repeat;}
+    background-repeat: no-repeat;
+    box-sizing: border-box;}
 
 div.codexglossform form div.glossbox {}
 /* { border-top: solid darkblue 2px;
@@ -526,12 +528,12 @@ div#CODEXRIBBON div.inputbox#CODEXGLOSSOUTLETINPUT input[TYPE="TEXT"] {
 
 div.codexglossform form div.addglossmenu {
     position: absolute; top: 0px; right: 0px;
-    width: 40px; margin-right: 5px; margin-left: 5px;
+    width: 50px; margin-right: 5px; margin-left: 5px;
     z-index: 800;}
 
 div.codexglossform form div.addglossmenu > img {
     width: 40px; height: 40px; padding: 2px; margin-bottom: 4px;
-    box-sizing: border-box;
+    box-sizing: content-box;
     display: none; }
 div.codexglossform form div.addglossmenu > img.held {
     background-color: lightgreen; border-color: green;}

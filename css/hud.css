@@ -132,8 +132,9 @@ body.cxANIMATE #CODEXTOP {
     transition-duration: 2s;
     opacity: 0.0; max-height: 0px;
     display: block;}
-body.cxANIMATE #CODEXHUD.openhead #CODEXTOP {
-    max-height: inherit; opacity: 1.0;}
+body #CODEXHUD.openhead #CODEXTOP {
+    max-height: inherit; opacity: 1.0;
+    left: 50px; right: 50px; width: auto;}
 body.hudup #CODEXTOP {display: block;}
 body #CODEXHUD.openhead #CODEXTOP,
 body.cxSCANNING #CODEXHUD #CODEXSCANNER {
