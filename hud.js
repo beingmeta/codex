@@ -358,6 +358,7 @@ Codex.setMode=
                         CodexHUD.className);
             if (flag) {
                 Codex.hudup=true;
+                dropClass(document.body,"cxSCANNING");
                 addClass(document.body,"hudup");}
             else {
                 Codex.hudup=false;
@@ -819,6 +820,7 @@ Codex.setMode=
             // Tapping the tochead returns to results/glosses/etc
             var scanning=Codex.scanning;
             if (!(scanning)) return;
+            dropClass(document.body,"cxSCANNING");
             if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) 
                 Codex.setMode("allglosses");
             else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) 
