@@ -1340,7 +1340,7 @@ var Codex={
         else if (jumpto===Codex.previewing) {
             oldscroll=false; scrollPreview(false,caller);}
         else scrollPreview(false,caller);
-        Codex.previewing=false;
+        Codex.previewing=false; Codex.previewTarget=false;
         dropClass(document.body,"cxPREVIEW");
         dropClass(document.body,"cxPAGEPREVIEW");
         if (jumpto) {
