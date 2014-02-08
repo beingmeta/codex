@@ -1331,7 +1331,9 @@ var Codex={
         if ((jumpto)&&(!(jumpto.nodeType)))
             jumpto=Codex.previewTarget||Codex.previewing;
         if (Codex.Trace.flips)
-            fdjtLog("stopPreview/%s jump to %o",caller||"nocaller",jumpto);
+            fdjtLog("stopPreview/%s jump to %o, pt=%o, p=%o",
+                    caller||"nocaller",jumpto,
+                    Codex.previewTarget,Codex.previewing);
         if (Codex.layout instanceof fdjt.CodexLayout) {
             Codex.stopPagePreview(caller,jumpto);}
         else if (!(jumpto)) scrollPreview(false,caller);
