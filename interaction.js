@@ -586,6 +586,8 @@
             if (slip_timer) {
                 clearTimeout(slip_timer); slip_timer=false;}
             return;}
+        if ((Codex.TapHold.body)&&(Codex.TapHold.body.abort))
+            Codex.TapHold.body.abort();
         var selecting=Codex.UI.selectText(passage);
         Codex.select_target=passage;
         selectors.push(selecting);
@@ -1811,6 +1813,7 @@
 
     function pageForward(evt){
         evt=evt||event;
+        fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
@@ -1830,6 +1833,8 @@
     Codex.pageForward=pageForward;
 
     function pageBackward(evt){
+        evt=evt||event;
+        fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
