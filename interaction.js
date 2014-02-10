@@ -1466,6 +1466,7 @@
         if ((evt.type==='click')||
             ((evt.type==='tap')&&((Codex.hudup)||(!(Codex.touch))))||
             (evt.type==='release')) {
+            dropClass(document.body,"cxHOLDING");
             if ((Codex.scanning)&&(!(Codex.hudup))) {
                 if (mode==="refinesearch") {
                     Codex.setMode("searchresults"); return;}
@@ -1479,7 +1480,9 @@
             else Codex.setMode(mode);}
         else if (evt.type==="tap")
             Codex.setHUD(true);
-        else {}}
+        else if (evt.type==="hold") 
+            addClass(document.body,"cxHOLDING");
+        else dropClass(document.body,"cxHOLDING");}
     Codex.UI.hudmodebutton=hudmodebutton;
 
     Codex.UI.dropHUD=function(evt){
@@ -1813,7 +1816,8 @@
 
     function pageForward(evt){
         evt=evt||event;
-        fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
+        if (Codex.booksound)
+            fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
@@ -1834,7 +1838,8 @@
 
     function pageBackward(evt){
         evt=evt||event;
-        fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
+        if (Codex.booksound)
+            fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
         if ((Codex.Trace.gestures)||(Codex.Trace.flips))
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);

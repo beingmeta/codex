@@ -528,8 +528,8 @@ Codex.Startup=
                             refuris[j++].value=Codex.refuri;
                         else j++;}}}
 
-            addConfig(
-                "cacheglosses",function(name,value){Codex.cacheGlosses(value);});
+            addConfig("cacheglosses",
+                      function(name,value){Codex.cacheGlosses(value);});
 
             // Setup the reticle (if desired)
             if ((typeof (body.style["pointer-events"])!== "undefined")&&
@@ -1504,6 +1504,12 @@ Codex.Startup=
             if (value) addClass(document.body,"cxSHOWCONSOLE");
             else dropClass(document.body,"cxSHOWCONSOLE");});
         
+        Codex.addConfig("uisound",function(name,value){
+            Codex.uisound=(value)&&(true);});
+        Codex. addConfig("booksound",function(name,value){
+            Codex.booksound=(value)&&(true);});
+
+
         /* Filling in information */
 
         function fillAboutInfo(about){
