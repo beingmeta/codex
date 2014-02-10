@@ -728,6 +728,10 @@ body.cxANIMATE div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onle
     -moz-transform: translate(0%,0%);
     -o-transform: translate(0%,0%);}
 
+/* Rules for indicating UI states */
+
+/* body.cxHOLDING #CODEXBODY { opacity: 0.5; } */
+
 /* Special rules for overriding properties on split (dup) passages */
 
 body #CODEXBODY #CODEXPAGE .codexpage .codexdupstart {
