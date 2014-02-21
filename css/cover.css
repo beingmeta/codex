@@ -215,7 +215,8 @@ body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
 div#CODEXTITLEPAGE { display: none; }
 div#CODEXCOVER div#CODEXTITLEPAGE {
-  display: block; padding: 2em; padding-top: 1ex;}
+  display: block; padding: 2em; padding-top: 1ex;
+  font-size: 2em;}
 
 .codextitlepage { text-align: center;}
 .codextitlepage > .title {

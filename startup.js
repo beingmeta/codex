@@ -1294,7 +1294,8 @@ Codex.Startup=
                 fdjtDOM.scaleToFit(coverpage,0.9);
                 coverpage.style.opacity=null; coverpage.style.display=null;
                 coverpage.style.overflow=null;}
-            if (fdjtID("CODEXBOOKCOVERHOLDER")) fdjtDOM.remove("CODEXBOOKCOVERHOLDER");
+            if (fdjtID("CODEXBOOKCOVERHOLDER"))
+                fdjtDOM.remove("CODEXBOOKCOVERHOLDER");
             if ((!(fdjtID("CODEXBOOKCOVER")))&&(fdjtID("CODEXCOVERCONTROLS")))
                 fdjtDOM.addClass("CODEXCOVERCONTROLS","nobookcover");
 
@@ -1322,6 +1323,7 @@ Codex.Startup=
             else if (hasParent(titlepage,cover)) {}
             else cover.appendChild(titlepage);
             if (titlepage) {
+                titlepage.setAttribute("style","");
                 titlepage.style.opacity=0.0; titlepage.style.display="block";
                 titlepage.style.overflow="visible";
                 fdjtDOM.scaleToFit(titlepage,0.9);
