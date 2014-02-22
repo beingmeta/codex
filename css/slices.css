@@ -177,7 +177,7 @@ div#CODEXSCANNER div.codexcard div.codexcardbody {
 div#CODEXSCANNER div.codexcard div.idhead {
     border-bottom: 0px;}
 
-body.cxISCROLL div.codexslice {
+#CODEXFRAME.cxANIMATE body.cxISCROLL div.codexslice {
     transition-property: transform;
     -webkit-transition-property: -webkit-transform;
     -moz-transition-property: -moz-transform;

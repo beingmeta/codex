@@ -46,12 +46,13 @@ div#CODEXCOVER > div {
     top: 50px; left: 50px; right: 50px;
     bottom: 100px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
+    opacity: 0.0; z-index: -50;
+    display: none;}
+#CODEXFRAME.cxANIMATE div#CODEXCOVER > div {
     transition-property: opacity; transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
-    -o-transition-property: opacity; -o-transition-duration: 1s;
-    opacity: 0.0; z-index: -50;
-    display: none;}
+    -o-transition-property: opacity; -o-transition-duration: 1s;}
 
 div#CODEXCOVER > div > div.fdjtadjusted {
     height: 100%; width: 100%;}
@@ -92,7 +93,8 @@ div#CODEXCOVERCONTROLS > span.control {
 div#CODEXCOVERCONTROLS > span.control:hover {
     text-decoration: underline;}
 
-div#CODEXCOVER div.loginbox, div#CODEXCOVER div.userbox { 
+#CODEXFRAME.cxANIMATE div#CODEXCOVER div.loginbox,
+#CODEXFRAME.cxANIMATE div#CODEXCOVER div.userbox { 
     transition-property: height; transition-duration: 2s;
     -webkit-transition-property: height; -webkit-transition-duration: 2s;
     -moz-transition-property: height; -moz-transition-duration: 2s;

@@ -127,9 +127,12 @@ body.hudup #CODEXTOP .hudpanel {
     -o-border-radius-bottomright: 0px;}
 
 
-body.cxANIMATE #CODEXTOP {
-    transition-property: opacity;
-    transition-duration: 2s;
+#CODEXFRAME.cxANIMATE #CODEXTOP {
+    transition-property: opacity; transition-duration: 2s;
+    -webkit-property: opacity; -webkit-transition-duration: 2s;
+    -moz-property: opacity; -moz-transition-duration: 2s;
+    -o-property: opacity; -o-transition-duration: 2s;}
+#CODEXTOP {
     opacity: 0.0; max-height: 0px;
     display: block;}
 body #CODEXHUD.openhead #CODEXTOP {
@@ -364,7 +367,7 @@ body.hudup div#CODEXHUD div.hudpanel {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 /* When animating, transition opacity and height */
-body.cxANIMATE div#CODEXHUD div.hudpanel {
+#CODEXFRAME.cxANIMATE div#CODEXHUD div.hudpanel {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -583,7 +586,7 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
     cursor: pointer;
     font-variant: small-caps;
     display: inline-block;}
-#CODEXSHOWCOVER {
+#CODEXFRAME.cxANIMATE #CODEXSHOWCOVER {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -851,7 +854,7 @@ body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic,
 body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
     max-height: inherit; height: inherit;}
 
-body.cxANIMATE div#CODEXHUD div#CODEXSCANNER {
+#CODEXFRAME.cxANIMATE div#CODEXHUD div#CODEXSCANNER {
     transition-property: background-color;
     -o-transition-property: background-color;
     -moz-transition-property: background-color;
@@ -1000,7 +1003,7 @@ div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
     border: solid blue 3px;
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;}
-body.cxANIMATE div#CODEXHUD div#CODEXSTARTPAGE {
+#CODEXFRAME.cxANIMATE div#CODEXHUD div#CODEXSTARTPAGE {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
@@ -1034,7 +1037,7 @@ body.cxLAYOUT.cxLAYOUTMESSAGE div#CODEXLAYOUTMESSAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-body.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXLAYOUTMESSAGE {
+#CODEXFRAME.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXLAYOUTMESSAGE {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity;
@@ -1057,7 +1060,7 @@ body.cxINDEXING div#CODEXHUD.searchresults div#CODEXINDEXMESSAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-body.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXINDEXMESSAGE {
+#CODEXFRAME.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXINDEXMESSAGE {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity;

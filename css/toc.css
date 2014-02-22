@@ -19,7 +19,9 @@ div.codextoc > div.spanbar {
   margin-left: 0px; margin-right: 0px;}
 
 div.codextoc div.head { min-height: 24px;}
-div#CODEXSTATICTOC div.codextoc div.head { min-height: inherit;}
+@media (pointer: coarse) {
+    div#CODEXSTATICTOC div.codextoc div.head { min-height: 30px;}
+    }
 
 div.codextoc div.head .progressbar, div.codextoc div.head .sizebar { 
     padding: 0px; margin: 0px; 

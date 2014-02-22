@@ -323,11 +323,6 @@ div#CODEXHUD div.codexhelp.hudpanel {
     -khtml-opacity: 0.95;
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
-body.cxANIMATE div#CODEXHUD div.codexhelp.hudpanel {
-    transition-property: opacity; transition-duration: 5s;
-    -o-transition-property: opacity; -o-transition-duration: 5s;
-    -moz-transition-property: opacity; -moz-transition-duration: 5s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
     position: absolute; text-align: center;
@@ -344,11 +339,6 @@ div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
     -khtml-opacity: 0.95;
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
-body.cxANIMATE div#CODEXHUD div#CODEXKEYBOARDHELPBOX.hudpanel {
-    transition-property: opacity; transition-duration: 5s;
-    -o-transition-property: opacity; -o-transition-duration: 5s;
-    -moz-transition-property: opacity; -moz-transition-duration: 5s;
-    -webkit-transition-property: opacity; -webkit-transition-duration: 5s;}
 
 div#CODEXHUD div#CODEXKEYBOARDHELPBOX div#CODEXKEYBOARDHELP {
     margin: 2em;}

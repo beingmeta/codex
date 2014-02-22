@@ -346,7 +346,7 @@ div.codexglossform form.sharing div.glossetc span .button[alt='sharing'],
 div.codexglossform form.attach div.glossetc span .button[alt='attach'] {
     height: 40px; width: 40px; background-color: silver;
     border: darkblue solid 2px;}
-body.cxANIMATE div.codexglossform form div.glossetc span .button {
+#CODEXFRAME.cxANIMATE div.codexglossform form div.glossetc span .button {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
@@ -413,7 +413,7 @@ div.codexglossform.submitting td.button img {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
-body.cxANIMATE div.codexglossform div.textbox {
+#CODEXFRAME.cxANIMATE div.codexglossform div.textbox {
     transition-property: height; transition-duration: 2s;
     -o-transition-property: height; -o-transition-duration: 2s;
     -moz-transition-property: height; -moz-transition-duration: 2s;
@@ -447,7 +447,7 @@ div.completions#CODEXSHARECLOUD div#CODEXSHARECLOUD {
     margin-left: 50px; margin-right: 50px;}
 div.completions#CODEXGLOSSCLOUD > div {
     margin-left: 50px; margin-right: 50px;}
-body.cxANIMATE div#CODEXHUD div.completions#CODEXSHARECLOUD {
+#CODEXFRAME.cxANIMATE div.completions#CODEXSHARECLOUD {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
@@ -606,8 +606,12 @@ div.codexglossform.submitdone div.messageoverlay > div.saved {
     display: block;}
 
 div.codexglossform.submitclose form > * {
-    transition-property: opacity; transition-duration: 3s;
     opacity: 0.1;}
+#CODEXFRAME.cxANIMATE div.codexglossform.submitclose form > * {
+    transition-property: opacity; transition-duration: 3s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 3s;
+    -moz-transition-property: opacity; -moz-transition-duration: 3s;
+    -o-transition-property: opacity; -o-transition-duration: 3s;}
 div.codexglossform.submitclose form > div.messageoverlay {
     opacity: 0.9;}
 
