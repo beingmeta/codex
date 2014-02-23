@@ -183,6 +183,12 @@ div#CODEXPAGINATING {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
+body.cxANIMATE body.codexfixed div.codexpage {
+    transition-property: opacity; transition-duration: 0.5s;
+    -o-transition-property: opacity; -o-transition-duration: 0.5s;
+    -moz-transition-property: opacity; -moz-transition-duration: 0.5s;
+    -webkit-transition-property: opacity; -webkit-transition-duration: 0.5s;}
+
 /* The content */
 
 span.excerpt {
@@ -214,6 +220,18 @@ body.cxTOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
     box-shadow: 0px 0px 0.5ex 0.5ex rgba(255, 255, 0, 0.33);}
 .fdjtselectstart, .fdjtselectend {
     box-shadow: 0px 0px 0.5ex 0.5ex rgba(255, 215, 0, 0.33);}
+
+/*
+body.cxANIMATE .fdjtselectwrap > span {
+    transition-property: background-color;
+    transition-duration: 1s;
+    -o-transition-property: background-color;
+    -o-transition-duration: 1s;
+    -moz-transition-property: background-color;
+    -moz-transition-duration: 1s;
+    -webkit-transition-property: background-color;
+    -webkit-transition-duration: 1s;}
+*/
 
 /* The HUD */
 
@@ -394,14 +412,13 @@ body.hudup .codextarget, body.cxSHRINK .codextarget {
 
 body.hudup .codextarget.codexnewtarget {
     background-color: inherit; }
-.codexnewtarget {
-    color: blue; text-decoration: underline;}
+.codexnewtarget {color: blue; }
 div.sbooksection.codexnewtarget, section.codexnewtarget,
 div.sbooksection.codexnewtarget > *, section.codexnewtarget > * {
     color: inherit;}
 section.codexnewtarget > *:first-child,
 div.sbooksection.codexnewtarget > *:first-child {
-    color: blue; text-decoration: underline;}
+    color: blue;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
@@ -595,7 +612,8 @@ details > summary , .html5details > summary {
     display: inline;}
 #CODEXBODY details > *, #CODEXBODY .html5details > * {
     display: none;}
-#CODEXBODY details > summary, #CODEXBODY .html5details > summary {
+#CODEXBODY details > summary, #CODEXBODY details > .html5summary,
+#CODEXBODY .html5details > summary, #CODEXBODY .html5details > .html5summary {
     color: blue; text-decoration: underline;
     display: inline; font-size: 80%;}
 
