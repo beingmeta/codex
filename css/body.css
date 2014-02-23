@@ -91,10 +91,10 @@ body.sbook { font-size: 62.5%; }
 #CODEXBODY.codexcontrastmedium { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
 
-#CODEXBODY .tapholdtarget {
-    outline: dotted blue 1px;}
-#CODEXBODY .tapholdtarget .tapholdtarget {
-    outline: none;}
+/*
+#CODEXBODY .tapholdtarget {outline: dotted blue 1px;}
+#CODEXBODY .tapholdtarget .tapholdtarget {outline: none;}
+*/
 
 #SBOOKTITLEPAGE { text-align: center;}
 #SBOOKTITLEPAGE .title, #SBOOKTITLEPAGE .author { margin-bottom: 1em;}
