@@ -788,7 +788,7 @@
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
             addClass(spanbar,"codexvisible");
             addClass(toc,"codexheld");
-            Codex.startPreview(cxID(ref),"codexheld");
+            Codex.startPreview(cxID(ref),"toc_held");
             return fdjtUI.cancel(evt);}
         else if (Codex.Trace.gestures) fdjtLog("toc_held %o noabout", evt);
         else {}}
@@ -831,32 +831,14 @@
         fdjtUI.cancel(evt);}
     function toc_slipped(evt){
         evt=evt||event;
-        var target=fdjtUI.T(evt);
-        var about=getAbout(target);
-        if ((!about)&&(Codex.Trace.gestures))
-            fdjtLog("toc_slipped %o noabout",evt);
-        if (about) {
-            var toc=getParent(about,".codextoc");
-            var name=about.name||about.getAttribute("name");
-            var title=getTitleSpan(toc,name);
+        var rel=evt.relatedTarget||fdjtUI.T(evt);
+        if (slip_timer) return;
+        slip_timer=setTimeout(function(){
+            slip_timer=false;
             if (Codex.Trace.gestures)
-                fdjtLog("toc_slipped %o about=%o toc=%o title=%s",
-                        evt,about,toc,title);
-            dropClass(title,"codexpreviewtitle");
-            dropClass(getParent(about,".spanbar"),"codexvisible");
-            dropClass(about.parentNode,"codexheld");
-            dropClass(toc,"codexheld");}
-        else if (Codex.Trace.gestures)
-            fdjtLog("toc_slipped %o noabout",evt);
-        else {}
-        var rel=evt.relatedTarget||target;
-        if (!(hasParent(rel,".codextoc"))) {
-            if (slip_timer) return;
-            slip_timer=setTimeout(function(){
-                slip_timer=false;
-                if (Codex.Trace.gestures) fdjtLog("toc_slipped/timeout %o",evt);
-                Codex.stopPreview("toc_slipped");},
-                                  500);}}
+                fdjtLog("toc_slipped/timeout %o",evt);
+            Codex.stopPreview("toc_slipped");},
+                              500);}
 
     /* Slice handlers */
 
