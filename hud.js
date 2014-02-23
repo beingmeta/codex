@@ -837,8 +837,8 @@ Codex.setMode=
             else dropClass(Codex.page,"cxANIMATE");});
         Codex.addConfig("animatehud",function(name,value){
             if (Codex.dontanimate) {}
-            else if (value) addClass(Codex.HUD,"cxANIMATE");
-            else dropClass(Codex.HUD,"cxANIMATE");});
+            else if (value) addClass("CODEXFRAME","cxANIMATE");
+            else dropClass("CODEXFRAME","cxANIMATE");});
 
         /* Settings apply/save handlers */
 
