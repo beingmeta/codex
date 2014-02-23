@@ -21,7 +21,8 @@ body.cxPREVIEW .hudbutton { display: none; }
 body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXTOP {
     display: block; }
 
-body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP, body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
     background-color: transparent;
     border-color: transparent;}
 body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP .hudpanel {

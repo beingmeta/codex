@@ -821,8 +821,7 @@ body.cxANIMATE div#CODEXSTARTUPMESSAGES {
     -o-transition-property: opacity;
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
-    -moz-transition-duration
-: 1s;}
+    -moz-transition-duration: 1s;}
 body.cxSTARTUP div#CODEXSTARTUPMESSAGES { display: block;}
 div.startupmessage { display: none;}
 div.startupmessage {
