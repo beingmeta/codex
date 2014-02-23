@@ -1465,7 +1465,7 @@
         if (!(mode)) return;
         if ((evt.type==='click')||
             ((evt.type==='tap')&&((Codex.hudup)||(!(Codex.touch))))||
-            (evt.type==='release')) {
+            (evt.type==='hold')) {
             dropClass(document.body,"cxHOLDING");
             if ((Codex.scanning)&&(!(Codex.hudup))) {
                 if (mode==="refinesearch") {
@@ -2692,7 +2692,8 @@
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          "#CODEXNOTETEXT": {click: jumpToNote},
          ".hudmodebutton": {
-             tap: hudmodebutton,release: hudmodebutton,slip: hudmodebutton},
+             tap: hudmodebutton,hold: hudmodebutton,
+             slip: hudmodebutton,release: hudmodebutton},
          // GLOSSFORM rules
          ".codexglossform": {click: glossform_touch,touchstart: glossform_touch},
          "span.codexsharegloss": {
