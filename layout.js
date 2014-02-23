@@ -960,7 +960,6 @@ Codex.Paginate=
                 fdjtLog("startPagePreview/%s to %o (%d) for %o",
                         caller||"nocaller",page,pagenum,spec);
             if (curpage) addClass(curpage,"hidepage");
-            // Using this timeout here avoids some glitches
             addClass(page,"previewpage");
             Codex.previewing=previewing=page;
             addClass(document.body,"cxPREVIEW");
