@@ -513,9 +513,17 @@ div#CODEXHEAD img.hudbutton[hudmode="help"] {
 div#CODEXHEAD img.hudbutton[hudmode="allglosses"] {right: 60px;}
 div#CODEXHEAD img.hudbutton[hudmode="help"] {left: 60px;}
 
-div#CODEXFOOT img.hudbutton[hudmode="searchresults"] { display: none; }
-body.cxSCANNING div#CODEXHUD.searchresults img.hudbutton[hudmode="searchresults"] {
+div#CODEXFOOT img.hudbutton[hudmode="searchresults"],
+div#CODEXFOOT img.hudbutton[alt="save gloss"] {
+    display: none; }
+body div#CODEXHUD.addgloss div#CODEXFOOT img.hudbutton {
+    opacity: 0.8; -webkit-opacity: 0.8;
+    -moz-opacity: 0.8; -o-opacity: 0.8;}
+body div#CODEXHUD.addgloss div#CODEXFOOT img.hudbutton[alt="save gloss"],
+body.cxSCANNING div#CODEXHUD.searchresults
+   img.hudbutton[hudmode="searchresults"] {
     display: inline-block; }
+body div#CODEXHUD.addgloss img.hudbutton[hudmode="allglosses"],
 body.cxSCANNING div#CODEXHUD.searchresults img.hudbutton[hudmode="allglosses"] {
     display: none; }
 

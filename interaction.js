@@ -2571,6 +2571,8 @@
         return false;}
     Codex.lowerHUD=lowerHUD;
 
+    function saveGloss(evt){
+        Codex.submitGloss();}
     function refreshLayout(evt){
         evt=evt||event; cancel(evt); Codex.refreshLayout();}
     function refreshOffline(evt){
@@ -2676,6 +2678,8 @@
          ".hudmodebutton": {
              tap: hudmodebutton,hold: hudmodebutton,
              slip: hudmodebutton,release: hudmodebutton},
+         ".hudbutton[alt='save gloss']": {
+             tap: saveGloss,hold: saveGloss},
          // GLOSSFORM rules
          ".codexglossform": {click: glossform_touch,touchstart: glossform_touch},
          "span.codexsharegloss": {
@@ -2827,6 +2831,8 @@
          ".hudmodebutton": {
              tap: hudmodebutton,hold: hudmodebutton,release: hudmodebutton,
              slip: hudmodebutton},
+         ".hudbutton[alt='save gloss']": {
+             tap: saveGloss,hold: saveGloss},
          // GLOSSFORM rules
          ".codexglossform": {click: cancel,touchstart: glossform_touch},
          "span.codexsharegloss": {},
