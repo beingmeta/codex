@@ -205,6 +205,7 @@ body.cxSCANNING #CODEXHUD #CODEXSHOWTEXT span.stopscanning { display: inline;}
     display: none;}
 
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
+body.openhud div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.cxSCANNING div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
 body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,

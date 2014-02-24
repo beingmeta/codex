@@ -55,7 +55,7 @@ var Codex={
     last_mode: false, last_heartmode: "about", demo: false,
     // How long it takes a gesture to go from tap to hold
     taptapmsecs: 500, holdmsecs: 150, edgeclick: 50, pagesize: 250,
-    dontanimate: false,
+    dontanimate: false, nativeselect: false,
     // Control audio effects
     uisound: false, booksound: false,
     glossmodes: /(addtag)|(addoutlet)|(editdetail)|(hamburger)|(attach)/,

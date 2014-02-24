@@ -380,7 +380,7 @@ Codex.setMode=
                     dropClass(document.body,".cxSCANEND");
                     Codex.mode=false;}
                 dropClass(document.body,"hudup");
-                dropClass(document.body,"hudopen");
+                dropClass(document.body,"openhud");
                 document.body.focus();}}
         Codex.setHUD=setHUD;
 
