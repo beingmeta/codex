@@ -157,11 +157,11 @@
                 addHandlers(fdjtID("CODEXPAGE"),'content');}
             else {
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
-            // Last arg is docancel, since we don't need to worry about conflicts
-            //   with scrolling
             Codex.TapHold.body=fdjtUI.TapHold(
                 fdjt.ID("CODEXBODY"),
-                {override: true,untouchable: externClickable});
+                {override: true,
+                 untouchable: externClickable,
+                 movethresh: 20});
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
