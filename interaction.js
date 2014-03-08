@@ -2075,7 +2075,8 @@
         return parseInt(target.innerHTML,10);}
 
     var previewing_page=false, preview_start_page=false;
-    function pageinfo_hold(evt){
+    function pageinfo_hold(evt,target){
+        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
         var pageinfo=fdjtID("CODEXPAGEINFO");
         if (preview_timer) {
             clearTimeout(preview_timer);
@@ -2084,7 +2085,6 @@
             fdjtUI.cancel(evt);
             Codex.setMode(false);
             return;}
-        var target=fdjtUI.T(evt);
         if (target.nodeType===3) target=target.parentNode;
         if (((hasParent(target,pageinfo))&&(target.tagName==="span")))
             return;
@@ -2108,8 +2108,9 @@
              ("Release to return to page %d, tap a key to settle here (page %d)")),
             Codex.curpage,gopage);
         previewing_page=gopage;
-        Codex.startPreview("CODEXPAGE"+gopage,"pageinfo_span_hold");}
-    function pageinfo_tap(evt){
+        Codex.startPreview("CODEXPAGE"+previewing_page,"pageinfo_span_hold/timeout");}
+    function pageinfo_tap(evt,target){
+        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
         var pageinfo=fdjtID("CODEXPAGEINFO");
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
             fdjtLog("pageinfo_tap %o",evt);
@@ -2124,7 +2125,6 @@
             fdjtUI.cancel(evt);
             Codex.setMode(false);
             return;}
-        var target=fdjtUI.T(evt);
         if (target.nodeType===3) target=target.parentNode;
         if (((hasParent(target,pageinfo))&&(target.tagName==="span")))
             return;
@@ -2132,7 +2132,8 @@
         if (previewing_page===gopage) return;
         Codex.GoToPage(gopage,"pageinfo_tap",true);
         Codex.setMode(false);}
-    function pageinfo_release(evt){
+    function pageinfo_release(evt,target){
+        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
         var pageinfo=fdjtID("CODEXPAGEINFO");
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
             fdjtLog("pageinfo_release %o, previewing=%o, ptarget=%o start=%o",
@@ -2141,7 +2142,6 @@
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
-        var target=fdjtUI.T(evt);
         if (target.nodeType===3) target=target.parentNode;
         if (!(Codex.previewing)) {preview_start_page=false; return;}
         dropClass(target,"preview");
@@ -2151,10 +2151,13 @@
         fdjtUI.cancel(evt);
         if (((hasParent(target,pageinfo))&&(target.tagName==="span"))) {
             return;}}
-    function pageinfo_slip(evt){
-        evt=evt||event;
+    function pageinfo_slip(evt,target){
+        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
         var rel=evt.relatedTarget;
         var pageinfo=fdjtID("CODEXPAGEINFO");
+        if (preview_timer) {
+            clearTimeout(preview_timer);
+            preview_timer=false;}
         if ((Codex.Trace.gestures)||(hasClass(pageinfo,"codextrace")))
             fdjtLog("pageinfo_slip %o, previewing=%o, target=%o start=%o",
                     evt,Codex.previewing,Codex.previewTarget,
@@ -2169,10 +2172,11 @@
         else preview_timer=setTimeout(function(){
             var pageinfo=fdjtID("CODEXPAGEINFO");
             pageinfo.title=""; preview_timer=false;
-            Codex.stopPagePreview("pageinfo_slip");},
+            Codex.stopPagePreview("pageinfo_slip/timeout");},
                                       400);
         previewing_page=false;}
-    function pageinfo_touchtoo(evt){
+    function pageinfo_touchtoo(evt,target){
+        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
         if (Codex.previewing) {
             Codex.stopPreview("touchtoo");
             fdjtUI.TapHold.clear();
