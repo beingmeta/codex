@@ -373,6 +373,8 @@ div#CODEXCOVERMESSAGE > div {
     padding-top: 0px;
     box-sizing: border-box;
     width: 100%;}
+div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
+   font-size: 1.5em;}
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
 body div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
     display: inline-block;}
