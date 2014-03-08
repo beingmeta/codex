@@ -1457,12 +1457,13 @@ Codex.Startup=
             var cover=fdjtID("CODEXCOVER");
             if (fdjt.UI.isClickable(target)) return;
             if (!(hasParent(target,fdjtID("CODEXCOVERCONTROLS")))) {
-                var section=target;
-                while ((section)&&(section.parentNode!==cover))
-                    section=section.parentNode;
-                if ((section)&&(section.nodeType===1)&&
-                    (section.scrollHeight>section.offsetHeight))
-                    return;
+                if (!(hasParent(target,fdjtID("CODEXCOVERMESSAGE")))) {
+                    var section=target;
+                    while ((section)&&(section.parentNode!==cover))
+                        section=section.parentNode;
+                    if ((section)&&(section.nodeType===1)&&
+                        (section.scrollHeight>section.offsetHeight))
+                        return;}
                 Codex.hideCover();
                 fdjtUI.cancel(evt);
                 return;}
