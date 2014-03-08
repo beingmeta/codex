@@ -1446,8 +1446,8 @@
         fdjtUI.cancel(evt);
         if (!(mode)) return;
         if ((evt.type==='click')||
-            ((evt.type==='tap')&&((Codex.hudup)||(!(Codex.touch))))||
-            (evt.type==='hold')) {
+            (evt.type==='tap')||
+            (evt.type==='release')) {
             dropClass(document.body,"cxHOLDING");
             if ((Codex.scanning)&&(!(Codex.hudup))) {
                 if (mode==="refinesearch") {
