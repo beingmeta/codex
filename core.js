@@ -136,7 +136,7 @@ var Codex={
         config: 0,        // Whether to trace config setup/modification/etc
         mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
-        scan: 0,          // How much to trace DOM scanning
+        scan: 0,          // How much to trace DOM skimming
         search: 0,        // How much to trace searches
         clouds: 0,        // How much to trace cloud generation
         target: false,    // Whether to trace target changes
@@ -434,17 +434,17 @@ var Codex={
         return result;}
     Codex.getMakerKnodule=getMakerKnodule;
 
-    var trace1="%s %o in %o: mode%s=%o, target=%o, head=%o scanning=%o";
-    var trace2="%s %o: mode%s=%o, target=%o, head=%o scanning=%o";
+    var trace1="%s %o in %o: mode%s=%o, target=%o, head=%o skimming=%o";
+    var trace2="%s %o: mode%s=%o, target=%o, head=%o skimming=%o";
     function sbook_trace(handler,cxt){
         var target=((cxt.nodeType)?(cxt):(fdjtUI.T(cxt)));
         if (target)
             fdjtLog(trace1,handler,cxt,target,
-                    ((Codex.scanning)?("(scanning)"):""),Codex.mode,
-                    Codex.target,Codex.head,Codex.scanning);
+                    ((Codex.skimming)?("(skimming)"):""),Codex.mode,
+                    Codex.target,Codex.head,Codex.skimming);
         else fdjtLog(trace2,handler,cxt,
-                     ((Codex.scanning)?("(scanning)"):""),Codex.mode,
-                     Codex.target,Codex.head,Codex.scanning);}
+                     ((Codex.skimming)?("(skimming)"):""),Codex.mode,
+                     Codex.target,Codex.head,Codex.skimming);}
     Codex.trace=sbook_trace;
 
     // This is the hostname for the sbookserver.
@@ -1212,7 +1212,7 @@ var Codex={
                     ((info)&&(info.starts_at)),target);
         if (info) {
             Codex.point=target;
-            if (!((Codex.hudup)||(Codex.mode))) Codex.scanning=false;}
+            if (!((Codex.hudup)||(Codex.mode))) Codex.skimming=false;}
         setHead(target);
         setLocation(location);
         if ((istarget)&&(targetid)&&(!(inUI(target)))) setTarget(target);
@@ -1286,14 +1286,14 @@ var Codex={
 
     // This jumps and disables the HUD at the same time
     // We try to animate the transition
-    function CodexScanTo(target){
+    function CodexSkimTo(target){
         if (Codex.hudup) { // Figure out what mode to go to
             var headinfo=Codex.docinfo[target]||Codex.docinfo[target.id];
             if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0))) {
                 Codex.setMode("statictoc"); Codex.setHUD(false,false);
-                addClass(document.body,"cxSCANNING");}}
-        Codex.GoTo(target,"CodexScanTo");}
-    Codex.ScanTo=CodexScanTo;
+                addClass(document.body,"cxSKIMMING");}}
+        Codex.GoTo(target,"CodexSkimTo");}
+    Codex.ScanTo=CodexSkimTo;
 
     // Preview functions
     var oldscroll=false, preview_elt=false;

@@ -125,8 +125,8 @@ body.codexhelp.hudup div#CODEXHUD div.codexhelp,
 body.codexhelp.cxSHRINK div#CODEXHUD div.codexhelp,
 body.codexhelp.cxPREVIEW div#CODEXHUD div.codexhelp,
 body.codexhelp.hudup div#CODEXHUD .helphud,
-body.codexhelp.cxSCANNING div#CODEXHUD div.codexhelp,
-body.codexhelp.cxSCANNING div#CODEXHUD .helphud,
+body.codexhelp.cxSKIMMING div#CODEXHUD div.codexhelp,
+body.codexhelp.cxSKIMMING div#CODEXHUD .helphud,
 body.codexhelp div#CODEXHUD.addgloss .helphud,
 body.codexhelp div#CODEXHUD.overtoc .helphud,
 body.codexhelp div#CODEXHUD.statictoc .helphud,
@@ -146,8 +146,8 @@ body.codexhelp.cxSHRINK div#CODEXHUD.addgloss div#CODEXSTARTPAGE {
 
 body.codexhelp.hudup div#CODEXHUD.overtoc div#CODEXTOCHELP.helpbox,
 body.codexhelp div#CODEXHUD.addgloss div#CODEXADDGLOSSHELP.helpbox,
-body.codexhelp.cxSCANNING div#CODEXHUD.allglosses div#CODEXSCANNINGHELP.helpbox,
-body.codexhelp.cxSCANNING div#CODEXHUD.searchresults div#CODEXSCANNINGHELP.helpbox,
+body.codexhelp.cxSKIMMING div#CODEXHUD.allglosses div#CODEXSKIMMINGHELP.helpbox,
+body.codexhelp.cxSKIMMING div#CODEXHUD.searchresults div#CODEXSKIMMINGHELP.helpbox,
 body.codexhelp div#CODEXHUD.refinesearch div#CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp div#CODEXHUD.expandsearch div#CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
@@ -162,8 +162,8 @@ body.codexhelp div#CODEXHUD.statictoc div#CODEXSTATICTOCHELP.helpbox {
     -o-opacity: 0.90;
     display: block;}
 
-body.codexhelp.cxSCANNING div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
-body.codexhelp.cxSCANNING div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
+body.codexhelp.cxSKIMMING div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
+body.codexhelp.cxSKIMMING div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
     display: none;}
 
 /* Goto page and goto loc always display their help. */

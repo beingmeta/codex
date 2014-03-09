@@ -28,8 +28,8 @@ body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
 body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP .hudpanel {
     background-color: transparent;}
 
-body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER,
-body.cxPREVIEW #CODEXHUD.searchresults #CODEXSCANNER {
+body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER,
+body.cxPREVIEW #CODEXHUD.searchresults #CODEXSKIMMER {
     display: block;}
 
 /* HUD Preview rules */
@@ -92,9 +92,9 @@ body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXTOP {
 
 body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.addgloss #CODEXTOP,
-body.cxPREVIEW #CODEXHUD.openglossmark #CODEXSCANNER,
-body.cxPREVIEW.cxSCANNING #CODEXHUD #CODEXSCANNER,
-body.cxPREVIEW #CODEXHUD.allglosses #CODEXSCANNER {
+body.cxPREVIEW #CODEXHUD.openglossmark #CODEXSKIMMER,
+body.cxPREVIEW.cxSKIMMING #CODEXHUD #CODEXSKIMMER,
+body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER {
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;

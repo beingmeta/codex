@@ -61,26 +61,26 @@ div.codexslice div.codexthread div.codexcard div.locbar {display:none;}
 div.codexslice div.codexthread div.codexcard:first-child div.locbar {
     display:block;}
 
-div.codexslice div.codexscanpoint {
+div.codexslice div.codexskimpoint {
     border-left: solid steelblue 16px;
     border-top: solid steelblue 4px;
     border-bottom: solid steelblue 4px;
     margin-left: 0px;
     background-color: white;}
-div.codexslice div.codexscanpoint.codexcard {
+div.codexslice div.codexskimpoint.codexcard {
     font-size: 150%;}
-div.codexslice div.codexscanpoint.codexcard .tool {
+div.codexslice div.codexskimpoint.codexcard .tool {
     font-size: 47%; font-weight: bold;}
-div.codexslice div.codexscanpoint.codexcard img.userpic,
-div.codexslice div.codexscanpoint.codexcard img.sourcepic {
+div.codexslice div.codexskimpoint.codexcard img.userpic,
+div.codexslice div.codexskimpoint.codexcard img.sourcepic {
     width: 75px;}
 
-div.codexscanpoint .codexcard .codexcardbody { padding-top: 0px;}
+div.codexskimpoint .codexcard .codexcardbody { padding-top: 0px;}
 
-div.codexslice div.codexcard.codexscanpoint + div.codexcard > div.codexcardbody,
-div.codexslice div.codexcard.codexscanpoint .codexcardbody {
+div.codexslice div.codexcard.codexskimpoint + div.codexcard > div.codexcardbody,
+div.codexslice div.codexcard.codexskimpoint .codexcardbody {
     border-top-width: 0px;}
-div.codexslice div.codexcard.codexscanpoint .fdjtclearfloats {
+div.codexslice div.codexcard.codexskimpoint .fdjtclearfloats {
     margin-bottom: 0px;}
 
 /* CODEXSOURCES */
@@ -172,9 +172,9 @@ div.codexslice div.codexcard.slicenewhead div.tochead { display: block; }
 div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
 
 div#CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage div.codexcardbody,
-div#CODEXSCANNER div.codexcard div.codexcardbody {
+div#CODEXSKIMMER div.codexcard div.codexcardbody {
     border-top: 0px;}
-div#CODEXSCANNER div.codexcard div.idhead {
+div#CODEXSKIMMER div.codexcard div.idhead {
     border-bottom: 0px;}
 
 #CODEXFRAME.cxANIMATE body.cxISCROLL div.codexslice {

@@ -187,7 +187,7 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
-#CODEXHUD #CODEXSHOWTEXT span.stopscanning,
+#CODEXHUD #CODEXSHOWTEXT span.stopskimming,
 #CODEXHUD #CODEXSHOWTEXT span.cancelgloss,
 #CODEXHUD #CODEXSHOWTEXT span.cancelchanges {
     display: none;}
@@ -195,8 +195,8 @@ div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT > span > span {
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.justreading { display: none;}
 
-body.cxSCANNING #CODEXHUD #CODEXSHOWTEXT span.justreading { display: none;}
-body.cxSCANNING #CODEXHUD #CODEXSHOWTEXT span.stopscanning { display: inline;}
+body.cxSKIMMING #CODEXHUD #CODEXSHOWTEXT span.justreading { display: none;}
+body.cxSKIMMING #CODEXHUD #CODEXSHOWTEXT span.stopskimming { display: inline;}
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.cancelgloss,
 #CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelchanges {
@@ -206,7 +206,7 @@ body.cxSCANNING #CODEXHUD #CODEXSHOWTEXT span.stopscanning { display: inline;}
 
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.openhud div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
-body.cxSCANNING div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.cxSKIMMING div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
 body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {

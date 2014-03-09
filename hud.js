@@ -220,7 +220,7 @@ Codex.setMode=
                     {override: true,holdfast: true});
             Codex.TapHold.head=
                 new fdjtUI.TapHold(Codex.DOM.head,{override: true});
-            Codex.DOM.scanner=fdjtID("CODEXSCANNER");
+            Codex.DOM.scanner=fdjtID("CODEXSKIMMER");
             Codex.TapHold.scanner=new fdjtUI.TapHold(Codex.DOM.scanner);
             
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
@@ -359,7 +359,7 @@ Codex.setMode=
                         CodexHUD.className);
             if (flag) {
                 Codex.hudup=true;
-                dropClass(document.body,"cxSCANNING");
+                dropClass(document.body,"cxSKIMMING");
                 addClass(document.body,"hudup");}
             else {
                 Codex.hudup=false;
@@ -376,7 +376,7 @@ Codex.setMode=
                     dropClass(CodexHUD,"openhead");
                     dropClass(CodexHUD,"full");
                     dropClass(CodexHUD,CodexModes);
-                    dropClass(document.body,"cxSCANNING");
+                    dropClass(document.body,"cxSKIMMING");
                     dropClass(document.body,"cxSCANSTART");
                     dropClass(document.body,"cxSCANEND");
                     Codex.mode=false;}
@@ -500,7 +500,7 @@ Codex.setMode=
                 if ((mode==='addgloss')||(mode==="openglossmark")) 
                     addClass(document.body,"openhud");
                 else if (nohud) {}
-                // And if we're not scanning, we just raise the hud
+                // And if we're not skimming, we just raise the hud
                 else setHUD(true);
                 // Actually change the class on the HUD object
                 if (mode===true) {
@@ -530,7 +530,7 @@ Codex.setMode=
                 if (Codex.textinput) {
                     Codex.setFocus(false);}
                 document.body.focus();
-                if (Codex.scanning) {
+                if (Codex.skimming) {
                     var dups=Codex.getDups(Codex.target);
                     Codex.clearHighlights(dups);
                     dropClass(dups,"codexhighlightpassage");}
@@ -559,17 +559,17 @@ Codex.setMode=
             fdjtDOM.dropClass(CodexHUD,CodexModes);
             fdjtDOM.dropClass(CodexHUD,CodexSubModes);
             fdjtDOM.addClass(CodexHUD,mode);
-            // This updates scanning state
-            if (Codex.scanning) {
+            // This updates skimming state
+            if (Codex.skimming) {
                 // Scroll the scanned content (glosses, search
                 // results, etc) to reflect any motion
                 var heart=Codex.DOM.heart;
                 var height=heart.offsetHeight;
-                var scanning=Codex.scanning;
-                var content=getParent(scanning,".hudpanel");
+                var skimming=Codex.skimming;
+                var content=getParent(skimming,".hudpanel");
                 var scrolltop=content.scrollTop;
                 var scrollbottom=content.scrollTop+height;
-                var inner=getGeometry(scanning,content);
+                var inner=getGeometry(skimming,content);
                 
                 if (inner.height<=0) {} /* Not displayed */
                 else if ((inner.top<scrolltop)||(inner.bottom>scrollbottom)) {
@@ -645,13 +645,13 @@ Codex.setMode=
             else document.body.focus();
             
             if (mode==="allglosses") {
-                if ((Codex.scanning)||(Codex.point))
+                if ((Codex.skimming)||(Codex.point))
                     Codex.UI.scrollGlosses(
-                        Codex.scanning||Codex.point,Codex.glosses);}
+                        Codex.skimming||Codex.point,Codex.glosses);}
             else if (mode==="searchresults") {
-                if ((Codex.scanning)||(Codex.point))
+                if ((Codex.skimming)||(Codex.point))
                     Codex.UI.scrollGlosses(
-                        Codex.scanning||Codex.point,Codex.query.listing);}
+                        Codex.skimming||Codex.point,Codex.query.listing);}
             else {}
             if (display_sync) Codex.displaySync();}
 
@@ -725,24 +725,24 @@ Codex.setMode=
             if (Codex.mode==='sbooksapp') setMode(false);
             else setMode('sbooksapp');};
 
-        /* Scanning */
+        /* Skimming */
 
-        function CodexScan(elt,src,backward,expanded){
+        function CodexSkim(elt,src,backward,expanded){
             var nextSlice=Codex.nextSlice, prevSlice=Codex.prevSlice;
-            var pelt=Codex.scanning;
+            var pelt=Codex.skimming;
             var i=0, lim=0;
-            addClass(document.body,"cxSCANNING"); setHUD(false,false);
+            addClass(document.body,"cxSKIMMING"); setHUD(false,false);
             if (Codex.Trace.mode)
-                fdjtLog("CodexScan() %o (src=%o) mode=%o scn=%o/%o",
-                        elt,src,Codex.mode,Codex.scanning,Codex.target);
-            // Copy the description of what we're scanning into the
-            // scanner (at the top of the page during scanning and
+                fdjtLog("CodexSkim() %o (src=%o) mode=%o scn=%o/%o",
+                        elt,src,Codex.mode,Codex.skimming,Codex.target);
+            // Copy the description of what we're skimming into the
+            // scanner (at the top of the page during skimming and
             // preview)
-            if (Codex.scanning!==src) {
-                var clone=src.cloneNode(true); clone.id="CODEXSCAN";
+            if (Codex.skimming!==src) {
+                var clone=src.cloneNode(true); clone.id="CODEXSKIM";
                 var next=nextSlice(src), prev=prevSlice(src);
                 var before=0, after=0, slice=prev;
-                fdjtDOM.replace("CODEXSCAN",clone);
+                fdjtDOM.replace("CODEXSKIM",clone);
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
                 if (next) dropClass(document.body,"cxSCANEND");
@@ -752,20 +752,20 @@ Codex.setMode=
                 while (slice) {before++; slice=prevSlice(slice);}
                 slice=next; while (slice) {
                     after++; slice=nextSlice(slice);}
-                var scaninfo=fdjtID("CODEXSCANINFO");
+                var scaninfo=fdjtID("CODEXSKIMINFO");
                 scaninfo.innerHTML=(before+1)+"/"+(before+after+1);
-                // This marks where we are currently scanning
-                if (pelt) dropClass(pelt,"codexscanpoint");
-                if (src) addClass(src,"codexscanpoint");
+                // This marks where we are currently skimming
+                if (pelt) dropClass(pelt,"codexskimpoint");
+                if (src) addClass(src,"codexskimpoint");
                 if (typeof expanded === "undefined") {}
-                else if (expanded) addClass("CODEXSCANNER","expanded");
-                else dropClass("CODEXSCANNER","expanded");
-                Codex.scanning=src;}
+                else if (expanded) addClass("CODEXSKIMMER","expanded");
+                else dropClass("CODEXSKIMMER","expanded");
+                Codex.skimming=src;}
             else {}
             var highlights=[];
             if (Codex.target)
                 Codex.clearHighlights(Codex.getDups(Codex.target));
-            dropClass("CODEXSCANNER","cxfoundhighlights");
+            dropClass("CODEXSKIMMER","cxfoundhighlights");
             Codex.setTarget(elt);
             if ((src)&&(hasClass(src,"gloss"))) {
                 var glossinfo=Codex.glossdb.ref(src.name);
@@ -776,7 +776,7 @@ Codex.setMode=
                     if (range) {
                         highlights=
                             fdjtUI.Highlight(range,"codexhighlightexcerpt");
-                        addClass("CODEXSCANNER","cxhighlights");}}
+                        addClass("CODEXSKIMMER","cxhighlights");}}
                 else if (src.about[0]==="#")
                     addClass(Codex.getDups(src.about.slice(1)),
                              "codexhighlightpassage");
@@ -819,18 +819,18 @@ Codex.setMode=
                     Codex.GoTo(Codex.scanpoints[Codex.scanoff]);}
                 else Codex.GoTo(elt,"Scan");}
             else Codex.GoTo(elt,"Scan");}
-        Codex.Scan=CodexScan;
-        function stopScanning(){
+        Codex.Scan=CodexSkim;
+        function stopSkimming(){
             // Tapping the tochead returns to results/glosses/etc
-            var scanning=Codex.scanning;
-            if (!(scanning)) return;
-            dropClass(document.body,"cxSCANNING");
-            if (getParent(scanning,fdjtID("CODEXALLGLOSSES"))) 
+            var skimming=Codex.skimming;
+            if (!(skimming)) return;
+            dropClass(document.body,"cxSKIMMING");
+            if (getParent(skimming,fdjtID("CODEXALLGLOSSES"))) 
                 Codex.setMode("allglosses");
-            else if (getParent(scanning,fdjtID("CODEXSEARCHRESULTS"))) 
+            else if (getParent(skimming,fdjtID("CODEXSEARCHRESULTS"))) 
                 Codex.setMode("searchresults");
             else {}}
-        Codex.stopScanning=stopScanning;
+        Codex.stopSkimming=stopSkimming;
         
         Codex.addConfig("uisize",function(name,value){
             fdjtDOM.swapClass(

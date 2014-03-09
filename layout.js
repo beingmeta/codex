@@ -925,7 +925,7 @@ Codex.Paginate=
                 var curnode=cxID(page.getAttribute("data-topid"));
                 if (savestate) {
                     Codex.point=curnode;
-                    if (!((Codex.hudup)||(Codex.mode))) Codex.scanning=false;
+                    if (!((Codex.hudup)||(Codex.mode))) Codex.skimming=false;
                     Codex.setHead(curnode);}
                 if ((savestate)&&(page)) {
                     Codex.saveState(

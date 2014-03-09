@@ -48,7 +48,7 @@
 
 /* There are four basic display modes:
    reading (minimal decoration, with 'minimal' configurable)
-   scanning (card at top, buttons on upper edges)
+   skimming (card at top, buttons on upper edges)
    addgloss (addgloss form at top, text highlighted)
    tool (lots of tools unfaded)
 
@@ -675,11 +675,11 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (dx<-10) {
-                if (hasClass(document.body,"cxSCANNING"))
+                if (hasClass(document.body,"cxSKIMMING"))
                     Codex.scanForward(evt);
                 else Codex.Forward(evt);}
             else if (dx>10) {
-                if (hasClass(document.body,"cxSCANNING"))
+                if (hasClass(document.body,"cxSKIMMING"))
                     Codex.scanBackward(evt);
                 else Codex.Backward(evt);}}
         else if (ady>(adx*2)) {
@@ -903,12 +903,12 @@
         evt=evt||event;
         var slice_target=fdjtUI.T(evt), card=getCard(slice_target);
         if (Codex.Trace.gestures)
-            fdjtLog("slice_held %o: %o, scanning=%o",
-                    evt,card,Codex.scanning);
+            fdjtLog("slice_held %o: %o, skimming=%o",
+                    evt,card,Codex.skimming);
         if (!(card)) return;
         // Put a clone of the card in the scanner
         var clone=card.cloneNode(true);
-        clone.id="CODEXSCAN"; fdjtDOM.replace("CODEXSCAN",clone);
+        clone.id="CODEXSKIM"; fdjtDOM.replace("CODEXSKIM",clone);
         // If we're currently previewing something, clear it
         if (Codex.previewTarget) {
             var drop=Codex.getDups(Codex.previewTarget);
@@ -953,7 +953,7 @@
     function slice_released(evt){
         var card=getCard(fdjtUI.T(evt||event));
         if (Codex.Trace.gestures) {
-            fdjtLog("slice_released %o: %o, scanning=%o",evt,card);}
+            fdjtLog("slice_released %o: %o, skimming=%o",evt,card);}
         Codex.stopPreview("slice_released");}
     function slice_slipped(evt){
         evt=evt||event;
@@ -989,7 +989,7 @@
             else scan=scan.parentNode;}
         return target;}
 
-    /* Highlighting terms in passages (for scanning, etc) */
+    /* Highlighting terms in passages (for skimming, etc) */
 
     function highlightTerm(term,target,info,spellings){
         var words=[]; var highlights=[];
@@ -1226,7 +1226,7 @@
                 var i=0; var lim=renderings.length;
                 while (i<lim) {
                     var rendering=renderings[i++];
-                    if (rendering.id==='CODEXSCAN')
+                    if (rendering.id==='CODEXSKIM')
                         fdjtDOM.replace(
                             rendering,fdjtDOM("div.codexcard.deletedgloss"));
                     else fdjtDOM.remove(rendering);}}
@@ -1449,7 +1449,7 @@
         if (Codex.Trace.gestures)
             fdjtLog("hudmodebutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
                     evt,mode,(isClickable(target)),
-                    Codex.scanning,Codex.hudup,Codex.setMode());
+                    Codex.skimming,Codex.hudup,Codex.setMode());
         if (reticle.live) reticle.flash();
         fdjtUI.cancel(evt);
         if (!(mode)) return;
@@ -1457,7 +1457,7 @@
             (evt.type==='tap')||
             (evt.type==='release')) {
             dropClass(document.body,"cxHOLDING");
-            if ((Codex.scanning)&&(!(Codex.hudup))) {
+            if ((Codex.skimming)&&(!(Codex.hudup))) {
                 if (mode==="refinesearch") {
                     Codex.setMode("searchresults"); return;}
                 else if (mode==="allglosses") {
@@ -1509,7 +1509,7 @@
                     touch_started,evt.type,target,
                     fdjtTime()-touch_started,
                     ((Codex.mode)?(Codex.mode+" "):""),
-                    ((Codex.scanning)?"scanning ":""),
+                    ((Codex.skimming)?"skimming ":""),
                     ((touch_held)?("held "):("")),
                     ((touch_moved)?("moved "):("")),
                     ((touch_scrolled)?("scrolled "):("")),
@@ -1522,7 +1522,7 @@
         else fdjtLog("%s(%o) n=%o %s%s c=%o,%o p=%o,%o ts=%o %s@%o ref=%o",
                      handler,evt,((touches)&&(touches.length)),
                      ((Codex.mode)?(Codex.mode+" "):""),
-                     ((Codex.scanning)?"scanning ":""),
+                     ((Codex.skimming)?"skimming ":""),
                      touch.clientX,touch.clientY,touch.screenX,touch.screenY,
                      touch_started,evt.type,target,ref);
         if (ref) fdjtLog("%s(%o) ref=%o from %o",handler,evt,ref,target);}
@@ -1693,15 +1693,15 @@
                 Codex.setMode(false);}
             cancel(evt);
             return;}
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
-        else if (hasClass(document.body,"cxSCANNING"))
+        else if (hasClass(document.body,"cxSKIMMING"))
             scanForward(evt);
         else forward(evt);
         cancel(evt);}
     function right_margin_hold(evt){
         if (Codex.Trace.gestures) tracetouch("right_margin",evt);
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
         if (Codex.page_turner) {
             clearInterval(Codex.page_turner);
@@ -1723,7 +1723,7 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (adx<10) return;
-            else if (hasClass(document.body,"cxSCANNING"))
+            else if (hasClass(document.body,"cxSKIMMING"))
                 scanForward(evt);
             else forward(evt);}
         else if (ady>(adx*2)) {
@@ -1757,15 +1757,15 @@
                 Codex.setMode(false);}
             cancel(evt);
             return;}
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
-        else if (hasClass(document.body,"cxSCANNING"))
+        else if (hasClass(document.body,"cxSKIMMING"))
             scanBackward(evt);
         else backward(evt);
         cancel(evt);}
     function left_margin_hold(evt){
         if (Codex.Trace.gestures) tracetouch("left_margin",evt);
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSCANNING"))))
+        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
         stopPageTurner();
         // Codex.page_turner=setInterval(function(){backward();},800);
@@ -1784,7 +1784,7 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (adx<10) return;
-            else if (hasClass(document.body,"cxSCANNING"))
+            else if (hasClass(document.body,"cxSKIMMING"))
                 scanForward(evt);
             else forward(evt);}
         else if (ady>(adx*2)) {
@@ -1849,7 +1849,7 @@
 
     function scanForward(evt){
         evt=evt||event;
-        if (hasClass(document.body,"cxSCANNING")) {}
+        if (hasClass(document.body,"cxSKIMMING")) {}
         else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
@@ -1867,12 +1867,12 @@
                     else i++;}}
             Codex.setMode(false);
             return;}
-        else if (Codex.scanning) {}
+        else if (Codex.skimming) {}
         else return; /* Need default */
-        addClass("CODEXSCANNER","flash");
+        addClass("CODEXSKIMMER","flash");
         addClass("CODEXNEXTSCAN","flash");
         setTimeout(function(){
-            dropClass("CODEXSCANNER","flash");
+            dropClass("CODEXSKIMMER","flash");
             dropClass("CODEXNEXTSCAN","flash");},
                    200);
         if (Codex.mode==="statictoc") {
@@ -1895,18 +1895,18 @@
             Codex.scanoff++;
             Codex.GoTo(Codex.scanpoints[Codex.scanoff]);
             return;}
-        var start=Codex.scanning;
+        var start=Codex.skimming;
         var scan=Codex.nextSlice(start);
         var ref=((scan)&&(Codex.getRef(scan)));
         if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav)) 
             fdjtLog("scanForward (on %o) from %o/%o to %o/%o under %o",
-                    evt,start,Codex.getRef(start),scan,ref,Codex.scanning);
+                    evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
         if ((ref)&&(scan)) Codex.Scan(ref,scan);
         return scan;}
     Codex.scanForward=scanForward;
 
     function scanBackward(evt){
-        if (hasClass(document.body,"cxSCANNING")) {}
+        if (hasClass(document.body,"cxSKIMMING")) {}
         else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
             var id=((Codex.target)&&(Codex.target.id));
@@ -1924,12 +1924,12 @@
                     else i--;}}
             Codex.setMode(false);
             return;}
-        else if (Codex.scanning) {}
+        else if (Codex.skimming) {}
         else return false;
         addClass("CODEXPREVSCAN","flash");
-        addClass("CODEXSCANNER","flash");
+        addClass("CODEXSKIMMER","flash");
         setTimeout(function(){
-            dropClass("CODEXSCANNER","flash");
+            dropClass("CODEXSKIMMER","flash");
             dropClass("CODEXPREVSCAN","flash");},
                    200);
         if (Codex.mode==="statictoc") {
@@ -1948,12 +1948,12 @@
             Codex.scanoff--;
             Codex.GoTo(Codex.scanpoints[Codex.scanoff]);
             return;}
-        var start=Codex.scanning;
+        var start=Codex.skimming;
         var scan=Codex.prevSlice(start);
         var ref=((scan)&&(Codex.getRef(scan)));
         if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav))
             fdjtLog("scanBackward (on %o) from %o/%o to %o/%o under %o",
-                    evt,start,Codex.getRef(start),scan,ref,Codex.scanning);
+                    evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
         if ((ref)&&(scan)) Codex.Scan(ref,scan,true);
         return scan;}
     Codex.scanBackward=scanBackward;
@@ -1965,7 +1965,7 @@
         if ((getParent(target,".ellipsis"))&&
             ((getParent(target,".elision"))||
              (getParent(target,".delision")))){
-            fdjtDOM.toggleClass("CODEXSCANNER","expanded");
+            fdjtDOM.toggleClass("CODEXSKIMMER","expanded");
             // fdjtUI.Ellipsis.toggle(target);
             fdjtUI.cancel(evt);
             return;}
@@ -1977,23 +1977,23 @@
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);
                 if (!(form)) return;
-                Codex.stopScanning();
+                Codex.stopSkimming();
                 Codex.setMode("addgloss");
                 return;}
             else return;}
-        if (getParent(target,".codexscaninfo"))
-            Codex.stopScanning();
+        if (getParent(target,".codexskiminfo"))
+            Codex.stopSkimming();
         else if (getParent(target,".tochead")) {
             var anchor=getParent(target,".tocref");
             var href=(anchor)&&(anchor.getAttribute("data-tocref"));
             Codex.GoTOC(href);}
-        else toggleClass("CODEXSCANNER","expanded");
+        else toggleClass("CODEXSKIMMER","expanded");
         fdjtUI.cancel(evt);
         return;}
 
     function scanner_held(evt){
         evt=evt||event;
-        Codex.stopScanning();
+        Codex.stopSkimming();
         cancel(evt);
         return;}
 
@@ -2634,7 +2634,7 @@
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
-         "#CODEXSCANNER": {tap: scanner_tapped, hold: scanner_held},
+         "#CODEXSKIMMER": {tap: scanner_tapped, hold: scanner_held},
          // Expanding/contracting the scanner
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
@@ -2726,9 +2726,9 @@
                  evt=evt||event;
                  Codex.UI.handlers.everyone_ontap(evt);
                  fdjt.UI.cancel(event);}},
-         "#CODEXSCANNER .codexscaninfo": {
+         "#CODEXSKIMMER .codexskiminfo": {
              click: function(evt){
-                 evt=evt||event; Codex.stopScanning(); cancel(evt);}}});
+                 evt=evt||event; Codex.stopSkimming(); cancel(evt);}}});
 
     fdjt.DOM.defListeners(
         Codex.UI.handlers.touch,
@@ -2783,7 +2783,7 @@
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to scan
-         "#CODEXSCANNER": {tap: scanner_tapped,hold: scanner_held},
+         "#CODEXSKIMMER": {tap: scanner_tapped,hold: scanner_held},
          // Expanding/contracting the scanner
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
@@ -2901,10 +2901,10 @@
                  evt=evt||event;
                  Codex.UI.handlers.everyone_ontap(evt);
                  fdjt.UI.cancel(event);}},
-         "#CODEXSCANNER .codexscaninfo": {
+         "#CODEXSKIMMER .codexskiminfo": {
              touchstart: cancel,
              touchend: function(evt){
-                 evt=evt||event; Codex.stopScanning(); cancel(evt);}}});
+                 evt=evt||event; Codex.stopSkimming(); cancel(evt);}}});
     
 })();
 

@@ -36,20 +36,20 @@
     text-align: center; padding: 0px; max-height: 50px;}
 #CODEXHEAD { top: 0px; }
 #CODEXFOOT { bottom: 0px; }
-#CODEXSCANNER {
+#CODEXSKIMMER {
     position: absolute; left: 60px; right: 60px; z-index: 100;
     background-color: white;
     border: solid steelblue 4px; padding: 0px;
     max-height: 50px;}
-#CODEXSCANNER.flash { background-color: silver;}
-#CODEXSCANNER.expanded { max-height: inherit; }
-#CODEXSCANNER .tochead {
+#CODEXSKIMMER.flash { background-color: silver;}
+#CODEXSKIMMER.expanded { max-height: inherit; }
+#CODEXSKIMMER .tochead {
     background-color: steelblue; color: white;
     font-weight: bold; font-size: 100%; max-height: 4ex;}
-#CODEXSCANNER.expanded .tochead {
+#CODEXSKIMMER.expanded .tochead {
     font-size: 120%; max-height: inherit;}
-#CODEXSCANNER .tochead a { color: white;}
-#CODEXSCANNER .tochead hr {
+#CODEXSKIMMER .tochead a { color: white;}
+#CODEXSKIMMER .tochead hr {
     color: rgb(33, 106, 129); background-color: rgb(33, 106, 129);}
 #CODEXTOP {background-color: transparent;}
 body.hudup #CODEXTOP {
@@ -60,7 +60,7 @@ body.cxFULLHEIGHT.hudup #CODEXTOP {
 body.hudup #CODEXTOP .hudpanel {
     background-color: rgba(255,255,240,0.6);}
 
-#CODEXTOP, #CODEXSCANNER {top: 0px; border-top: 0px;}
+#CODEXTOP, #CODEXSKIMMER {top: 0px; border-top: 0px;}
 #CODEXFOOT {bottom: 0px; border-bottom: 0px;}
 
 #CODEXHUD #CODEXTOP,
@@ -90,10 +90,10 @@ body.hudup #CODEXTOP .hudpanel {
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
 
-#CODEXSCANNER { display: none; }
+#CODEXSKIMMER { display: none; }
 
-#CODEXTOP, #CODEXTOP .hudpanel, #CODEXSCANNER,
-#CODEXSCANNER .codexcard, #CODEXSCANNER .codexcardbody {
+#CODEXTOP, #CODEXTOP .hudpanel, #CODEXSKIMMER,
+#CODEXSKIMMER .codexcard, #CODEXSKIMMER .codexcardbody {
     border-radius: 1em; -webkit-border-radius: 1em;
     -o-border-radius: 1em; -moz-border-radius: 1em;
     border-top-width: 0px;
@@ -132,7 +132,7 @@ body #CODEXHUD.openhead #CODEXTOP {
     left: 50px; right: 50px; width: auto;}
 body.hudup #CODEXTOP {display: block;}
 body #CODEXHUD.openhead #CODEXTOP,
-body.cxSCANNING #CODEXHUD #CODEXSCANNER {
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -153,9 +153,9 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
 
 body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}
-body #CODEXHUD.openglossmark #CODEXSCANNER,
-body.cxSCANNING #CODEXHUD #CODEXSCANNER,
-body #CODEXHUD.allglosses #CODEXSCANNER {
+body #CODEXHUD.openglossmark #CODEXSKIMMER,
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER,
+body #CODEXHUD.allglosses #CODEXSKIMMER {
     overflow: hidden;}
 body #CODEXHUD.addgloss #CODEXTOP {
     overflow: visible;
@@ -172,9 +172,9 @@ body #CODEXHUD.openfoot #CODEXFOOT
     height: 50px;}
 
 body #CODEXHUD.openhead #CODEXTOP {max-height: 50%;}
-body #CODEXHUD.openglossmark #CODEXSCANNER.expanded,
-body.cxSCANNING #CODEXHUD #CODEXSCANNER.expanded,
-body.cxSCANNING #CODEXHUD #CODEXSCANNER.expanded {
+body #CODEXHUD.openglossmark #CODEXSKIMMER.expanded,
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded,
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
     height: auto; max-height: 50%; overflow: visible;}
 
 #CODEXHEARTFRAME {
@@ -327,7 +327,7 @@ body #CODEXHUD.addgloss.glossattach #CODEXHEART {
 div#CODEXHUD #CODEXFOOT {
     position: absolute; bottom: 0px; z-index: 300;}
 
-body.cxSCANNING #CODEXHUD #CODEXSCANNER {display: block;}
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {display: block;}
 
 /* HUD panels */
 
@@ -385,8 +385,8 @@ div#CODEXHUD.searchresults div#CODEXSEARCH {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-body.cxSCANNING div#CODEXHUD.allglosses div#CODEXSOURCES,
-body.cxSCANNING div#CODEXHUD.allglosses div#CODEXSEARCH {
+body.cxSKIMMING div#CODEXHUD.allglosses div#CODEXSOURCES,
+body.cxSKIMMING div#CODEXHUD.allglosses div#CODEXSEARCH {
     display: none; }
 
 /* Heart rules */
@@ -490,7 +490,7 @@ div#CODEXHUD img.hudbutton {
 div#CODEXHUD .hudbutton.tapholdtarget {
     border-color: blue;}
 
-body.cxSCANNING div#CODEXHUD img.hudbutton {
+body.cxSKIMMING div#CODEXHUD img.hudbutton {
     opacity: 0.80;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -512,11 +512,11 @@ body div#CODEXHUD.addgloss div#CODEXFOOT img.hudbutton {
     opacity: 0.8; -webkit-opacity: 0.8;
     -moz-opacity: 0.8; -o-opacity: 0.8;}
 body div#CODEXHUD.addgloss div#CODEXFOOT img.hudbutton[alt="save gloss"],
-body.cxSCANNING div#CODEXHUD.searchresults
+body.cxSKIMMING div#CODEXHUD.searchresults
    img.hudbutton[hudmode="searchresults"] {
     display: inline-block; }
 body div#CODEXHUD.addgloss img.hudbutton[hudmode="allglosses"],
-body.cxSCANNING div#CODEXHUD.searchresults img.hudbutton[hudmode="allglosses"] {
+body.cxSKIMMING div#CODEXHUD.searchresults img.hudbutton[hudmode="allglosses"] {
     display: none; }
 
 body.hudup div#CODEXHUD img.hudbutton  {}
@@ -565,7 +565,7 @@ div#CODEXHUD img.botright {
     -moz-border-radius-topleft: 6px;
     -o-border-radius-topleft: 6px;}
 
-img.closebutton, img.codexpagebutton, img.codexscanbutton, img.hudbutton {
+img.closebutton, img.codexpagebutton, img.codexskimbutton, img.hudbutton {
     cursor: pointer; z-index: 500;}
 
 body div#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
@@ -633,7 +633,7 @@ div#CODEXHUD div#CODEXBUTTON.help img[alt='help'],
 div#CODEXHUD div#CODEXBUTTON.about img[alt='about'],
 div#CODEXHUD div#CODEXBUTTON.login img[alt='login'],
 div#CODEXHUD div#CODEXBUTTON.statictoc img[alt='statictoc'],
-div#CODEXHUD div#CODEXBUTTON.scanning img[alt='scanning'],
+div#CODEXHUD div#CODEXBUTTON.skimming img[alt='skimming'],
 div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
     display: block;}
 
@@ -701,11 +701,11 @@ body.hudup div#CODEXHUD.openglossmark div.hudpanel#CODEXPOINTGLOSSES {
 body.cxTOUCH #CODEXFRAME > #CODEXHUD > div#CODEXPOINTGLOSSES {
     pointer-events: all;}
 
-/* The CODEXSCANNER */
+/* The CODEXSKIMMER */
 
-body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSCANNER,
-body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSCANNER,
-body.cxSCANNING div#CODEXHUD div#CODEXSCANNER {
+body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSKIMMER,
+body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSKIMMER,
+body.cxSKIMMING div#CODEXHUD div#CODEXSKIMMER {
     display: block; overflow: hidden; border-color: steelblue;
     opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -715,42 +715,42 @@ body.cxSCANNING div#CODEXHUD div#CODEXSCANNER {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-div#CODEXHUD div#CODEXSCANNER.expanded, body.hudup div#CODEXSCANNER.expanded,
-div#CODEXTOP div#CODEXSCANNER.expanded {
+div#CODEXHUD div#CODEXSKIMMER.expanded, body.hudup div#CODEXSKIMMER.expanded,
+div#CODEXTOP div#CODEXSKIMMER.expanded {
     height: inherit; max-height: inherit; overflow: auto;}
 
-div#CODEXSCANNER.expanded .ellipsis .elided { display: inline; }
-div#CODEXSCANNER.expanded .ellipsis .elision,
-div#CODEXSCANNER.expanded .ellipsis .delision {
+div#CODEXSKIMMER.expanded .ellipsis .elided { display: inline; }
+div#CODEXSKIMMER.expanded .ellipsis .elision,
+div#CODEXSKIMMER.expanded .ellipsis .delision {
   display: none;}
 
 /* This is the twisty control */
-div#CODEXSCANNER span.expander {
+div#CODEXSKIMMER span.expander {
     position: absolute; left: 0px; top: 1.5em;}
-div#CODEXSCANNER span.expander img { width: 40px; height: 40px;}
-div#CODEXSCANNER span.expander img[alt='-'] { display: none;}
-div#CODEXSCANNER.expanded span.expander img[alt='-'] { display: inline;}
-div#CODEXSCANNER.expanded span.expander img[alt='+'] { display: none;}
+div#CODEXSKIMMER span.expander img { width: 40px; height: 40px;}
+div#CODEXSKIMMER span.expander img[alt='-'] { display: none;}
+div#CODEXSKIMMER.expanded span.expander img[alt='-'] { display: inline;}
+div#CODEXSKIMMER.expanded span.expander img[alt='+'] { display: none;}
 
-div#CODEXSCANNER span.expander {display: none;}
+div#CODEXSKIMMER span.expander {display: none;}
 
-div#CODEXSCANNER .codexscaninfo {
+div#CODEXSKIMMER .codexskiminfo {
     position: absolute; right: 2px; top: 1px; z-index: 100;
     font-size: 90%; color:  cyan;}
-div#CODEXSCANNER #CODEXSCANCONTROLS .expanded { display: none;}
-div#CODEXSCANNER.expanded #CODEXSCANCONTROLS .expanded {
+div#CODEXSKIMMER #CODEXSKIMCONTROLS .expanded { display: none;}
+div#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .expanded {
     display: inline;}
-div#CODEXSCANNER.expanded #CODEXSCANCONTROLS .collapsed {
+div#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .collapsed {
     display: none;}
 
-div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
+div#CODEXSKIMMER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 div#CODEXPOINTGLOSSES div.tochead { display: none; }
 
-div#CODEXSCANNER div.codexcard.gloss > div.tochead,
-div#CODEXSCANNER div.codexcard.gloss div.codexcardbody  {
+div#CODEXSKIMMER div.codexcard.gloss > div.tochead,
+div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody  {
   margin-left: 50px; }
-div#CODEXSCANNER div.codexcard.gloss div.codexcardbody img.glosspic {
+div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic {
   position: absolute; top: 0px; left: 0px;}
 
 
@@ -814,66 +814,66 @@ div#CODEXHUD.overtoc .hudbutton[alt='toc'] {
 
 /* Scanner rules */
 
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="prev"] {
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="beginning"],
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="end"], 
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="next"] {
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="end"], 
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="next"] {
     position: absolute; right: 0px; top: 8px;}
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="end"] {
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="beginning"],
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="end"] {
     display: none;}
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="beginning"],
-body.hudup div#CODEXHUD div#CODEXSCANNER img[alt="end"] {
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="beginning"],
+body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="end"] {
     z-index: 100;}
-body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="next"] {display: none;}
-body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatend img[alt="end"] {display: block;}
-body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="prev"] {display: none;}
-body.hudup div#CODEXHUD div#CODEXSCANNER.sbookatstart img[alt="beginning"] {display: block;}
+body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatend img[alt="next"] {display: none;}
+body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatend img[alt="end"] {display: block;}
+body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatstart img[alt="prev"] {display: none;}
+body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatstart img[alt="beginning"] {display: block;}
 
-div#CODEXHUD div#CODEXSCANNER.expanded .controller,
-div#CODEXHUD div#CODEXSCANNER.expanded span.whenexpanded {
+div#CODEXHUD div#CODEXSKIMMER.expanded .controller,
+div#CODEXHUD div#CODEXSKIMMER.expanded span.whenexpanded {
     display: inline;}
-div#CODEXHUD div#CODEXSCANNER.expanded .controller,
-div#CODEXHUD div#CODEXSCANNER.expanded span.whencollapsed {
+div#CODEXHUD div#CODEXSKIMMER.expanded .controller,
+div#CODEXHUD div#CODEXSKIMMER.expanded span.whencollapsed {
     display: none;}
 
-div#CODEXSCANNER div.codexcard {
+div#CODEXSKIMMER div.codexcard {
     margin-left: 0px;}
-div#CODEXSCANNER div.codexcard > div.tochead {
+div#CODEXSKIMMER div.codexcard > div.tochead {
     margin-left: 0px; }
-div#CODEXSCANNER div.codexcard > div.idhead {
+div#CODEXSKIMMER div.codexcard > div.idhead {
     margin-left: 0px;}
 
-div#CODEXHUD div#CODEXSCANNER div.idhead,
+div#CODEXHUD div#CODEXSKIMMER div.idhead,
 div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
-div#CODEXHUD div#CODEXSCANNER #CODEXSCAN img.button { display: none;}
-div#CODEXHUD div#CODEXSCANNER #CODEXSCAN .tool span.label { display: inline;}
-div#CODEXHUD div#CODEXSCANNER.expanded #CODEXSCAN .tool span.label { display: none;}
-div#CODEXHUD div#CODEXSCANNER.expanded #CODEXSCAN img.button {
+div#CODEXHUD div#CODEXSKIMMER #CODEXSKIM img.button { display: none;}
+div#CODEXHUD div#CODEXSKIMMER #CODEXSKIM .tool span.label { display: inline;}
+div#CODEXHUD div#CODEXSKIMMER.expanded #CODEXSKIM .tool span.label { display: none;}
+div#CODEXHUD div#CODEXSKIMMER.expanded #CODEXSKIM img.button {
     display: inline;}
 
-div#CODEXSCANNER.cxhighlights .codexcard .excerpt { display: none; }
+div#CODEXSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
 
-body div#CODEXHUD div#CODEXSCANNER.expanded img.glosspic,
-body div#CODEXHUD div.hudpanel#CODEXSCANNER.expanded {
+body div#CODEXHUD div#CODEXSKIMMER.expanded img.glosspic,
+body div#CODEXHUD div.hudpanel#CODEXSKIMMER.expanded {
     max-height: inherit; height: inherit;}
 
-#CODEXFRAME.cxANIMATE div#CODEXHUD div#CODEXSCANNER {
+#CODEXFRAME.cxANIMATE div#CODEXHUD div#CODEXSKIMMER {
     transition-property: background-color;
     -o-transition-property: background-color;
     -moz-transition-property: background-color;
     -webkit-transition-property: background-color; 
     transition-duration: 0.5s; -o-transition-duration: 0.5s;
     -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;}
-div#CODEXHUD div#CODEXSCANNER div.codexcard span.glossinfo span.isclickable {
+div#CODEXHUD div#CODEXSKIMMER div.codexcard span.glossinfo span.isclickable {
     display: none;}
-body img.codexscanbutton {
+body img.codexskimbutton {
     width: 50px; height: 100px;
     position: absolute; bottom: 50%; 
     display: none;}
-body.cxANIMATE img.codexscanbutton {
+body.cxANIMATE img.codexskimbutton {
     transition-property: opacity,background-color;
     -o-transition-property: -o-opacity,background-color;
     -moz-transition-property: -moz-opacity,background-color;
@@ -887,7 +887,7 @@ body.cxANIMATE img.codexscanbutton {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-body img.codexscanbutton.flash  {
+body img.codexskimbutton.flash  {
     background-color: silver;
     opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -922,33 +922,33 @@ body.hudup img.codexpagebutton {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70; }
-body img.codexscanbutton#CODEXNEXTSCAN,
-body img.codexscanbutton#CODEXENDSCAN,
+body img.codexskimbutton#CODEXNEXTSCAN,
+body img.codexskimbutton#CODEXENDSCAN,
 body img.codexpagebutton#CODEXNEXTPAGE {
     right: 0px;}
-body img.codexscanbutton#CODEXPREVSCAN,
-body img.codexscanbutton#CODEXSTARTSCAN,
+body img.codexskimbutton#CODEXPREVSCAN,
+body img.codexskimbutton#CODEXSTARTSCAN,
 body img.codexpagebutton#CODEXPREVPAGE {
     left: 0px;}
 
-body.cxSCANNING img.codexscanbutton {display: block;}
-body.cxSCANNING img.codexpagebutton { display: none;}
-body.cxSCANNING img.codexscanbutton#CODEXSTARTSCAN,
-body.cxSCANNING img.codexscanbutton#CODEXENDSCAN {
+body.cxSKIMMING img.codexskimbutton {display: block;}
+body.cxSKIMMING img.codexpagebutton { display: none;}
+body.cxSKIMMING img.codexskimbutton#CODEXSTARTSCAN,
+body.cxSKIMMING img.codexskimbutton#CODEXENDSCAN {
     display: none;}
 
-body.cxSCANNING.cxSCANSTART img.codexscanbutton#CODEXSTARTSCAN,
-body.cxSCANNING.cxSCANEND img.codexscanbutton#CODEXENDSCAN {
+body.cxSKIMMING.cxSCANSTART img.codexskimbutton#CODEXSTARTSCAN,
+body.cxSKIMMING.cxSCANEND img.codexskimbutton#CODEXENDSCAN {
     display: block;}
-body.cxSCANNING.cxSCANSTART img.codexscanbutton#CODEXPREVSCAN,
-body.cxSCANNING.cxSCANEND img.codexscanbutton#CODEXNEXTSCAN {
+body.cxSKIMMING.cxSCANSTART img.codexskimbutton#CODEXPREVSCAN,
+body.cxSKIMMING.cxSCANEND img.codexskimbutton#CODEXNEXTSCAN {
     display: none;}
 
 /* Don't display any buttons when you're at both the start and end */
-body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXSTARTSCAN,
-body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXENDSCAN,
-body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXNEXTSCAN,
-body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXPREVSCAN {
+body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXSTARTSCAN,
+body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXENDSCAN,
+body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXNEXTSCAN,
+body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXPREVSCAN {
     display: none;}
 
 div#CODEXHUD div#SBOOKABOUT {
@@ -1147,7 +1147,7 @@ img.codexclosehud#CODEXSTOPSCAN {
     width: 40px; height: 40px;
     /* Let's try to do without this for now */
     display: none;}
-body.cxSCANNING #CODEXHUD img.codexclosehud#CODEXSTOPSCAN {
+body.cxSKIMMING #CODEXHUD img.codexclosehud#CODEXSTOPSCAN {
     z-index: 500; display: block;}
 
 /* Full height/width rules */
@@ -1162,7 +1162,7 @@ body.cxFULLHEIGHT.cxFULLWIDTH #CODEXHUD {display: none;}
 body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD,
 body.cxFULLHEIGHT.cxFULLWIDTH.openhud #CODEXHUD,
 body.cxFULLHEIGHT.cxFULLWIDTH.openglossmark #CODEXHUD,
-body.cxFULLHEIGHT.cxFULLWIDTH.cxSCANNING #CODEXHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.cxSKIMMING #CODEXHUD,
 body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {
     display: block;}
 

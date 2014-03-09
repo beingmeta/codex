@@ -373,7 +373,7 @@ Codex.Startup=
 
             // Get various settings for the sBook from the HTML (META
             // tags, etc), including settings or guidance for
-            // scanning, graphics, layout, glosses, etc.
+            // skimming, graphics, layout, glosses, etc.
             readBookSettings();
             fdjtLog("Book %s (%s) %s (%s)",
                     Codex.docref||"@??",Codex.bookbuild||"",
@@ -1775,19 +1775,19 @@ Codex.Startup=
             var pageright=fdjtDOM("div#CODEXPAGERIGHT");
             var pageleft=fdjtDOM("div#CODEXPAGELEFT");
             
-            var scanleft=document.createDocumentFragment();
-            var scanright=document.createDocumentFragment();
+            var skimleft=document.createDocumentFragment();
+            var skimright=document.createDocumentFragment();
             var holder=fdjtDOM("div");
             holder.innerHTML=fixStaticRefs(Codex.HTML.pageleft);
             var nodes=fdjtDOM.toArray(holder.childNodes);
             var i=0, lim=nodes.length;
-            while (i<lim) scanleft.appendChild(nodes[i++]);
+            while (i<lim) skimleft.appendChild(nodes[i++]);
             holder.innerHTML=fixStaticRefs(Codex.HTML.pageright);
             nodes=fdjtDOM.toArray(holder.childNodes); i=0; lim=nodes.length;
-            while (i<lim) scanright.appendChild(nodes[i++]);
+            while (i<lim) skimright.appendChild(nodes[i++]);
 
             fdjtDOM.prepend(document.body,/* pagehead,pagefoot, */
-                            scanleft,scanright,
+                            skimleft,skimright,
                             pageleft,pageright);
 
             Codex.TapHold.pageleft=new fdjt.TapHold(pageleft,{override:true});
