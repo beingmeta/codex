@@ -765,6 +765,7 @@ Codex.setMode=
             var highlights=[];
             if (Codex.target)
                 Codex.clearHighlights(Codex.getDups(Codex.target));
+            dropClass("CODEXSCANNER","cxfoundhighlights");
             Codex.setTarget(elt);
             if ((src)&&(hasClass(src,"gloss"))) {
                 var glossinfo=Codex.glossdb.ref(src.name);
@@ -772,8 +773,10 @@ Codex.setMode=
                     var searching=Codex.getDups(elt.id);
                     var range=Codex.findExcerpt(
                         searching,glossinfo.excerpt,glossinfo.exoff);
-                    if (range) highlights=
-                        fdjtUI.Highlight(range,"codexhighlightexcerpt");}
+                    if (range) {
+                        highlights=
+                            fdjtUI.Highlight(range,"codexhighlightexcerpt");
+                        addClass("CODEXSCANNER","cxhighlights");}}
                 else if (src.about[0]==="#")
                     addClass(Codex.getDups(src.about.slice(1)),
                              "codexhighlightpassage");
