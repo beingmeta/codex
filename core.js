@@ -132,11 +132,11 @@ var Codex={
     Timeline: {},
     // What to trace, for debugging
     Trace: {
-        startup: 1,       // Whether to trace startup
+        startup: 2,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
         mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
-        scan: 0,          // How much to trace DOM skimming
+        skim: 0,          // How much to trace DOM skimming
         search: 0,        // How much to trace searches
         clouds: 0,        // How much to trace cloud generation
         target: false,    // Whether to trace target changes
@@ -1293,7 +1293,7 @@ var Codex={
                 Codex.setMode("statictoc"); Codex.setHUD(false,false);
                 addClass(document.body,"cxSKIMMING");}}
         Codex.GoTo(target,"CodexSkimTo");}
-    Codex.ScanTo=CodexSkimTo;
+    Codex.Skimto=CodexSkimTo;
 
     // Preview functions
     var oldscroll=false, preview_elt=false;

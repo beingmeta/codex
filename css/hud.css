@@ -813,7 +813,7 @@ div#CODEXHUD.overtoc .hudbutton[alt='toc'] {
     /* background-color: #4682b4; */
     background-color: silver;}
 
-/* Scanner rules */
+/* Skimmer rules */
 
 body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="beginning"],
 body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="prev"] {
@@ -923,33 +923,33 @@ body.hudup img.codexpagebutton {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70; }
-body img.codexskimbutton#CODEXNEXTSCAN,
-body img.codexskimbutton#CODEXENDSCAN,
+body img.codexskimbutton#CODEXNEXTSKIM,
+body img.codexskimbutton#CODEXENDSKIM,
 body img.codexpagebutton#CODEXNEXTPAGE {
     right: 0px;}
-body img.codexskimbutton#CODEXPREVSCAN,
-body img.codexskimbutton#CODEXSTARTSCAN,
+body img.codexskimbutton#CODEXPREVSKIM,
+body img.codexskimbutton#CODEXSTARTSKIM,
 body img.codexpagebutton#CODEXPREVPAGE {
     left: 0px;}
 
 body.cxSKIMMING img.codexskimbutton {display: block;}
 body.cxSKIMMING img.codexpagebutton { display: none;}
-body.cxSKIMMING img.codexskimbutton#CODEXSTARTSCAN,
-body.cxSKIMMING img.codexskimbutton#CODEXENDSCAN {
+body.cxSKIMMING img.codexskimbutton#CODEXSTARTSKIM,
+body.cxSKIMMING img.codexskimbutton#CODEXENDSKIM {
     display: none;}
 
-body.cxSKIMMING.cxSCANSTART img.codexskimbutton#CODEXSTARTSCAN,
-body.cxSKIMMING.cxSCANEND img.codexskimbutton#CODEXENDSCAN {
+body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#CODEXSTARTSKIM,
+body.cxSKIMMING.cxSKIMEND img.codexskimbutton#CODEXENDSKIM {
     display: block;}
-body.cxSKIMMING.cxSCANSTART img.codexskimbutton#CODEXPREVSCAN,
-body.cxSKIMMING.cxSCANEND img.codexskimbutton#CODEXNEXTSCAN {
+body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#CODEXPREVSKIM,
+body.cxSKIMMING.cxSKIMEND img.codexskimbutton#CODEXNEXTSKIM {
     display: none;}
 
 /* Don't display any buttons when you're at both the start and end */
-body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXSTARTSCAN,
-body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXENDSCAN,
-body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXNEXTSCAN,
-body.cxSKIMMING.cxSCANSTART.cxSCANEND img.codexskimbutton#CODEXPREVSCAN {
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXSTARTSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXENDSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXNEXTSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
     display: none;}
 
 div#CODEXHUD div#SBOOKABOUT {
@@ -1143,12 +1143,12 @@ img.codexclosehud {
     margin-left: 5px; height: 1.5ex; width: auto;
     vertical-align: top; margin-top: 2px;
     display: inline-block;}
-img.codexclosehud#CODEXSTOPSCAN {
+img.codexclosehud#CODEXSTOPSKIM {
     position: absolute; top: 0px; right: 5px;
     width: 40px; height: 40px;
     /* Let's try to do without this for now */
     display: none;}
-body.cxSKIMMING #CODEXHUD img.codexclosehud#CODEXSTOPSCAN {
+body.cxSKIMMING #CODEXHUD img.codexclosehud#CODEXSTOPSKIM {
     z-index: 500; display: block;}
 
 /* Full height/width rules */

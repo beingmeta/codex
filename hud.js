@@ -220,8 +220,8 @@ Codex.setMode=
                     {override: true,holdfast: true});
             Codex.TapHold.head=
                 new fdjtUI.TapHold(Codex.DOM.head,{override: true});
-            Codex.DOM.scanner=fdjtID("CODEXSKIMMER");
-            Codex.TapHold.scanner=new fdjtUI.TapHold(Codex.DOM.scanner);
+            Codex.DOM.skimmer=fdjtID("CODEXSKIMMER");
+            Codex.TapHold.skimmer=new fdjtUI.TapHold(Codex.DOM.skimmer);
             
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=fixStaticRefs(Codex.HTML.help);
@@ -377,8 +377,8 @@ Codex.setMode=
                     dropClass(CodexHUD,"full");
                     dropClass(CodexHUD,CodexModes);
                     dropClass(document.body,"cxSKIMMING");
-                    dropClass(document.body,"cxSCANSTART");
-                    dropClass(document.body,"cxSCANEND");
+                    dropClass(document.body,"cxSKIMSTART");
+                    dropClass(document.body,"cxSKIMEND");
                     Codex.mode=false;}
                 dropClass(document.body,"hudup");
                 dropClass(document.body,"openhud");
@@ -717,7 +717,7 @@ Codex.setMode=
                 fdjtLog("CodexSkim() %o (src=%o) mode=%o scn=%o/%o",
                         elt,src,Codex.mode,Codex.skimming,Codex.target);
             // Copy the description of what we're skimming into the
-            // scanner (at the top of the page during skimming and
+            // skimmer (at the top of the page during skimming and
             // preview)
             if (Codex.skimming!==src) {
                 var clone=src.cloneNode(true); clone.id="CODEXSKIM";
@@ -726,15 +726,15 @@ Codex.setMode=
                 fdjtDOM.replace("CODEXSKIM",clone);
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
-                if (next) dropClass(document.body,"cxSCANEND");
-                else addClass(document.body,"cxSCANEND");
-                if (prev) dropClass(document.body,"cxSCANSTART");
-                else addClass(document.body,"cxSCANSTART");
+                if (next) dropClass(document.body,"cxSKIMEND");
+                else addClass(document.body,"cxSKIMEND");
+                if (prev) dropClass(document.body,"cxSKIMSTART");
+                else addClass(document.body,"cxSKIMSTART");
                 while (slice) {before++; slice=prevSlice(slice);}
                 slice=next; while (slice) {
                     after++; slice=nextSlice(slice);}
-                var scaninfo=fdjtID("CODEXSKIMINFO");
-                scaninfo.innerHTML=(before+1)+"/"+(before+after+1);
+                var skiminfo=fdjtID("CODEXSKIMINFO");
+                skiminfo.innerHTML=(before+1)+"/"+(before+after+1);
                 // This marks where we are currently skimming
                 if (pelt) dropClass(pelt,"codexskimpoint");
                 if (src) addClass(src,"codexskimpoint");
@@ -775,32 +775,32 @@ Codex.setMode=
                         var term=terms[i++];
                         var h=Codex.highlightTerm(term,target,info,spellings);
                         highlights=highlights.concat(h);}}}
-            delete Codex.scanpoints;
-            delete Codex.scanoff;
+            delete Codex.skimpoints;
+            delete Codex.skimoff;
             if ((highlights)&&(highlights.length===1)&&
                 (getParent(highlights[0],elt)))
-                Codex.GoTo(elt,"Scan");
+                Codex.GoTo(elt,"Skim");
             else if ((highlights)&&(highlights.length)) {
                 var possible=Codex.getDups(elt.id);
                 if (possible.length) {
-                    var scanpoints=[];
+                    var skimpoints=[];
                     i=0; lim=possible.length;
                     while (i<lim) {
                         var poss=possible[i++];
                         var j=0, jlim=highlights.length;
                         while (j<jlim) {
                             if (getParent(highlights[j++],poss)) {
-                                scanpoints.push(poss); break;}}}
-                    if (scanpoints.length)
-                        Codex.scanpoints=scanpoints;
-                    else Codex.scanpoints=possible;
+                                skimpoints.push(poss); break;}}}
+                    if (skimpoints.length)
+                        Codex.skimpoints=skimpoints;
+                    else Codex.skimpoints=possible;
                     if (backward) 
-                        Codex.scanoff=Codex.scanpoints.length-1;
-                    else Codex.scanoff=0;
-                    Codex.GoTo(Codex.scanpoints[Codex.scanoff]);}
-                else Codex.GoTo(elt,"Scan");}
-            else Codex.GoTo(elt,"Scan");}
-        Codex.Scan=CodexSkim;
+                        Codex.skimoff=Codex.skimpoints.length-1;
+                    else Codex.skimoff=0;
+                    Codex.GoTo(Codex.skimpoints[Codex.skimoff]);}
+                else Codex.GoTo(elt,"Skim");}
+            else Codex.GoTo(elt,"Skim");}
+        Codex.Skim=CodexSkim;
         function stopSkimming(){
             // Tapping the tochead returns to results/glosses/etc
             var skimming=Codex.skimming;
@@ -956,7 +956,7 @@ Codex.setMode=
                     if (hasParent(src,allglosses)) {
                         var elt=cxID(src.about);
                         setMode("allglosses");
-                        Codex.Scan(elt,src);
+                        Codex.Skim(elt,src);
                         return true;}}
                 return false;}};
 

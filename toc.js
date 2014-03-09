@@ -57,10 +57,10 @@ Codex.TOC=
         var cxicon=Codex.icon;
         function navicon(kind){
             switch (kind) {
-            case 'right': return cxicon("scan_right",64,64);
-            case 'left': return cxicon("scan_left",64,64);
-            case 'start': return cxicon("scan_left_stop",64,64);
-            case 'end': return cxicon("scan_right_stop",64,64);
+            case 'right': return cxicon("skim_right",64,64);
+            case 'left': return cxicon("skim_left",64,64);
+            case 'start': return cxicon("skim_left_stop",64,64);
+            case 'end': return cxicon("skim_right_stop",64,64);
             default: return false;}}
         Codex.navicon=navicon;
 

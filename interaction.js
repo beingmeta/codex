@@ -676,11 +676,11 @@
             // Horizontal swipe
             if (dx<-10) {
                 if (hasClass(document.body,"cxSKIMMING"))
-                    Codex.scanForward(evt);
+                    Codex.skimForward(evt);
                 else Codex.Forward(evt);}
             else if (dx>10) {
                 if (hasClass(document.body,"cxSKIMMING"))
-                    Codex.scanBackward(evt);
+                    Codex.skimBackward(evt);
                 else Codex.Backward(evt);}}
         else if (ady>(adx*2)) {
             // Vertical swipe
@@ -888,7 +888,7 @@
             Codex.setMode("glossdetail");
             return fdjtUI.cancel(evt);}
         else if ((!(gloss))&&(passage)) {
-            Codex.Scan(passage,card,false);
+            Codex.Skim(passage,card,false);
             return fdjtUI.cancel(evt);}
         else if ((gloss)&&(getParent(target,".tool"))) {
             var form=Codex.setGlossTarget(gloss);           
@@ -896,7 +896,7 @@
             Codex.setMode("addgloss");
             return fdjtUI.cancel(evt);}
         else if (gloss) {
-            Codex.Scan(passage,card,false);
+            Codex.Skim(passage,card,false);
             return fdjtUI.cancel(evt);}
         else return;}
     function slice_held(evt){
@@ -906,7 +906,7 @@
             fdjtLog("slice_held %o: %o, skimming=%o",
                     evt,card,Codex.skimming);
         if (!(card)) return;
-        // Put a clone of the card in the scanner
+        // Put a clone of the card in the skimmer
         var clone=card.cloneNode(true);
         clone.id="CODEXSKIM"; fdjtDOM.replace("CODEXSKIM",clone);
         // If we're currently previewing something, clear it
@@ -1094,8 +1094,8 @@
         else if (kc===38) {  /* arrow up */
             Codex.setHUD(false);
             Codex.pageBackward(evt);}
-        else if (kc===37) Codex.scanBackward(evt); /* arrow left */
-        else if (kc===39) Codex.scanForward(evt); /* arrow right */
+        else if (kc===37) Codex.skimBackward(evt); /* arrow left */
+        else if (kc===39) Codex.skimForward(evt); /* arrow right */
         // Don't interrupt text input for space, etc
         else if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
         else if (kc===32) // Space
@@ -1447,7 +1447,7 @@
         var target=fdjtUI.T(evt);
         var mode=target.getAttribute("hudmode");
         if (Codex.Trace.gestures)
-            fdjtLog("hudmodebutton() %o mode=%o cl=%o scan=%o sbh=%o mode=%o",
+            fdjtLog("hudmodebutton() %o mode=%o cl=%o skim=%o sbh=%o mode=%o",
                     evt,mode,(isClickable(target)),
                     Codex.skimming,Codex.hudup,Codex.setMode());
         if (reticle.live) reticle.flash();
@@ -1678,7 +1678,7 @@
         if (Codex.Trace.nav)
             fdjtLog("Forward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
-            scanForward(evt);
+            skimForward(evt);
         else pageForward(evt);}
     Codex.Forward=forward;
     function right_margin_tap(evt){
@@ -1696,7 +1696,7 @@
         if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
         else if (hasClass(document.body,"cxSKIMMING"))
-            scanForward(evt);
+            skimForward(evt);
         else forward(evt);
         cancel(evt);}
     function right_margin_hold(evt){
@@ -1724,7 +1724,7 @@
             // Horizontal swipe
             if (adx<10) return;
             else if (hasClass(document.body,"cxSKIMMING"))
-                scanForward(evt);
+                skimForward(evt);
             else forward(evt);}
         else if (ady>(adx*2)) {
             // Vertical swipe
@@ -1744,7 +1744,7 @@
         if (Codex.Trace.nav)
             fdjtLog("Backward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
-            scanBackward();
+            skimBackward();
         else pageBackward();}
     Codex.Backward=backward;
     function left_margin_tap(evt){
@@ -1760,7 +1760,7 @@
         if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
         else if (hasClass(document.body,"cxSKIMMING"))
-            scanBackward(evt);
+            skimBackward(evt);
         else backward(evt);
         cancel(evt);}
     function left_margin_hold(evt){
@@ -1785,7 +1785,7 @@
             // Horizontal swipe
             if (adx<10) return;
             else if (hasClass(document.body,"cxSKIMMING"))
-                scanForward(evt);
+                skimForward(evt);
             else forward(evt);}
         else if (ady>(adx*2)) {
             // Vertical swipe
@@ -1847,7 +1847,7 @@
             window.scrollTo(fdjtDOM.viewLeft(),newy);}}
     Codex.pageBackward=pageBackward;
 
-    function scanForward(evt){
+    function skimForward(evt){
         evt=evt||event;
         if (hasClass(document.body,"cxSKIMMING")) {}
         else if (Codex.mode==="openglossmark") {
@@ -1861,7 +1861,7 @@
                     if ((g)&&(g.length)) {
                         var passage=cxID(ids[i]);
                         var glossmark=getChild(passage,".codexglossmark");
-                        Codex.GoTo(passage,"scanForward/glosses",true);
+                        Codex.GoTo(passage,"skimForward/glosses",true);
                         Codex.showGlossmark(passage,glossmark);
                         return;}
                     else i++;}}
@@ -1870,30 +1870,30 @@
         else if (Codex.skimming) {}
         else return; /* Need default */
         addClass("CODEXSKIMMER","flash");
-        addClass("CODEXNEXTSCAN","flash");
+        addClass("CODEXNEXTSKIM","flash");
         setTimeout(function(){
             dropClass("CODEXSKIMMER","flash");
-            dropClass("CODEXNEXTSCAN","flash");},
+            dropClass("CODEXNEXTSKIM","flash");},
                    200);
         if (Codex.mode==="statictoc") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
             var headinfo=Codex.docinfo[headid];
             if (Codex.Trace.nav) 
-                fdjtLog("scanForward/toc() head=%o info=%o n=%o h=%o",
+                fdjtLog("skimForward/toc() head=%o info=%o n=%o h=%o",
                         head,headinfo,headinfo.next,headinfo.head);
-            if (headinfo.next) Codex.GoTo(headinfo.next.frag,"scanForward");
+            if (headinfo.next) Codex.GoTo(headinfo.next.frag,"skimForward");
             else if ((headinfo.head)&&(headinfo.head.next)) 
-                Codex.GoTo(headinfo.head.next.frag,"scanForward");
+                Codex.GoTo(headinfo.head.next.frag,"skimForward");
             else if ((headinfo.head)&&(headinfo.head.head)&&
                      (headinfo.head.head.next)) 
-                Codex.GoTo(headinfo.head.head.next.frag,"scanForward");
+                Codex.GoTo(headinfo.head.head.next.frag,"skimForward");
             else Codex.setMode(false);
             return;}
-        if ((Codex.scanpoints)&&
-            ((Codex.scanoff+1)<Codex.scanpoints.length)) {
-            Codex.scanoff++;
-            Codex.GoTo(Codex.scanpoints[Codex.scanoff]);
+        if ((Codex.skimpoints)&&
+            ((Codex.skimoff+1)<Codex.skimpoints.length)) {
+            Codex.skimoff++;
+            Codex.GoTo(Codex.skimpoints[Codex.skimoff]);
             return;}
         var start=Codex.skimming;
         var scan=Codex.nextSlice(start);
@@ -1901,11 +1901,11 @@
         if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav)) 
             fdjtLog("scanForward (on %o) from %o/%o to %o/%o under %o",
                     evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
-        if ((ref)&&(scan)) Codex.Scan(ref,scan);
+        if ((ref)&&(scan)) Codex.Skim(ref,scan);
         return scan;}
-    Codex.scanForward=scanForward;
+    Codex.skimForward=skimForward;
 
-    function scanBackward(evt){
+    function skimBackward(evt){
         if (hasClass(document.body,"cxSKIMMING")) {}
         else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
@@ -1918,7 +1918,7 @@
                     if ((g)&&(g.length)) {
                         var passage=cxID(ids[i]);
                         var glossmark=getChild(passage,".codexglossmark");
-                        Codex.GoTo(passage,"scanBackward/glosses",true);
+                        Codex.GoTo(passage,"skimBackward/glosses",true);
                         Codex.showGlossmark(passage,glossmark);
                         return;}
                     else i--;}}
@@ -1926,39 +1926,39 @@
             return;}
         else if (Codex.skimming) {}
         else return false;
-        addClass("CODEXPREVSCAN","flash");
+        addClass("CODEXPREVSKIM","flash");
         addClass("CODEXSKIMMER","flash");
         setTimeout(function(){
             dropClass("CODEXSKIMMER","flash");
-            dropClass("CODEXPREVSCAN","flash");},
+            dropClass("CODEXPREVSKIM","flash");},
                    200);
         if (Codex.mode==="statictoc") {
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
             var headinfo=Codex.docinfo[headid];
             if (Codex.Trace.nav) 
-                fdjtLog("scanBackward/toc() head=%o info=%o p=%o h=%o",
+                fdjtLog("skimBackward/toc() head=%o info=%o p=%o h=%o",
                         head,headinfo,headinfo.prev,headinfo.head);
-            if (headinfo.prev) Codex.GoTo(headinfo.prev.frag,"scanBackward");
+            if (headinfo.prev) Codex.GoTo(headinfo.prev.frag,"skimBackward");
             else if (headinfo.head) 
-                Codex.GoTo(headinfo.head.frag,"scanBackward");
+                Codex.GoTo(headinfo.head.frag,"skimBackward");
             else Codex.setMode(false);
             return;}
-        if ((Codex.scanpoints)&&(Codex.scanoff>0)) {
-            Codex.scanoff--;
-            Codex.GoTo(Codex.scanpoints[Codex.scanoff]);
+        if ((Codex.skimpoints)&&(Codex.skimoff>0)) {
+            Codex.skimoff--;
+            Codex.GoTo(Codex.skimpoints[Codex.skimoff]);
             return;}
         var start=Codex.skimming;
         var scan=Codex.prevSlice(start);
         var ref=((scan)&&(Codex.getRef(scan)));
         if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav))
-            fdjtLog("scanBackward (on %o) from %o/%o to %o/%o under %o",
+            fdjtLog("skimBackward (on %o) from %o/%o to %o/%o under %o",
                     evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
-        if ((ref)&&(scan)) Codex.Scan(ref,scan,true);
+        if ((ref)&&(scan)) Codex.Skim(ref,scan,true);
         return scan;}
-    Codex.scanBackward=scanBackward;
+    Codex.skimBackward=skimBackward;
 
-    function scanner_tapped(evt){
+    function skimmer_tapped(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (isClickable(target)) return;
@@ -1991,7 +1991,7 @@
         fdjtUI.cancel(evt);
         return;}
 
-    function scanner_held(evt){
+    function skimmer_held(evt){
         evt=evt||event;
         Codex.stopSkimming();
         cancel(evt);
@@ -2633,9 +2633,9 @@
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
-         // Return to scan
-         "#CODEXSKIMMER": {tap: scanner_tapped, hold: scanner_held},
-         // Expanding/contracting the scanner
+         // Return to skimmer
+         "#CODEXSKIMMER": {tap: skimmer_tapped, hold: skimmer_held},
+         // Expanding/contracting the skimmer
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
          "#CODEXTABS": {click: head_tap},
@@ -2670,10 +2670,10 @@
              Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {click: function(evt){
              Codex.pageBackward(evt); cancel(evt);}},
-         "#CODEXNEXTSCAN": {click: function(evt){
-             Codex.scanForward(evt); cancel(evt);}},
-         "#CODEXPREVSCAN": {click: function(evt){
-             Codex.scanBackward(evt); cancel(evt);}},
+         "#CODEXNEXTSKIM": {click: function(evt){
+             Codex.skimForward(evt); cancel(evt);}},
+         "#CODEXPREVSKIM": {click: function(evt){
+             Codex.skimBackward(evt); cancel(evt);}},
          "#CODEXSHOWTEXT": {click: back_to_reading},
          "#CODEXGLOSSDETAIL": {click: Codex.UI.dropHUD},
          "#CODEXNOTETEXT": {click: jumpToNote},
@@ -2749,7 +2749,7 @@
                    swipe: content_swiped,
                    touchmove: noDefault,
                    click: content_click},
-         hud: {click: handleXTarget, tap: handleXTarget},
+         hud: {touchend: handleXTarget, tap: handleXTarget},
          toc: {tap: toc_tapped,hold: toc_held,
                slip: toc_slipped, release: toc_released,
                touchtoo: toc_touchtoo,
@@ -2782,9 +2782,9 @@
          "#CODEXPAGENOTEXT": {tap: enterPageNum},
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
-         // Return to scan
-         "#CODEXSKIMMER": {tap: scanner_tapped,hold: scanner_held},
-         // Expanding/contracting the scanner
+         // Return to skimming
+         "#CODEXSKIMMER": {tap: skimmer_tapped,hold: skimmer_held},
+         // Expanding/contracting the skimmer
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
          "#CODEXTABS": {touchstart: head_tap},
@@ -2814,10 +2814,10 @@
              Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {touchstart: function(evt){
              Codex.pageBackward(evt); cancel(evt);}},
-         "#CODEXNEXTSCAN": {touchstart: function(evt){
-             Codex.scanForward(evt); cancel(evt);}},
-         "#CODEXPREVSCAN": {touchstart: function(evt){
-             Codex.scanBackward(evt); cancel(evt);}},
+         "#CODEXNEXTSKIM": {touchstart: function(evt){
+             Codex.skimForward(evt); cancel(evt);}},
+         "#CODEXPREVSKIM": {touchstart: function(evt){
+             Codex.skimBackward(evt); cancel(evt);}},
          "#CODEXHELPBUTTON": {
              tap: toggleHelp,
              hold: function(evt){setHelp(true); cancel(evt);},

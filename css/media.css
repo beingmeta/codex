@@ -17,7 +17,7 @@
         border-bottom-right-radius: 1ex;
         padding-bottom: 0px;
         left: 5px; right: 5px; }
-    img.codexclosehud#CODEXSTOPSCAN {
+    img.codexclosehud#CODEXSTOPSKIM {
         bottom: 50px; top: auto;}
 
     #CODEXHUD.addgloss img.hudbutton[alt="toc"],
@@ -42,6 +42,9 @@
         font-size: 75%;}
     div#CODEXHUD div.codexhelp.hudpanel {
         left: 5px; right: 5px; top: 60px; bottom: 60px;}
+  div#CODEXHUD div.helphud.rightmiddle,
+  div#CODEXHUD div.helphud.leftmiddle {
+        display: none;}
     div.helpbox blockquote {
         margin-left: 2px; margin-right: 2px;}
     div.helpbox blockquote p {
