@@ -496,7 +496,6 @@ Codex.setMode=
                     (mode==='expandsearch'))
                     Codex.search_mode=mode;
 
-
                 if ((mode==='addgloss')||(mode==="openglossmark")) 
                     addClass(document.body,"openhud");
                 else if (nohud) {}
@@ -552,6 +551,18 @@ Codex.setMode=
                         setHUD(false);}},
                                 500);}}
         
+        function scrollSlices(mode){
+            if (mode==="allglosses") {
+                if ((Codex.skimming)||(Codex.point))
+                    Codex.UI.scrollGlosses(
+                        Codex.skimming||Codex.point,Codex.glosses);}
+            else if (mode==="searchresults") {
+                if ((Codex.skimming)||(Codex.point))
+                    Codex.UI.scrollGlosses(
+                        Codex.skimming||Codex.point,Codex.query.listing);}
+            else {}}
+        Codex.scrollSlices=scrollSlices;
+
         function changeMode(mode){      
             if (Codex.Trace.mode)
                 fdjtLog("changeMode %o, cur=%o dbc=%o",
@@ -559,31 +570,10 @@ Codex.setMode=
             fdjtDOM.dropClass(CodexHUD,CodexModes);
             fdjtDOM.dropClass(CodexHUD,CodexSubModes);
             fdjtDOM.addClass(CodexHUD,mode);
-            // This updates skimming state
-            if (Codex.skimming) {
-                // Scroll the scanned content (glosses, search
-                // results, etc) to reflect any motion
-                var heart=Codex.DOM.heart;
-                var height=heart.offsetHeight;
-                var skimming=Codex.skimming;
-                var content=getParent(skimming,".hudpanel");
-                var scrolltop=content.scrollTop;
-                var scrollbottom=content.scrollTop+height;
-                var inner=getGeometry(skimming,content);
-                
-                if (inner.height<=0) {} /* Not displayed */
-                else if ((inner.top<scrolltop)||(inner.bottom>scrollbottom)) {
-                    // Scroll into view
-                    if (inner.height>height) content.scrollTop=inner.top;
-                    else if (inner.height>height/2)
-                        content.scrollTop=Math.floor(inner.top-(height/2));
-                    else {
-                        var gap=height-inner.height;
-                        content.scrollTop=Math.floor(inner.top-(gap/2));}}
-                else {}} // Already in view
-            else if (mode==="statictoc") {
+            scrollSlices(mode);
+            if (mode==="statictoc") {
                 var headinfo=((Codex.head)&&(Codex.head.id)&&
-                             (Codex.docinfo[Codex.head.id]));
+                              (Codex.docinfo[Codex.head.id]));
                 var hhinfo=headinfo.head, pinfo=headinfo.prev;
                 var static_head=fdjt.ID("CODEXSTATICTOC4"+headinfo.frag);
                 var static_hhead=
@@ -644,15 +634,6 @@ Codex.setMode=
             // Moving the focus back to the body lets keys work
             else document.body.focus();
             
-            if (mode==="allglosses") {
-                if ((Codex.skimming)||(Codex.point))
-                    Codex.UI.scrollGlosses(
-                        Codex.skimming||Codex.point,Codex.glosses);}
-            else if (mode==="searchresults") {
-                if ((Codex.skimming)||(Codex.point))
-                    Codex.UI.scrollGlosses(
-                        Codex.skimming||Codex.point,Codex.query.listing);}
-            else {}
             if (display_sync) Codex.displaySync();}
 
         function updateScroller(elt){
@@ -879,8 +860,8 @@ Codex.setMode=
             var animatehud=fdjtDOM.getInputValues(
                 settings,"CODEXANIMATEHUD");
             result.animatehud=
-                 (((animatehud)&&(animatehud.length)&&(animatehud[0]))?
-                  (true):(false));
+                (((animatehud)&&(animatehud.length)&&(animatehud[0]))?
+                 (true):(false));
             
             return result;}
 

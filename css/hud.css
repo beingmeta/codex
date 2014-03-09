@@ -750,7 +750,8 @@ div#CODEXPOINTGLOSSES div.tochead { display: none; }
 div#CODEXSKIMMER div.codexcard.gloss > div.tochead,
 div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody  {
   margin-left: 50px; }
-div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic {
+div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
+div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
   position: absolute; top: 0px; left: 0px;}
 
 
