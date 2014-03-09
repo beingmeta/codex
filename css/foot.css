@@ -167,7 +167,7 @@ div#CODEXHUD  .codexgoto#CODEXGOTOPAGE {
 /* SHOWTEXT rules */
 
 div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
-    position: absolute; z-index: 500; opacity: 0.8;
+    position: absolute; z-index: 500; opacity: 0.9;
     bottom: 30px; left: 100px; right: 100px;
     text-align: center;
     font-size: 125%; font-weight: bold;

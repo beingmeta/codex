@@ -81,14 +81,6 @@ body.hudup #CODEXTOP .hudpanel {
     -khtml-opacity: 0.33;
     -moz-opacity: 0.33;
     -o-opacity: 0.33;}
-#CODEXHUD.openheart #CODEXFOOT {
-    opacity: 0.66;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=66)";
-    filter: alpha(opacity=66);
-    -webkit-opacity: 0.66;
-    -khtml-opacity: 0.66;
-    -moz-opacity: 0.66;
-    -o-opacity: 0.66;}
 #CODEXHUD.openfoot #CODEXFOOT {
     opacity: 0.99;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
