@@ -398,32 +398,21 @@
             return;}
         Codex.setExcerpt(form,info.string,info.off);
         var start_target=getTarget(info.start,true);
-        var end_target=getTarget(info.end,true);
-        var real_target=false;
-            if (start_target===end_target)
-                real_target=start_target;
-            else if (hasParent(start_target,end_target))
-                real_target=end_target;
-            else if (hasParent(end_target,start_target))
-                real_target=start_target;
-            else {
-                var grand_target=getTarget(start_target.parentNode);
-                while (grand_target) {
-                    if (hasParent(end_target,grand_target)) {
-                        real_target=grand_target; break;}
-                    else grand_target=getTarget(grand_target.parentNode);}}
-        if ((real_target)&&(real_target!==Codex.glosstarget)) {
+        var new_target=((start_target)&&
+                        (!(hasParent(Codex.glosstarget,start_target)))&&
+                        (new_target));
+        if (new_target) {
             // When real_target is changed, we need to get a new EXOFF
             //  value, which we should probably get by passing real_target
             //  to a second call to getInfo (above)
             var input=fdjtDOM.getInput(form,"FRAG");
-            input.value=real_target.id;
+            input.value=new_target.id;
             if ((sel)&&(typeof info.off === "number")) {
                 var offinput=fdjtDOM.getInput(form,"EXOFF");
-                var newoff=sel.getOffset(real_target);
+                var newoff=sel.getOffset(new_target);
                 offinput.value=newoff;}}
         hideGlossForm(form,false);}
-    
+
     function selectText(passages){
         if (passages.nodeType) passages=[passages];
         var dups=[];
