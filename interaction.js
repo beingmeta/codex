@@ -1458,7 +1458,7 @@
             (evt.type==='release')) {
             dropClass(document.body,"cxHOLDING");
             if ((Codex.skimming)&&(!(Codex.hudup))) {
-                if (mode==="refinesearch") {
+                if ((mode==="refinesearch")||(mode==="searchresults")) {
                     Codex.setMode("searchresults"); return;}
                 else if (mode==="allglosses") {
                     Codex.setMode("allglosses"); return;}}

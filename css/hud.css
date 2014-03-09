@@ -210,9 +210,9 @@ body.hudup #CODEXHEARTFRAME {
     border-radius: 0px; -o-border-radius: 0px;
     -moz-border-radius: 0px; -webkit-border-radius: 0px;
     border-top-left-radius: 1em; -o-border-top-left-radius: 1em;
-    -moz-border-radius-topleft: 1em; -webkit-border-top-left-radius: 1em;
+    -moz-border-radius-top-left: 1em; -webkit-border-top-left-radius: 1em;
     border-top-right-radius: 1em; -o-border-top-right-radius: 1em;
-    -moz-border-radius-topright: 1em; -webkit-border-top-right-radius: 1em;}
+    -moz-border-radius-top-right: 1em; -webkit-border-top-right-radius: 1em;}
 #CODEXHEARTFRAME #CODEXHEART {}
 
 #CODEXHUD #CODEXRIBBON {
@@ -264,7 +264,8 @@ div#CODEXHUD.expandsearch div#CODEXHEART,
 div#CODEXHUD.searchresults div#CODEXHEART,
 div#CODEXHUD.glossaddtag div#CODEXHEART,
 div#CODEXHUD.glossaddoutlet div#CODEXHEART {
-    top: 37px; margin-top: 0px;}
+    top: 37px; margin-top: 0px;
+    border-radius: 0px;}
 
 body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
 body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
