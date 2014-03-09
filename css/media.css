@@ -67,7 +67,7 @@
 /* Handheld media rules */
 
 @media (max-device-width: 500px) {
-    div#CODEXFOOT div#CODEXPAGEINFO {
+    div#CODEXFOOT div#CODEXPAGEBAR {
         left: 0px; right: 0px;}
 
     div#CODEXHEAD img.hudbutton[hudmode="allglosses"],
@@ -85,7 +85,7 @@
 @media handheld and (orientation: landscape) {
     #CODEXPAGE {
         height: 98%; top: 1%; bottom: 1%;}
-    div#CODEXFOOT div#CODEXPAGEINFO {
+    div#CODEXFOOT div#CODEXPAGEBAR {
         margin-left: 0px; margin-right: 0px;}
 }
 

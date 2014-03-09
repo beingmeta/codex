@@ -113,8 +113,8 @@ Codex.setMode=
             Codex.DOM.noteshud=fdjtID("CODEXNOTETEXT");
             Codex.DOM.asidehud=fdjtID("CODEXASIDE");
 
-            // Initialize the pageinfo
-            Codex.DOM.pageinfo=fdjtID("CODEXPAGEINFO");
+            // Initialize the pagebar
+            Codex.DOM.pagebar=fdjtID("CODEXPAGEBAR");
             
             // Initialize search UI
             var search=fdjtID("CODEXSEARCH");

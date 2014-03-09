@@ -158,7 +158,7 @@ Codex.Paginate=
                                 addGlossmark(nodes[k++],gloss);}}}}
                 if (Codex.Trace.startup)
                     fdjtLog("Finished adding glossmarks to saved layout");
-                setupPageInfo();
+                setupPagebar();
                 if (Codex.layoutdone) {
                     var fn=Codex.layoutdone;
                     Codex.layoutdone=false;
@@ -238,7 +238,7 @@ Codex.Paginate=
                         dropClass(document.body,"cxLAYOUT");
                         Codex.layout=layout;
                         Codex.pagecount=layout.pages.length;
-                        setupPageInfo();
+                        setupPagebar();
                         if (Codex.layoutdone) {
                             var fn=Codex.layoutdone;
                             Codex.layoutdone=false;
@@ -747,7 +747,7 @@ Codex.Paginate=
                 cheaprule.style.left=((width-nwidth)/2)+"px";
             if (nheight<height) cheaprule.style.top="0px";
             var n=Codex.pagecount;
-            var spanwidth=(fdjtID("CODEXPAGEINFO").offsetWidth)/n;
+            var spanwidth=(fdjtID("CODEXPAGEBAR").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;
             if (Codex.CSS.pagespanrule)
                 Codex.CSS.pagespanrule.style.width=spanwidth+"px";
@@ -763,7 +763,7 @@ Codex.Paginate=
             if (!(classname)) classname="current";
             var npages=Codex.pagecount;
             var page_elt=fdjt.ID("CODEXPAGESPAN"+pagenum);
-            var cur=getChildren("CODEXPAGEINFO","."+classname);
+            var cur=getChildren("CODEXPAGEBAR","."+classname);
             if (cur[0]!==page_elt) {
                 dropClass(cur,classname);
                 addClass(page_elt,classname);}
@@ -850,12 +850,12 @@ Codex.Paginate=
 
         /* Page info */
         
-        function setupPageInfo(){
+        function setupPagebar(){
             var i=0, n=Codex.pagecount; var html=[];
             var pagemax=fdjt.ID("CODEXGOTOPAGEMAX");
             if (pagemax) pagemax.innerHTML=""+n;
             var spanwidth=
-                (fdjtID("CODEXPAGEINFO").offsetWidth)/n;
+                (fdjtID("CODEXPAGEBAR").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;
             if (Codex.CSS.pagespanrule)
                 Codex.CSS.pagespanrule.style.width=spanwidth+"px";
@@ -874,7 +874,7 @@ Codex.Paginate=
             var inner_width=fdjt.DOM.getInsideBounds(spans);
             var tweak=outer_width/inner_width;
             spans.style[fdjt.DOM.transform]="scale("+tweak+",1)";}
-        Codex.setupPageInfo=setupPageInfo;
+        Codex.setupPagebar=setupPagebar;
         
         /* Movement by pages */
         
