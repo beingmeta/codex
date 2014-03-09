@@ -260,6 +260,8 @@ Codex.Slice=(function () {
         age.title=fdjtTime.timeString(info.modified||info.created||info.tstamp);
         var tool=fdjtDOM(
             "span.tool",age," ",
+            fdjtDOM("span.label",
+                    (((user===Codex.user)||(user===Codex.user._id))?"modify":"respond")),
             fdjtDOM.Image(
                 (((user===Codex.user)||(user===Codex.user._id))?
                  (cxicon("gloss_edit_titled",40,40)):
@@ -454,19 +456,19 @@ Codex.Slice=(function () {
         var info=Codex.docinfo[target.id];
         if (target!==head) {
             var paratext=
-                fdjtDOM.Anchor("javascript:Codex.JumpTo('"+target.id+"');",
-                               "a.paratext",
-                               fdjtDOM("span.spacer","\u00B6"),
-                               sumText(target));
+                fdjtDOM("span.paratext.tocref",
+                        fdjtDOM("span.spacer","\u00B6"),
+                        sumText(target));
+            paratext.setAttribute("data-tocref",target.id);
             paratext.title='(click to jump to this passage) '+title;
             fdjtDOM(basespan,paratext," ");}
         if (head) {
             var text=sumText(head);
             var headtext=
-                fdjtDOM.Anchor("javascript:Codex.JumpTo('"+head.id+"');",
-                               "a.headtext",
-                               fdjtDOM("span.spacer","\u00A7"),
-                               text);
+                fdjtDOM("span.headtext.tocref",
+                        fdjtDOM("span.spacer","\u00A7"),
+                        text);
+            headtext.setAttribute("data-tocref",head.frag);
             var curspan=fdjtDOM("span.head",headtext);
             headtext.title='jump to the section: '+text;
             fdjtDOM.append(basespan," ",curspan);
@@ -478,12 +480,12 @@ Codex.Slice=(function () {
                         (elt===Codex.docroot)||(elt===document.body))
                         continue;
                     var anchor=
-                        fdjtDOM.Anchor(
-                            "javascript:Codex.JumpTo('"+hinfo.frag+"');",
-                            "a.headtext",
-                            fdjtDOM("span.spacer","\u00A7"),
-                            hinfo.title);
+                        fdjtDOM("span.tocref.headtext",
+                                fdjtDOM("span.spacer","\u00A7"),
+                                hinfo.title);
+                    anchor.setAttribute("data-tocref",hinfo.frag);
                     var newspan=fdjtDOM("span.head"," ",anchor);
+                    newspan.setAttribute("data-href",hinfo.frag);
                     anchor.title=
                         ((hinfo.title)?('jump to the section: '+hinfo.title):
                          "(jump to this section)");
