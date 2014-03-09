@@ -1260,6 +1260,30 @@ var Codex={
         Codex.GoTo(target,"JumpTo");}
     Codex.JumpTo=CodexJumpTo;
 
+    function getTOCHead(id){
+        var elts=fdjtDOM.$("#CODEXSTATICTOC div.head[NAME='SBR"+id+"']");
+        return ((elts)&&(elts.length===1)&&(elts[0]));}
+
+    // This jumps and disables the HUD at the same time
+    function CodexGoTOC(target){
+        if (target) Codex.GoTo(target,"GoTOC");
+        Codex.setMode("statictoc");
+        var headid=((Codex.head)&&(Codex.head.id));
+        var headinfo=(headid)&&(Codex.docinfo[headid]);
+        var hhid=(headinfo)&&(headinfo.head)&&(headinfo.head.frag);
+        var tocelt=(headid)&&getTOCHead(headid);
+        var cxtelt=(hhid)&&getTOCHead(hhid);
+        if ((cxtelt)&&(tocelt)) {
+            cxtelt.scrollIntoView();
+            if (fdjtDOM.isVisible(tocelt)) return;
+            else tocelt.scrollIntoView();}
+        else if (tocelt)
+            tocelt.scrollIntoView();
+        else if (cxtelt)
+            cxtelt.scrollIntoView();
+        else {}}
+    Codex.GoTOC=CodexGoTOC;
+
     // This jumps and disables the HUD at the same time
     // We try to animate the transition
     function CodexScanTo(target){

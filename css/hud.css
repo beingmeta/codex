@@ -755,9 +755,9 @@ div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 div#CODEXPOINTGLOSSES div.tochead { display: none; }
 
-div#CODEXSCANNER div.codexcard.gloss div.tochead,
+div#CODEXSCANNER div.codexcard.gloss > div.tochead,
 div#CODEXSCANNER div.codexcard.gloss div.codexcardbody  {
-  margin-left: 55px; }
+  margin-left: 50px; }
 div#CODEXSCANNER div.codexcard.gloss div.codexcardbody img.glosspic {
   position: absolute; top: 0px; left: 0px;}
 
@@ -846,17 +846,19 @@ div#CODEXHUD div#CODEXSCANNER.expanded .controller,
 div#CODEXHUD div#CODEXSCANNER.expanded span.whencollapsed {
     display: none;}
 
-div#CODEXHUD div#CODEXSCANNER div.codexcard {
+div#CODEXSCANNER div.codexcard {
     margin-left: 0px;}
-div#CODEXHUD div#CODEXSCANNER div.codexcard > div.tochead {
+div#CODEXSCANNER div.codexcard > div.tochead {
     margin-left: 0px; }
-div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead {
+div#CODEXSCANNER div.codexcard > div.idhead {
     margin-left: 0px;}
 
 div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
 div#CODEXHUD div#CODEXSCANNER #CODEXSCAN img.button { display: none;}
+div#CODEXHUD div#CODEXSCANNER #CODEXSCAN .tool span.label { display: inline;}
+div#CODEXHUD div#CODEXSCANNER.expanded #CODEXSCAN .tool span.label { display: none;}
 div#CODEXHUD div#CODEXSCANNER.expanded #CODEXSCAN img.button {
     display: inline;}
 

@@ -865,6 +865,12 @@
             fdjtUI.Ellipsis.toggle(target);
             fdjtUI.cancel(evt);
             return;}
+        if (getParent(target,".tochead")) {
+            var anchor=getParent(target,".tocref");
+            var href=(anchor)&&(anchor.getAttribute("data-tocref"));
+            Codex.GoTOC(href);
+            fdjtUI.cancel(evt);
+            return;}
         var card=getCard(target);
         var passage=cxID(card.getAttribute("data-passage"));
         var glossid=card.getAttribute("data-gloss");
@@ -1959,18 +1965,10 @@
         if ((getParent(target,".ellipsis"))&&
             ((getParent(target,".elision"))||
              (getParent(target,".delision")))){
-            fdjtUI.Ellipsis.toggle(target);
+            fdjtDOM.toggleClass("CODEXSCANNER","expanded");
+            // fdjtUI.Ellipsis.toggle(target);
             fdjtUI.cancel(evt);
             return;}
-        if (!(hasParent(target,".codexcardbody"))) {
-            Codex.stopScanning();
-            fdjtUI.cancel(evt);
-            return;}
-        if (!(hasClass("CODEXSCANNER","expanded"))) {
-            addClass("CODEXSCANNER","expanded");
-            fdjtUI.cancel(evt);
-            return;}
-        if (hasParent(target,".scannertool")) return;
         if ((getParent(target,".tool"))) {
             var card=getCard(target);
             if ((card)&&((card.name)||(card.getAttribute("name")))) {
@@ -1979,25 +1977,17 @@
                 if (!(gloss)) return;
                 var form=Codex.setGlossTarget(gloss);
                 if (!(form)) return;
+                Codex.stopScanning();
                 Codex.setMode("addgloss");
                 return;}
             else return;}
-        if ((hasClass(target,"ellipsis"))||
-            (getParent(target,".ellipsis"))) {
-            var ellipsis=getParent(target,".ellipsis");
-            if (ellipsis) {
-                if (hasClass(ellipsis,"expanded")) {
-                    dropClass(ellipsis,"expanded");}
-                else {
-                    addClass(ellipsis,"expanded");
-                    fdjtDOM.addClass("CODEXSCANNER","expanded");}
-                fdjtUI.cancel(evt);
-                return;}}
-        if (hasClass("CODEXSCANNER","expanded")) {
-            dropClass("CODEXSCANNER","expanded");
-            fdjtUI.cancel(evt);
-            return;}
-        Codex.stopScanning();
+        if (getParent(target,".codexscaninfo"))
+            Codex.stopScanning();
+        else if (getParent(target,".tochead")) {
+            var anchor=getParent(target,".tocref");
+            var href=(anchor)&&(anchor.getAttribute("data-tocref"));
+            Codex.GoTOC(href);}
+        else toggleClass("CODEXSCANNER","expanded");
         fdjtUI.cancel(evt);
         return;}
 

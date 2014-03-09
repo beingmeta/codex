@@ -165,9 +165,13 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
     text-align: right;}
 .codexcard .glossinfo img { padding-left: 4px; cursor: pointer; }
 .codexcard .tool {
-    font-weight: normal;
+    font-weight: normal; cursor: pointer;
     font-size: 70%; text-decoration: none;}
 .codexcard .tool > * { float: right; }
+.codexcard .tool span.label {
+  font-weight: bold; color: blue;
+  padding-right: 1ex; padding-left: 1ex; padding-bottom: 1ex; 
+  display: none;}
 .codexcard .tool img {
     height: 40px; width: 40px; opacity: 0.3; clear: right;
     /* This makes it overlap the date, tightening things up generally */
