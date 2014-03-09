@@ -755,6 +755,13 @@ div#CODEXSCANNER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
 div#CODEXPOINTGLOSSES div.tochead { display: none; }
 
+div#CODEXSCANNER div.codexcard.gloss div.tochead,
+div#CODEXSCANNER div.codexcard.gloss div.codexcardbody  {
+  margin-left: 55px; }
+div#CODEXSCANNER div.codexcard.gloss div.codexcardbody img.glosspic {
+  position: absolute; top: 0px; left: 0px;}
+
+
 body div#CODEXHUD.overtoc div#CODEXTOP {
     background-color: rgba(255,255,255,0.5);}
 body div#CODEXHUD div.hudpanel#CODEXTOC {
@@ -849,10 +856,6 @@ div#CODEXHUD div#CODEXSCANNER div.codexcard > div.idhead {
 div#CODEXHUD div#CODEXSCANNER div.idhead,
 div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
-div#CODEXHUD div#CODEXSCANNER .codexcard img.glosspic {
-    height: 30px; width: auto;}
-div#CODEXHUD div#CODEXSCANNER.expanded .codexcard img.glosspic {
-    height: 50px; width: auto;}
 div#CODEXHUD div#CODEXSCANNER #CODEXSCAN img.button { display: none;}
 div#CODEXHUD div#CODEXSCANNER.expanded #CODEXSCAN img.button {
     display: inline;}
