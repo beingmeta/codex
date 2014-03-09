@@ -1462,7 +1462,7 @@
                     Codex.setMode("searchresults"); return;}
                 else if (mode==="allglosses") {
                     Codex.setMode("allglosses"); return;}}
-            if (Codex.skimming) Codex.updateSkimScroll();
+            if (Codex.skimming) Codex.scrollSlices();
             if (fdjtDOM.hasClass(Codex.HUD,mode))
                 Codex.setMode(false,true);
             else if ((mode==="search")&&
