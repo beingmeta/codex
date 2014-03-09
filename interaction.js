@@ -859,7 +859,9 @@
             Codex.stopPreview("slice_tapped",true);
             fdjtUI.cancel(evt);
             return;}
-        if (getParent(target,".ellipsis")) {
+        if ((getParent(target,".ellipsis"))&&
+            ((getParent(target,".elision"))||
+             (getParent(target,".delision")))){
             fdjtUI.Ellipsis.toggle(target);
             fdjtUI.cancel(evt);
             return;}
@@ -1954,6 +1956,12 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         if (isClickable(target)) return;
+        if ((getParent(target,".ellipsis"))&&
+            ((getParent(target,".elision"))||
+             (getParent(target,".delision")))){
+            fdjtUI.Ellipsis.toggle(target);
+            fdjtUI.cancel(evt);
+            return;}
         if (!(hasParent(target,".codexcardbody"))) {
             Codex.stopScanning();
             fdjtUI.cancel(evt);

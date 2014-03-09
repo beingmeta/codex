@@ -939,7 +939,7 @@ Codex.Startup=
             
             if (device.touch) {
                 fdjtDOM.addClass(body,"cxTOUCH");
-                fdjt.TapHold.default_opts.touch=true;
+                fdjt.TapHold.default_opts.fortouch=true;
                 Codex.ui="touch";
                 Codex.touch=true;
                 Codex.keyboard=false;

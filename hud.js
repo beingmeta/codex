@@ -378,7 +378,7 @@ Codex.setMode=
                     dropClass(CodexHUD,CodexModes);
                     dropClass(document.body,"cxSCANNING");
                     dropClass(document.body,"cxSCANSTART");
-                    dropClass(document.body,".cxSCANEND");
+                    dropClass(document.body,"cxSCANEND");
                     Codex.mode=false;}
                 dropClass(document.body,"hudup");
                 dropClass(document.body,"openhud");
@@ -745,8 +745,8 @@ Codex.setMode=
                 fdjtDOM.replace("CODEXSCAN",clone);
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
-                if (next) dropClass(document.body,".cxSCANEND");
-                else addClass(document.body,".cxSCANEND");
+                if (next) dropClass(document.body,"cxSCANEND");
+                else addClass(document.body,"cxSCANEND");
                 if (prev) dropClass(document.body,"cxSCANSTART");
                 else addClass(document.body,"cxSCANSTART");
                 while (slice) {before++; slice=prevSlice(slice);}

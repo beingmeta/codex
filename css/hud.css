@@ -727,10 +727,10 @@ div#CODEXHUD div#CODEXSCANNER.expanded, body.hudup div#CODEXSCANNER.expanded,
 div#CODEXTOP div#CODEXSCANNER.expanded {
     height: inherit; max-height: inherit; overflow: auto;}
 
-div#CODEXSCANNER .ellipsis.expanded .elided {display: none;}
-div#CODEXSCANNER .ellipsis.expanded .elision {display: inline;}
-div#CODEXSCANNER.expanded .ellipsis.expanded .elided,
-div#CODEXSCANNER.expanded .ellipsis.expanded .elision,
+div#CODEXSCANNER.expanded .ellipsis .elided { display: inline; }
+div#CODEXSCANNER.expanded .ellipsis .elision,
+div#CODEXSCANNER.expanded .ellipsis .delision {
+  display: none;}
 
 /* This is the twisty control */
 div#CODEXSCANNER span.expander {
@@ -940,17 +940,17 @@ body.cxSCANNING img.codexscanbutton#CODEXENDSCAN {
     display: none;}
 
 body.cxSCANNING.cxSCANSTART img.codexscanbutton#CODEXSTARTSCAN,
-body.cxSCANNING..cxSCANEND img.codexscanbutton#CODEXENDSCAN {
+body.cxSCANNING.cxSCANEND img.codexscanbutton#CODEXENDSCAN {
     display: block;}
 body.cxSCANNING.cxSCANSTART img.codexscanbutton#CODEXPREVSCAN,
-body.cxSCANNING..cxSCANEND img.codexscanbutton#CODEXNEXTSCAN {
+body.cxSCANNING.cxSCANEND img.codexscanbutton#CODEXNEXTSCAN {
     display: none;}
 
 /* Don't display any buttons when you're at both the start and end */
-body.cxSCANNING.cxSCANSTART..cxSCANEND img.codexscanbutton#CODEXSTARTSCAN,
-body.cxSCANNING.cxSCANSTART..cxSCANEND img.codexscanbutton#CODEXENDSCAN,
-body.cxSCANNING.cxSCANSTART..cxSCANEND img.codexscanbutton#CODEXNEXTSCAN,
-body.cxSCANNING.cxSCANSTART..cxSCANEND img.codexscanbutton#CODEXPREVSCAN {
+body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXSTARTSCAN,
+body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXENDSCAN,
+body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXNEXTSCAN,
+body.cxSCANNING.cxSCANSTART.cxSCANEND img.codexscanbutton#CODEXPREVSCAN {
     display: none;}
 
 div#CODEXHUD div#SBOOKABOUT {
