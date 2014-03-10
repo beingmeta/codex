@@ -113,7 +113,7 @@
         if (!(form)) return;
         var frag=fdjtDOM.getInput(form,"FRAG");
         var uuid=fdjtDOM.getInput(form,"UUID");
-        if (Codex.Trace.mode) {
+        if ((Codex.Trace.mode)||(Codex.Trace.glossing)) {
             fdjtLog("setGlossMode %o%s: #%s #U%s",
                     mode,((toggle)?(" (toggle)"):("")),
                     ((frag)&&(frag.value)),
@@ -141,7 +141,7 @@
             dropClass(form,glossmodes);
             dropClass("CODEXHUD",/\bgloss\w+\b/);
             return;}
-        if (Codex.Trace.mode)
+        if ((Codex.Trace.mode)||(Codex.Trace.glossing))
             fdjtLog("setGlossMode gm=%s input=%o",mode,input);
         form.className=mode;
         swapClass("CODEXHUD",/\bgloss\w+\b/,"gloss"+mode);
@@ -310,6 +310,9 @@
 
     // The target can be either a passage or another gloss
     function setGlossTarget(target,form,selecting){
+        if (Codex.Trace.glossing)
+            fdjtLog("setGlossTarget %o form=%o selecting=%o",
+                    target,form,selecting);
         if (Codex.glosstarget) {
             dropClass(Codex.glosstarget,"codexglosstarget");}
         dropClass("CODEXHUD",/\bgloss\w+\b/);
@@ -373,7 +376,7 @@
     function setSelecting(selecting){
         if (Codex.selecting===selecting) return;
         else if (Codex.selecting) {
-            if (Codex.Trace.selection)
+            if ((Codex.Trace.selection)||(Codex.Trace.glossing))
                 fdjtLog("setSelecting, replacing %o with %o",
                         Codex.selecting,selecting);
             Codex.selecting.clear();}
@@ -390,9 +393,13 @@
             Codex.setHUD(false);}
         else {
             dropClass(wrapper,"hiddenglossform");}}
+    function showGlossForm(form){hideGlossForm(form,false);}
 
     function updateExcerpt(form,sel){
         var info=sel.getInfo();
+        if ((Codex.Trace.glossing)||(Codex.Trace.selection))
+            fdjtLog("Updating excerpt for %o from %o: %s",
+                    form,sel,sel.getString());
         if (!(info)) {
             Codex.setExcerpt(form,false);
             return;}
@@ -411,14 +418,15 @@
                 var offinput=fdjtDOM.getInput(form,"EXOFF");
                 var newoff=sel.getOffset(new_target);
                 offinput.value=newoff;}}
-        hideGlossForm(form,false);}
+        showGlossForm(form);}
 
     function selectText(passages){
         if (passages.nodeType) passages=[passages];
         var dups=[];
         var i=0, lim=passages.length;
         while (i<lim) dups=dups.concat(Codex.getDups(passages[i++]));
-        if (Codex.Trace.selection) fdjtLog("selectText %o",passages);
+        if ((Codex.Trace.selection)||(Codex.Trace.glossing))
+            fdjtLog("selectText %o, dups=%o",passages,dups);
         return new fdjt.UI.TextSelect(
             dups,{ontap: gloss_selecting_ontap,
                   fortouch: Codex.touch,
@@ -428,7 +436,8 @@
 
     function gloss_selecting_ontap(evt){
         evt=evt||event;
-        if (Codex.Trace.selection)
+        if ((Codex.Trace.selection)||(Codex.Trace.glossing)||
+            (Codex.Trace.gestures))
             fdjtLog("gloss_selecting_ontap %o, mode=%o, livegloss=%o",
                     evt,Codex.mode,fdjt.ID("CODEXLIVEGLOSS"));
         if (Codex.mode!=="addgloss") {
@@ -447,7 +456,8 @@
             Codex.glossform=false;
             return;}
         form.id="CODEXLIVEGLOSS";
-        hideGlossForm(form,false);
+        if (form!==cur) hideGlossForm(cur,true);
+        showGlossForm(form);
         if ((Codex.glossform)&&
             (Codex.glossform.className==="editdetail")) {
             var oldform=Codex.glossform;
@@ -837,7 +847,9 @@
             else swapClass("CODEXHUD",/gloss(tagging|tagoutlet)/g,"glosstagging");
             if (isoutlet) completions=Codex.share_cloud.complete(taginfo.content);
             else completions=Codex.gloss_cloud.complete(taginfo.content);
-            fdjtLog("Got %d completions for %s",completions.length,taginfo.content);}
+            if (Codex.Trace.glossing)
+                fdjtLog("Got %d completions for %s",
+                        completions.length,taginfo.content);}
         else dropClass("CODEXHUD",/gloss(tagging|addoutlet)/g);}
 
     function glosstag_done(input_elt,tagtext,personal,isoutlet){
@@ -935,7 +947,7 @@
             return addgloss_callback(req,form,keep,uri);};}
 
     function addgloss_callback(req,form,keep){
-        if (Codex.Trace.network)
+        if ((Codex.Trace.network)||(Codex.Trace.glossing))
             fdjtLog("Got AJAX gloss response %o from %o",req,req.uri);
         if (Codex.Trace.savegloss)
             fdjtLog("Gloss %o successfully added (status %d) to %o",

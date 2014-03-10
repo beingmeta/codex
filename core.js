@@ -151,7 +151,8 @@ var Codex={
         knodules: 0,      // How much to trace knodule processing
         flips: false,     // Whether to trace page flips (movement by pages)
         messages: false,  // Whether to trace inter-window messages
-        selection: false, // Whether to trace inter-window messages
+        glossing: false,  // Whether to trace gloss adding or edition
+        selection: false, // Whether to trace text selection events
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
         highlight: 0,     // Whether to trace highlighting
         indexing: 0,      // How much to trace document indexing
