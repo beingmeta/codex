@@ -2721,6 +2721,8 @@
              Codex.UI.handlers.clearSearch(evt);
              fdjt.UI.cancel(evt);
              return false;}},
+         "#CODEXSOURCES": {
+             click: Codex.UI.handlers.sources_ontap},
          "#CODEXSOURCES .button.everyone": {
              click: function(evt){
                  evt=evt||event;
