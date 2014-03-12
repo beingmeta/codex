@@ -2363,6 +2363,8 @@ Codex.Startup=
                     var uri=Codex.docuri;
                     saveLocal("codex.state("+uri+")",statestring);
                     return;}}
+            fdjtLog("Resolving local state with %j",xstate);
+            fdjtLog("Local state is %j",state);
             var msg1="Sync To";
             var choices=[];
             var latest=xstate.location, farthest=xstate.maxloc;
