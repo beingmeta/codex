@@ -157,9 +157,14 @@
                 addHandlers(fdjtID("CODEXPAGE"),'content');}
             else {
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
-            Codex.TapHold.body=fdjtUI.TapHold(
-                fdjt.ID("CODEXBODY"),
-                {override: true,
+            Codex.TapHold.page=fdjtUI.TapHold(
+                fdjt.ID("CODEXPAGE"),
+                {override: true,noslip: true,
+                 untouchable: externClickable,
+                 movethresh: 20});
+            Codex.TapHold.content=fdjtUI.TapHold(
+                fdjt.ID("CODEXCONTENT"),
+                {override: true,noslip: true,
                  untouchable: externClickable,
                  movethresh: 20});
             addHandlers(Codex.HUD,'hud');}
@@ -605,22 +610,6 @@
         selectors=[];
         Codex.select_target=false;}
 
-    /*
-    function content_slipped(evt){
-        evt=evt||event;
-        var rel=evt.relatedTarget;
-        if ((rel)&&(!(hasParent(rel,".fdjtselecting")))) {
-            if (slip_timer) return;
-            if (Codex.Trace.gestures)
-                fdjtLog("content_slipped %o, starting slip timer",evt);
-            slip_timer=setTimeout(function(){
-                slip_timer=false;
-                if (Codex.Trace.gestures)
-                    fdjtLog("content_slipped %o, aborting select",evt);
-                abortSelect();},2000);}}
-    */
-    function content_slipped(evt){evt=evt||event;}
-    
     function content_released(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt), children=false;
@@ -2602,7 +2591,6 @@
             blur: codexblur},
          content: {tap: content_tapped,
                    hold: content_held,
-                   slip: content_slipped,
                    release: content_released,
                    click: content_click},
          toc: {tap: toc_tapped,hold: toc_held,
@@ -2746,7 +2734,6 @@
             blur: codexblur},
          content: {tap: content_tapped,
                    hold: content_held,
-                   slip: content_slipped,
                    release: content_released,
                    swipe: content_swiped,
                    touchmove: noDefault,
