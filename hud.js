@@ -67,7 +67,6 @@ Codex.setMode=
         var dropClass=fdjtDOM.dropClass;
         var hasClass=fdjtDOM.hasClass;
         var getParent=fdjtDOM.getParent;
-        var getGeometry=fdjtDOM.getGeometry;
         var hasSuffix=fdjtString.hasSuffix;
 
         var fixStaticRefs=Codex.fixStaticRefs;

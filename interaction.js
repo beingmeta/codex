@@ -856,7 +856,6 @@
         fdjtUI.cancel(evt);}
     function toc_slipped(evt){
         evt=evt||event;
-        var rel=evt.relatedTarget||fdjtUI.T(evt);
         if (slip_timer) return;
         slip_timer=setTimeout(function(){
             slip_timer=false;
@@ -2599,7 +2598,7 @@
     Codex.lowerHUD=lowerHUD;
 
     function saveGloss(evt){
-        Codex.submitGloss();}
+        evt=evt||event; Codex.submitGloss();}
     function refreshLayout(evt){
         evt=evt||event; cancel(evt); Codex.refreshLayout();}
     function refreshOffline(evt){
