@@ -2,7 +2,7 @@
 
 /* ###################### codex/search.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file implements the search component for the e-reader web
    application, and relies heavily on the Knodules module.

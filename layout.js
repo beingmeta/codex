@@ -2,7 +2,7 @@
 
 /* ###################### codex/layout.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file implements the layout component of Codex, relying heavily
    on CodexLayout from the FDJT library.

@@ -2,7 +2,7 @@
 
 /* ###################### codex/slices.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file implements the display of lists of glosses or summaries
    referring to book passages.

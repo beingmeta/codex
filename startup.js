@@ -2,7 +2,7 @@
 
 /* ###################### codex/startup.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file specifies the startup of the Codex web application,
    initializing both internal data structures and the DOM.

@@ -2,7 +2,7 @@
 
 /* ###################### codex/hud.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file provides initialization and some interaction for the
    Codex HUD (Heads Up Display), an layer on the book content

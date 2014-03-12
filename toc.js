@@ -2,7 +2,7 @@
 
 /* ###################### codex/toc.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file implements the "dynamic table of contents" for the Codex
    e-reader web application.

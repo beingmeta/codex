@@ -2,7 +2,7 @@
 
 /* ###################### codex/interaction.js ###################### */
 
-/* Copyright (C) 2009-2013 beingmeta, inc.
+/* Copyright (C) 2009-2014 beingmeta, inc.
 
    This file implements most of the interaction handling for the
    e-reader web application.
