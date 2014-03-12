@@ -1849,7 +1849,7 @@ Codex.Startup=
                 // the layout.  We don't prompt if the layout didn't
                 // take very long (Codex.long_layout_thresh) or is already
                 // cached (Codex.layoutCached()).
-                if ((Codex.long_layout_thresh)&&
+                if ((Codex.long_layout_thresh)&&(layout.started)&&
                     ((layout.done-layout.started)<=Codex.long_layout_thresh))
                     resizing=setTimeout(resizeNow,50);
                 else if (Codex.layoutCached())
@@ -1869,18 +1869,18 @@ Codex.Startup=
                          handler: function(){
                              choosing_resize=false;
                              resize_default=true;
-                             delete Codex.layout_choice_timeout;
+                             Codex.layout_choice_timeout=10;
                              resizing=setTimeout(resizeNow,50);},
                          isdefault: resize_default},
                         {label: "No",
                          handler: function(){
                              choosing_resize=false;
                              resize_default=false;
-                             Codex.layout_choice_timeout=3;},
+                             Codex.layout_choice_timeout=10;},
                          isdefault: (!(resize_default))}];
                     var spec={choices: choices,
                               timeout: (Codex.layout_choice_timeout||
-                                        Codex.choice_timeout||5),
+                                        Codex.choice_timeout||20),
                               spec: "div.fdjtdialog.fdjtconfirm.updatelayout"};
                     choosing_resize=fdjtUI.choose(spec,msg);}}}
 
@@ -2399,7 +2399,7 @@ Codex.Startup=
                     {choices: choices,cancel: true,timeout: 7,nodefault: true,
                      onclose: function(){
                          Codex.statedialog=false;},
-                     spec: "div.fdjtdialog#CODEXRESOLVESTATE"},
+                     spec: "div.fdjtdialog.resolvestate#CODEXRESOLVESTATE"},
                     fdjtDOM("div",msg1));
             if (xstate.maxloc>state.maxloc) {
                 state.maxloc=xstate.maxloc;}}
