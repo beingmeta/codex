@@ -368,27 +368,7 @@
                 Codex.setMode("addgloss");}
             else if (saving_dialog) {}
             else {
-                // This prompts for updating the layout
-                var msg=fdjtDOM("div.message","Save gloss?");
-                saving_dialog=true;
-                // When a choice is made, it becomes the default
-                // When a choice is made to not resize, the
-                // choice timeout is reduced.
-                var choices=[
-                    {label: "Save",
-                     handler: function(){
-                         Codex.submitGloss();
-                         saving_dialog=false;},
-                     isdefault: true},
-                    {label: "Discard",
-                     handler: function(){
-                         Codex.cancelGloss();
-                         saving_dialog=false;}}];
-                var spec={choices: choices,
-                          timeout: (Codex.save_gloss_timeout||
-                                    Codex.choice_timeout||10),
-                          spec: "div.fdjtdialog.fdjtconfirm.savegloss"};
-                saving_dialog=fdjtUI.choose(spec,msg);
+                saveGlossDialog();
                 fdjtUI.cancel(evt);
                 return;}}
 
@@ -437,6 +417,30 @@
         fdjtUI.cancel(evt); gesture_start=false;
         return;}
 
+    function saveGlossDialog(){
+        // This prompts for updating the layout
+        var msg=fdjtDOM("div.message","Save gloss?");
+        saving_dialog=true;
+        // When a choice is made, it becomes the default
+        // When a choice is made to not resize, the
+        // choice timeout is reduced.
+        var choices=[
+            {label: "Save",
+             handler: function(){
+                 Codex.submitGloss();
+                 saving_dialog=false;},
+             isdefault: true},
+            {label: "Discard",
+             handler: function(){
+                 Codex.cancelGloss();
+                 saving_dialog=false;}}];
+        var spec={choices: choices,
+                  timeout: (Codex.save_gloss_timeout||Codex.choice_timeout||10),
+                  spec: "div.fdjtdialog.fdjtconfirm.savegloss"};
+        saving_dialog=fdjtUI.choose(spec,msg);
+        return saving_dialog;}
+    Codex.saveGlossDialog=saveGlossDialog;
+
     function resolve_anchor(ref){
         var elt=cxID(ref);
         if (elt) return elt;
@@ -458,7 +462,7 @@
     var CodexSlice=Codex.Slice;
 
     function handle_content_click(target){
-
+        // Assume 3s gaps are spurious
         if ((clicked)&&((fdjtTime()-clicked)<3000)) return true;
 
         // Handle various click-like operations, overriding to sBook
@@ -621,8 +625,10 @@
             if (slip_timer) {
                 clearTimeout(slip_timer); slip_timer=false;}
             return;}
-        if ((Codex.TapHold.body)&&(Codex.TapHold.body.abort))
-            Codex.TapHold.body.abort();
+        if ((Codex.TapHold.page)&&(Codex.TapHold.page.abort))
+            Codex.TapHold.page.abort();
+        if ((Codex.TapHold.content)&&(Codex.TapHold.page.content))
+            Codex.TapHold.content.abort();
         var selecting=Codex.UI.selectText(passage);
         Codex.select_target=passage;
         selectors.push(selecting);
