@@ -88,7 +88,7 @@ Codex.Paginate=
         function Paginate(why,init){
             if (((Codex.layout)&&(!(Codex.layout.done)))) return;
             if (!(why)) why="because";
-            layoutMessage("Starting layout",0);
+            layoutMessage("Preparing your book",0);
             dropClass(document.body,"cxSCROLL");
             addClass(document.body,"cxLAYOUT");
             scaleLayout(false);
