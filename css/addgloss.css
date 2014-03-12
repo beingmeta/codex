@@ -16,9 +16,6 @@ div#CODEXADDGLOSS div.codexglossform.focused {
     max-height: inherit;
     background-color: ivory;}
 
-div.codexglossform.hiddenglossform {
-    opacity: 0.05;}
-
 div.codexglossform form div.textbox,
 div.codexglossform form div.glossetc {
     max-height: 40%;

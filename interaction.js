@@ -310,6 +310,7 @@
 
     /* Generic content interaction handler */
 
+    var saving_dialog=false;
     var gesture_start=false;
     var clicked=false;
 
@@ -362,6 +363,35 @@
             cancel(evt);
             return;}
 
+        if (Codex.glosstarget) {
+            if (hasParent(target,Codex.glosstarget)) {
+                Codex.setMode("addgloss");}
+            else if (saving_dialog) {}
+            else {
+                // This prompts for updating the layout
+                var msg=fdjtDOM("div.message","Save gloss?");
+                saving_dialog=true;
+                // When a choice is made, it becomes the default
+                // When a choice is made to not resize, the
+                // choice timeout is reduced.
+                var choices=[
+                    {label: "Save",
+                     handler: function(){
+                         Codex.submitGloss();
+                         saving_dialog=false;},
+                     isdefault: true},
+                    {label: "Discard",
+                     handler: function(){
+                         Codex.cancelGloss();
+                         saving_dialog=false;}}];
+                var spec={choices: choices,
+                          timeout: (Codex.save_gloss_timeout||
+                                    Codex.choice_timeout||10),
+                          spec: "div.fdjtdialog.fdjtconfirm.savegloss"};
+                saving_dialog=fdjtUI.choose(spec,msg);
+                fdjtUI.cancel(evt);
+                return;}}
+
         if ((Codex.hudup)||(Codex.mode)) {
             Codex.setMode(false); Codex.setHUD(false);
             if (fdjtID("CODEXOPENGLOSSMARK")) {
@@ -396,7 +426,7 @@
             sX=touch.screenX; sY=touch.screenY;
             cX=touch.clientX; cY=touch.clientY;}
         if (Codex.Trace.gestures)
-            fdjtLog("ctouch/nopassage (%o) %o, m=%o, @%o,%o, vw=%o",
+            fdjtLog("content_tapped/fallthrough (%o) %o, m=%o, @%o,%o, vw=%o",
                     evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
         if ((Codex.fullheight)&&(!(Codex.hudup))&&
             ((cY<50)||(cY>(fdjtDOM.viewHeight()-50)))) 

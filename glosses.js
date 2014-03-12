@@ -384,17 +384,6 @@
         Codex.selecting=selecting;}
     Codex.setSelecting=setSelecting;
 
-    function hideGlossForm(form,flag){
-        var wrapper=getParent(form,".codexglossform");
-        if (typeof flag==="undefined") 
-            flag=(!(hasClass(wrapper,"hiddenglossform")));
-        if (flag) {
-            addClass(wrapper,"hiddenglossform");
-            Codex.setHUD(false);}
-        else {
-            dropClass(wrapper,"hiddenglossform");}}
-    function showGlossForm(form){hideGlossForm(form,false);}
-
     function updateExcerpt(form,sel){
         var info=sel.getInfo();
         if ((Codex.Trace.glossing)||(Codex.Trace.selection))
@@ -417,8 +406,7 @@
             if ((sel)&&(typeof info.off === "number")) {
                 var offinput=fdjtDOM.getInput(form,"EXOFF");
                 var newoff=sel.getOffset(new_target);
-                offinput.value=newoff;}}
-        showGlossForm(form);}
+                offinput.value=newoff;}}}
 
     function selectText(passages){
         if (passages.nodeType) passages=[passages];
@@ -440,14 +428,11 @@
             (Codex.Trace.gestures))
             fdjtLog("gloss_selecting_ontap %o, mode=%o, livegloss=%o",
                     evt,Codex.mode,fdjt.ID("CODEXLIVEGLOSS"));
-        if (Codex.mode!=="addgloss") {
+        if (Codex.mode!=="addgloss") 
             Codex.setMode("addgloss");
-            fdjtUI.cancel(evt);}
-        else {
-            var live_gloss=fdjt.ID("CODEXLIVEGLOSS");
-            hideGlossForm(live_gloss);
-            fdjtUI.cancel(evt);
-            return;}}
+        else Codex.setHUD(false);
+        fdjtUI.cancel(evt);
+        return;}
 
     function setGlossForm(form){
         var cur=fdjtID("CODEXLIVEGLOSS");
@@ -456,8 +441,6 @@
             Codex.glossform=false;
             return;}
         form.id="CODEXLIVEGLOSS";
-        if (form!==cur) hideGlossForm(cur,true);
-        showGlossForm(form);
         if ((Codex.glossform)&&
             (Codex.glossform.className==="editdetail")) {
             var oldform=Codex.glossform;
