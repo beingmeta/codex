@@ -436,7 +436,7 @@
                  Codex.cancelGloss();
                  saving_dialog=false;}}];
         var spec={choices: choices,
-                  timeout: (Codex.save_gloss_timeout||Codex.choice_timeout||10),
+                  timeout: (Codex.save_gloss_timeout||Codex.choice_timeout||7),
                   spec: "div.fdjtdialog.fdjtconfirm.savegloss"};
         saving_dialog=fdjtUI.choose(spec,msg);
         return saving_dialog;}
@@ -724,7 +724,8 @@
     Codex.startAddGloss=startAddGloss;
 
     function content_swiped(evt){
-        var dx=evt.deltaX, dy=evt.deltaY; var vw=fdjtDOM.viewWidth();
+        var dx=evt.deltaX, dy=evt.deltaY;
+        var vw=fdjtDOM.viewWidth(), vh=fdjtDOM.viewHeight();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
         if (Trace.gestures)
             fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o",
@@ -744,13 +745,19 @@
             if (!(Codex.hudup)) {
                 if (ady<=10) return; // Ignore really short swipes 
                 else if ((evt.startX<(vw/5))&&(dy<0))
+                    // On the left, up, show help
                     Codex.setMode("help");
                 else if ((evt.startX<(vw/5))&&(dy>0))
+                    // On the left, down, show TOC
                     Codex.setMode("statictoc");
                 else if ((evt.startX>(vw*0.8))&&(dy>0))
+                    // On the right, down, show SEARCH
                     Codex.setMode("search");
                 else if ((evt.startX>(vw*0.8))&&(dy<0))
+                    // On the right, up, show GLOSSES
                     Codex.setMode("allglosses");
+                else if (dy>0)
+                    Codex.showCover();
                 else Codex.setHUD(true);}
             else if (dy<-10) Codex.setMode("allglosses");
             else if (dy>10) Codex.setMode("search");}
@@ -1862,8 +1869,8 @@
 
     function pageForward(evt){
         evt=evt||event;
-        if (Codex.booksound)
-            fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
+        if (Codex.readsound)
+            fdjtDOM.playAudio("CODEXPAGEORWARDAUDIO");
         if ((Trace.gestures)||(Trace.flips))
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
@@ -1884,8 +1891,8 @@
 
     function pageBackward(evt){
         evt=evt||event;
-        if (Codex.booksound)
-            fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
+        if (Codex.readsound)
+            fdjtDOM.playAudio("CODEXPAGEBACKWARDAUDIO");
         if ((Trace.gestures)||(Trace.flips))
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
@@ -1905,6 +1912,8 @@
 
     function skimForward(evt){
         evt=evt||event;
+        if (Codex.uisound)
+            fdjtDOM.playAudio("CODEXSKIMFORWARDAUDIO");
         if (hasClass(document.body,"cxSKIMMING")) {}
         else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;
@@ -1925,6 +1934,8 @@
             return;}
         else if (Codex.skimming) {}
         else return; /* Need default */
+        if (Codex.uisound)
+            fdjtDOM.playAudio("CODEXSKIMFORWARDAUDIO");
         addClass("CODEXSKIMMER","flash");
         addClass("CODEXNEXTSKIM","flash");
         setTimeout(function(){
@@ -1962,6 +1973,8 @@
     Codex.skimForward=skimForward;
 
     function skimBackward(evt){
+        if (Codex.uisound)
+            fdjtDOM.playAudio("CODEXSKIMBACKWARDAUDIO");
         if (hasClass(document.body,"cxSKIMMING")) {}
         else if (Codex.mode==="openglossmark") {
             var ids=Codex.docinfo._ids;

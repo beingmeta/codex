@@ -1509,8 +1509,8 @@ Codex.Startup=
         
         Codex.addConfig("uisound",function(name,value){
             Codex.uisound=(value)&&(true);});
-        Codex. addConfig("booksound",function(name,value){
-            Codex.booksound=(value)&&(true);});
+        Codex. addConfig("readsound",function(name,value){
+            Codex.readsound=(value)&&(true);});
 
 
         /* Filling in information */

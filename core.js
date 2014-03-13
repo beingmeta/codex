@@ -57,7 +57,7 @@ var Codex={
     taptapmsecs: 500, holdmsecs: 150, edgeclick: 50, pagesize: 250,
     dontanimate: false, nativeselect: false,
     // Control audio effects
-    uisound: false, booksound: false,
+    uisound: false, readsound: false,
     glossmodes: /(addtag)|(addoutlet)|(editdetail)|(hamburger)|(attach)/,
     // Various device properties which can effect behaviors
     fullheight: false, fullwidth: false, handheld: false,

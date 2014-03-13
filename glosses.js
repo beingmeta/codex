@@ -997,11 +997,11 @@
                     setGlossTarget(false);
                     Codex.setTarget(false);
                     Codex.setMode(false);}},
-                       3000);}
+                       1500);}
         else if (form)
             setTimeout(function(){
                 dropClass(form.parentNode,"submitdone");},
-                       3000);
+                       1500);
         else {}}
 
     function clearGlossForm(form){
