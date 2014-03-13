@@ -633,9 +633,24 @@
             Codex.TapHold.page.abort();
         if ((Codex.TapHold.content)&&(Codex.TapHold.page.content))
             Codex.TapHold.content.abort();
+        if (Codex.select_target===passage) {
+            startAddGloss(passage,false,evt);
+            return;}
         var selecting=Codex.UI.selectText(
-            passage,{onrelease: function(){
-                startAddGloss(passage,false,evt);}});
+            passage,{onrelease: function(evt){
+                evt=evt||event;
+                if ((Trace.gestures)||(Trace.selecting))
+                    fdjtLog("select_release/start_gloss: %o passage=%o",
+                            evt,passage);
+                startAddGloss(passage,false,evt);},
+                     onslip: function(evt){
+                         evt=evt||event; var target=fdjtUI.T(evt);
+                         if ((passage===target)||(hasParent(passage,target))) {
+                             if ((Trace.gestures)||(Trace.selecting))
+                                 fdjtLog(
+                                     "select_slip/start_gloss: %o passage=%o",
+                                     evt,passage);
+                             startAddGloss(passage,false,evt);}}});
         Codex.select_target=passage;
         selectors.push(selecting);
         selectors[passage.id]=selecting;
@@ -679,9 +694,8 @@
             if (Codex.glossform)
                 Codex.glossform.id="CODEXLIVEGLOSS";
             if (Codex.mode==="addgloss") Codex.setHUD(true);
-            else Codex.setMode("addgloss");
-            return;}
-        startAddGloss(passage,((evt.shiftKey)&&("addtag")),evt);}
+            else Codex.setMode("addgloss");}
+        else startAddGloss(passage,((evt.shiftKey)&&("addtag")),evt);}
 
     function startAddGloss(passage,mode,evt){
         var selecting=selectors[passage.id]; abortSelect(selecting);
