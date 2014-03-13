@@ -93,6 +93,7 @@
     var RefDB=fdjt.RefDB;
     var fdjtID=fdjt.ID;
     var cxID=Codex.ID;
+    var Trace=Codex.Trace;
 
     // Imports (kind of )
     var addClass=fdjtDOM.addClass;
@@ -145,9 +146,9 @@
     function setupGestures(domnode){
         var mode=Codex.ui;
         if (!(mode)) Codex.ui=mode="mouse";
-        if ((!(domnode))&&((Codex.Trace.startup>1)||(Codex.Trace.gestures)))
+        if ((!(domnode))&&((Trace.startup>1)||(Trace.gestures)))
             fdjtLog("Setting up basic handlers for %s UI",mode);
-        if ((domnode)&&(Codex.Trace.gestures))
+        if ((domnode)&&(Trace.gestures))
             fdjtLog("Setting up %s UI handlers for %o",mode,domnode);
         if (!(domnode)) {
             addHandlers(false,'window');
@@ -190,7 +191,7 @@
                     if (seen.indexOf(node)<0) { 
                         seen.push(node);
                         fdjtDOM.addListeners(node,h);}}}}
-        if (Codex.Trace.startup>2) fdjtLog("Done with handler setup");}
+        if (Trace.startup>2) fdjtLog("Done with handler setup");}
     Codex.setupGestures=setupGestures;
 
     /* New simpler UI */
@@ -305,7 +306,7 @@
     function clear_hold(caller){
         if (held) {
             clearTimeout(held); held=false;
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("clear_hold from %s",(caller||"somewhere"));}}
 
     /* Generic content interaction handler */
@@ -323,7 +324,7 @@
 
         // Detect touches with two fingers, which we may treat especially
         if ((evt.touches)||(evt.shiftKey)) {
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("content_tapped(double/shift) dt=%o now=%o",
                         double_touch,now);
             if ((evt.touches.length>1)||(evt.shiftKey)) {
@@ -336,7 +337,7 @@
             else if (!(double_touch)) {}
             else if ((now-double_touch)>2000) double_touch=false;
             else {}}
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("content_tapped %o c=%d,%d now=%o p=%o",
                     evt,cX,cY,now,Codex.previewing);
         
@@ -405,7 +406,7 @@
             touch=evt.changedTouches[0];
             sX=touch.screenX; sY=touch.screenY;
             cX=touch.clientX; cY=touch.clientY;}
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("content_tapped/fallthrough (%o) %o, m=%o, @%o,%o, vw=%o",
                     evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
         if ((Codex.fullheight)&&(!(Codex.hudup))&&
@@ -473,7 +474,7 @@
         // If you tap on a relative anchor, move there using Codex
         // rather than the browser default
         if ((anchor)&&(anchor.href)&&(href=anchor.getAttribute("href"))) {
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("ctouch: follow link %s",href);
             var rel=anchor.rel, classname=anchor.className;
             if ((href[0]==="#")&&
@@ -596,7 +597,7 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
-        if (Codex.Trace.gestures) 
+        if (Trace.gestures) 
             fdjtLog("content_held %o p=%o p.p=%o bc=%s hc=%s",
                     evt,passage,((passage)&&(passage.parentNode)),
                     document.body.className,
@@ -607,6 +608,9 @@
             var href=((anchor)&&(anchor.getAttribute("href")));
             fdjtUI.cancel(evt);
             if ((href)&&(href[0]==="#")&&(cxID(href.slice(1)))) {
+                if (Trace.gestures) 
+                    fdjtLog("anchor_preview/content_held %o %o %o",
+                            evt,anchor,href);
                 Codex.startPreview(href.slice(1),"content/anchor_held");
                 return;}}
         // Already selecting this target, cancel any pending slippage
@@ -629,11 +633,16 @@
             Codex.TapHold.page.abort();
         if ((Codex.TapHold.content)&&(Codex.TapHold.page.content))
             Codex.TapHold.content.abort();
-        var selecting=Codex.UI.selectText(passage);
+        var selecting=Codex.UI.selectText(
+            passage,{onrelease: function(){
+                startAddGloss(passage,false,evt);}});
         Codex.select_target=passage;
         selectors.push(selecting);
         selectors[passage.id]=selecting;
         fdjtUI.TapHold.clear();
+        if ((Trace.gestures)||(Trace.selecting)) 
+            fdjtLog("content_held/select_start %o %o %o",
+                    selecting,passage,evt);
         // This makes a selection start on the region we just created.
         setTimeout(function(){selecting.startEvent(evt);},0);}
     Codex.getTextSelectors=function getTextSelectors(){return selectors;};
@@ -649,7 +658,7 @@
     function content_released(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt), children=false;
-        if (Codex.Trace.gestures) fdjtLog("content_released %o",evt);
+        if (Trace.gestures) fdjtLog("content_released %o",evt);
         if (Codex.previewing) {
             Codex.stopPreview("content_released");
             fdjtUI.cancel(evt);
@@ -657,12 +666,13 @@
         else if (hasParent(target,"A")) {
             fdjtUI.cancel(evt);
             return;}
-        var passage=((hasParent(target,".fdjtselecting"))&&(getTarget(target)));
+        var passage=((hasParent(target,".fdjtselecting"))&&
+                     (getTarget(target)));
         if (!(passage)) {
             children=getChildren(target,".fdjtselected");
             if (children.length===0) {abortSelect(); return;}
             target=children[0]; passage=getTarget(target);}
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("content_released %o p=%o gt=%o gf=%o",
                     evt,passage,Codex.glosstarget,Codex.glossform);
         if (Codex.glosstarget===passage) {
@@ -680,21 +690,20 @@
         var form=getChild(form_div,"form");
         if (!(form)) return;
         else if (evt) fdjtUI.cancel(evt);
-        if (Codex.Trace.gestures)
+        if ((Trace.gestures)||(Trace.glossing))
             fdjtLog("startAddGloss (%o) %o f=%o/%o",
                     evt,passage,form_div,form);
         Codex.setGlossForm(form_div);
         if (mode) form.className=mode;
         Codex.setMode("addgloss",true);
         var input=getInputs(form,"NOTE")[0];
-        if ((input)&&(Codex.keyboard))
-            Codex.setFocus(input);
-    }
+        if ((input)&&(Codex.keyboard)) Codex.setFocus(input);}
+    Codex.startAddGloss=startAddGloss;
 
     function content_swiped(evt){
         var dx=evt.deltaX, dy=evt.deltaY; var vw=fdjtDOM.viewWidth();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o",
                     dx,dy,adx,ady,evt.startX,evt.startY,vw);
         if (adx>(ady*2)) {
@@ -786,12 +795,12 @@
             var info=Codex.docinfo[ref];
             var target=info.elt||cxID(ref);
             if (target.id!==ref) target=cxID(ref);
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("toc_tapped %o about=%o ref=%s target=%o",
                         evt,about,ref,target);
             Codex.JumpTo(target);
             fdjtUI.cancel(evt);}
-       else if (Codex.Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
+       else if (Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
        else {}}
     function toc_held(evt){
         evt=evt||event;
@@ -805,7 +814,7 @@
             var ref=name.slice(3);
             var toc=getParent(about,".codextoc");
             var title=getTitleSpan(toc,name);
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("toc_held %o about=%o ref=%s toc=%o title=%s",
                         evt,about,ref,toc,title);
             addClass(title,"codexpreviewtitle");
@@ -815,7 +824,7 @@
             addClass(toc,"codexheld");
             Codex.startPreview(cxID(ref),"toc_held");
             return fdjtUI.cancel(evt);}
-        else if (Codex.Trace.gestures) fdjtLog("toc_held %o noabout", evt);
+        else if (Trace.gestures) fdjtLog("toc_held %o noabout", evt);
         else {}}
     function toc_released(evt){
         evt=evt||event;
@@ -827,7 +836,7 @@
             var ref=name.slice(3);
             var toc=getParent(about,".codextoc");
             var title=getTitleSpan(toc,name);
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("toc_released %o ref=%o about=%o toc=%o title=%s",
                         evt,ref,about,toc,title);
             dropClass(title,"codexpreviewtitle");
@@ -837,7 +846,7 @@
             dropClass(toc,"codexheld");
             if (Codex.previewing)
                 Codex.stopPreview("toc_released");}
-        else if (Codex.Trace.gestures) {
+        else if (Trace.gestures) {
             fdjtLog("toc_released %o noabout",evt);
             Codex.stopPreview("toc_released");}
         else {
@@ -848,7 +857,7 @@
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
         if (!(Codex.previewing)) return;
-        else if (Codex.Trace.gestures) {
+        else if (Trace.gestures) {
             fdjtLog("toc_touchtoo %o noabout",evt);
             Codex.stopPreview("toc_touchtoo",true);}
         else {
@@ -859,7 +868,7 @@
         if (slip_timer) return;
         slip_timer=setTimeout(function(){
             slip_timer=false;
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("toc_slipped/timeout %o",evt);
             Codex.stopPreview("toc_slipped");},
                               500);}
@@ -873,7 +882,7 @@
 
     function slice_tapped(evt){
         var target=fdjtUI.T(evt);
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("slice_tapped %o: %o",evt,target);
         if (Codex.previewing) {
             // Because we're previewing, this slice is invisible, so
@@ -926,7 +935,7 @@
     function slice_held(evt){
         evt=evt||event;
         var slice_target=fdjtUI.T(evt), card=getCard(slice_target);
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("slice_held %o: %o, skimming=%o",
                     evt,card,Codex.skimming);
         if (!(card)) return;
@@ -976,7 +985,7 @@
         return fdjtUI.cancel(evt);}
     function slice_released(evt){
         var card=getCard(fdjtUI.T(evt||event));
-        if (Codex.Trace.gestures) {
+        if (Trace.gestures) {
             fdjtLog("slice_released %o: %o, skimming=%o",evt,card);}
         Codex.stopPreview("slice_released");}
     function slice_slipped(evt){
@@ -986,7 +995,7 @@
             if (slip_timer) return;
             slip_timer=setTimeout(function(){
                 slip_timer=false;
-                if (Codex.Trace.gestures)
+                if (Trace.gestures)
                     fdjtLog("slice_slipped/timeout %o",evt);
                 Codex.stopPreview("slice_slipped");},
                                   500);}}
@@ -995,7 +1004,7 @@
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
         if (!(Codex.previewing)) return;
-        else if (Codex.Trace.gestures) {
+        else if (Trace.gestures) {
             fdjtLog("slice_touchtoo %o noabout",evt);
             Codex.stopPreview("toc_touchtoo",true);}
         else {
@@ -1054,7 +1063,7 @@
             var pattern=new RegExp(fdjtDOM.textRegExp(word),"gim");
             var dups=Codex.getDups(target);
             var ranges=fdjtDOM.findMatches(dups,pattern);
-            if (Codex.Trace.highlight)
+            if (Trace.highlight)
                 fdjtLog("Trying to highlight %s (using %o) in %o, ranges=%o",
                         word,pattern,target,ranges);
             if ((ranges)&&(ranges.length)) {
@@ -1470,7 +1479,7 @@
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var mode=target.getAttribute("hudmode");
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("hudmodebutton() %o mode=%o cl=%o skim=%o sbh=%o mode=%o",
                     evt,mode,(isClickable(target)),
                     Codex.skimming,Codex.hudup,Codex.setMode());
@@ -1502,10 +1511,10 @@
     Codex.UI.dropHUD=function(evt){
         var target=fdjtUI.T(evt);
         if (isClickable(target)) {
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("Clickable: don't dropHUD %o",evt);
             return;}
-        if (Codex.Trace.gestures) fdjtLog("dropHUD %o",evt);
+        if (Trace.gestures) fdjtLog("dropHUD %o",evt);
         fdjtUI.cancel(evt); Codex.setMode(false);};
 
     /* Gesture state */
@@ -1555,7 +1564,7 @@
     /* Default click/tap */
     function default_tap(evt){
         var target=fdjtUI.T(evt);
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("default_tap %o (%o) %s%s%s",evt,target,
                     ((fdjtUI.isClickable(target))?(" clickable"):("")),
                     (((hasParent(target,Codex.HUD))||
@@ -1598,7 +1607,7 @@
             getTarget(glossmark.parentNode,true);
         if ((passage)&&(passage.getAttribute("data-baseid"))) 
             passage=cxID(passage.getAttribute("data-baseid"));
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("glossmark_tapped (%o) on %o gmark=%o passage=%o mode=%o target=%o",
                     evt,target,glossmark,passage,Codex.mode,Codex.target);
         if (!(glossmark)) return false;
@@ -1699,14 +1708,14 @@
         if (evt) fdjtUI.cancel(evt);
         if ((last_motion)&&((now-last_motion)<100)) return;
         else last_motion=now;
-        if (Codex.Trace.nav)
+        if (Trace.nav)
             fdjtLog("Forward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
             skimForward(evt);
         else pageForward(evt);}
     Codex.Forward=forward;
     function right_margin_tap(evt){
-        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (Trace.gestures) tracetouch("right_margin",evt);
         if (Codex.page_turner) {
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;}
@@ -1724,7 +1733,7 @@
         else forward(evt);
         cancel(evt);}
     function right_margin_hold(evt){
-        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (Trace.gestures) tracetouch("right_margin",evt);
         if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
         if (Codex.page_turner) {
@@ -1733,7 +1742,7 @@
         // Codex.page_turner=setInterval(function(){forward();},800);
         cancel(evt);}
     function right_margin_release(evt){
-        if (Codex.Trace.gestures) tracetouch("right_margin",evt);
+        if (Trace.gestures) tracetouch("right_margin",evt);
         if (Codex.page_turner) {
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;}
@@ -1741,7 +1750,7 @@
     function right_margin_swipe(evt){
         var dx=evt.deltaX, dy=evt.deltaY;
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("Right margin swiped %o dx=%o, dy=%o, adx=%o, ady=%o",
                     evt,dx,dy,adx,ady);
         if (adx>(ady*2)) {
@@ -1765,14 +1774,14 @@
         if (evt) fdjtUI.cancel(evt);
         if ((last_motion)&&((now-last_motion)<100)) return;
         else last_motion=now;
-        if (Codex.Trace.nav)
+        if (Trace.nav)
             fdjtLog("Backward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
             skimBackward();
         else pageBackward();}
     Codex.Backward=backward;
     function left_margin_tap(evt){
-	if (Codex.Trace.gestures) tracetouch("left_margin",evt);
+	if (Trace.gestures) tracetouch("left_margin",evt);
         stopPageTurner();
         if (Codex.previewing) {
             Codex.stopPreview("left_margin_tap");
@@ -1788,20 +1797,20 @@
         else backward(evt);
         cancel(evt);}
     function left_margin_hold(evt){
-        if (Codex.Trace.gestures) tracetouch("left_margin",evt);
+        if (Trace.gestures) tracetouch("left_margin",evt);
         if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
             Codex.setMode(false);
         stopPageTurner();
         // Codex.page_turner=setInterval(function(){backward();},800);
         cancel(evt);}
     function left_margin_release(evt){
-        if (Codex.Trace.gestures) tracetouch("left_margin",evt);
+        if (Trace.gestures) tracetouch("left_margin",evt);
         stopPageTurner();
         cancel(evt);}
     function left_margin_swipe(evt){
         var dx=evt.deltaX, dy=evt.deltaY;
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
-        if (Codex.Trace.gestures)
+        if (Trace.gestures)
             fdjtLog("Right margin swiped %o dx=%o, dy=%o, adx=%o, ady=%o",
                     evt,dx,dy,adx,ady);
         stopPageTurner();
@@ -1832,7 +1841,7 @@
         evt=evt||event;
         if (Codex.booksound)
             fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
-        if ((Codex.Trace.gestures)||(Codex.Trace.flips))
+        if ((Trace.gestures)||(Trace.flips))
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
         if (Codex.clearGlossmark) Codex.clearGlossmark();
@@ -1854,7 +1863,7 @@
         evt=evt||event;
         if (Codex.booksound)
             fdjtDOM.playAudio("CODEXPAGEFLIPAUDIO");
-        if ((Codex.Trace.gestures)||(Codex.Trace.flips))
+        if ((Trace.gestures)||(Trace.flips))
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
         if (Codex.clearGlossmark) Codex.clearGlossmark();
@@ -1903,7 +1912,7 @@
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
             var headinfo=Codex.docinfo[headid];
-            if (Codex.Trace.nav) 
+            if (Trace.nav) 
                 fdjtLog("skimForward/toc() head=%o info=%o n=%o h=%o",
                         head,headinfo,headinfo.next,headinfo.head);
             if (headinfo.next) Codex.GoTo(headinfo.next.frag,"skimForward");
@@ -1922,7 +1931,7 @@
         var start=Codex.skimming;
         var scan=Codex.nextSlice(start);
         var ref=((scan)&&(Codex.getRef(scan)));
-        if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav)) 
+        if ((Trace.gestures)||(Trace.flips)||(Trace.nav)) 
             fdjtLog("scanForward (on %o) from %o/%o to %o/%o under %o",
                     evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
         if ((ref)&&(scan)) Codex.Skim(ref,scan);
@@ -1960,7 +1969,7 @@
             var head=Codex.head;
             var headid=head.codexbaseid||head.id;
             var headinfo=Codex.docinfo[headid];
-            if (Codex.Trace.nav) 
+            if (Trace.nav) 
                 fdjtLog("skimBackward/toc() head=%o info=%o p=%o h=%o",
                         head,headinfo,headinfo.prev,headinfo.head);
             if (headinfo.prev) Codex.GoTo(headinfo.prev.frag,"skimBackward");
@@ -1975,7 +1984,7 @@
         var start=Codex.skimming;
         var scan=Codex.prevSlice(start);
         var ref=((scan)&&(Codex.getRef(scan)));
-        if ((Codex.Trace.gestures)||(Codex.Trace.flips)||(Codex.Trace.nav))
+        if ((Trace.gestures)||(Trace.flips)||(Trace.nav))
             fdjtLog("skimBackward (on %o) from %o/%o to %o/%o under %o",
                     evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
         if ((ref)&&(scan)) Codex.Skim(ref,scan,true);
@@ -2060,7 +2069,7 @@
     function head_tap(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
-        if (Codex.Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
+        if (Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
         if (Codex.previewing) {
             Codex.stopPreview("head_tap");
             cancel(evt);
@@ -2082,7 +2091,7 @@
             fdjtUI.cancel(evt);
             Codex.setMode(true);}}
     function foot_tap(evt){
-        if (Codex.Trace.gestures) fdjtLog("foot_tap %o",evt);
+        if (Trace.gestures) fdjtLog("foot_tap %o",evt);
         if (Codex.previewing) {
             Codex.stopPreview("foot_tap");
             cancel(evt);
@@ -2111,7 +2120,7 @@
         if (((hasParent(target,pagebar))&&(target.tagName==="span")))
             return;
         var gopage=getGoPage(target,evt);
-        if ((Codex.Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
             fdjtLog("pagebar_span_hold %o t=%o gopage: %o=>%o/%o, start=%o",
                     evt,target,previewing_page,gopage,Codex.pagecount,
                    preview_start_page);
@@ -2134,13 +2143,13 @@
     function pagebar_tap(evt,target){
         evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("CODEXPAGEBAR");
-        if ((Codex.Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
             fdjtLog("pagebar_tap %o",evt);
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
         if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
-            if (Codex.Trace.gestures)
+            if (Trace.gestures)
                 fdjtLog("clearHUD %s %s %s",Codex.mode,
                         ((Codex.hudup)?"hudup":""),
                         ((Codex.cxthelp)?"hudup":""));
@@ -2157,7 +2166,7 @@
     function pagebar_release(evt,target){
         evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("CODEXPAGEBAR");
-        if ((Codex.Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
             fdjtLog("pagebar_release %o, previewing=%o, ptarget=%o start=%o",
                     evt,Codex.previewing,Codex.previewTarget,
                     preview_start_page);
@@ -2180,7 +2189,7 @@
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
-        if ((Codex.Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
             fdjtLog("pagebar_slip %o, previewing=%o, target=%o start=%o",
                     evt,Codex.previewing,Codex.previewTarget,
                     preview_start_page);
