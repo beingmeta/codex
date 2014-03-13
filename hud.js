@@ -72,9 +72,11 @@ Codex.setMode=
         var fixStaticRefs=Codex.fixStaticRefs;
 
         var CodexHUD=false;
+        var CodexMedia=false;
 
         // This will contain the interactive input console (for debugging)
-        var frame=false, hud=false, allglosses=false, sbooksapp=false;
+        var frame=false, hud=false, media=false;
+        var allglosses=false, sbooksapp=false;
 
         function initHUD(){
             if (fdjtID("CODEXHUD")) return;
@@ -83,7 +85,8 @@ Codex.setMode=
             messages.innerHTML=fixStaticRefs(Codex.HTML.messages);
             if (Codex.Trace.startup>2) fdjtLog("Initializing HUD layout");
             Codex.HUD=CodexHUD=hud=fdjtDOM("div#CODEXHUD");
-            hud.codexui=true;
+            Codex.Media=CodexMedia=media=fdjtDOM("div#CODEXMEDIA");
+            hud.codexui=true; media.codexui=true;
             hud.innerHTML=fixStaticRefs(Codex.HTML.hud);
             fdjtDOM.append(messages);
             if (fdjtID("CODEXFRAME")) frame=fdjtID("CODEXFRAME");
@@ -91,6 +94,7 @@ Codex.setMode=
                 frame=fdjtDOM("#CODEXFRAME");
                 fdjtDOM.prepend(document.body,frame);}
             frame.appendChild(messages); frame.appendChild(hud);
+            frame.appendChild(media);
             Codex.Frame=frame;
             // Fill in the HUD help
             var hudhelp=fdjtID("CODEXHUDHELP");

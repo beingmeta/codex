@@ -36,6 +36,7 @@
      #CODEXFRAME
        #CODEXHUD
        #CODEXCOVER
+       #CODEXMEDIA
      #CODEXBODY
        #CODEXCONTENT
        #CODEXPAGE
@@ -69,15 +70,17 @@ body {
     z-index: -50;}
 #CODEXFRAME > *, #CODEXFRAME > * > * { box-sizing: border-box;}
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
-body.cxSKIMMING #CODEXFRAME, body.openhud #CODEXFRAME {
+body.cxSKIMMING #CODEXFRAME, body.openhud #CODEXFRAME,
+body.cxMEDIA #CODEXFRAME {
     display: block;}
 body.hudup #CODEXHUD, body.cxSKIMMING #CODEXHUD,
-body.openhud #CODEXHUD, body.cxCOVER #CODEXCOVER {
+body.openhud #CODEXHUD, body.cxCOVER #CODEXCOVER,
+body.cxCOVER #CODEXMEDIA, body.cxCOVER #CODEXCLOSEMEDIA {
     display: block;}
 
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
 body.openhud #CODEXFRAME, body.cxSKIMMING #CODEXFRAME,
-body.codexhelp #CODEXFRAME {
+body.codexhelp #CODEXFRAME, body.cxMEDIA #CODEXFRAME {
     z-index: 50;}
 
 /* The HUD is where all of the active interface elements for reading
@@ -127,6 +130,29 @@ body.cxCOVER #CODEXBODY {
     visibility: hidden; z-index: -50; pointer-events: none;}
 body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
     visibility: hidden; z-index: -50; pointer-events: none;}
+
+#CODEXFRAME > #CODEXMEDIA {
+  top: 0px; bottom: 0px; left: 0px; right: 0px;
+  height: 100%; width: 100%;}
+
+#CODEXFRAME > #CODEXCLOSEMEDIA {
+  z-index: 100; opacity: 0.5;
+  background-image:
+   url(https://s3.amazonaws.com/beingmeta/static/g/codex/redx.svgz);
+  top: 0px;  right: 0px;}
+
+#CODEXMEDIA > img, #CODEXMEDIA > video, #CODEXMEDIA > audio { }
+
+@media (orientation: landscape) {
+  #CODEXFRAME > #CODEXCLOSEMEDIA { width: 15%; height: auto; }
+  #CODEXMEDIA > img, #CODEXMEDIA > video, #CODEXMEDIA > audio {
+    min-height: 100%; width: auto;}
+}
+@media (orientation: portrait) {
+  #CODEXFRAME > #CODEXCLOSEMEDIA { height: 10%; : auto; }
+  #CODEXMEDIA > img, #CODEXMEDIA > video, #CODEXMEDIA > audio {
+    min-width: 100%; height: auto;}
+}
 
 /* CODEXBODY is where all of the content lives, whether broken into
    pages or not. */
