@@ -698,6 +698,15 @@
         else startAddGloss(passage,((evt.shiftKey)&&("addtag")),evt);}
 
     function startAddGloss(passage,mode,evt){
+        if (Codex.glosstarget===passage) {
+            var form=Codex.glossform;
+            if ((Trace.gestures)||(Trace.glossing))
+                fdjtLog("startAddGloss/resume %o %o form=%o",
+                        evt,passage,form);
+            if (mode) setGlossMode(mode,form);
+            Codex.setMode("addgloss",true);
+            if (evt) fdjtUI.cancel(evt);
+            return;}
         var selecting=selectors[passage.id]; abortSelect(selecting);
         var form_div=Codex.setGlossTarget(
             passage,((Codex.mode==="addgloss")&&(Codex.glossform)),selecting);
