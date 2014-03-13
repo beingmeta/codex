@@ -699,11 +699,10 @@
 
     function startAddGloss(passage,mode,evt){
         if (Codex.glosstarget===passage) {
-            var form=Codex.glossform;
             if ((Trace.gestures)||(Trace.glossing))
                 fdjtLog("startAddGloss/resume %o %o form=%o",
-                        evt,passage,form);
-            if (mode) setGlossMode(mode,form);
+                        evt,passage,Codex.glossform);
+            if (mode) Codex.setGlossMode(mode,Codex.glossform);
             Codex.setMode("addgloss",true);
             if (evt) fdjtUI.cancel(evt);
             return;}
@@ -725,7 +724,7 @@
 
     function content_swiped(evt){
         var dx=evt.deltaX, dy=evt.deltaY;
-        var vw=fdjtDOM.viewWidth(), vh=fdjtDOM.viewHeight();
+        var vw=fdjtDOM.viewWidth();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
         if (Trace.gestures)
             fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o",
