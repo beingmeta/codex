@@ -409,7 +409,7 @@
                 var newoff=sel.getOffset(new_target);
                 offinput.value=newoff;}}}
 
-    function selectText(passages){
+    function selectText(passages,opts){
         if (passages.nodeType) passages=[passages];
         var dups=[];
         var i=0, lim=passages.length;
@@ -418,6 +418,8 @@
             fdjtLog("selectText %o, dups=%o",passages,dups);
         return new fdjt.UI.TextSelect(
             dups,{ontap: gloss_selecting_ontap,
+                  onrelease: ((opts)&&(opts.onrelease)),
+                  onslip: ((opts)&&(opts.onslip)),
                   fortouch: Codex.touch,
                   holdthresh: 150,
                   movethresh: 250});}
