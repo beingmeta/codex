@@ -625,7 +625,8 @@ var Codex={
     function cxID(id){
         var info;
         if (!(codex_docinfo)) codex_docinfo=Codex.docinfo;
-        return ((codex_docinfo)&&(info=codex_docinfo[id])&&(info.elt.id)&&(info.elt))||
+        return ((codex_docinfo)&&(info=codex_docinfo[id])&&
+                (info.elt)&&(info.elt.id===id)&&(info.elt))||
             document.getElementById(id)||
             fdjtDOM.$1("[data-tocid='"+id+"']");}
     Codex.ID=cxID;
