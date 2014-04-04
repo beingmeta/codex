@@ -1516,7 +1516,8 @@ Codex.Startup=
         /* Filling in information */
 
         function fillAboutInfo(about){
-            var bookabout=fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
+            var bookabout=fdjtID("SBOOKABOUTBOOK")||
+                fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
             var authorabout=fdjtID("SBOOKAUTHORPAGE")||
                 fdjtID("SBOOKABOUTAUTHOR");
             var acknowledgements=
