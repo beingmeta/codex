@@ -2152,7 +2152,7 @@
             Codex.setMode(false);
             return;}
         if (target.nodeType===3) target=target.parentNode;
-        if (((hasParent(target,pagebar))&&(target.tagName==="span")))
+        if (((hasParent(target,pagebar))&&(target.tagName==="SPAN")))
             return;
         var gopage=getGoPage(target,evt);
         if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
@@ -2192,7 +2192,7 @@
             Codex.setMode(false);
             return;}
         if (target.nodeType===3) target=target.parentNode;
-        if (((hasParent(target,pagebar))&&(target.tagName==="span")))
+        if (((hasParent(target,pagebar))&&(target.tagName==="SPAN")))
             return;
         var gopage=getGoPage(target,evt);
         if (previewing_page===gopage) return;
@@ -2215,7 +2215,7 @@
         preview_start_page=false;
         previewing_page=false;
         fdjtUI.cancel(evt);
-        if (((hasParent(target,pagebar))&&(target.tagName==="span"))) {
+        if (((hasParent(target,pagebar))&&(target.tagName==="SPAN"))) {
             return;}}
     function pagebar_slip(evt,target){
         evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
