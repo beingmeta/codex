@@ -586,6 +586,7 @@ var Codex={
     function getTarget(scan,closest){
         scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
         var target=false, id=false, targetids=Codex.targetids;
+        var wsn_target=false;
         if (hasParent(scan,Codex.HUD)) return false;
         else if (hasParent(scan,".codexmargin")) return false;
         else while (scan) {
@@ -594,14 +595,17 @@ var Codex={
                 return target;
             else if ((id=(scan.codexbaseid||scan.id))&&(Codex.docinfo[id])) {
                 if ((!(scan.codexbaseid))&&(id.search("CODEXTMP")===0)) {}
+                else if ((target)&&(id.search("WSN_")===0)) {}
+                else if (id.search("WSN_")===0) wsn_target=scan;
                 else if ((targetids)&&(id.search(targetids)!==0)) {}
                 else if (hasClass(scan,"sbooknofocus")) {}
                 else if ((Codex.nofocus)&&(Codex.nofocus.match(scan))) {}
                 else if (hasClass(scan,"sbookfocus")) return scan;
-                else if ((Codex.focus)&&(Codex.focus.match(scan))) return scan;
+                else if ((Codex.focus)&&(Codex.focus.match(scan)))
+                    return scan;
                 else if (closest) return scan;
                 else if ((target)&&
-                         ((scan.tagName==='section')||
+                         ((scan.tagName==='SECTION')||
                           ((scan.className)&&
                            (scan.className.search(/\bhtml5section\b/i)>=0))))
                     return target;
@@ -610,7 +614,7 @@ var Codex={
                 else target=scan;}
             else {}
             scan=scan.parentNode;}
-        return target;}
+        return target||wsn_target;}
     Codex.getTarget=getTarget;
     
     var isEmpty=fdjtString.isEmpty;
