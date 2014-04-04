@@ -162,12 +162,12 @@
                 fdjt.ID("CODEXPAGE"),
                 {override: true,noslip: true,
                  untouchable: externClickable,
-                 movethresh: 20});
+                 movethresh: 10});
             Codex.TapHold.content=fdjtUI.TapHold(
                 fdjt.ID("CODEXCONTENT"),
                 {override: true,noslip: true,
                  untouchable: externClickable,
-                 movethresh: 20});
+                 movethresh: 10});
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
             var handlers=Codex.UI.handlers[mode];
