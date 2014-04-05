@@ -2152,7 +2152,7 @@
             Codex.setMode(false);
             return;}
         if (target.nodeType===3) target=target.parentNode;
-        if (((hasParent(target,pagebar))&&(target.tagName==="SPAN")))
+        if (((hasParent(target,pagebar))&&(target.tagName!=="SPAN")))
             return;
         var gopage=getGoPage(target,evt);
         if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
@@ -2192,7 +2192,7 @@
             Codex.setMode(false);
             return;}
         if (target.nodeType===3) target=target.parentNode;
-        if (((hasParent(target,pagebar))&&(target.tagName==="SPAN")))
+        if (((hasParent(target,pagebar))&&(target.tagName!=="SPAN")))
             return;
         var gopage=getGoPage(target,evt);
         if (previewing_page===gopage) return;
