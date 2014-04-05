@@ -72,7 +72,7 @@ body.sbook { font-size: 62.5%; }
 .codexbody div, .codexbody p, .codexbody li, .codexbody dt, .codexbody dd,
 .codexbody h1, .codexbody h2, .codexbody h3, .codexbody h4, .codexbody h5,
 .codexbody h6, .codexbody h7 {
-    line-height: 125%;}
+    line-height: 130%;}
  .codexbody .codexoversize div,  .codexbody .codexoversize p,
  .codexbody .codexoversize li,  .codexbody .codexoversize dt,  .codexbody .codexoversize dd,
  .codexbody .codexoversize h1,  .codexbody .codexoversize h2,  .codexbody .codexoversize h3,
@@ -84,7 +84,7 @@ body.sbook { font-size: 62.5%; }
 
 #CODEXBODY.codexbodysizexlarge p, #CODEXBODY.codexbodysizexlarge li,
 #CODEXBODY.codexbodysizexlarge dt, #CODEXBODY.codexbodysizexlarge dd {
-    font-size: 125%;}
+    font-size: 130%;}
 
 #CODEXBODY { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrasthigh { background-color: #ffffff; color: #111; }
@@ -95,10 +95,6 @@ body.sbook { font-size: 62.5%; }
 #CODEXBODY .tapholdtarget {outline: dotted blue 1px;}
 #CODEXBODY .tapholdtarget .tapholdtarget {outline: none;}
 */
-
-#SBOOKTITLEPAGE { text-align: center;}
-#SBOOKTITLEPAGE .title, #SBOOKTITLEPAGE .author { margin-bottom: 1em;}
-#SBOOKTITLEPAGE .pubinfo { margin-top: 3em;}
 
 .codexbody .titlepage, .codexbody .sbooktitlepage { text-align: center;}
 
