@@ -70,6 +70,7 @@ Codex.Paginate=
         var dropClass=fdjtDOM.dropClass;
         var toArray=fdjtDOM.toArray;
         var textWidth=fdjtDOM.textWidth;
+        var hasContent=fdjtDOM.hasContent;
         var hasText=fdjtDOM.hasText;
         var isEmpty=fdjtString.isEmpty;
         var secs2short=fdjtTime.secs2short;
@@ -468,14 +469,13 @@ Codex.Paginate=
             function setPageInfo(page,layout){
                 var pages=layout.pages, pagenum=layout.pagenum;
                 var topnode=getPageTop(page);
-                var topnodeid=topnode.codexbaseid||topnode.id;
-                var topid=getPageTopID(page)||topnodeid;
+                var topid=topnode.codexbaseid||topnode.id;
                 var curloc=false;
                 if (topnode) {
-                    var topstart=cxID(topnodeid);
+                    var topstart=cxID(topid);
                     var locoff=((topstart===topnode)?(0):
                                 (getLocOff(pages,topstart,topnode)));
-                    var info=docinfo[topnodeid];
+                    var info=docinfo[topid];
                     curloc=info.starts_at+locoff;
                     if (topid) page.setAttribute("data-topid",topid);
                     page.setAttribute("data-sbookloc",curloc);}
@@ -504,9 +504,9 @@ Codex.Paginate=
             function getPageTop(node) {
                 if (hasClass(node,"codexpage")) {}
                 else if ((node.id)&&(docinfo[node.id])) {
-                    if (hasText(node)) return node;}
+                    if (hasContent(node,true)) return node;}
                 else if ((node.codexbaseid)&&(docinfo[node.codexbaseid])) {
-                    if (hasText(node)) return node;}
+                    if (hasContent(node,true)) return node;}
                 else {}
                 var children=node.childNodes;
                 if (children) {
@@ -515,23 +515,6 @@ Codex.Paginate=
                         var child=children[i++];
                         if (child.nodeType===1) {
                             var first=getPageTop(child);
-                            if (first) return first;}}}
-                return false;}
-
-            function getPageTopID(node) {
-                var id;
-                if (hasClass(node,"codexpage")) {}
-                else if ((id=(node.id||node.codexbaseid))&&
-                         (Codex.docinfo[id])) {
-                    if (hasText(node)) return id;}
-                else {}
-                var children=node.childNodes;
-                if (children) {
-                    var i=0; var lim=children.length;
-                    while (i<lim) {
-                        var child=children[i++];
-                        if (child.nodeType===1) {
-                            var first=getPageTopID(child);
                             if (first) return first;}}}
                 return false;}
 
