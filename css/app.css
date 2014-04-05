@@ -840,10 +840,9 @@ div.startupmessage.running {
 
 /* Dialog styling */
 
-div.fdjtdialog { font-size: 250%;}
-div.fdjtdialog div.message { font-size: 150%;}
-div.fdjtdialog div.choices button {font-size: 150%;}
-div.fdjtdialog .countdown { font-size: 100%; }
+div.fdjtdialog div.choices button, div.fdjtdialog .countdown,
+div.fdjtdialog .closebutton {
+  font-size: 125%;}
 
 /* Logotypes */
 
