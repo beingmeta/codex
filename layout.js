@@ -519,10 +519,11 @@ Codex.Paginate=
                 return false;}
 
             function getPageTopID(node) {
+                var id;
                 if (hasClass(node,"codexpage")) {}
-                else if ((node.id)&&(!(node.codexbaseid))&&
-                         (Codex.docinfo[node.id])) {
-                    if (hasText(node)) return node.id;}
+                else if ((id=(node.id||node.codexbaseid))&&
+                         (Codex.docinfo[id])) {
+                    if (hasText(node)) return id;}
                 else {}
                 var children=node.childNodes;
                 if (children) {
