@@ -71,7 +71,6 @@ Codex.Paginate=
         var toArray=fdjtDOM.toArray;
         var textWidth=fdjtDOM.textWidth;
         var hasContent=fdjtDOM.hasContent;
-        var hasText=fdjtDOM.hasText;
         var isEmpty=fdjtString.isEmpty;
         var secs2short=fdjtTime.secs2short;
         
@@ -247,6 +246,7 @@ Codex.Paginate=
                         if (Codex.state)
                             Codex.restoreState(Codex.state,"layoutDone");
                         Codex.layout.running=false;
+                        setTimeout(syncLayout,100);
                         return false;}
                     else {
                         var root=nodes[i++];
@@ -328,7 +328,9 @@ Codex.Paginate=
                 
                 rootloop();}
             
-            if ((Codex.cache_layout_thresh)&&(!((Codex.forcelayout)))&&(!(forced))) {
+            if ((Codex.cache_layout_thresh)&&
+                (!((Codex.forcelayout)))&&
+                (!(forced))) {
                 if (Codex.Trace.layout)
                     fdjtLog("Fetching layout %s",layout_id);
                 CodexLayout.fetchLayout(layout_id,function(content){
@@ -1009,6 +1011,14 @@ Codex.Paginate=
             Codex.Paginate(why,{forced: true});}
         Codex.refreshLayout=refreshLayout;
         
+        function syncLayout(){
+            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
+            var height=geom.inner_height, width=geom.width;
+            if ((Codex.layout.height===height)&&
+                (Codex.layout.width===width))
+                return;
+            else refreshLayout("sync_resize");}
+
         function displaySync(){
             if ((Codex.pagecount)&&(Codex.curpage))
                 Codex.GoToPage(Codex.curpage,"displaySync");}
