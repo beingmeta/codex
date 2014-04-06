@@ -106,7 +106,7 @@ Codex.Startup=
         var clearOffline=Codex.clearOffline;
 
         /* Whether to resize by default */
-        var resize_default=true;
+        var resize_default=false;
 
         /* Interval timers */
         var ticktock=false, synctock=false;
@@ -1858,7 +1858,7 @@ Codex.Startup=
                 else if (choosing_resize) {}
                 else {
                     // This prompts for updating the layout
-                    var msg=fdjtDOM("div.message","Update layout?");
+                    var msg=fdjtDOM("div.title","Update layout?");
                     // This should be fast, so we do it right away.
                     Codex.scaleLayout();
                     choosing_resize=true;
