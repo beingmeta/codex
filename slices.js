@@ -264,8 +264,8 @@ Codex.Slice=(function () {
                     (((user===Codex.user)||(user===Codex.user._id))?"modify":"respond")),
             fdjtDOM.Image(
                 (((user===Codex.user)||(user===Codex.user._id))?
-                 (cxicon("gloss_edit_titled",40,40)):
-                 (cxicon("gloss_respond_titled",40,40))),
+                 (cxicon("gloss_edit_titled",64,64)):
+                 (cxicon("gloss_respond_titled",64,64))),
                 "img.button",
                 (((user===Codex.user)||(user===Codex.user._id))?
                  ("edit"):("reply")),

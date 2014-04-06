@@ -543,7 +543,7 @@
     function addLink(form,url,title) {
         var linkselt=getChild(form,'.links');
         var linkval=((title)?(url+" "+title):(url));
-        var img=fdjtDOM.Image(cxicon("diaglink",32,32),"img");
+        var img=fdjtDOM.Image(cxicon("diaglink",64,64),"img");
         var anchor=fdjtDOM.Anchor(url,"a.glosslink",((title)||url));
         var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
         var aspan=fdjtDOM("span.checkspan.ischecked.waschecked.anchor",
