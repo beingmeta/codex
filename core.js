@@ -461,7 +461,7 @@ var Codex={
     if (Codex.root[Codex.root.length-1]!=="/")
         Codex.root=Codex.root+"/";
     Codex.withsvg=document.implementation.hasFeature(
-        "http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")||
+        "http://www.w3.org/TR/SVG11/feature#Image", "1.1")||
         navigator.mimeTypes["image/svg+xml"];
     Codex.svg=fdjt.DOM.checkSVG();
     if (fdjtState.getQuery("nosvg")) Codex.svg=false;
