@@ -43,7 +43,7 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 
 div#CODEXCOVER > div {
     position: absolute;
-    top: 50px; left: 50px; right: 50px;
+    top: 75px; left: 50px; right: 50px;
     bottom: 100px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
     opacity: 0.0; z-index: -50;
@@ -62,7 +62,7 @@ div#CODEXCOVER >  div#CODEXCOVERMESSAGE {
     font-size: 1.5em; font-style: italic; opacity: 1.0;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     width: 80%; left: 10%; right: 10%; border: 0px;
-    height: 50px; top: 0px; bottom: auto;
+    height: 75px; top: 0px; bottom: auto;
     text-align: center; overflow: visible; 
     background-color: black; color: silver;
     cursor: pointer; display: block;
@@ -367,6 +367,11 @@ div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
 
 div#CODEXCOVERMESSAGE {
     text-align: center;}
+div#CODEXCOVER > .sbookslogo, div#CODEXCOVER > .publogo {
+    display: none; }
+div#CODEXCOVER > .sbookslogo { float: left; }
+div#CODEXCOVER > .publogo { float: right; }
+
 div#CODEXCOVERMESSAGE > div {
     color: silver; display: none;
     padding-left: 1em; padding-right: 1em;
@@ -374,7 +379,10 @@ div#CODEXCOVERMESSAGE > div {
     box-sizing: border-box;
     width: 100%;}
 div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
-   font-size: 1.5em;}
+    display: block; width: 8em; margin-left: auto; margin-right: auto;
+    font-size: 1em; color: white; background-color: gray;
+    margin-top: 1.5ex; padding-bottom: 1ex; padding-top: 1ex;
+    border-radius: 1em; }
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
 body div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
     display: inline-block;}
