@@ -731,18 +731,18 @@
                     dx,dy,adx,ady,evt.startX,evt.startY,vw);
         if (adx>(ady*2)) {
             // Horizontal swipe
-            if (dx<-10) {
+            if (dx<-(Codex.minswipe||10)) {
                 if (hasClass(document.body,"cxSKIMMING"))
                     Codex.skimForward(evt);
                 else Codex.Forward(evt);}
-            else if (dx>10) {
+            else if (dx>(Codex.minswipe||10)) {
                 if (hasClass(document.body,"cxSKIMMING"))
                     Codex.skimBackward(evt);
                 else Codex.Backward(evt);}}
         else if (ady>(adx*2)) {
             // Vertical swipe
             if (!(Codex.hudup)) {
-                if (ady<=10) return; // Ignore really short swipes 
+                if (ady<=(Codex.minswipe||10)) return; // Ignore really short swipes 
                 else if ((evt.startX<(vw/5))&&(dy<0))
                     // On the left, up, show help
                     Codex.setMode("help");
@@ -758,8 +758,8 @@
                 else if (dy>0)
                     Codex.showCover();
                 else Codex.setHUD(true);}
-            else if (dy<-10) Codex.setMode("allglosses");
-            else if (dy>10) Codex.setMode("search");}
+            else if (dy<-(Codex.minswipe||10)) Codex.setMode("allglosses");
+            else if (dy>(Codex.minswipe||10)) Codex.setMode("search");}
         else {}}
 
     function initGlossMode(){

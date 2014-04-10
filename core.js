@@ -56,6 +56,8 @@ var Codex={
     // How long it takes a gesture to go from tap to hold
     taptapmsecs: 500, holdmsecs: 150, edgeclick: 50, pagesize: 250,
     dontanimate: false, nativeselect: false,
+    // Ignore swipes shorter than this:
+    minswipe: 7,
     // Control audio effects
     uisound: false, readsound: false,
     glossmodes: /(addtag)|(addoutlet)|(editdetail)|(hamburger)|(attach)/,
