@@ -581,7 +581,7 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
     white-space: nowrap;
     background-color: rgba(0,0,0,0.5); color: white;
     font-size: 1.5em; width: 6em;
-    margin-top: 0.7ex; padding: 0px 4em 0px 4em;
+    margin-top: 0.7ex; padding:  0px 1em 0px 1em;
     border: solid transparent 2px;
     border-radius: 1ex;
     cursor: pointer;
