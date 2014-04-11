@@ -382,7 +382,7 @@ div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
     display: block; width: 6em; margin-left: auto; margin-right: auto;
     font-size: 1.5em; color: white; background-color: gray;
     margin-top: 0.7ex; padding-bottom: 0px; padding-top: 0px;
-    border-radius: 1em; }
+    font-variant: small-caps; border-radius: 1em; }
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
 body div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
     display: inline-block;}
