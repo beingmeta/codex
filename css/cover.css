@@ -379,9 +379,9 @@ div#CODEXCOVERMESSAGE > div {
     box-sizing: border-box;
     width: 100%;}
 div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
-    display: block; width: 8em; margin-left: auto; margin-right: auto;
-    font-size: 1em; color: white; background-color: gray;
-    margin-top: 1.5ex; padding-bottom: 1ex; padding-top: 1ex;
+    display: block; width: 6em; margin-left: auto; margin-right: auto;
+    font-size: 1.5em; color: white; background-color: gray;
+    margin-top: 1.5ex; padding-bottom: 0px; padding-top: 0px;
     border-radius: 1em; }
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
 body div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
