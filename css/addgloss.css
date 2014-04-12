@@ -10,7 +10,8 @@ div.codexglossformbody { position: relative; }
 
 div#CODEXADDGLOSS div.codexglossform {
     box-sizing: border-box;
-    min-height: 50px; max-height: 60px;}
+    min-height: 50px;
+    max-height: 50px;}
 
 div#CODEXADDGLOSS div.codexglossform.focused {
     max-height: inherit;

@@ -431,7 +431,7 @@
             fdjtLog("gloss_selecting_ontap %o, mode=%o, livegloss=%o",
                     evt,Codex.mode,fdjt.ID("CODEXLIVEGLOSS"));
         if (Codex.mode!=="addgloss") 
-            Codex.setMode("addgloss");
+            Codex.setMode("addgloss",false);
         else Codex.setHUD(false);
         fdjtUI.cancel(evt);
         return;}

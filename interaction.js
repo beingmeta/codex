@@ -217,6 +217,7 @@
         if (div) {
             Codex.setGlossMode(false);}
         if (input) Codex.setFocus(input);
+        Codex.setHUD(true);
         Codex.freezelayout=true;
         gloss_focus=form;}
     function glossform_blur(evt){
@@ -227,6 +228,7 @@
         var input=((div)&&(getChild(div,"TEXTAREA")));
         if (div) dropClass(div,"focused");
         if (input) Codex.clearFocus(input);
+        Codex.setHUD(false,false);
         gloss_blurred=fdjtTime();
         Codex.freezelayout=false;
         // Restore this without removal of the gloss
@@ -250,6 +252,7 @@
             return;
         if (!(hasParent(target,".textbox"))) fdjtUI.cancel(evt);
         addClass(div,"focused");
+        Codex.setHUD(true);
         glossform_focus(evt);}
     Codex.UI.glossform_touch=glossform_touch;
     Codex.UI.glossform_focus=glossform_focus;
@@ -366,7 +369,7 @@
 
         if (Codex.glosstarget) {
             if (hasParent(target,Codex.glosstarget)) {
-                Codex.setMode("addgloss");}
+                Codex.setMode("addgloss",false);}
             else if (saving_dialog) {}
             else {
                 saveGlossDialog();
@@ -615,7 +618,9 @@
                 return;}}
         if (!(passage)) return;
         if (Codex.glosstarget===passage) {
-            Codex.setMode("addgloss"); return;}
+            if (Codex.mode!=="addgloss")
+                Codex.setMode("addgloss",false);
+            return;}
         var selecting=Codex.UI.selectText(passage);
         if ((Codex.TapHold.page)&&(Codex.TapHold.page.abort))
             Codex.TapHold.page.abort();
@@ -664,8 +669,7 @@
         if (Codex.glosstarget===passage) {
             if (Codex.glossform)
                 Codex.glossform.id="CODEXLIVEGLOSS";
-            if (Codex.mode==="addgloss") Codex.setHUD(true);
-            else Codex.setMode("addgloss");}
+            if (Codex.mode!=="addgloss") Codex.setMode("addgloss");}
         else startAddGloss(passage,((evt.shiftKey)&&("addtag")),evt);}
 
     function startAddGloss(passage,mode,evt){
@@ -688,9 +692,7 @@
                     evt,passage,form_div,form);
         Codex.setGlossForm(form_div);
         if (mode) form.className=mode;
-        Codex.setMode("addgloss",true);
-        var input=getInputs(form,"NOTE")[0];
-        if ((input)&&(Codex.keyboard)) Codex.setFocus(input);}
+        Codex.setMode("addgloss",false);}
     Codex.startAddGloss=startAddGloss;
 
     function content_swiped(evt){
