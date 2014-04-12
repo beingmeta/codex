@@ -752,10 +752,11 @@
         if ((Trace.glossing)||(Trace.gestures))
             fdjtLog("glossinput_onfocus %o text=%o pos=%o taginfo=%o",
                     evt,text,pos,taginfo);
-        if (!(taginfo)) return;
         Codex.UI.glossform_focus(evt);
+        if (!(taginfo)) return;
         if (glossinput_timer) clearTimeout(glossinput_timer);
-        glossinput_timer=setTimeout(function(){glosstag_complete(target);},150);}
+        glossinput_timer=setTimeout(function(){
+            glosstag_complete(target);},150);}
 
     function glossinput_onkeypress(evt){
         var target=fdjtUI.T(evt), form=getParent(target,"FORM");
