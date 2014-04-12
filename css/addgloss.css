@@ -184,6 +184,10 @@ div.codexglossform .glossetc .glossdate {
 
 div.codexglossform form .glossexposure {
     float: right; font-size: 1.5ex;}
+@media (pointer: coarse) {
+  div.codexglossform form .glossetc { font-size: 2ex; }
+  div.codexglossform form .glossexposure { font-size: 1em; }
+}
 div.codexglossform form .glossexposure .checkspan {
     float: right; margin-right: 1ex; margin-top: 2px;
     font-variant: smallcaps; vertical-align: top;}

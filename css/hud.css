@@ -319,7 +319,7 @@ body #CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME {
-    top: 150px; bottom: 50px; height: auto;}
+    top: 70px; bottom: 50px; height: auto;}
 body #CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
     top: 150px; height: auto; min-height: 10em;}
 body #CODEXHUD.addgloss.glossattach #CODEXHEART {

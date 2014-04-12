@@ -206,6 +206,7 @@
     function glossform_focusout(evt){
         gloss_blur_timeout=setTimeout(function(){
             glossform_blur(evt);},500);}
+    function glossform_focusout(evt){}
 
     function glossform_focus(evt){
         evt=evt||event;
@@ -2631,6 +2632,13 @@
     function updateSettings(evt){
         evt=evt||event; Codex.UI.settingsUpdate();}
 
+    function glossetc_touch(evt){
+        var target=fdjtUI.T(evt);
+        fdjtUI.CheckSpan.onclick(evt);
+        var form=getParent(target,"form");
+        var input=getInput(form,"NOTE");
+        input.focus();}
+
     fdjt.DOM.defListeners(
         Codex.UI.handlers.mouse,
         {window: {
@@ -2877,7 +2885,7 @@
          ".hudbutton[alt='save gloss']": {
              tap: saveGloss,hold: saveGloss},
          // GLOSSFORM rules
-         ".codexglossform": {click: cancel,touchstart: glossform_touch},
+         //".codexglossform": {click: cancel,touchend: glossform_touch},
          "span.codexsharegloss": {},
          ".codexclosehud": {
              click: back_to_reading,
@@ -2890,14 +2898,16 @@
              slip: glossmode_slip,
              release: glossmode_release,
              click: cancel},
-         "div.glossetc": {},
+         "div.glossetc": {
+             touchstart: glossetc_touch,
+             touchend: cancel},
          "div.glossetc div.sharing": {
              touchend: glossform_outlets_tapped,
              click: cancel},
          "div.glossetc div.notetext": {
              touchend: editglossnote,
              click: cancel},
-         ".codexglossform, #CODEXSETTINGS": {
+         "#CODEXSETTINGS": {
              touchstart: cancel,
              touchend: fdjt.UI.CheckSpan.onclick},
          ".codextogglehelp": {
