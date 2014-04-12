@@ -18,7 +18,7 @@ div#CODEXADDGLOSS div.codexglossform.focused {
 
 div.codexglossform form div.textbox,
 div.codexglossform form div.glossetc {
-    max-height: 40%;
+    max-height: 90%;
     clear: left; text-align: left;
     margin-left: 0.5em; margin-right: 60px;
     box-sizing: border-box;}
@@ -30,7 +30,7 @@ div.codexglossform form div.glossetc {
     overflow: hidden;}
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[type="TEXT"] {
-    min-height: 1.5em; max-height: 2em; padding: 2px;}
+    min-height: 1.5em; max-height: 3em; padding: 2px;}
 div.codexglossform.focused form div.textbox textarea,
 div.codexglossform.focused form div.textbox input[type="TEXT"] {
     max-height: inherit;}
@@ -107,7 +107,7 @@ div.codexglossform.focused form span.inputhelp { display: inline;}
 
 div.codexglossform form div.textbox textarea,
 div.codexglossform form div.textbox input[TYPE='TEXT'] {
-    overflow: hidden; font-size: 12px;
+    overflow: hidden; font-size: 15px;
     border: solid darkblue 1px;
     margin: 0px; padding-left: 3px;
     width: 99%; max-width: 99%; 
@@ -175,7 +175,8 @@ div.codexglossform form .glossetc .glossdate {
 div.codexglossform .glossetc .glossdate {
     font-size: 80%; font-variant: small-caps; color: purple;}
 
-div.codexglossform form .glossexposure { font-size: 1.5ex;}
+div.codexglossform form .glossexposure {
+    float: right; font-size: 1.5ex;}
 div.codexglossform form .glossexposure .checkspan {
     float: right; margin-right: 1ex; margin-top: 2px;
     font-variant: smallcaps; vertical-align: top;}
@@ -183,6 +184,11 @@ div.codexglossform form .glossexposure .checkspan span {
     vertical-align: top;}
 div.codexglossform.private .checkspan.postgloss {
     display: none;}
+
+div.codexglossform form .glossexposure, div.codexglossform form .excerpt {
+  display: none; }
+body.hudup div.codexglossform form .glossexposure {
+  display: inline-block; }
 
 div#CODEXHUD .codexglossform .checkspan.private {
     color: white; font-weight: bold; background-color: green;
