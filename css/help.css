@@ -103,6 +103,9 @@ div.helpbox img.closebutton, div.codexhelp img.closebutton {
     -moz-border-radius: 6px; -o-border-radius: 6px;
     color: red;}
 
+div.helpbox th.helptext, div.codexhelp th.helptext {
+    text-indent: 0px;}
+
 div.helpbox.atfoot {
     bottom: 0px; max-height: 35%; height: auto;
     border-bottom: 0px;
