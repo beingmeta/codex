@@ -10,8 +10,14 @@ div.codexglossformbody { position: relative; }
 
 div#CODEXADDGLOSS div.codexglossform {
     box-sizing: border-box;
-    min-height: 50px;
-    max-height: 50px;}
+    border: solid green 2px; border-top: 0px;
+    min-height: 55px;}
+div#CODEXADDGLOSS div.codexglossform.private {
+    border-color: red;}
+div#CODEXADDGLOSS div.codexglossform.modified {
+    border-style: dotted;}
+body.hudup div#CODEXADDGLOSS div.codexglossform {
+    border-color: transparent;}
 
 div#CODEXADDGLOSS div.codexglossform.focused {
     max-height: inherit;
