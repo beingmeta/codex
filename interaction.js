@@ -613,48 +613,19 @@
                             evt,anchor,href);
                 Codex.startPreview(href.slice(1),"content/anchor_held");
                 return;}}
-        // Already selecting this target, cancel any pending slippage
-        if ((!(passage))||
-            // Target already selecting
-            (hasParent(target,".fdjtselecting"))||
-            // Selector already exists
-            (selectors[passage.id])||
-            // Target is a container (no text of its own) with
-            // children that are already selecting, so defer to the
-            // other children to start selections
-            ((!(hasText(passage)))&&
-             (getChildren(passage,".fdjtselecting").length))) {
-            // Cancel any pending slip events, since this doesn't
-            // count as a slip.
-            if (slip_timer) {
-                clearTimeout(slip_timer); slip_timer=false;}
-            return;}
+        if (!(passage)) return;
+        if (Codex.glosstarget===passage) {
+            Codex.setMode("addgloss"); return;}
+        var selecting=Codex.UI.selectText(passage);
         if ((Codex.TapHold.page)&&(Codex.TapHold.page.abort))
             Codex.TapHold.page.abort();
         if ((Codex.TapHold.content)&&(Codex.TapHold.page.content))
             Codex.TapHold.content.abort();
-        if (Codex.select_target===passage) {
-            startAddGloss(passage,false,evt);
-            return;}
-        var selecting=Codex.UI.selectText(
-            passage,{onrelease: function(evt){
-                evt=evt||event;
-                if ((Trace.gestures)||(Trace.selecting))
-                    fdjtLog("select_release/start_gloss: %o passage=%o",
-                            evt,passage);
-                startAddGloss(passage,false,evt);},
-                     onslip: function(evt){
-                         evt=evt||event; var target=fdjtUI.T(evt);
-                         if ((passage===target)||(hasParent(passage,target))) {
-                             if ((Trace.gestures)||(Trace.selecting))
-                                 fdjtLog(
-                                     "select_slip/start_gloss: %o passage=%o",
-                                     evt,passage);
-                             startAddGloss(passage,false,evt);}}});
         Codex.select_target=passage;
         selectors.push(selecting);
         selectors[passage.id]=selecting;
         fdjtUI.TapHold.clear();
+        startAddGloss(passage,false,evt);
         if ((Trace.gestures)||(Trace.selecting)) 
             fdjtLog("content_held/select_start %o %o %o",
                     selecting,passage,evt);
