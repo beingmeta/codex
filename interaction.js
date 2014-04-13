@@ -1847,7 +1847,6 @@
         if ((Trace.gestures)||(Trace.flips))
             fdjtLog("pageForward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
-        if (Codex.clearGlossmark) Codex.clearGlossmark();
         if ((Codex.bypage)&&(typeof Codex.curpage === "number")) {
             var pagemax=((Codex.bypage)&&
                          ((Codex.pagecount)||(Codex.layout.pagenum-1)));
@@ -1869,7 +1868,6 @@
         if ((Trace.gestures)||(Trace.flips))
             fdjtLog("pageBackward (on %o) c=%o n=%o",
                     evt,Codex.curpage,Codex.pagecount);
-        if (Codex.clearGlossmark) Codex.clearGlossmark();
         if ((Codex.bypage)&&(typeof Codex.curpage === "number")) {
             var newpage=false;
             if (Codex.curpage===0) {}

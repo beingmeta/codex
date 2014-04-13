@@ -870,6 +870,8 @@ Codex.Paginate=
             if (typeof savestate === 'undefined') savestate=true;
             if (Codex.previewing) Codex.stopPreview("GoToPage",false);
             dropClass(document.body,"codexhelp");
+            if (Codex.clearGlossmark) Codex.clearGlossmark();
+            if (Codex.mode==="addgloss") Codex.setMode(false,false);
             var page=(Codex.layout)&&
                 (Codex.layout.getPage(spec)||Codex.layout.getPage(1));
             if (page) {

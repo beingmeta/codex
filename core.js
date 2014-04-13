@@ -1250,6 +1250,8 @@ var Codex={
             var use_top=offinfo.top-((fdjtDOM.viewHeight()-50)/2);
             if (use_top<0) use_top=0;
             window.scrollTo(0,use_top);}
+        if (Codex.clearGlossmark) Codex.clearGlossmark();
+        if (Codex.mode==="addgloss") Codex.setMode(false,false);
         Codex.location=location;
     } Codex.GoTo=codexGoTo;
 
