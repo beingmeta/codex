@@ -394,7 +394,7 @@ body.hudup .codextarget .codexglossbutton { display: block;}
 body.hudup .codextarget.codexglosstarget .codexglossbutton {
     background-color: lightblue;}
 
-/* Sparse glossmark display (the default) */
+#CODEXBODY div.fdjtselecting { background-color: lightyellow; }
 
 /* Displaying the sbook target */
 
