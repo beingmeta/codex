@@ -13,6 +13,8 @@ div.codexslice img.button, div.codexslice .tool {
 div.codexslice input[TYPE="TEXT"], div.codexslice textarea { cursor: text; }
 
 div.codexslice div.codexcard { margin-left: 20px;}
+@media (pointer: coarse) {
+  div.codexslice div.codexcard { margin-left: 0px;}}
 div.codexslice.sourced div.codexcard { display: none;}
 div.codexslice.sourced div.codexcard.sourced { display: block;}
 

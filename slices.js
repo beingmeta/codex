@@ -279,9 +279,12 @@ Codex.Slice=(function () {
         var picinfo=getpicinfo(info);
         var overdoc=getoverdoc(info);
         
-        return [((picinfo)?
+        var pic=((picinfo)?
                  (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt)):
-                 (getfakepic(info.maker,"div.sourcepic"))),
+                 (getfakepic(info.maker,"div.sourcepic")));
+        if (pic) fdjtDOM.addListener(pic,"touchstart",fdjt.UI.noDefault);
+
+        return [pic,
                 ((overdoc)&&(overdoc.name)&&
                  (fdjtDOM("span.overdoc",(overdoc.name)))),
                 /* ((overdoc)&&(overdoc.name)&&(" \u00b7 ")), */
