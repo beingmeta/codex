@@ -113,8 +113,14 @@ Codex.TOC=
             if (depth===0) {
                 if (prefix)
                     Codex.TapHold[prefix]=fdjtUI.TapHold(
-                        toc,{holdfast: true,
-                             noslip: (prefix==="CODEXSTATICTOC4")});
+                        toc,{id: (prefix||"TOC"),
+                             touchtoo: function(evt){
+                                 evt=evt||event;
+                                 if (Codex.previewing)
+                                     Codex.stopPreview("touchtoo",true);
+                                 this.abort(evt,"touchtoo");},
+                             noslip: (prefix==="CODEXSTATICTOC4"),
+                            });
                 else fdjtUI.TapHold(toc,{holdfast: true});
                 Codex.UI.addHandlers(toc,'toc');}
             return toc;}
