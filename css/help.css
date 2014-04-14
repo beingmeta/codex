@@ -310,6 +310,8 @@ div.codexhelp table td.icon img { width: 32px;}
 div.codexhelp table td.textleft { text-align: left;}
 div.codexhelp table td.textright { text-align: right;}
 
+div.codexhelp .result span { display: none; }
+
 div#CODEXHUD div.codexhelp.hudpanel {
     position: absolute; text-align: center;
     top: 100px; bottom: 100px; left: 80px; right: 80px; 

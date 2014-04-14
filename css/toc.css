@@ -9,14 +9,15 @@
 div.codextoc { display: none;}
 div.codextoc div.spanbar { height: 20px;}
 div.codextoc > div, div.codextoc > div.head {
-    margin-left: 1em; margin-right: 1em;}
+    padding-left: 1em; padding-right: 1em;}
 div.codextoc div.head {
   position: relative; margin: 0px; padding: 0px; border: 0px;
   left: 0px; right: 0px; margin: 0px;
-  margin-left: 1em; margin-right: 1em;
+  padding-left: 1em; padding-right: 1em;
   display: none;}
 div.codextoc > div.spanbar {
-  margin-left: 0px; margin-right: 0px;}
+  margin-left: 0px; margin-right: 0px;
+  padding-left: 0px; padding-right: 0px;}                             
 
 div.codextoc div.head { min-height: 24px;}
 @media (pointer: coarse) {
@@ -100,6 +101,7 @@ div#CODEXHEART div#CODEXSTATICTOC div.codextoc {
 div#CODEXHEART div#CODEXSTATICTOC div.codextoc img { display: none;}
 div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.codextoc div.head {
     margin-left: 0px; margin-right: 0px;
+    padding-left: 0px; padding-right: 0px;
     display: block; font-weight: bold;}
 div#CODEXHUD div#CODEXHEART div#CODEXSTATICTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
@@ -273,14 +275,14 @@ div.spanbar div.codexhudspan[even] {}
 div.spanbar div.codexhudspan.current {
     color: yellow; background-color: transparent;}
 div#CODEXHUD div.codextoc { 
-  margin-left: 1em; margin-right: 1em;}
+  padding-left: 1em; padding-right: 1em;}
 div#CODEXHUD div#CODEXTOC div.codextoc { 
-  margin-left: 0.5em; margin-right: 0.5em;}
+  padding-left: 0.5em; padding-right: 0.5em;}
 div#CODEXHUD div#CODEXTOC div.codextoc.toc0 { 
-  margin-left: 0px; margin-right: 0px;
+  padding-left: 0px; padding-right: 0px;
   border-right: 0px; border-left: 0px;}
 div#CODEXHUD div.codextoc.toc0 {
-  margin-left: 0px; margin-right: 0px;}
+  padding-left: 0px; padding-right: 0px;}
 
 div.spanbar { padding: 0px; margin: 0px;}
 div.spanbar div.spans { 

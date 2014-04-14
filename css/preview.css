@@ -94,10 +94,10 @@ body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER {
     -o-box-shadow: none;
     border-color: transparent;}
 
-div#CODEXSKIMMERHELP, div#CODEXSEETHRUHELP {
+div#CODEXPAGEBARHELP, div#CODEXSEETHRUHELP {
     pointer-events: none; opacity: 0.0;
     display: none;}
-div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
+div#CODEXPAGEBARHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
     top: 0px; left: 40px; right: 40px; max-height: 70px;
     border-top: 0px; padding: 1ex; padding-top: 0px; padding-bottom: 0px;
     text-align: center; overflow: hidden;
@@ -111,13 +111,13 @@ div#CODEXSKIMMERHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
     -webkit-border-bottom-right-radius: 1ex; 
     -moz-border-radius-bottomright: 1ex;
     -o-border-radius-bottomright: 1ex;}
-div#CODEXSKIMMERHELP.helpbox p, div#CODEXSEETHRUHELP.helpbox p {
+div#CODEXPAGEBARHELP.helpbox p, div#CODEXSEETHRUHELP.helpbox p {
     margin: 0px; padding: 0px; text-align: center; text-indent: 0px;
     max-width: inherit;}
-div#CODEXSKIMMERHELP.helpbox dfn, div#CODEXSEETHRUHELP.helpbox dfn {
+div#CODEXPAGEBARHELP.helpbox dfn, div#CODEXSEETHRUHELP.helpbox dfn {
     font-size: 125%;}
 
-body.cxPREVIEW.cxPAGEPREVIEW div#CODEXSKIMMERHELP,
+body.cxPREVIEW.cxPAGEPREVIEW div#CODEXPAGEBARHELP,
 body.cxPREVIEW div#CODEXSEETHRUHELP {
     display: block; opacity: 0.9;}
 body.cxPREVIEW.cxPAGEPREVIEW div#CODEXSEETHRUHELP { display: none;}
@@ -128,6 +128,8 @@ body.cxPREVIEW.hudup div#CODEXHUD.allglosses div#CODEXSEETHRUHELP {
 
 body.cxPREVIEW #CODEXPAGENOTEXT, body.cxPREVIEW #CODEXLOCPCT, body.cxPREVIEW #CODEXLOCOFF {
     pointer-events: none;}
+
+div.codexhelp .result span { display: none; }
 
 /* Emacs local variables
 ;;;  Local variables: ***
