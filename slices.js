@@ -595,7 +595,7 @@ Codex.Slice=(function () {
                           evt=evt||event;
                           if (Codex.previewing)
                               Codex.stopPreview("touchtoo",true);
-                          this.abort(evt,"touchtoo");}}
+                          this.abort(evt,"touchtoo");}};
         if (Codex.iscroll) {
             settings.override=true; settings.bubble=true;}
         if (container.id)

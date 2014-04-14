@@ -119,8 +119,7 @@ Codex.TOC=
                                  if (Codex.previewing)
                                      Codex.stopPreview("touchtoo",true);
                                  this.abort(evt,"touchtoo");},
-                             noslip: (prefix==="CODEXSTATICTOC4"),
-                            });
+                             noslip: (prefix==="CODEXSTATICTOC4")});
                 else fdjtUI.TapHold(toc,{holdfast: true});
                 Codex.UI.addHandlers(toc,'toc');}
             return toc;}
