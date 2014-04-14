@@ -1093,7 +1093,7 @@
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
-            Codex.stopPreview("onkeydown");
+            Codex.stopPreview("onkeydown",true);
             fdjtUI.TapHold.clear();
             Codex.setHUD(false);
             fdjt.UI.cancel(evt);
