@@ -2401,6 +2401,8 @@ Codex.Startup=
                 Codex.statedialog=fdjtUI.choose(
                     {choices: choices,cancel: true,timeout: 7,nodefault: true,
                      onclose: function(){
+                         state=Codex.state; state.changed=fdjtTime.tick();
+                         Codex.saveState(state,true,true);
                          Codex.statedialog=false;},
                      spec: "div.fdjtdialog.resolvestate#CODEXRESOLVESTATE"},
                     fdjtDOM("div",msg1));
