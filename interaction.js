@@ -107,10 +107,8 @@
     var getChild=fdjtDOM.getChild;
     var getChildren=fdjtDOM.getChildren;
     var getInput=fdjtDOM.getInput;
-    var getInputs=fdjtDOM.getInputs;
     var getInputsFor=fdjtDOM.getInputsFor;
     var getInputValues=fdjtDOM.getInputValues;
-    var hasText=fdjtDOM.hasText;
     var Selector=fdjtDOM.Selector;
 
     var submitEvent=fdjtUI.submitEvent;
@@ -160,12 +158,12 @@
                 addHandlers(fdjtID("CODEXCONTENT"),'content');}
             Codex.TapHold.page=fdjtUI.TapHold(
                 fdjt.ID("CODEXPAGE"),
-                {override: true,noslip: true,
+                {override: true,noslip: true,id: "CODEXPAGE",
                  untouchable: externClickable,
                  movethresh: 10});
             Codex.TapHold.content=fdjtUI.TapHold(
                 fdjt.ID("CODEXCONTENT"),
-                {override: true,noslip: true,
+                {override: true,noslip: true,id: "CODEXCONTENT",
                  untouchable: externClickable,
                  movethresh: 10});
             addHandlers(Codex.HUD,'hud');}
@@ -199,14 +197,6 @@
     var gloss_focus=false;
     var gloss_blurred=false;
     var gloss_blur_timeout=false;
-
-    function glossform_focusin(evt){
-        if (gloss_blur_timeout) clearTimeout(gloss_blur_timeout);
-        glossform_focus(evt);}
-    function glossform_focusout(evt){
-        gloss_blur_timeout=setTimeout(function(){
-            glossform_blur(evt);},500);}
-    function glossform_focusout(evt){}
 
     function glossform_focus(evt){
         evt=evt||event;
@@ -258,8 +248,6 @@
     Codex.UI.glossform_touch=glossform_touch;
     Codex.UI.glossform_focus=glossform_focus;
     Codex.UI.glossform_blur=glossform_blur;
-    Codex.UI.glossform_focusin=glossform_focusin;
-    Codex.UI.glossform_focusout=glossform_focusout;
 
     /* Adding a gloss button */
     
@@ -2155,6 +2143,9 @@
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
+        if ((Codex.previewing)&&(!(previewing_page))) {
+            Codex.stopPreview("pagebar_tap",true);
+            return;}
         if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
             if (Trace.gestures)
                 fdjtLog("clearHUD %s %s %s",Codex.mode,

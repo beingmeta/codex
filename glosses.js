@@ -207,7 +207,6 @@
         var glossinput=getInput(form,"NOTE");
         var notespan=getChild(form,".notespan");
         if (glossinput) {
-            fdjtDOM.addListener(glossinput,"blur",Codex.UI.glossform_focusout);
             glossinput.onkeypress=glossinput_onkeypress;
             glossinput.onkeydown=glossinput_onkeydown;
             glossinput.onfocus=glossinput_onfocus;
@@ -215,7 +214,6 @@
                 glossinput.value=gloss.note||"";
                 if (notespan) notespan.innerHTML=glossinput.value;}
             else glossinput.value="";}
-        fdjtDOM.addListener(form,"focusin",Codex.UI.glossform_focusin);
         if (Codex.syncstamp)
             getInput(form,"SYNC").value=(Codex.syncstamp+1);
         var menu=getChild(form,".addglossmenu");
