@@ -1261,6 +1261,7 @@ Codex.Startup=
             if (fdjtID("CODEXSETTINGS")) fdjtID("CODEXSETTINGS").removeAttribute("style");
             if (fdjtID("CODEXAPPHELP")) fdjtID("CODEXSETTINGS").removeAttribute("style");
             if (fdjtID("CODEXREADYMESSAGE")) fdjtID("CODEXREADYMESSAGE").removeAttribute("style");
+            if (fdjtID("CODEXCOVERCONTROLS")) fdjtID("CODEXREADYMESSAGE").removeAttribute("style");
             
             var coverpage=fdjtID("CODEXCOVERPAGE");
             if (coverpage) 

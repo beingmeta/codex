@@ -579,9 +579,9 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
     margin-top: 0px;}
 
 #CODEXSHOWCOVER {
-    white-space: nowrap;
+    white-space: nowrap; box-sizing: border-box;
     background-color: rgba(0,0,0,0.5); color: white;
-    font-size: 1.5em; width: 10em;
+    font-size: 1.5em; width: 7em;
     margin-top: 0.7ex; padding:  0px 1em 0px 1em;
     border: solid transparent 2px;
     border-radius: 1ex;

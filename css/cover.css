@@ -127,7 +127,7 @@ div#CODEXCOVER > div.userbox {
 div#CODEXCOVER div.userbox a, div#CODEXCOVER div.userbox a:visited {
     color: silver;}
 div#CODEXCOVER div.userbox span.sbooks em { color: silver;}
-div#CODEXCOVER div.userbox a.sbooks em { color: lightblue;}
+div#CODEXCOVER div.userbox a.sbooks em { color: steelblue;}
 body.cxUSER div#CODEXCOVER div.userbox {
     height: 40px;}
 
@@ -367,10 +367,14 @@ div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
 
 div#CODEXCOVERMESSAGE {
     text-align: center;}
-div#CODEXCOVER > .sbookslogo, div#CODEXCOVER > .publogo {
-    display: none; }
-div#CODEXCOVER > .sbookslogo { float: left; }
-div#CODEXCOVER > .publogo { float: right; }
+div#CODEXCOVER > .sbookslogo, div#CODEXCOVER > .publisherlogo {
+  position: absolute; top: 0px; z-index: 200;
+  color: silver; font-size: 2em;
+  display: none; }
+div#CODEXCOVER > .sbookslogo {left: 0px;}
+div#CODEXCOVER > .publisherlogo {right: 0px;}
+
+div#CODEXCOVER > .sbookslogo em {color: steelblue;}
 
 div#CODEXCOVERMESSAGE > div {
     color: silver; display: none;
@@ -379,7 +383,8 @@ div#CODEXCOVERMESSAGE > div {
     box-sizing: border-box;
     width: 100%;}
 div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
-    display: block; width: 10em; margin-left: auto; margin-right: auto;
+    display: inline-block; width: 7em;  box-sizing: border-box;
+    margin-left: auto; margin-right: auto;
     font-size: 1.5em; color: white; background-color: gray;
     margin-top: 0.7ex; padding:  0px 1em 0px 1em;
     border: solid transparent 2px;
