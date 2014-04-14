@@ -590,7 +590,7 @@ Codex.Slice=(function () {
             else named_slices[container.id]=container;}
         else if ((container.nodeType)&&(container.nodeType===1))  {}
         else return false;
-        var settings={noslip: true,id: container.id,
+        var settings={noslip: true,id: container.id,holdclass: false,
                       touchtoo: function(evt){
                           evt=evt||event;
                           if (Codex.previewing)

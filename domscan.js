@@ -453,7 +453,11 @@ Codex.DOMScan=(function(){
         return docinfo;}
 
     CodexDOMScan.prototype.toJSON=function(){
-        var rep={constructor: "Codex.DOMScan",frag: this.frag,head: this.sbookhead,start: this.starts_at,end: this.ends_at};
+        var rep={constructor: "Codex.DOMScan",
+                 frag: this.frag,
+                 head: this.sbookhead,
+                 start: this.starts_at,
+                 end: this.ends_at};
         if (this.WSNID) rep.WSNID=this.WSNID;
         if (this.headstart) rep.headstart=this.headstart;
         if (this.toclevel) rep.toclevel=this.toclevel;

@@ -765,17 +765,16 @@ Codex.Startup=
                             pubindex._nkeys,pubindex._nrefs);
                 else fdjtLog("Processing provided index");}
             Codex.useIndexData(pubindex,Codex.knodule,false,whendone);}
-            
 
         function scanDOM(){
             var scanmsg=fdjtID("CODEXSTARTUPSCAN");
             addClass(scanmsg,"running");
             var metadata=new Codex.DOMScan(Codex.content,Codex.refuri+"#");
-            // fdjtDOM.addClass(metadata._heads,"avoidbreakafter");
             Codex.docinfo=metadata;
-            Codex.ends_at=Codex.docinfo[Codex.content.id].ends_at;
+            Codex.ends_at=Codex.docinfo._maxloc;
             dropClass(scanmsg,"running");
-            if ((Codex.state)&&(Codex.state.target)&&(!((Codex.state.location)))) {
+            if ((Codex.state)&&(Codex.state.target)&&
+                (!((Codex.state.location)))) {
                 var info=Codex.docinfo[Codex.state.target];
                 if ((info)&&(info.starts_at)) {
                     Codex.state.location=info.starts_at;

@@ -113,7 +113,7 @@ Codex.TOC=
             if (depth===0) {
                 if (prefix)
                     Codex.TapHold[prefix]=fdjtUI.TapHold(
-                        toc,{id: (prefix||"TOC"),
+                        toc,{id: (prefix||"TOC"),holdclass: false,
                              touchtoo: function(evt){
                                  evt=evt||event;
                                  if (Codex.previewing)
