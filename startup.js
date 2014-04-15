@@ -1259,9 +1259,9 @@ Codex.Startup=
             if (fdjtID("CODEXLAYERS")) fdjtID("CODEXLAYERS").removeAttribute("style");
             if (fdjtID("CODEXCONSOLE")) fdjtID("CODEXCONSOLE").removeAttribute("style");
             if (fdjtID("CODEXSETTINGS")) fdjtID("CODEXSETTINGS").removeAttribute("style");
-            if (fdjtID("CODEXAPPHELP")) fdjtID("CODEXSETTINGS").removeAttribute("style");
+            if (fdjtID("CODEXAPPHELP")) fdjtID("CODEXAPPHELP").removeAttribute("style");
             if (fdjtID("CODEXREADYMESSAGE")) fdjtID("CODEXREADYMESSAGE").removeAttribute("style");
-            if (fdjtID("CODEXCOVERCONTROLS")) fdjtID("CODEXREADYMESSAGE").removeAttribute("style");
+            if (fdjtID("CODEXCOVERCONTROLS")) fdjtID("CODEXCOVERCONTROLS").removeAttribute("style");
             
             var coverpage=fdjtID("CODEXCOVERPAGE");
             if (coverpage) 
