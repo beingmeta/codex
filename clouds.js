@@ -119,7 +119,8 @@
 
         i=0; while (i<n_terms) {
             var dterm=tags[i++];
-            var span=cloudSpan(completions,dterm,scores,freqs,score_sum/n_terms);
+            var span=cloudSpan(
+                completions,dterm,scores,freqs,score_sum/n_terms);
             dom.appendChild(span);
             dom.appendChild(document.createTextNode(" "));}
         sizeCloud(completions,scores,true);
@@ -139,7 +140,8 @@
         var freq=freqs.get(dterm)||1;
         var score=scores.get(dterm);
         var span=cloudEntry(completions,dterm);
-        span.title=((span.title)||(""))+((score)?("score="+score):("unscored"))+"; "+
+        span.title=((span.title)?(span.title+"; "):(""))+
+            ((score)?("score="+score):("unscored"))+"; "+
             "count="+freq;
         if (freq===1) addClass(span,"singleton");        
         return span;}
@@ -155,17 +157,21 @@
                 var knode=tag, dterm=knode.dterm, origin=false;
                 if (tag._db===Codex.knodule) origin="index";
                 else if (tag._db.fullname) {
-                    origin=tag._db.fullname; suffix=" (*)";}
+                    origin=tag._db.fullname; suffix=fdjtDOM("sup","*");}
                 else {
                     var sourceref=Codex.sourcedb.probe(tag._db.name);
                     if (sourceref) {
                         origin=tag._db.fullname=sourceref.name;
-                        suffix=" (*)";}
+                        suffix=fdjtDOM("sup","*");}
                     else {
                         origin="glosses";
-                        suffix=" (+)";}}
+                        suffix=fdjtDOM("sup","*");}}
                 entry.setAttribute("data-key",dterm);
-                if (suffix) entry.innerHTML=dterm+suffix;
+                if (typeof suffix === "string")
+                    entry.innerHTML=dterm+suffix;
+                else if (suffix) {
+                    entry.innerHTML=dterm;
+                    entry.appendChild(suffix);}
                 else entry.innerHTML=dterm;
                 var synonyms=knode[lang];
                 if ((synonyms)&&(typeof synonyms === 'string'))
@@ -184,16 +190,19 @@
                     addClass(entry,"cue");}
                 else if (knode.weak) addClass(entry,"weak");
                 else {}
-                entry.title=
+                var title=
                     ((knode.prime)?("key "):
                      (knode.weak)?("weak "):(""))+
-                    ((origin==="index")?("index concept"):
-                     ("concept "+"(from "+origin+")"));
-                if (knode.about) {
-                    if (entry.title)
-                        entry.title=entry.title+" "+knode.dterm+": "+knode.about;
-                    else entry.title=knode.about;}
-                else entry.title=entry.title+" "+knode.dterm+"="+knode.toPlaintext();}
+                    ((origin==="index")?("index concept "):
+                     ("concept "+"(from "+origin+") "));
+                if (knode.about)
+                    title=title+knode.dterm+": "+knode.about;
+                else {
+                    var def=knode.toPlaintext();
+                    if ((def)&&(def!==knode.dterm))
+                        title=title+knode.dterm+"="+knode.toPlaintext();
+                    else title=title+"'"+knode.dterm+"'";}
+                entry.title=title;}
             else if (tag.name) {
                 addClass(entry,"source"); addClass(entry,"account");
                 entry.setAttribute("data-key",tag.name);

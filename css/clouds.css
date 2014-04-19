@@ -82,15 +82,10 @@ div#CODEXHUD .completions .completion .sectname {
 div#CODEXHUD .completions .completion .variation { 
   font-size: 90%; color: purple; font-style: italic;}
 div#CODEXHUD .completions .completion .dterm {}
-.completion .dterm {
+.completion .dterm, .completion.dterm {
     padding-right: 0.35em; padding-left: 0.35em; 
-    border-top-left-radius: 1ex; border-bottom-left-radius: 1ex;
-    border-bottom-left-radius: 6px; border-top-left-radius: 6px;
-    -o-border-bottom-left-radius: 6px; -o-border-top-left-radius: 6px; 
-    -moz-border-radius-bottomleft: 6px; -moz-border-radius-topleft: 6px;
-    -webkit-border-bottom-left-radius: 6px;
-    -webkit-border-top-left-radius: 6px; 
     color: darkblue; background-color: gold; border: solid yellow 2px;}
+.completion .dterm sup, .completion.dterm sup {padding-left: 0.5ex;}
 .completion .dterm.weak, .completion.dterm.weak,
 .completion .rawterm, .completion.rawterm {
     padding-right: 0em; padding-left: 0em; 
