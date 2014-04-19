@@ -140,9 +140,12 @@
         var freq=freqs.get(dterm)||1;
         var score=scores.get(dterm);
         var span=cloudEntry(completions,dterm);
-        span.title=((span.title)?(span.title+"; "):(""))+
-            ((score)?("score="+score):("unscored"))+"; "+
-            "count="+freq;
+        var title=span.title;
+        if (freq) {
+            if (title) title=title+"; count="+freq;
+            else title="count="+freq;}
+        if ((score)&&(score!==freq)) title=title+"; score="+score;
+        span.title=title;
         if (freq===1) addClass(span,"singleton");        
         return span;}
     
@@ -453,10 +456,14 @@
             var value=values[i], score=vscores[i];
             var elt=byvalue.get(value);
             if (!(score)) {
-                if (value.prime) addClass(elt,"cue");
+                if (value.prime) {
+                    addClass(elt,"prime"); addClass(elt,"cue");}
                 elt.style.fontSize=""; i++; continue;}
-            if ((value.prime)||((cuethresh)&&(score>cuethresh)))
-                addClass(elt,"cue");
+            if (value.prime) {
+                addClass(elt,"prime"); addClass(elt,"cue");}
+            else if ((cuethresh)&&(score>cuethresh)) {
+                addClass(elt,"common"); addClass(elt,"cue");}
+            else {}
             var factor=(score-min_score)/(max_score-min_score);
             elt.style.fontSize=(50+(150*factor))+"%";
             i++;}}
