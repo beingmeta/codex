@@ -451,7 +451,8 @@
                 if ((max_score<0)||(vscore>max_score)) max_score=vscore;}
             else vscores[i]=vscore;
             i++;}
-        if (cuethresh===true) cuethresh=min_score+((max_score-min_score)/3);
+        if (cuethresh===true)
+            cuethresh=min_score+((2*(max_score-min_score))/3);
         i=0; while (i<lim) {
             var value=values[i], score=vscores[i];
             var elt=byvalue.get(value);
