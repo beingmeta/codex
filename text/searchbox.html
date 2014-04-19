@@ -2,30 +2,26 @@
   <img class="codexclearsearch" alt="X" title="clear search"
        svg="{{bmg}}codex/redx.svgz"
        src="{{bmg}}codex/redx64x64.png"/>
-  <input id="CODEXSEARCHINPUT"
-         type="TEXT" class="autoprompt searchinput"
-         name="QTEXT" value="" isempty="yes" autocomplete="off"
-         onfocus="Codex.UI.handlers.search_focus(event);"
-         onblur="Codex.UI.handlers.search_blur(event);"
-         onkeydown="Codex.UI.handlers.search_keyup(event);"
-         completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
-         placeholder="type or click tags"
-         completions="CODEXSEARCHCLOUD"
-         results="CODEXSEARCHRESULTS"
-         info="CODEXSEARCHINFO"/>
-  <span class="ampersand">&amp;</span>
-  <strong id="CODEXSEARCHLABEL">Search: </strong>
-  <span id="CODEXSEARCHPROMPT">
-    <span class='fortouch'>Tap</span>
-    <span class='notouch'>Click</span> a tag or start typing</span>
-  <span id="CODEXSEARCHTAGS" class="qtags"></span>
+  <div class="input">
+    <input id="CODEXSEARCHINPUT"
+           type="TEXT" class="autoprompt searchinput"
+           name="QTEXT" value="" isempty="yes" autocomplete="off"
+           onfocus="Codex.UI.handlers.search_focus(event);"
+           onblur="Codex.UI.handlers.search_blur(event);"
+           onkeydown="Codex.UI.handlers.search_keyup(event);"
+           completeopts="anywhere cloud" enterchars=";" maxcomplete="45"
+           placeholder="type or tap tags or terms"
+           completions="CODEXSEARCHCLOUD"
+           results="CODEXSEARCHRESULTS"
+           info="CODEXSEARCHINFO"/>
+  </div>
 </div>
 <!--
-     /* Emacs local variables
-     ;;;  Local variables: ***
-     ;;;  compile-command: "cd ../..; make" ***
-     ;;;  indent-tabs-mode: nil ***
-     ;;;  End: ***
-     */
-    -->
+    /* Emacs local variables
+    ;;;  Local variables: ***
+    ;;;  compile-command: "cd ../..; make" ***
+    ;;;  indent-tabs-mode: nil ***
+    ;;;  End: ***
+    */
+  -->
 

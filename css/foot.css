@@ -209,7 +209,8 @@ body.openhud div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.cxSKIMMING div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
 body.hudup.cxPREVIEW div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
-body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
+body.hudup.codexhelp div#CODEXHUD #CODEXFOOT #CODEXPAGEBAR {
     display: none;}
 
 body div#CODEXHUD.splash #CODEXFOOT #CODEXSHOWTEXT,

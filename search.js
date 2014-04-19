@@ -123,7 +123,7 @@
         var input=getChild(box,".searchinput");
         var cloudid=input.getAttribute("completions");
         var infoid=input.getAttribute("info");
-        var qtags=getChild(box,".qtags");
+        var qtags=getChild(box,".qtags")||fdjtID("CODEXSEARCHTAGS");
         var cloud=((cloudid)&&(fdjtID(cloudid)));
         /* These should possibly be used in initializing the .listing
          * field of the query */

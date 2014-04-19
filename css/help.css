@@ -138,7 +138,7 @@ body.codexhelp.cxPREVIEW div#CODEXHUD .helphud {
     display: none;}
 body.codexhelp.hudup div#CODEXHUD.splash div.codexhelp {
     display: block;}
-div#CODEXHUDHELP { display: none;}
+div#CODEXHUDHELP { z-index: 500; display: none;}
 body.codexhelp div#CODEXHUDHELP { display: block; }
 body.hudup.codexhelp div#CODEXHUDHELP { display: block; }
 
@@ -165,8 +165,10 @@ body.codexhelp div#CODEXHUD.statictoc div#CODEXSTATICTOCHELP.helpbox {
     -o-opacity: 0.90;
     display: block;}
 
-body.codexhelp.cxSKIMMING div#CODEXHUD.searchresults div#CODEXSEARCHRESULTSHELP.helpbox,
-body.codexhelp.cxSKIMMING div#CODEXHUD.allglosses div#CODEXALLGLOSSESHELP.helpbox {
+body.codexhelp.cxSKIMMING div#CODEXHUD.searchresults
+  div#CODEXSEARCHRESULTSHELP.helpbox,
+body.codexhelp.cxSKIMMING div#CODEXHUD.allglosses
+  div#CODEXALLGLOSSESHELP.helpbox {
     display: none;}
 
 /* Goto page and goto loc always display their help. */

@@ -244,7 +244,7 @@ body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
 body #CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
     border: solid rgba(0,0,255,0.52) 3px;
-    z-index: 600; opacity: 1.0;
+    z-index: 200; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     -webkit-opacity: 1;
