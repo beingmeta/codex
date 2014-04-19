@@ -2496,6 +2496,7 @@ Codex.Startup=
                 var bar=tag.indexOf('|');
                 var taghead=tag, tagbase=tag, tagstart;
                 if (bar>0) tagbase=taghead=tag.slice(0,bar);
+                var knode=Codex.knodule.probe(tagbase);
                 tagstart=taghead.search(/[^*~]/);
                 if (tagstart>0) tagbase=taghead.slice(tagstart);
                 if (bar>0) {
@@ -2503,7 +2504,7 @@ Codex.Startup=
                     var field_at=defbody.search("|:weight=");
                     if (field_at>=0) {
                         var weight=parseFloat(defbody.slice(field_at+9));
-                        tagweights.set(tagbase,weight);
+                        tagweights.set(knode||tagbase,weight);
                         if (weight>maxweight) maxweight=weight;
                         if (weight<minweight) minweight=weight;
                         tag=taghead;}
