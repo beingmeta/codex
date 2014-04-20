@@ -251,6 +251,8 @@ var Codex={
                         (stdspace(item.excerpt).length);
                     else item.ends_at=info.ends_at;}
                 if ((!(item.maker))&&(Codex.user)) item.maker=(Codex.user);
+                var addTags=Codex.addTags, addTag2Cloud=Codex.addTag2Cloud;
+                var empty_cloud=Codex.empty_cloud;
                 var maker=(item.maker)&&(Codex.sourcedb.ref(item.maker));
                 if (maker) {
                     Codex.addTag2Cloud(maker,Codex.empty_cloud);
@@ -269,9 +271,9 @@ var Codex={
                 if ((alltags)&&(alltags.length)) {
                     i=0; lim=alltags.length; while (i<lim) {
                         var each_tag=alltags[i++], entry;
-                        entry=Codex.addTag2Cloud(each_tag,Codex.empty_cloud);
+                        entry=addTag2Cloud(each_tag,empty_cloud);
                         if ((make_cue)&&(entry)) addClass(entry,"cue");
-                        entry=Codex.addTag2Cloud(each_tag,Codex.gloss_cloud);
+                        entry=addTag2Cloud(each_tag,Codex.gloss_cloud);
                         if ((make_cue)&&(entry)) addClass(entry,"cue");}
                     var tag_slots=["tags","*tags","**tags"];
                     var s=0, n_slots=tag_slots.length; while (s<n_slots) {
@@ -279,10 +281,10 @@ var Codex={
                         if ((tags)&&(tags.length)) {
                             var fragslot="+"+tagslot;
                             if (item.thread) {
-                                Codex.addTags(item.thread,tags,fragslot);
+                                addTags(item.thread,tags,fragslot);
                                 if (item.replyto!==item.thread)
-                                    Codex.addTags(item.replyto,tags,fragslot);}
-                            if (info) Codex.addTags(info,tags,fragslot,maker_knodule);}}}},
+                                    addTags(item.replyto,tags,fragslot);}
+                            if (info) addTags(info,tags,fragslot,maker_knodule);}}}},
                                  "initgloss");
             if ((Codex.user)&&(Codex.persist)&&(Codex.cacheglosses))
                 Codex.glossdb.storage=window.localStorage;}
