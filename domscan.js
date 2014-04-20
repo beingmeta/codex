@@ -360,9 +360,6 @@ Codex.DOMScan=(function(){
                 info.starts_at=scanstate.location;
                 info.sbookhead=curhead.getAttribute('data-tocid')||curhead.id;
                 info.headstart=curinfo.starts_at;}
-            if (info) {
-                info.head=curinfo;
-                info.indexRef('head',curinfo);}
             // Set the first content node
             if ((id)&&(info)&&(!start)) Codex.start=start=child;
             // And the initial content level
@@ -380,6 +377,10 @@ Codex.DOMScan=(function(){
             if ((toclevel)&&(!(info.tocdone)))
                 handleHead(child,id,docinfo,scanstate,toclevel,
                            curhead,curinfo,curlevel);
+            else if (info) {
+                info.head=curinfo; info.indexRef('head',curinfo);}
+            else {}
+
             if (((classname)&&(classname.search(/\bsbookterminal\b/)>=0))||
                 ((classname)&&(Codex.terminals)&&
                  (Codex.terminals.match(child)))) {
