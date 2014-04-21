@@ -421,7 +421,8 @@ div#CODEXHUD.refinesearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
 div#CODEXHUD.refinesearch.emptysearch div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
     display: none;}
 
-div#CODEXHUD div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
+div#CODEXHUD div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
+div#CODEXHUD div#CODEXHEART div#CODEXALLTAGS.hudpanel {
     padding-top: 1em;}
 
 div#CODEXHEART div#CODEXSEARCHBLOCK.hudpanel {

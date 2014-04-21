@@ -139,7 +139,7 @@
         if (elts.length) fdjtDOM.dropClass(Codex.HUD,"emptysearch");
         else addClass(Codex.HUD,"emptysearch");
         // Update the query tags
-        var newtags=fdjtDOM("span.qtags");
+        var newtags=fdjtDOM("div.qtags");
         while (i<lim) {
             var tag=elts[i];
             if (typeof tag === 'string') tag=kbref(tag)||tag;
@@ -155,6 +155,13 @@
         else {
             resultcount.innerHTML="no results";
             addClass([box,info],"noresults");}
+        // Tweak font size for qtags
+        fdjt.UI.adjustFont.tweakUntil(
+            function(){
+                if (info.scrollHeight<=info.clientHeight)
+                    return 0;
+                else return 1;},
+            newtags,{maxpct: 120,minpct: 30},[5,1]);
         // Update the search cloud
         var n_refiners=((query.cotags)&&(query.cotags.length))||0;
         var completions=Codex.queryCloud(query);

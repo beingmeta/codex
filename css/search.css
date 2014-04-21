@@ -56,19 +56,20 @@ div.resultinfo .noresults, div.resultinfo .noquery, div.resultinfo .stats {
     float: right; padding-right: 0px;}
 
 div.resultinfo .noresults { display: none;}
-div.resultinfo.noresults div.noresults { display: block;}
-div#CODEXHUD.emptysearch div.resultinfo.noresults .noresults {
+div.resultinfo.noresults .noresults { display: block;}
+div#CODEXHUD.emptysearch .resultinfo.noresults .noresults {
     display: none;}
 
-div.resultinfo div.noquery { display: none;}
-div#CODEXHUD.emptysearch div.resultinfo div.noquery { display: block;}
+div.resultinfo .noquery { display: none;}
+div#CODEXHUD.emptysearch div.resultinfo .noquery { display: block;}
 
 div.resultinfo.noresults span { display: none;}
 div#CODEXHUD.emptysearch div.resultinfo span { display: none;}
 
 div#CODEXHUD div.resultinfo {
-    text-align: right; font-size: 120%;
-    min-height: 1ex; margin-bottom: 1ex; padding-right: 1em;}
+    text-align: left; font-size: 120%;
+    min-height: 1ex; max-height: 100%;
+    margin-bottom: 1ex; padding-right: 1em;}
 div#CODEXHUD div.resultinfo span.resultcount,
 div#CODEXHUD div.resultinfo span.refinecount,
 div#CODEXHUD div.resultinfo span.showalltags {
@@ -78,14 +79,28 @@ div#CODEXHUD.expandsearch div.resultinfo span.showalltags,
 div#CODEXHUD.searchresults div.resultinfo span.resultcount {
     font-weight: bold; text-decoration: none; cursor: default;}
 
-div#CODEXHUD div#CODEXSEARCHINFO { display: none;}
+div#CODEXHUD div#CODEXSEARCHINFO {
+    height: 100%; display: none;}
 div#CODEXHUD.refinesearch div#CODEXSEARCHINFO,
 div#CODEXHUD.expandsearch div#CODEXSEARCHINFO,
 div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
     display: block;}
-div#CODEXSEARCHINFO span.qtags {
-    float: left; padding-top: 0.5ex; padding-left: 0.7ex;}
-span.qtags span.variations { display: none; }
+div#CODEXSEARCHINFO .qtags {
+    box-sizing: border-box; height: 100%;
+    padding-top: 7px; padding-right: 7px;
+    margin-left: 10px; margin-bottom: 0px;
+    display: inline-block;
+    vertical-align: top;
+    clear: left;}
+.qtags span.variations { display: none; }
+.qtags span.elided { display: inline; }
+.qtags span.elision { display: none; }
+
+body.cxANIMAGE .qtags {
+    transition-property: font-size; transition-duration: 0.5s;
+    -webkit-transition-property: font-size; -webkit-transition-duration: 0.5s;
+    -moz-transition-property: font-size; -moz-transition-duration: 0.5s;
+    -o-transition-property: font-size; -o-transition-duration: 0.5s;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

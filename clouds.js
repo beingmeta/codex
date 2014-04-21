@@ -250,14 +250,15 @@
             var qid=tag._qid||tag.getQID();
             if ((tag instanceof KNode)&&(qid[0]==="\u00A7")) {
                 var sectname=tag._id.slice(1), showname;
-                if (sectname.length>20) 
-                    showname=(sectname.slice(0,20)+"\u2026");
-                else showname=sectname;
-                entry=fdjtDOM("span.completion.sectname",
-                              "\u00A7",fdjtDOM("span.name",showname));
-                if (sectname.length>24) {
-                    addClass(entry,"longterm");
-                    entry.title=sectname;}
+                if (sectname.length>20)
+                    showname=fdjtDOM(
+                        "span.name.ellipsis",sectname.slice(0,20),
+                        fdjtDOM("span.elision","\u2026"),
+                        fdjtDOM("span.elided",sectname.slice(20)));
+                else showname=fdjtDOM("span.name",sectname);
+                entry=fdjtDOM("span.completion.sectname","\u00A7",showname);
+                if (sectname.length>24) addClass(entry,"longterm");
+                if (sectname.length>20) entry.title=sectname;
                 if (cloud) cloud.addCompletion(entry,sectname,tag);
                 return entry;}
             else if (tag instanceof KNode) 
