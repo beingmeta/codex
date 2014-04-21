@@ -57,9 +57,9 @@ div#CODEXHUD .completions span.completion {
     cursor: pointer; padding-right: 0.5ex;}
 div#CODEXHUD .completions span.completion.disabled {
     cursor: default; opacity: 0.25;}
-div#CODEXHUD .completions span.sectname {
+div#CODEXHUD .completions span.sectname, div#CODEXHUD .qtags span.sectname {
   white-space: nowrap;
-  font-weight: bold; font-style: italic;  font-size: 70%;
+  font-weight: normal; font-style: italic;
   background-color: ivory; color: purple; max-width: 25%;
   padding: 0px; padding-left: 3px; padding-right: 3px; 
   margin: 0px; margin-left: 3px; margin-right: 3px; 
@@ -67,6 +67,9 @@ div#CODEXHUD .completions span.sectname {
   -webkit-border-radius: 6px; 
   -moz-border-radius: 6px; 
   border-radius: 6px;}
+div#CODEXHUD .completions .sectname .name,
+div#CODEXHUD .qtags span.sectname .name {
+  font-size: 80%;}
 
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.cue,
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.prime {
@@ -80,7 +83,7 @@ div#CODEXHUD .completions .completion .sectname {
   white-space: nowrap;}
 
 div#CODEXHUD .completions .completion .variation { 
-  font-size: 90%; color: purple; font-style: italic;}
+  font-size: 70%; color: purple; font-style: italic;}
 div#CODEXHUD .completions .completion .dterm {}
 .completion .dterm, .completion.dterm {
     padding-right: 0.35em; padding-left: 0.35em; 

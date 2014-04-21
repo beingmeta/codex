@@ -143,23 +143,7 @@
         while (i<lim) {
             var tag=elts[i];
             if (typeof tag === 'string') tag=kbref(tag)||tag;
-            if (i>0) fdjtDOM(newtags," \u00B7 ");
-            // Handle section references as tags
-            if ((typeof tag === "string")&&(tag[0]==="\u00A7")) {
-                var showname=tag;
-                if (tag.length>20) {
-                    var start=tag.indexOf(' ',8);
-                    var end=tag.lastIndexOf(' ',showname.length-8);
-                    if (start<0) start=8; if (end<0) end=showname.length-8;
-                    if (start<(showname.length-end)) {
-                        showname=showname.slice(0,start)+" \u2026 "+
-                            showname.slice(end);}}
-                var span=fdjtDOM("span.completion",
-                                 fdjtDOM("span.sectname",showname));
-                fdjtDOM(newtags,span);}
-            else if (typeof tag === "string")
-                fdjtDOM(newtags,fdjtDOM("span.rawterm",tag));
-            else fdjtDOM(newtags,tag);
+            fdjtDOM(newtags,((i>0)&&(" \u00B7 ")),Codex.cloudEntry(tag));
             i++;}
         if (qtags.id) newtags.id=qtags.id;
         fdjtDOM.replace(qtags,newtags);

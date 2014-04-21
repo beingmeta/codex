@@ -51,6 +51,7 @@
     "use strict";
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
+    var fdjtTime=fdjt.Time;
     var fdjtUI=fdjt.UI;
     var fdjtID=fdjt.ID;
     var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
@@ -120,7 +121,7 @@
         i=0; while (i<n_terms) {
             var dterm=tags[i++];
             var span=cloudSpan(
-                completions,dterm,scores,freqs,score_sum/n_terms);
+                dterm,completions,scores,freqs,score_sum/n_terms);
             dom.appendChild(span);
             dom.appendChild(document.createTextNode(" "));}
         sizeCloud(completions,scores,true);
@@ -136,10 +137,10 @@
         return completions;}
     Codex.makeCloud=makeCloud;
 
-    function cloudSpan(completions,dterm,scores,freqs){
+    function cloudSpan(dterm,completions,scores,freqs){
         var freq=freqs.get(dterm)||1;
         var score=scores.get(dterm);
-        var span=cloudEntry(completions,dterm);
+        var span=cloudEntry(dterm,completions);
         var title=span.title;
         if (freq) {
             if (title) title=title+"; count="+freq;
@@ -149,103 +150,141 @@
         if (freq===1) addClass(span,"singleton");        
         return span;}
     
-    function cloudEntry(cloud,tag,lang){
-        var entry;
-        if (typeof lang !== "string")
-            lang=(Codex.language)||(Knodule.language)||"EN";
-        function initCloudEntry(){
-            // This is called when the KNode is loaded
-            var variations=false, suffix=false;
-            if (tag instanceof KNode) {
-                var knode=tag, dterm=knode.dterm, origin=false;
-                if (tag._db===Codex.knodule) origin="index";
-                else if (tag._db.fullname) {
-                    origin=tag._db.fullname; suffix=fdjtDOM("sup","*");}
+    function initCloudEntry(tag,entry,cloud,lang){
+        // This is called when the KNode is loaded
+        var variations=false, suffix=false;
+        if (tag instanceof KNode) {
+            var knode=tag, dterm=knode.dterm, origin=false;
+            if (tag._db===Codex.knodule) origin="index";
+            else if (tag._db.fullname) {
+                origin=tag._db.fullname; suffix=fdjtDOM("sup","*");}
+            else {
+                var sourceref=Codex.sourcedb.probe(tag._db.name);
+                if (sourceref) {
+                    origin=tag._db.fullname=sourceref.name;
+                    suffix=fdjtDOM("sup","*");}
                 else {
-                    var sourceref=Codex.sourcedb.probe(tag._db.name);
-                    if (sourceref) {
-                        origin=tag._db.fullname=sourceref.name;
-                        suffix=fdjtDOM("sup","*");}
-                    else {
-                        origin="glosses";
-                        suffix=fdjtDOM("sup","*");}}
-                entry.setAttribute("data-key",dterm);
-                if (typeof suffix === "string")
-                    entry.innerHTML=dterm+suffix;
-                else if (suffix) {
-                    entry.innerHTML=dterm;
-                    entry.appendChild(suffix);}
-                else entry.innerHTML=dterm;
-                var synonyms=knode[lang];
-                if ((synonyms)&&(typeof synonyms === 'string'))
-                    synonyms=[synonyms];
-                if (synonyms) {
-                    var i=0; while (i<synonyms.length) {
-                        var synonym=synonyms[i++];
-                        if (synonym===dterm) continue;
-                        var variation=fdjtDOM("span.variation",synonym,"=");
-                        variation.setAttribute("data-key",synonym);
-                        if (!(variations)) variations=fdjtDOM("span.variations");
-                        variations.appendChild(variation);}}
-                if (knode.weak) 
+                    origin="glosses";
+                    suffix=fdjtDOM("sup","*");}}
+            entry.setAttribute("data-key",dterm);
+            if (typeof suffix === "string")
+                entry.innerHTML=dterm+suffix;
+            else if (suffix) {
+                entry.innerHTML=dterm;
+                entry.appendChild(suffix);}
+            else entry.innerHTML=dterm;
+            var synonyms=knode[lang];
+            if ((synonyms)&&(typeof synonyms === 'string'))
+                synonyms=[synonyms];
+            if (synonyms) {
+                var i=0; while (i<synonyms.length) {
+                    var synonym=synonyms[i++];
+                    if (synonym===dterm) continue;
+                    var variation=fdjtDOM("span.variation",synonym,"=");
+                    variation.setAttribute("data-key",synonym);
+                    if (!(variations)) variations=fdjtDOM("span.variations");
+                    variations.appendChild(variation);}}
+            if (knode.weak) 
                 if (knode.prime) {
                     addClass(entry,"prime");
                     addClass(entry,"cue");}
-                else if (knode.weak) addClass(entry,"weak");
-                else {}
-                var title=
-                    ((knode.prime)?("key "):
-                     (knode.weak)?("weak "):(""))+
-                    ((origin==="index")?("index concept "):
-                     ("concept "+"(from "+origin+") "));
-                if (knode.about)
-                    title=title+knode.dterm+": "+knode.about;
-                else {
-                    var def=knode.toPlaintext();
-                    if ((def)&&(def!==knode.dterm))
-                        title=title+knode.dterm+"="+knode.toPlaintext();
-                    else title=title+"'"+knode.dterm+"'";}
-                entry.title=title;}
-            else if (tag.name) {
-                addClass(entry,"source"); addClass(entry,"account");
-                entry.setAttribute("data-key",tag.name);
-                entry.innerHTML=tag.name;}
-            else if (tag.refuri) {
-                addClass(entry,"doc");
-                entry.setAttribute("data-key",tag.refuri);
-                if (entry.title) cloud.addKeys(entry,entry.title);
-                entry.innerHTML=tag.refuri;}
+            else if (knode.weak) addClass(entry,"weak");
             else {}
-            if (variations) fdjtDOM.prepend(entry,variations);
-            cloud.addKeys(entry);}
-        var existing=cloud.getByValue(tag,".completion");
+            var title=
+                ((knode.prime)?("key "):
+                 (knode.weak)?("weak "):(""))+
+                ((origin==="index")?("index concept "):
+                 ("concept "+"(from "+origin+") "));
+            if (knode.about)
+                title=title+knode.dterm+": "+knode.about;
+            else {
+                var def=knode.toPlaintext();
+                if ((def)&&(def!==knode.dterm))
+                    title=title+knode.dterm+"="+knode.toPlaintext();
+                else title=title+"'"+knode.dterm+"'";}
+            entry.title=title;}
+        else if (tag.name) {
+            addClass(entry,"source"); addClass(entry,"account");
+            entry.setAttribute("data-key",tag.name);
+            entry.innerHTML=tag.name;}
+        else if (tag.refuri) {
+            addClass(entry,"doc");
+            entry.setAttribute("data-key",tag.refuri);
+            if ((cloud)&&(entry.title))
+                cloud.addKeys(entry,entry.title);
+            entry.innerHTML=tag.refuri;}
+        else {}
+        if (variations) fdjtDOM.prepend(entry,variations);
+        if (cloud) cloud.addKeys(entry);}
+    function initCloudEntries(tag){
+        var droplets=tag.droplets;
+        if (droplets) {
+            var i=0, lim=droplets.length;
+            while (i<lim) {
+                initCloudEntry(tag,droplet.entry,droplet.cloud,droplet.lang);}
+            delete tag.droplets;}}
+
+    function cloudEntry(tag,cloud,lang){
+        var entry;
+        if (typeof lang !== "string")
+            lang=(Codex.language)||(Knodule.language)||"EN";
+        var existing=(cloud)&&(cloud.getByValue(tag,".completion"));
         if ((existing)&&(existing.length)) return existing[0];
         else if (typeof tag === "string") {
-            entry=fdjtDOM("span.completion.rawterm",tag);
+            entry=fdjtDOM(((tag.length>20)?
+                           ("span.completion.rawterm.longterm"):
+                           ("span.completion.rawterm")),
+                          tag);
             entry.setAttribute("data-value",tag);
-            cloud.addCompletion(entry,tag,tag);
+            if (cloud) cloud.addCompletion(entry,tag,tag);
             return entry;}
         else if (!(tag instanceof Ref)) {
             var strungout=entry.toString();
-            entry=fdjtDOM("span.completion.weirdterm",strungout);
-            cloud.addCompletion(entry,strungout,tag);
+            entry=fdjtDOM(((strungout.length>20)?
+                           ("span.completion.weirdterm.longterm"):
+                           ("span.completion.weirdterm")),
+                          strungout);
+            if (cloud) cloud.addCompletion(entry,strungout,tag);
             return entry;}
         else {
             var qid=tag._qid||tag.getQID();
-            if (tag instanceof KNode) {
-                entry=fdjtDOM("span.completion.dterm",qid);}
-            else entry=fdjtDOM("span.completion",qid);
+            if ((tag instanceof KNode)&&(qid[0]==="\u00A7")) {
+                var sectname=tag._id.slice(1), showname;
+                if (sectname.length>20) 
+                    showname=(sectname.slice(0,20)+"\u2026");
+                else showname=sectname;
+                entry=fdjtDOM("span.completion.sectname",
+                              "\u00A7",fdjtDOM("span.name",showname));
+                if (sectname.length>24) {
+                    addClass(entry,"longterm");
+                    entry.title=sectname;}
+                if (cloud) cloud.addCompletion(entry,sectname,tag);
+                return entry;}
+            else if (tag instanceof KNode) 
+                entry=fdjtDOM(((qid.length>20)?
+                               ("span.completion.dterm.longterm"):
+                               ("span.completion.dterm")),
+                              qid);
+            else entry=fdjtDOM(((qid.length>20)?
+                                ("span.completion.longterm"):
+                                ("span.completion")),
+                               qid);
             if (tag.cssclass) addClass(entry,tag.cssclass);
             entry.setAttribute("data-value",qid);
-            cloud.addCompletion(entry,false,tag);
+            if (cloud) cloud.addCompletion(entry,false,tag);
             if (tag._live) {
-                initCloudEntry();
-                return entry;}}
-        tag.onLoad(initCloudEntry);
-        return entry;}
+                initCloudEntry(tag,entry,cloud,lang);
+                return entry;}
+            else if (tag.droplets)
+                tag.droplets.push({entry: entry,lang: lang,cloud: cloud});
+            else {
+                tag.droplets=[{entry: entry,lang: lang,cloud: cloud}];
+                tag.onLoad(initCloudEntries);
+                return entry;}}}
     Codex.cloudEntry=cloudEntry;
     
     function addTag2Cloud(tag,cloud,kb,scores,freqs,thresh){
+        if (!(kb)) kb=Codex.knodule;
         if (!(tag)) return;
         else if (tag instanceof Array) {
             var i=0; var lim=tag.length;
@@ -254,11 +293,11 @@
         else {
             var container=cloud.dom;
             var tagref=(((typeof tag === 'string')&&(kb))?
-                        ((RefDB.resolve(tag,kb||Codex.knodule,Knodule,false))||(tag)):
+                        ((RefDB.resolve(tag,kb,Knodule,false))||(tag)):
                         (tag));
             var entry=((scores)?
-                       (cloudSpan(cloud,tagref,scores,freqs,thresh)):
-                       (cloudEntry(cloud,tagref)));
+                       (cloudSpan(tagref,cloud,scores,freqs,thresh)):
+                       (cloudEntry(tagref,cloud)));
             if (!(hasParent(entry,container))) fdjtDOM(container,entry," ");
             return entry;}}
     Codex.addTag2Cloud=addTag2Cloud;

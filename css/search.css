@@ -52,6 +52,9 @@ div.searchbox div.input input[type='TEXT'] {
     padding-left: 0.5ex; padding-right: 2em;
     box-sizing: border-box;}
 
+div.resultinfo .noresults, div.resultinfo .noquery, div.resultinfo .stats {
+    float: right; padding-right: 0px;}
+
 div.resultinfo .noresults { display: none;}
 div.resultinfo.noresults div.noresults { display: block;}
 div#CODEXHUD.emptysearch div.resultinfo.noresults .noresults {
@@ -82,6 +85,7 @@ div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
     display: block;}
 div#CODEXSEARCHINFO span.qtags {
     float: left; padding-top: 0.5ex; padding-left: 0.7ex;}
+span.qtags span.variations { display: none; }
 
 /* Emacs local variables
 ;;;  Local variables: ***

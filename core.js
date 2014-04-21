@@ -157,7 +157,7 @@ var Codex={
         selection: false, // Whether to trace text selection events
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
         highlight: 0,     // Whether to trace highlighting
-        indexing: 0,      // How much to trace document indexing
+        indexing: 1,      // How much to trace document indexing
         gestures: 0}      // How much to trace gestures
 };
 
@@ -1034,6 +1034,11 @@ var Codex={
             Codex.GoToPage(state.page,reason||"restoreState",
                            // Don't save the state since we've already got one
                            false,(!(savehist)));
+            if ((state.target)&&(cxID(state.target)))
+                setTarget(cxID(state.target));}
+        else if (state.target) {
+            Codex.GoTo(state.target,reason||"restoreState",
+                       true,false,(!(savehist)));
             if ((state.target)&&(cxID(state.target)))
                 setTarget(cxID(state.target));}
         if (!(state.refuri)) state.refuri=Codex.refuri;

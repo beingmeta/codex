@@ -720,21 +720,20 @@ Codex.Startup=
                     if ((Codex.Trace.startup>1)||(Codex.Trace.indexing>1))
                         fdjtLog("Finding and applying tag elements from body");
                     applyTagSpans();
-                    applyMultiTagSpans();},
+                    applyMultiTagSpans();
+                    applyTagAttributes(metadata);},
                 function(){
                     var pubindex=Codex._publisher_index||
                         window._sbook_autoindex;
                     if (pubindex) {
-                        handlePublisherIndex(pubindex,function(){
-                            applyTagAttributes(metadata,indexingDone);});
+                        handlePublisherIndex(pubindex,indexingDone);
                         Codex._publisher_index=false;
                         window._sbook_autoindex=false;}
                     else if (fdjtID("SBOOKAUTOINDEX")) {
                         var elt=fdjtID("SBOOKAUTOINDEX");
                         fdjtDOM.addListener(elt,"load",function(evt){
                             evt=evt||event;
-                            handlePublisherIndex(false,function(){
-                                applyTagAttributes(metadata,indexingDone);});
+                            handlePublisherIndex(false,indexingDone);
                             Codex._publisher_index=false;
                             window._sbook_autoindex=false;});}
                     else {
@@ -745,12 +744,11 @@ Codex.Startup=
                             script_elt.setAttribute("language","javascript");
                             script_elt.setAttribute("async","async");
                             fdjtDOM.addListener(script_elt,"load",function(){
-                                handlePublisherIndex(false,function(){
-                                    applyTagAttributes(metadata,indexingDone);});
+                                handlePublisherIndex(false,indexingDone);
                                 Codex._publisher_index=false;
                                 window._sbook_autoindex=false;});
                             document.body.appendChild(script_elt);}
-                        else applyTagAttributes(metadata,indexingDone);}},
+                        else indexingDone();}},
                 startupDone],
              100,25);}
         Codex.Startup=CodexStartup;
@@ -758,7 +756,9 @@ Codex.Startup=
         function handlePublisherIndex(pubindex,whendone){
             if (!(pubindex))
                 pubindex=Codex._publisher_index||window._sbook_autoindex;
-            if (!(pubindex)) return;
+            if (!(pubindex)) {
+                if (whendone) whendone();
+                return;}
             if ((Codex.Trace.startup>1)||(Codex.Trace.indexing)) {
                 if (pubindex._nkeys)
                     fdjtLog("Processing provided index of %d keys and %d refs",
@@ -2485,7 +2485,9 @@ Codex.Startup=
             var maxweight=Codex.tagmaxweight, minweight=Codex.tagminweight;
             var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.indexing);
             var alltags=[];
-            if (!(autoindex)) return;
+            if (!(autoindex)) {
+                if (whendone) whendone();
+                return;}
             for (var tag in autoindex) {
                 if (tag[0]==="_") continue;
                 else if (!(autoindex.hasOwnProperty(tag))) continue;
@@ -2638,7 +2640,8 @@ Codex.Startup=
                 startupLog("Applying inline tag attributes from content");
             for (var eltid in docinfo) {
                 var info=docinfo[eltid];
-                if (info.atags) {tagged++; tohandle.push(info);}}
+                if (info.atags) {tagged++; tohandle.push(info);}
+                else if (info.sectag) tohandle.push(info);}
             if (((Codex.Trace.indexing)&&(tohandle.length))||
                 (Codex.Trace.indexing>1)||(Codex.Trace.startup>1))
                 fdjtLog("Indexing tag attributes for %d nodes",tohandle.length);
@@ -2670,8 +2673,9 @@ Codex.Startup=
         Codex.applyTagAttributes=applyTagAttributes;
         
         function handle_inline_tags(info){
-            if (info.tags) addTags(info,info.tags);
-            if (info.atags) addTags(info,info.atags);}
+            if (info.atags) addTags(info,info.atags);
+            if (info.sectag)
+                addTags(info,info.sectag);}
         
         /* Setting up the clouds */
         
