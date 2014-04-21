@@ -199,9 +199,9 @@ body.cxSKIMMING #CODEXHUD #CODEXSHOWTEXT span.justreading { display: none;}
 body.cxSKIMMING #CODEXHUD #CODEXSHOWTEXT span.stopskimming { display: inline;}
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.cancelgloss,
-#CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelchanges {
+#CODEXHUD.addgloss.editgloss #CODEXSHOWTEXT span.cancelchanges {
     display: inline;}
-#CODEXHUD.addgloss.glossediting #CODEXSHOWTEXT span.cancelgloss {
+#CODEXHUD.addgloss.editgloss #CODEXSHOWTEXT span.cancelgloss {
     display: none;}
 
 body.hudup div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,

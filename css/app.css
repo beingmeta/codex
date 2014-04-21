@@ -324,10 +324,12 @@ div.locbar hr {
     width: 50px; height: 50px;
     z-index: 50;}
 #CODEXPAGE .codexglossmark {margin-right: -50px;}
-div.fdjtselecting .codexglossmark {
-    width: 3px; z-index: -20; }
+body.cxNARROW div.fdjtselecting .codexglossmark {
+    width: 10px; z-index: -20; }
 div.fdjtselecting .codexglossmark > * {
     visibility: hidden;}
+div.fdjtselecting .codexglossmark:hover > * {
+    visibility: visible;}
 /* #CODEXCONTENT .codexglossmark { right: 5px;} */
 
 body .codexglossmark > * {
@@ -781,9 +783,17 @@ img.codexcoverpage {
 
 /* Highlighting */
 
-.codexhighlightexcerpt { background-color: yellow;}
-.codexhighlightpassage { background-color: rgba(255, 255, 0, 0.21);}
-.codexhighlightsearch { background-color: gold;}
+body.cxSKIMMING .codexhighlightexcerpt,
+body.cxPREVIEW .codexhighlightexcerpt,
+body.openhud .codexhighlightexcerpt {
+    background-color: yellow;}
+body.cxSKIMMING .codexhighlightpassage,
+body.cxPREVIEW .codexhighlightpassage,
+body.openhud .codexhighlightpassage {
+    background-color: rgba(255, 255, 0, 0.21);}
+body.cxSKIMMING .codexhighlightsearch,
+body.cxPREVIEW .codexhighlightsearch {
+    background-color: gold;}
 .codexpreviewtarget {
     color: rgb(122,34,95);
     background-color: rgba(255,215,0,0.3);}

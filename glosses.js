@@ -182,7 +182,7 @@
             if (response) addClass(div,"glossreply");
             else {
                 addClass(div,"glossedit");
-                addClass(Codex.HUD,"glossediting");}}
+                addClass(Codex.HUD,"editgloss");}}
         else addClass(div,"glossadd");
         if (form) return div; else return false;}
     Codex.getGlossForm=getGlossForm;
@@ -315,6 +315,7 @@
         if (Codex.glosstarget) {
             dropClass(Codex.glosstarget,"codexglosstarget");}
         dropClass("CODEXHUD",/\bgloss\w+\b/);
+        dropClass("CODEXHUD","editgloss");
         if (!(target)) {
             var cur=fdjtID("CODEXLIVEGLOSS");
             if (cur) cur.id=null;

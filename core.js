@@ -632,6 +632,8 @@ var Codex={
     var codex_docinfo=false;
     function cxID(id){
         var info;
+        if ((id)&&(typeof id === "string")&&(id[0]==="#"))
+            id=id.slice(1);
         if (!(codex_docinfo)) codex_docinfo=Codex.docinfo;
         return ((codex_docinfo)&&(info=codex_docinfo[id])&&
                 (info.elt)&&(info.elt.id===id)&&(info.elt))||

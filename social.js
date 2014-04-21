@@ -325,7 +325,6 @@
     function clearGlossmark() {
         if (Codex.mode==="openglossmark") Codex.setMode(false,true);
         var slicediv=fdjtDOM("div.codexglosses.codexslice");
-        if (Codex.target) Codex.clearHighlights(Codex.target);
         var hudwrapper=fdjtDOM("div.hudpanel#CODEXPOINTGLOSSES",slicediv);
         fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);}
     Codex.clearGlossmark=clearGlossmark;
