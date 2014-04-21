@@ -421,9 +421,9 @@ div#CODEXHUD.refinesearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
 div#CODEXHUD.refinesearch.emptysearch div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
     display: none;}
 
-div#CODEXHUD div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
-div#CODEXHUD div#CODEXHEART div#CODEXALLTAGS.hudpanel {
-    padding-top: 1em;}
+div#CODEXHUD div#CODEXHEART div#CODEXSEARCHCLOUD,
+div#CODEXHUD div#CODEXHEART div#CODEXALLTAGS {
+    padding-top: 12px;}
 
 div#CODEXHEART div#CODEXSEARCHBLOCK.hudpanel {
     margin-left: 0px; margin-right: 0px;
@@ -752,7 +752,7 @@ div#CODEXPOINTGLOSSES div.tochead { display: none; }
 
 div#CODEXSKIMMER div.codexcard.gloss > div.tochead,
 div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody  {
-  margin-left: 50px; }
+  margin-left: 50px; padding-left: 0px;}
 div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
 div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
   position: absolute; top: 0px; left: 0px; margin-top: 0px;}
