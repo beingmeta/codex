@@ -173,9 +173,14 @@ div.codexslice div.codexcard div.idhead { display: none; }
 div.codexslice div.codexcard.slicenewhead div.tochead { display: block; }
 div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
 
-div#CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage div.codexcardbody,
+div#CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage
+  div.codexcardbody,
 div#CODEXSKIMMER div.codexcard div.codexcardbody {
-    border-top: 0px;}
+    border-top: 0px; padding-left: 1em; padding-top: 0.5ex;}
+div#CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage
+  div.codexcardbody span.marker,
+div#CODEXSKIMMER div.codexcard div.codexcardbody span.marker {
+    margin-left: -1ex;}
 div#CODEXSKIMMER div.codexcard div.idhead {
     border-bottom: 0px;}
 

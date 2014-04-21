@@ -388,7 +388,7 @@ div#CODEXHUD.searchresults div#CODEXSEARCH {
     -o-opacity: 0.98;}
 
 body.cxSKIMMING div#CODEXHUD.allglosses div#CODEXSOURCES,
-body.cxSKIMMING div#CODEXHUD.allglosses div#CODEXSEARCH {
+body.cxSKIMMING div#CODEXHUD.searchresults div#CODEXSEARCH {
     display: none; }
 
 /* Heart rules */
@@ -755,7 +755,7 @@ div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody  {
   margin-left: 50px; }
 div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
 div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
-  position: absolute; top: 0px; left: 0px;}
+  position: absolute; top: 0px; left: 0px; margin-top: 0px;}
 
 
 body div#CODEXHUD.overtoc div#CODEXTOP {

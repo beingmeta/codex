@@ -39,7 +39,7 @@ div#CODEXHUD div.completions div.doc {
 div#CODEXHUD .completions .showall {
     background-color: lightgray; float: right;
     font-size: 150%; width: 3em; padding: 0.25ex;
-    margin-right: 8px; margin-bottom: 6px;
+    margin-right: 8px; margin-bottom: 6px; margin-top: 6px;
     border: solid black 2px; border-radius: 0.5em;
     -o-border-radius: 0.5em; -webkit-border-radius: 0.5em; 
     -moz-border-radius: 0.5em;
@@ -98,6 +98,12 @@ div#CODEXHUD .completions .completion .dterm {}
 div#CODEXHUD div.completions div.nomatchmsg {
     text-align: center; font-size: 200%; font-weight: bold;
     margin-top: 1em;}
+
+/* Special rules */
+
+#CODEXALLTAGS.completions.showempty.noinput span.completion.sectname,
+#CODEXALLTAGS.completions.showempty.noinput span.completion.singleton {
+    display: none;}
 
 /* Emacs local variables
    ;;;  Local variables: ***

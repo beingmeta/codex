@@ -161,7 +161,9 @@ Codex.Slice=(function () {
             while (i<tags.length) {
                 var tag=tags[i++];
                 if (!(tag)) continue;
-                var tagstring=((typeof tag === "string")?(tag):((tag._qid)||(tag.getQID())));
+                var tagstring=
+                    ((typeof tag === "string")?(tag):
+                     ((tag._qid)||(tag.getQID())));
                 if (seen[tagstring]) continue;
                 else {count++; seen[tagstring]=tag;}
                 if ((!controller)&&(count>show_tag_thresh)) {
@@ -175,11 +177,13 @@ Codex.Slice=(function () {
                                                "all ",total_count_elt," tags"));
                     hidden=fdjtDOM("span.whenexpanded");
                     controller.setAttribute(
-                        "onclick","fdjt.UI.Expansion.toggle(event); fdjt.UI.cancel(event);");
+                        "onclick",
+                        "fdjt.UI.Expansion.toggle(event); "+
+                            "fdjt.UI.cancel(event);");
                     fdjtDOM(span," ",controller," ",hidden);
                     hide_start=count-1;
                     tagspan=hidden;}
-                fdjtDOM.append(tagspan,((count>1)?" \u00b7 ":" "),
+                fdjtDOM.append(tagspan,((count>1)?"\u00a0\u00b7 ":" "),
                                Knodule.HTML(tag,Codex.knodule));}}
         if ((count-hide_start)<(show_tag_thresh/2)) {
             fdjtDOM.remove(controller);

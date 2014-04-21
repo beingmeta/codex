@@ -307,7 +307,7 @@
         var showall=(use_cues)&&
             fdjtDOM(
                 "span.showall",
-                fdjtDOM("span.showmore","all"), 
+                fdjtDOM("span.showmore","more"), 
                 // ((how_many)&&(" ("+how_many+")"))
                 fdjtDOM("span.showless","fewer"));
         if ((how_many)&&(showall))

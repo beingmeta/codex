@@ -143,7 +143,7 @@
         while (i<lim) {
             var tag=elts[i];
             if (typeof tag === 'string') tag=kbref(tag)||tag;
-            fdjtDOM(newtags,((i>0)&&(" \u00B7 ")),Codex.cloudEntry(tag));
+            fdjtDOM(newtags,((i>0)&&("\u00a0\u00B7 ")),Codex.cloudEntry(tag));
             i++;}
         if (qtags.id) newtags.id=qtags.id;
         fdjtDOM.replace(qtags,newtags);
