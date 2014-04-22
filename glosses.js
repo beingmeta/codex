@@ -171,7 +171,7 @@
         var div=((form)&&(form.parentNode));
         var proto=fdjtID("CODEXADDGLOSSPROTOTYPE");
         if (!(div)) {
-            div=proto.cloneNode(true); div.id=null;
+            div=proto.cloneNode(true); div.id="";
             fdjtDOM(fdjtID("CODEXGLOSSFORMS"),div);
             form=getChildren(div,"form")[0];
             form.id=formid;
@@ -318,7 +318,7 @@
         dropClass("CODEXHUD","editgloss");
         if (!(target)) {
             var cur=fdjtID("CODEXLIVEGLOSS");
-            if (cur) cur.id=null;
+            if (cur) cur.id="";
             Codex.glosstarget=false;
             Codex.glossform=false;
             setSelecting(false);
@@ -437,7 +437,7 @@
 
     function setGlossForm(form){
         var cur=fdjtID("CODEXLIVEGLOSS");
-        if (cur) cur.id=null;
+        if (cur) cur.id="";
         if (Trace.glossing)
             fdjtLog("setGlossForm %o <== %o",form,Codex.glossform);
         if (!(form)) {

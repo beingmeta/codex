@@ -1598,7 +1598,7 @@ Codex.Startup=
             if (authorabout) fdjtDOM(about,authorabout);
             if (acknowledgements) {
                 var clone=acknowledgements.cloneNode(true);
-                clone.id=null;
+                clone.id="";
                 fdjtDOM(about,clone);}}
 
         function fillTemplate(template,spec,content){
