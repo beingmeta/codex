@@ -51,7 +51,6 @@
     "use strict";
     var fdjtLog=fdjt.Log;
     var fdjtDOM=fdjt.DOM;
-    var fdjtTime=fdjt.Time;
     var fdjtUI=fdjt.UI;
     var fdjtID=fdjt.ID;
     var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
@@ -219,8 +218,9 @@
     function initCloudEntries(tag){
         var droplets=tag.droplets;
         if (droplets) {
-            var i=0, lim=droplets.length;
+            var i=0, lim=droplets.length; 
             while (i<lim) {
+                var droplet=droplets[i++];
                 initCloudEntry(tag,droplet.entry,droplet.cloud,droplet.lang);}
             delete tag.droplets;}}
 
@@ -234,7 +234,7 @@
             entry=fdjtDOM(((tag.length>20)?
                            ("span.completion.rawterm.longterm"):
                            ("span.completion.rawterm")),
-                          tag);
+                          "\u201c"+tag+"\u201d");
             entry.setAttribute("data-value",tag);
             if (cloud) cloud.addCompletion(entry,tag,tag);
             return entry;}
@@ -243,7 +243,7 @@
             entry=fdjtDOM(((strungout.length>20)?
                            ("span.completion.weirdterm.longterm"):
                            ("span.completion.weirdterm")),
-                          strungout);
+                          "?"+strungout+"\u00bf");
             if (cloud) cloud.addCompletion(entry,strungout,tag);
             return entry;}
         else {
