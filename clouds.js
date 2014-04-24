@@ -366,6 +366,7 @@
             var completions=makeCloud(
                 cotags,query.tagscores,query.tagfreqs,query.results.length);
             var cloud=completions.dom;
+            addClass(cloud,"searchcloud");
             cloud.onclick=searchcloud_ontap;
             var n_refiners=cotags.length;
             var hide_some=(n_refiners>Codex.show_refiners);
