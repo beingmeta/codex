@@ -2496,16 +2496,22 @@ Codex.Startup=
                 var ids=autoindex[tag]; ntags++;
                 var occurrences=[];
                 var bar=tag.indexOf('|');
-                var taghead=tag, tagbase=tag, tagstart;
+                var taghead=tag, tagbase=tag, tagstart, knode;
                 if (bar>0) tagbase=taghead=tag.slice(0,bar);
-                var knode=Codex.knodule.probe(tagbase);
+                if (tag[0]!=='~')
+                    knode=Codex.knodule.handleSubjectEntry(tag);
+                else knode=Codex.knodule.probe(tagbase);
                 tagstart=taghead.search(/[^*~]/);
                 if (tagstart>0) tagbase=taghead.slice(tagstart);
                 if (bar>0) {
                     var defbody=tag.slice(bar);
                     var field_at=defbody.search("|:weight=");
                     if (field_at>=0) {
-                        var weight=parseFloat(defbody.slice(field_at+9));
+                        var end=defbody.indexOf('|',field_at+1);
+                        var weight=
+                            ((end>=0)?
+                             (parseFloat(defbody.slice(field_at+9,end))):
+                             (parseFloat(defbody.slice(field_at+9))));
                         tagweights.set(knode||tagbase,weight);
                         if (weight>maxweight) maxweight=weight;
                         if (weight<minweight) minweight=weight;
