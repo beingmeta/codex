@@ -71,10 +71,14 @@ div#CODEXHUD .completions .sectname .name,
 div#CODEXHUD .qtags span.sectname .name {
   font-size: 80%;}
 
+div#CODEXHUD .completions.showempty.noinput span.completion.rawterm.cue,
+div#CODEXHUD .completions.showempty.noinput span.completion.rootform.cue,
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.cue,
+div#CODEXHUD .completions.showempty.noinput span.completion.doubleton.cue,
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.prime {
     display: inline;}
-div#CODEXHUD .completions.showempty.noinput span.completion.singleton.dterm {
+div#CODEXHUD .completions.showempty.noinput span.completion.singleton.dterm,
+div#CODEXHUD .completions.showempty.noinput span.completion.doubleton.dterm {
     display: inline;}
 div#CODEXHUD .completions { }
 div#CODEXHUD .completions .completion.prime { 
@@ -90,10 +94,13 @@ div#CODEXHUD .completions .completion .dterm {}
     color: darkblue; background-color: gold; border: solid yellow 2px;}
 .completion .dterm sup, .completion.dterm sup {padding-left: 0.5ex;}
 .completion .dterm.weak, .completion.dterm.weak,
-.completion .rawterm, .completion.rawterm {
+.completion .rawterm, .completion.rawterm,
+.completion .rootform, .completion.rootform {
     padding-right: 0em; padding-left: 0em; 
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
     color: gray; background-color: inherit; border: none;}
+.completion .rootform, .completion.rootform {
+    color: rbga(0,0,0,0.8); font-weight: bold;}
 
 div#CODEXHUD div.completions div.nomatchmsg {
     text-align: center; font-size: 200%; font-weight: bold;
@@ -102,7 +109,10 @@ div#CODEXHUD div.completions div.nomatchmsg {
 /* Special rules */
 
 #CODEXALLTAGS.completions.showempty.noinput span.completion.sectname,
-#CODEXALLTAGS.completions.showempty.noinput span.completion.singleton {
+#CODEXALLTAGS.completions.showempty.noinput span.completion.rawterm,
+#CODEXALLTAGS.completions.showempty.noinput span.completion.rootform,
+#CODEXALLTAGS.completions.showempty.noinput span.completion.singleton,
+#CODEXALLTAGS.completions.showempty.noinput span.completion.doubleton {
     display: none;}
 
 /* Emacs local variables
