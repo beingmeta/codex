@@ -146,7 +146,9 @@
             else title="count="+freq;}
         if ((score)&&(score!==freq)) title=title+"; score="+score;
         span.title=title;
-        if (freq===1) addClass(span,"singleton");        
+        if (freq===1) addClass(span,"singleton");
+        else if (freq===2) addClass(span,"doubleton");
+        else {}
         return span;}
     
     function initCloudEntry(tag,entry,cloud,lang){
@@ -183,17 +185,17 @@
                     variation.setAttribute("data-key",synonym);
                     if (!(variations)) variations=fdjtDOM("span.variations");
                     variations.appendChild(variation);}}
-            if (knode.weak) 
-                if (knode.prime) {
-                    addClass(entry,"prime");
-                    addClass(entry,"cue");}
+            if (knode.prime) {
+                addClass(entry,"prime");
+                addClass(entry,"cue");}
             else if (knode.weak) addClass(entry,"weak");
             else {}
+            var noun=((dterm.search(/...$/)>0)?("root form"):("concept"));
             var title=
                 ((knode.prime)?("key "):
                  (knode.weak)?("weak "):(""))+
-                ((origin==="index")?("index concept "):
-                 ("concept "+"(from "+origin+") "));
+                ((origin==="index")?("index "+noun+" "):
+                 (noun+" (from "+origin+") "));
             if (knode.about)
                 title=title+knode.dterm+": "+knode.about;
             else {
@@ -231,11 +233,15 @@
         var existing=(cloud)&&(cloud.getByValue(tag,".completion"));
         if ((existing)&&(existing.length)) return existing[0];
         else if (typeof tag === "string") {
-            entry=fdjtDOM(((tag.length>20)?
-                           ("span.completion.rawterm.longterm"):
-                           ("span.completion.rawterm")),
-                          "\u201c"+tag+"\u201d");
+            var isrootform=tag.search(/...$/)>0;
+            var spec="span.completion"+
+                ((isrootform)?(".rootform"):(".rawterm"))+
+                ((tag.length>20)?(".longterm"):(""));
+            entry=fdjtDOM(spec,"\u201c"+tag+"\u201d");
             entry.setAttribute("data-value",tag);
+            if (isrootform)
+                entry.title="forms "+tag;
+            else entry.title=tag;
             if (cloud) cloud.addCompletion(entry,tag,tag);
             return entry;}
         else if (!(tag instanceof Ref)) {
@@ -244,10 +250,12 @@
                            ("span.completion.weirdterm.longterm"):
                            ("span.completion.weirdterm")),
                           "?"+strungout+"\u00bf");
+            entry.title=strungout;
             if (cloud) cloud.addCompletion(entry,strungout,tag);
             return entry;}
         else {
             var qid=tag._qid||tag.getQID();
+            // Section names as tags
             if ((tag instanceof KNode)&&(qid[0]==="\u00A7")) {
                 var sectname=tag._id.slice(1), showname;
                 if (sectname.length>20)
@@ -489,14 +497,18 @@
                 vscores[i]=vscore=sqrt(vscore); sum=sum+vscore; count++;
                 if ((min_score<0)||(vscore<min_score)) min_score=vscore;
                 if ((max_score<0)||(vscore>max_score)) max_score=vscore;}
-            else vscores[i]=vscore;
+            else vscores[i]=false;
             i++;}
         if (cuethresh===true)
             cuethresh=min_score+((2*(max_score-min_score))/3);
+        if (Codex.Trace.clouds)
+            fdjtLog("Sizing cloud %o using scores [%o,%o] and thresh %o",
+                    cloud.dom,min_score,max_score,cuethresh);
         i=0; while (i<lim) {
             var value=values[i], score=vscores[i];
             var elt=byvalue.get(value);
             if (!(score)) {
+                addClass(elt,"unscored");
                 if (value.prime) {
                     addClass(elt,"prime"); addClass(elt,"cue");}
                 elt.style.fontSize=""; i++; continue;}
