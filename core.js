@@ -183,6 +183,7 @@ var Codex={
     var setLocal=fdjtState.setLocal;
     
     Codex.tagweights=new ObjectMap();
+    Codex.tagscores=new ObjectMap();
 
     function hasLocal(key){
         if (Codex.persist) return fdjtState.existsLocal(key);
@@ -881,16 +882,16 @@ var Codex={
         if (!(tagdb)) tagdb=Codex.knodule;
         var docdb=Codex.docdb;
         if (!(nodes instanceof Array)) nodes=[nodes];
-        knoduleAddTags(nodes,tags,docdb,tagdb,slotid);
+        knoduleAddTags(nodes,tags,docdb,tagdb,slotid,Codex.tagscores);
         var i=0, lim=nodes.length; while (i<lim) {
             var node=nodes[i++];
             if (!(node.toclevel)) continue;
             var passages=docdb.find('head',node);
             if ((passages)&&(passages.length))
-                knoduleAddTags(passages,tags,docdb,tagdb,"^"+slotid);
+                knoduleAddTags(passages,tags,docdb,tagdb,"^"+slotid,Codex.tagscores);
             var subheads=docdb.find('heads',node);
             if ((subheads)&&(subheads.length))
-                addTags(subheads,tags,slotid,tagdb);}}
+                addTags(subheads,tags,slotid,tagdb,slotid,Codex.tagscores);}}
     Codex.addTags=addTags;
         
     /* Navigation */

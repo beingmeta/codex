@@ -2471,9 +2471,9 @@ Codex.Startup=
                                          Codex.UI.getShowAll(
                                              true,empty_cloud.values.length));
                                  Codex.sortCloud(empty_cloud);
-                                 Codex.sizeCloud(empty_cloud,Codex.tagweights);
+                                 Codex.sizeCloud(empty_cloud);
                                  Codex.sortCloud(gloss_cloud);
-                                 Codex.sizeCloud(gloss_cloud,Codex.tagweights);},
+                                 Codex.sizeCloud(gloss_cloud);},
                              200,5);}
         
         var addTags=Codex.addTags;
@@ -2681,7 +2681,7 @@ Codex.Startup=
         function handle_inline_tags(info){
             if (info.atags) addTags(info,info.atags);
             if (info.sectag)
-                addTags(info,info.sectag);}
+                addTags(info,info.sectag,"tags",Codex.knodule);}
         
         /* Setting up the clouds */
         

@@ -77,6 +77,10 @@ div#CODEXHUD .completions.showempty.noinput span.completion.singleton.cue,
 div#CODEXHUD .completions.showempty.noinput span.completion.doubleton.cue,
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.prime {
     display: inline;}
+div#CODEXHUD #CODEXALLTAGS.completions.noinput
+  span.completion.sectname.cue {
+      display: none;}
+
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.dterm,
 div#CODEXHUD .completions.showempty.noinput span.completion.doubleton.dterm {
     display: inline;}
@@ -108,20 +112,20 @@ div#CODEXHUD div.completions div.nomatchmsg {
 
 /* Special rules */
 
-/*
 #CODEXALLTAGS.completions.showempty.noinput span.completion.sectname,
 #CODEXALLTAGS.completions.showempty.noinput span.completion.rawterm,
 #CODEXALLTAGS.completions.showempty.noinput span.completion.rootform,
 #CODEXALLTAGS.completions.showempty.noinput span.completion.singleton,
 #CODEXALLTAGS.completions.showempty.noinput span.completion.doubleton {
     display: none;}
-*/
+/*
 .searchcloud.completions.showempty.noinput span.completion.sectname,
 .searchcloud.completions.showempty.noinput span.completion.rawterm,
 .searchcloud.completions.showempty.noinput span.completion.rootform,
 .searchcloud.completions.showempty.noinput span.completion.singleton,
 .searchcloud.completions.showempty.noinput span.completion.doubleton {
     display: none;}
+*/
 
 /* Emacs local variables
    ;;;  Local variables: ***

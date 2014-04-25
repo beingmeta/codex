@@ -238,7 +238,6 @@
                 ((isrootform)?(".rootform"):(".rawterm"))+
                 ((tag.length>20)?(".longterm"):(""));
             entry=fdjtDOM(spec,"\u201c"+tag+"\u201d");
-            entry.setAttribute("data-value",tag);
             if (isrootform)
                 entry.title="forms "+tag;
             else entry.title=tag;
@@ -265,6 +264,8 @@
                         fdjtDOM("span.elided",sectname.slice(20)));
                 else showname=fdjtDOM("span.name",sectname);
                 entry=fdjtDOM("span.completion.sectname","\u00A7",showname);
+                entry.setAttribute("data-key",sectname);
+                entry.setAttribute("data-value",tag._qid||tag.getQID());
                 if (sectname.length>24) addClass(entry,"longterm");
                 if (sectname.length>20) entry.title=sectname;
                 if (cloud) cloud.addCompletion(entry,sectname,tag);
@@ -475,6 +476,8 @@
                 if (xt<yt) return -1;
                 else if (xt>yt) return 1;
                 else return 0;}
+            if (sx.search(/\w/)>0) sx=sx.slice(sx.search(/\w/));
+            if (sy.search(/\w/)>0) sy=sy.slice(sy.search(/\w/));
             if (sx<sy) return -1;
             else if (sx>sy) return 1;
             else return 0;});}
@@ -497,18 +500,25 @@
 
     function sizeCloud(cloud,scores,roots){
         var sqrt=Math.sqrt;
+        var gscores=Codex.tagscores;
+        var gweights=Codex.tagweights;
         var values=cloud.values, byvalue=cloud.byvalue;
         var vscores=new Array(values.length);
         var i=0, lim=values.length;
         var min_score=-1, max_score=-1, sum=0, count=0;
         while (i<lim) {
-            if ((roots)&&(RefDB.contains(roots,values[i]))) {
+            var value=values[i], score;
+            if ((roots)&&(RefDB.contains(roots,value))) {
                 vscores[i++]=false; continue;}
-            var vscore=scores.get(values[i]);
-            if (typeof vscore === "number") {
-                vscores[i]=vscore=sqrt(vscore); sum=sum+vscore; count++;
-                if ((min_score<0)||(vscore<min_score)) min_score=vscore;
-                if ((max_score<0)||(vscore>max_score)) max_score=vscore;}
+            if (scores) {
+                var cscore=scores.get(value);
+                var gscore=gscores.get(value);
+                score=(cscore/gscore)*(gweights.get(value));}
+            else score=gscores.get(value);
+            if (typeof score === "number") {
+                vscores[i]=score; sum=sum+score; count++;
+                if ((min_score<0)||(score<min_score)) min_score=score;
+                if ((max_score<0)||(score>max_score)) max_score=score;}
             else vscores[i]=false;
             i++;}
         if (Codex.Trace.clouds)
