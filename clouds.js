@@ -72,7 +72,7 @@
     var log=fdjtLog;
     var kbref=RefDB.resolve;
 
-    function makeCloud(tags,scores,freqs,n,completions,init_dom) {
+    function makeCloud(tags,scores,freqs,n,completions,init_dom,roots) {
         var start=new Date();
         var sourcedb=Codex.sourcedb;
         var knodule=Codex.knodule;
@@ -123,7 +123,7 @@
                 dterm,completions,scores,freqs,score_sum/n_terms);
             dom.appendChild(span);
             dom.appendChild(document.createTextNode(" "));}
-        sizeCloud(completions,scores,true);
+        sizeCloud(completions,scores,roots);
 
         var end=new Date();
         if (Codex.Trace.clouds)
@@ -362,29 +362,37 @@
             query.cloud=Codex.empty_cloud;
             return query.cloud;}
         else {
+            var roots=new ObjectMap();
+            var query_i=0, query_lim=query.tags.length;
+            while (query_i<query_len) {
+                roots.set(query.tags[query_i++],true);}
             var cotags=query.getCoTags();
             var completions=makeCloud(
-                cotags,query.tagscores,query.tagfreqs,query.results.length);
+                cotags,query.tagscores,query.tagfreqs,query.results.length,
+                query.tags);
             var cloud=completions.dom;
             addClass(cloud,"searchcloud");
             cloud.onclick=searchcloud_ontap;
             var n_refiners=cotags.length;
             var hide_some=(n_refiners>Codex.show_refiners);
             if (hide_some) {
-                var cues=fdjtDOM.$(".cue",cloud);
-                if (!((cues)&&(cues.length))) {
-                    var compelts=fdjtDOM.$(".completion",cloud);
-                    var i=0; var lim=((compelts.length<Codex.show_refiners)?
-                                      (compelts.length):(Codex.show_refiners));
-                    while (i<lim) addClass(compelts[i++],"cue");}}
+                var ranked=new Array(cotags);
+                ranked.sort(function(x,y){
+                    if (((typeof x === "string")&&(typeof y === "string"))||
+                        ((x instanceof Ref)&&(y instanceof Ref))) {
+                        var xs=scores.get(x), ys=scores.get(y);
+                        if ((typeof xs === "number")&&
+                            (typeof ys === "number")) 
+                            return ys-xs;
+                        else if (typeof xs === "number")
+                            return -1;
+                        else return 1;}
+                    else if (typeof x === "string")
+                        return 1;
+                    else return -1;});
+                var i=0, lim=Codex.show_refiners;
+                while (i<lim) addClass(ranked[i++],"cue");}
             else addClass(cloud,"showempty");
-            query.cloud=completions;
-            var tags=query.tags;
-            if (tags) {
-                var t=0, n_tags=tags.length; while (t<n_tags) {
-                    var tag=tags[t++];
-                    var e=completions.getByValue(tag);
-                    addClass(e,"disabled");}}
             return query.cloud;}}
     Codex.queryCloud=queryCloud;
     RefDB.Query.prototype.getCloud=function(){return queryCloud(this);};
@@ -486,13 +494,15 @@
         cloud.dom.appendChild(holder);}
     Codex.sortCloud=sortCloud;
 
-    function sizeCloud(cloud,scores,cuethresh){
+    function sizeCloud(cloud,scores,roots){
         var sqrt=Math.sqrt;
         var values=cloud.values, byvalue=cloud.byvalue;
         var vscores=new Array(values.length);
         var i=0, lim=values.length;
         var min_score=-1, max_score=-1, sum=0, count=0;
         while (i<lim) {
+            if ((roots)&&(RefDB.contains(roots,values[i]))) {
+                vscores[i++]=false; continue;}
             var vscore=scores.get(values[i]);
             if (typeof vscore === "number") {
                 vscores[i]=vscore=sqrt(vscore); sum=sum+vscore; count++;
@@ -500,8 +510,6 @@
                 if ((max_score<0)||(vscore>max_score)) max_score=vscore;}
             else vscores[i]=false;
             i++;}
-        if (cuethresh===true)
-            cuethresh=min_score+((2*(max_score-min_score))/3);
         if (Codex.Trace.clouds)
             fdjtLog("Sizing cloud %o using scores [%o,%o] and thresh %o",
                     cloud.dom,min_score,max_score,cuethresh);
@@ -519,7 +527,13 @@
                 addClass(elt,"common"); addClass(elt,"cue");}
             else {}
             var factor=(score-min_score)/(max_score-min_score);
-            elt.style.fontSize=(50+(150*factor))+"%";
+            var fsize=50+(150*factor);
+            if ((roots)&&(RefDB.contains(roots,values[i]))) {
+                addClass(elt,"cloudroot");
+                if (fsize<200)
+                    elt.style.fontSize=fsize+"%";
+                else elt.style.fontSize="200%";}
+            else elt.style.fontSize=fsize+"%";
             i++;}}
     Codex.sizeCloud=sizeCloud;
 
@@ -527,9 +541,9 @@
         evt=evt||event;
         var target=fdjtDOM.T(evt);
         var completion=getParent(target,".completion");
-        if (hasClass(completion,"disabled")) {
+        if (hasClass(completion,"cloudroot")) {
             if (Codex.Trace.gestures)
-                log("cloud tap on disabled %o",completion);
+                log("cloud tap on cloudroot %o",completion);
             return;}
         if (Codex.Trace.gestures) log("cloud tap on %o",completion);
         var completions=getParent(target,".completions");
