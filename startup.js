@@ -2435,7 +2435,7 @@ Codex.Startup=
             fdjtTime.slowmap(function(tag){
                 var elt=addTag2Cloud(tag,empty_cloud,Codex.knodule,
                                      Codex.tagweights,tagfreqs,false);
-                if (tag instanceof Knode) addClass(elt,"cue");
+                if (tag instanceof KNode) addClass(elt,"cue");
                 if ((tag instanceof KNode)||
                     ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                     addTag2Cloud(tag,gloss_cloud);},

@@ -363,7 +363,6 @@
             query.cloud=Codex.empty_cloud;
             return query.cloud;}
         else {
-            var query_i=0, query_lim=query.tags.length;
             var cotags=query.getCoTags();
             var completions=makeCloud(
                 cotags,query.tagscores,query.tagfreqs,
@@ -499,7 +498,6 @@
     Codex.sortCloud=sortCloud;
 
     function sizeCloud(cloud,scores,roots){
-        var sqrt=Math.sqrt;
         var gscores=Codex.tagscores;
         var gweights=Codex.tagweights;
         var values=cloud.values, byvalue=cloud.byvalue;
@@ -525,19 +523,17 @@
             fdjtLog("Sizing cloud %o using scores [%o,%o]",
                     cloud.dom,min_score,max_score);
         i=0; while (i<lim) {
-            var value=values[i], score=vscores[i];
-            var elt=byvalue.get(value);
-            if (!(score)) {
-                addClass(elt,"unscored");
-                if (value.prime) {
-                    addClass(elt,"prime"); addClass(elt,"cue");}
-                elt.style.fontSize=""; i++; continue;}
-            if (value.prime) {
+            var v=values[i], s=vscores[i];
+            var elt=byvalue.get(v);
+            if (v.prime) {
                 addClass(elt,"prime"); addClass(elt,"cue");}
+            if (!(s)) {
+                addClass(elt,"unscored");
+                elt.style.fontSize=""; i++; continue;}
             else {}
-            var factor=(score-min_score)/(max_score-min_score);
+            var factor=(s-min_score)/(max_score-min_score);
             var fsize=50+(150*factor);
-            if ((roots)&&(RefDB.contains(roots,values[i]))) {
+            if ((roots)&&(RefDB.contains(roots,v))) {
                 addClass(elt,"cloudroot");
                 if (fsize<200)
                     elt.style.fontSize=fsize+"%";
