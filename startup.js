@@ -2433,8 +2433,9 @@ Codex.Startup=
                         searchtags.length);
             addClass(document.body,"cxINDEXING");
             fdjtTime.slowmap(function(tag){
-                addTag2Cloud(tag,empty_cloud,Codex.knodule,
-                             Codex.tagweights,tagfreqs,false);
+                var elt=addTag2Cloud(tag,empty_cloud,Codex.knodule,
+                                     Codex.tagweights,tagfreqs,false);
+                if (tag instanceof Knode) addClass(elt,"cue");
                 if ((tag instanceof KNode)||
                     ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                     addTag2Cloud(tag,gloss_cloud);},
@@ -2449,8 +2450,9 @@ Codex.Startup=
                                      "CODEXINDEXMESSAGE",pct);
                                  fdjtUI.ProgressBar.setMessage(
                                      "CODEXINDEXMESSAGE",
-                                     fdjtString("Added %d tags (%d%% of %d) to clouds",
-                                                i,Math.floor(pct),lim));},
+                                     fdjtString(
+                                         "Added %d tags (%d%% of %d) to clouds",
+                                         i,Math.floor(pct),lim));},
                              function(){
                                  var eq=Codex.empty_query;
                                  if (Codex.Trace.startup>1)
@@ -2469,11 +2471,9 @@ Codex.Startup=
                                          Codex.UI.getShowAll(
                                              true,empty_cloud.values.length));
                                  Codex.sortCloud(empty_cloud);
-                                 Codex.sizeCloud(
-                                     empty_cloud,Codex.tagweights,true);
+                                 Codex.sizeCloud(empty_cloud,Codex.tagweights);
                                  Codex.sortCloud(gloss_cloud);
-                                 Codex.sizeCloud(
-                                     gloss_cloud,Codex.tagweights,true);},
+                                 Codex.sizeCloud(gloss_cloud,Codex.tagweights);},
                              200,5);}
         
         var addTags=Codex.addTags;

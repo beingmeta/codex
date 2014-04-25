@@ -95,7 +95,7 @@
         fdjtDOM.prepend(dom,emptymsg,maxmsg);
         
         if (!(completions)) completions=new Completions(dom);
-        
+
         var info=organize_tags(tags,scores,knodule,sourcedb);
         var usecues=(n_terms>17)&& (// lots of terms AND
             (info.n_primes>0) || // there are prime terms OR
@@ -362,21 +362,19 @@
             query.cloud=Codex.empty_cloud;
             return query.cloud;}
         else {
-            var roots=new ObjectMap();
             var query_i=0, query_lim=query.tags.length;
-            while (query_i<query_len) {
-                roots.set(query.tags[query_i++],true);}
             var cotags=query.getCoTags();
             var completions=makeCloud(
-                cotags,query.tagscores,query.tagfreqs,query.results.length,
-                query.tags);
+                cotags,query.tagscores,query.tagfreqs,
+                cotags.length,false,false,query.tags);
             var cloud=completions.dom;
             addClass(cloud,"searchcloud");
             cloud.onclick=searchcloud_ontap;
             var n_refiners=cotags.length;
             var hide_some=(n_refiners>Codex.show_refiners);
             if (hide_some) {
-                var ranked=new Array(cotags);
+                var ranked=[].concat(cotags);
+                var scores=query.tagscores;
                 ranked.sort(function(x,y){
                     if (((typeof x === "string")&&(typeof y === "string"))||
                         ((x instanceof Ref)&&(y instanceof Ref))) {
@@ -391,8 +389,11 @@
                         return 1;
                     else return -1;});
                 var i=0, lim=Codex.show_refiners;
-                while (i<lim) addClass(ranked[i++],"cue");}
+                while (i<lim) {
+                    var tag=ranked[i++], elt=completions.getByValue(tag);
+                    addClass(elt,"cue");}}
             else addClass(cloud,"showempty");
+            query.cloud=completions;
             return query.cloud;}}
     Codex.queryCloud=queryCloud;
     RefDB.Query.prototype.getCloud=function(){return queryCloud(this);};
@@ -511,8 +512,8 @@
             else vscores[i]=false;
             i++;}
         if (Codex.Trace.clouds)
-            fdjtLog("Sizing cloud %o using scores [%o,%o] and thresh %o",
-                    cloud.dom,min_score,max_score,cuethresh);
+            fdjtLog("Sizing cloud %o using scores [%o,%o]",
+                    cloud.dom,min_score,max_score);
         i=0; while (i<lim) {
             var value=values[i], score=vscores[i];
             var elt=byvalue.get(value);
@@ -523,8 +524,6 @@
                 elt.style.fontSize=""; i++; continue;}
             if (value.prime) {
                 addClass(elt,"prime"); addClass(elt,"cue");}
-            else if ((cuethresh)&&(score>cuethresh)) {
-                addClass(elt,"common"); addClass(elt,"cue");}
             else {}
             var factor=(score-min_score)/(max_score-min_score);
             var fsize=50+(150*factor);
