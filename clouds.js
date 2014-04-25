@@ -144,7 +144,7 @@
         if (freq) {
             if (title) title=title+"; count="+freq;
             else title="count="+freq;}
-        if ((score)&&(score!==freq)) title=title+"; score="+score;
+        if ((score)&&(score!==freq)) title=title+"; s="+score;
         span.title=title;
         if (freq===1) addClass(span,"singleton");
         else if (freq===2) addClass(span,"doubleton");
