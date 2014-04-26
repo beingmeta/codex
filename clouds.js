@@ -86,7 +86,7 @@
         if (dom) addClass(dom,"completions");
         else if ((completions)&&(completions.dom))
             dom=completions.dom;
-        else dom=fdjtDOM("div.completions.cloud",getShowAll(usecues,n_terms));
+        else dom=fdjtDOM("div.completions.cloud.noinput",getShowAll(usecues,n_terms));
         var maxmsg=fdjtDOM(
             "div.maxcompletemsg",
             "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
@@ -132,6 +132,8 @@
 
         // Put the cloud back into the flow (if neccessary)
         if (breadcrumb) breadcrumb.parentNode.replaceChild(dom,breadcrumb);
+
+        completions.updated=adjustCloudFont;
 
         return completions;}
     Codex.makeCloud=makeCloud;
@@ -504,6 +506,9 @@
         var vscores=new Array(values.length);
         var i=0, lim=values.length;
         var min_score=-1, max_score=-1, sum=0, count=0;
+        if (Codex.Trace.clouds)
+            fdjtLog("Sizing %d values in cloud %o using scores %o with roots %o",
+                    values.length,cloud.dom,scores,roots);
         while (i<lim) {
             var value=values[i], score;
             if ((roots)&&(RefDB.contains(roots,value))) {
@@ -513,7 +518,7 @@
                 var gscore=gscores.get(value);
                 score=(cscore/gscore)*(gweights.get(value));}
             else score=gscores.get(value);
-            if (typeof score === "number") {
+            if ((typeof score === "number")&&(!(Number.isNaN(score)))) {
                 vscores[i]=score; sum=sum+score; count++;
                 if ((min_score<0)||(score<min_score)) min_score=score;
                 if ((max_score<0)||(score>max_score)) max_score=score;}
@@ -522,6 +527,7 @@
         if (Codex.Trace.clouds)
             fdjtLog("Sizing cloud %o using scores [%o,%o]",
                     cloud.dom,min_score,max_score);
+        cloud.dom.style.display='none';
         i=0; while (i<lim) {
             var v=values[i], s=vscores[i];
             var elt=byvalue.get(v);
@@ -539,7 +545,12 @@
                     elt.style.fontSize=Math.round(fsize)+"%";
                 else elt.style.fontSize="200%";}
             else elt.style.fontSize=Math.round(fsize)+"%";
-            i++;}}
+            i++;}
+        cloud.dom.style.display='';
+        if (cloud.dom.parentNode) adjustCloudFont(cloud);
+        if (Codex.Trace.clouds)
+            fdjtLog("Finished sizing cloud %o using scores [%o,%o]",
+                    cloud.dom,min_score,max_score);}
     Codex.sizeCloud=sizeCloud;
 
     function searchcloud_ontap(evt){
@@ -621,9 +632,35 @@
         setCloudCues(cloud,tags);}
     Codex.setCloudCues=setCloudCues;
     Codex.setCloudCuesFromTarget=setCloudCuesFromTarget;
-    
 
-
+    function adjustCloudFont(arg){
+        var cloud=((this instanceof Completions)?(this):(arg));
+        var dom=cloud.dom, parent=dom.parentNode;
+        var ih=dom.scrollHeight, iw=dom.scrollWidth;
+        if (!(parent)) return;
+        var oh=parent.clientHeight, ow=parent.clientWidth;
+        var tweakUntil=fdjt.UI.adjustFont.tweakUntil, pct;
+        if (Codex.Trace.clouds)
+            fdjtLog("Adjusting cloud %o: %o/%o",dom,ih,oh);
+        if (ih>2*oh) return;
+        else if ((ih<oh)&&(ih>(oh*0.9))) return;
+        else if (ih>oh) 
+            pct=tweakUntil(function(){
+                if (dom.scrollHeight<oh) return 0;
+                else return 1;},
+                           dom,{},[10,5,1],false,10,300);
+        else if (ih<oh) {
+            pct=tweakUntil(function(){
+                if (dom.scrollHeight<0.99*oh) return -1;
+                else if (dom.scrollHeight<=oh) return 0;
+                else return 1;},
+                           dom,{},[10,5,1],false,10,300);
+            pct=tweakUntil(function(){
+                if (dom.scrollHeight<=oh) return 0;
+                else return 1;},
+                           dom,{},[10,5,1],false,10,300);}
+        else {}}
+    Codex.adjustCloudFont=adjustCloudFont;
 })();
 
 /* Emacs local variables

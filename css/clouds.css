@@ -36,7 +36,7 @@ div#CODEXHUD div.completions div.doc {
 
 div#CODEXHUD .completions .showall {
     background-color: lightgray; float: right;
-    font-size: 150%; width: 3em; padding: 0.25ex;
+    font-size: 32px; width: 3em; padding: 0.25ex;
     margin-right: 8px; margin-bottom: 6px; margin-top: 0px;
     border: solid black 2px; border-radius: 0.5em;
     -o-border-radius: 0.5em; -webkit-border-radius: 0.5em; 
@@ -124,6 +124,10 @@ div#CODEXHUD div.completions div.nomatchmsg {
     display: none;}
 */
 
+.cloud.showall .sectname.longterm .ellipsis { font-size: 70%;}
+.cloud.showall .sectname .ellipsis .elision { display: none;}
+.cloud.showall .sectname .ellipsis .elided { display: inline;}
+
 .cloud.noinput a.completion.cue { display: inline; }
 .cloud.noinput span.completion.cue { display: inline; }
 .cloud.showall.noinput a.completion { display: inline; }
@@ -138,6 +142,34 @@ div#CODEXHUD div.completions div.nomatchmsg {
    display: inline; }
 .cloud .completion.displayed span.variation.displayed { 
    display: inline; }
+
+.cloud.iblocktags.noinput a.completion.cue,
+.cloud.iblocktags.noinput span.completion.cue,
+.cloud.iblocktags.showall.noinput a.completion,
+.cloud.iblocktags.showall.noinput span.completion,
+.cloud.iblocktags a.completion[displayed],
+.cloud.iblocktags span.completion[displayed],
+.cloud.iblocktags .completion[displayed] span.variation[displayed],
+.cloud.iblocktags a.completion.displayed,
+.cloud.iblocktags span.completion.displayed,
+.cloud.iblocktags a.completion.displayed span.variation.displayed,
+.cloud.iblocktags .completion.displayed span.variation.displayed { 
+   display: inline-block; line-height: 100%;
+   vertical-align: top; margin-bottom: 2px;}
+
+.cloud.noinput a.completion.cue,
+.cloud.noinput span.completion.cue,
+.cloud.showall.noinput a.completion,
+.cloud.showall.noinput span.completion,
+.cloud a.completion[displayed],
+.cloud span.completion[displayed],
+.cloud .completion[displayed] span.variation[displayed],
+.cloud a.completion.displayed,
+.cloud span.completion.displayed,
+.cloud a.completion.displayed span.variation.displayed,
+.cloud .completion.displayed span.variation.displayed { 
+   display: inline-block; line-height: 100%;
+   vertical-align: top; margin-bottom: 2px;}
 
 /* Emacs local variables
    ;;;  Local variables: ***
