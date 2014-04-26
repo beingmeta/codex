@@ -104,7 +104,7 @@
             ((info.normals._count)<17) ||
                 // there's are a lot of weak terms
                 ((n_terms/info.normals._count)>4));
-        if (!(usecues)) fdjtDOM.addClass(dom,"showempty");
+        if (!(usecues)) fdjtDOM.addClass(dom,"showall");
         if (!(getChild(dom,".showall")))
             fdjtDOM.prepend(dom,getShowAll(usecues,n_terms));
 
@@ -190,7 +190,7 @@
                 addClass(entry,"cue");}
             else if (knode.weak) addClass(entry,"weak");
             else {}
-            var noun=((dterm.search(/...$/)>0)?("root form"):("concept"));
+            var noun=((dterm.search(/\.\.\.$/)>0)?("root form"):("concept"));
             var title=
                 ((knode.prime)?("key "):
                  (knode.weak)?("weak "):(""))+
@@ -233,7 +233,7 @@
         var existing=(cloud)&&(cloud.getByValue(tag,".completion"));
         if ((existing)&&(existing.length)) return existing[0];
         else if (typeof tag === "string") {
-            var isrootform=tag.search(/...$/)>0;
+            var isrootform=tag.search(/\.\.\.$/)>0;
             var spec="span.completion"+
                 ((isrootform)?(".rootform"):(".rawterm"))+
                 ((tag.length>20)?(".longterm"):(""));
@@ -321,7 +321,7 @@
                 fdjtDOM("span.showless","fewer"));
         if ((how_many)&&(showall))
             showall.title="There are "+how_many+" in all";
-        if (showall) showall.onclick=showempty_ontap;
+        if (showall) showall.onclick=showall_ontap;
         return showall;}
     Codex.UI.getShowAll=getShowAll;
 
@@ -344,12 +344,12 @@
         return {normals: normals, n_primes: n_primes,
                 min: min_score, max: max_score};}
 
-    function showempty_ontap(evt){
+    function showall_ontap(evt){
         var target=fdjtUI.T(evt);
         var completions=getParent(target,".completions");
         if (completions) {
             fdjtUI.cancel(evt);
-            fdjtDOM.toggleClass(completions,"showempty");
+            fdjtDOM.toggleClass(completions,"showall");
             setTimeout(function(){
                 Codex.UI.updateScroller(completions);},
                        100);}}
@@ -392,7 +392,7 @@
                 while (i<lim) {
                     var tag=ranked[i++], elt=completions.getByValue(tag);
                     addClass(elt,"cue");}}
-            else addClass(cloud,"showempty");
+            else addClass(cloud,"showall");
             query.cloud=completions;
             return query.cloud;}}
     Codex.queryCloud=queryCloud;
@@ -570,11 +570,11 @@
             fdjtID("CODEXSEARCHRESULTS").focus();
             fdjtUI.cancel(evt);}
         else if (fdjtDOM.inherits(target,".refinercounts")) {
-            fdjtDOM.toggleClass(completions,"showempty");
+            fdjtDOM.toggleClass(completions,"showall");
             fdjtDOM.cancel(evt);}
         else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
             fdjtID("CODEXSEARCHINPUT").focus();
-            fdjtDOM.toggleClass(completions,"showempty");
+            fdjtDOM.toggleClass(completions,"showall");
             fdjtDOM.cancel(evt);}
         else {}}
     Codex.UI.handlers.searchcloud_ontap=searchcloud_ontap;
@@ -583,7 +583,7 @@
         Codex.setQuery(Codex.extendQuery(Codex.query,value));}
 
     Codex.UI.searchCloudToggle=function(){
-        fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showempty');
+        fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showall');
         Codex.UI.updateScroller(fdjtID('CODEXSEARCHCLOUD'));};
 
     function setCloudCues(cloud,tags){

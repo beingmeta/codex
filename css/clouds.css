@@ -44,8 +44,8 @@ div#CODEXHUD .completions .showall {
     cursor: pointer;}
 .cxMOUSE div#CODEXHUD .completions .showall:hover {border-color: blue;}
 div#CODEXHUD .completions .showall .showless { display: none;}
-div#CODEXHUD .completions.showempty .showless {display: inline;}
-div#CODEXHUD .completions.showempty .showmore {display: none;}
+div#CODEXHUD .completions.showall .showless {display: inline;}
+div#CODEXHUD .completions.showall .showmore {display: none;}
 
 div#CODEXHUD .completions span.sep { 
   font-size: 200%; font-weight: bold; 
@@ -68,17 +68,17 @@ div#CODEXHUD .completions .sectname .name,
 div#CODEXHUD .qtags span.sectname .name {
   font-size: 80%;}
 
-div#CODEXHUD .completions.showempty.noinput span.completion.rawterm.cue,
-div#CODEXHUD .completions.showempty.noinput span.completion.rootform.cue,
-div#CODEXHUD .completions.showempty.noinput span.completion.singleton.cue,
-div#CODEXHUD .completions.showempty.noinput span.completion.doubleton.cue,
-div#CODEXHUD .completions.showempty.noinput span.completion.singleton.prime {
+div#CODEXHUD .completions.showall.noinput span.completion.rawterm.cue,
+div#CODEXHUD .completions.showall.noinput span.completion.rootform.cue,
+div#CODEXHUD .completions.showall.noinput span.completion.singleton.cue,
+div#CODEXHUD .completions.showall.noinput span.completion.doubleton.cue,
+div#CODEXHUD .completions.showall.noinput span.completion.singleton.prime {
     display: inline;}
 div#CODEXHUD #CODEXALLTAGS.completions.noinput span.completion.sectname.cue {
       display: none;}
 
-div#CODEXHUD .completions.showempty.noinput span.completion.singleton.dterm,
-div#CODEXHUD .completions.showempty.noinput span.completion.doubleton.dterm {
+div#CODEXHUD .completions.showall.noinput span.completion.singleton.dterm,
+div#CODEXHUD .completions.showall.noinput span.completion.doubleton.dterm {
     display: inline;}
 div#CODEXHUD .completions { }
 div#CODEXHUD .completions .completion.prime { 
@@ -108,18 +108,19 @@ div#CODEXHUD div.completions div.nomatchmsg {
 
 /* Special rules */
 
-#CODEXALLTAGS.showempty.noinput span.completion.sectname,
-#CODEXALLTAGS.showempty.noinput span.completion.rawterm,
-#CODEXALLTAGS.showempty.noinput span.completion.rootform,
-#CODEXALLTAGS.showempty.noinput span.completion.singleton,
-#CODEXALLTAGS.showempty.noinput span.completion.doubleton {
-    display: none;}
 /*
-.searchcloud.showempty.noinput span.completion.sectname,
-.searchcloud.showempty.noinput span.completion.rawterm,
-.searchcloud.showempty.noinput span.completion.rootform,
-.searchcloud.showempty.noinput span.completion.singleton,
-.searchcloud.showempty.noinput span.completion.doubleton {
+#CODEXALLTAGS.showall.noinput span.completion.sectname,
+#CODEXALLTAGS.showall.noinput span.completion.rawterm,
+#CODEXALLTAGS.showall.noinput span.completion.rootform,
+#CODEXALLTAGS.showall.noinput span.completion.singleton,
+#CODEXALLTAGS.showall.noinput span.completion.doubleton {
+    display: none;}
+
+.searchcloud.showall.noinput span.completion.sectname,
+.searchcloud.showall.noinput span.completion.rawterm,
+.searchcloud.showall.noinput span.completion.rootform,
+.searchcloud.showall.noinput span.completion.singleton,
+.searchcloud.showall.noinput span.completion.doubleton {
     display: none;}
 */
 
