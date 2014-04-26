@@ -124,6 +124,10 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard span.tags span { vertical-align: top;}
 .codexcard span.tags span.rawterm, .codexcard span.tags span.dterm {
     white-space: nowrap;}
+.codexcard span.tags span.sectname {
+    font-style: italic; color: purple;}
+.codexcard span.tags span.sectname.longterm {
+    font-size: 80%; letter-spacing: -0.5px;}
 .codexcard.gloss span.tags.fdjtexpanded { display: block;}
 .codexcard span.tags.fdjtexpanded span.controller {
     color: black; float: right;

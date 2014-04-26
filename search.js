@@ -171,8 +171,7 @@
         fdjtDOM.dropClass(box,"norefiners");
         if (query.tags.length===0) {
             fdjtDOM.replace(
-                "CODEXSEARCHCLOUD",
-                fdjtDOM("div.completions.cloud.searchcloud.noinput#CODEXSEARCHCLOUD"));
+                "CODEXSEARCHCLOUD",fdjtDOM("div#CODEXSEARCHCLOUD"));
             Codex.empty_cloud.dom.style.fontSize="";
             Codex.empty_cloud.complete("");}
         else {
@@ -181,7 +180,6 @@
                 log("Setting search cloud for %o to %o",box,completions.dom);
             cloudid=cloud.id;
             addClass(completions.dom,"hudpanel");
-            Codex.empty_cloud.dom.style.fontSize="";
             fdjtDOM.replace(cloud,completions.dom);
             completions.dom.style.fontSize="";
             completions.complete("");

@@ -46,7 +46,7 @@ div#CODEXCOVER > div {
     top: 75px; left: 50px; right: 50px;
     bottom: 100px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
-    opacity: 0.0; z-index: -50;
+    opacity: 0.0; overflow: auto; z-index: -50;
     display: none;}
 #CODEXFRAME.cxANIMATE div#CODEXCOVER > div {
     transition-property: opacity; transition-duration: 1s;

@@ -149,7 +149,7 @@ body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
     min-height: 100%; width: auto;}
 }
 @media (orientation: portrait) {
-  #CODEXFRAME > #CODEXCLOSEMEDIA { height: 10%; : auto; }
+  #CODEXFRAME > #CODEXCLOSEMEDIA { height: 10%; width: auto; }
   #CODEXMEDIA > img, #CODEXMEDIA > video, #CODEXMEDIA > audio {
     min-width: 100%; height: auto;}
 }

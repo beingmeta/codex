@@ -146,14 +146,16 @@ Codex.Slice=(function () {
                                   "img.tagicon","tags");
         var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
         var tagspan=span, hidden=false;
-        var controller=false, hide_count_elt=false, total_count_elt=false, hide_start=false;
+        var controller=false, hide_count_elt=false;
+        var total_count_elt=false, hide_start=false;
         var count=0, seen={}, i, lim;
         var tagvecs=[toarray(info["**tags"]),toarray(info["*tags"]),
                      toarray(info["+tags"]),toarray(info["+tags*"]),
                      toarray(info.knodes),toarray(info.tags),
                      toarray(info["**tags*"]),toarray(info["*tags*"]),
                      toarray(info["tags*"]),
-                     toarray(info["~tags"]),toarray(info["~tags*"])];
+                     toarray(info["~tags"]),toarray(info["~tags*"]),
+                     toarray(info["^tags"]),toarray(info["^tags*"])];
         var j=0, nvecs=tagvecs.length;
         while (j<nvecs) {
             var tags=tagvecs[j++];
@@ -183,14 +185,26 @@ Codex.Slice=(function () {
                     fdjtDOM(span," ",controller," ",hidden);
                     hide_start=count-1;
                     tagspan=hidden;}
-                fdjtDOM.append(tagspan,((count>1)?"\u00a0\u00b7 ":" "),
-                               Knodule.HTML(tag,Codex.knodule));}}
+                var tag_elt=
+                    (((tag._qid)&&(tag._qid[0]==="\u00a7"))?
+                     (sectag2HTML(tag)):Knodule.HTML(tag,Codex.knodule));
+                fdjtDOM.append(
+                    tagspan,((count>1)?"\u00a0\u00b7 ":" "),tag_elt);}}
         if ((count-hide_start)<(show_tag_thresh/2)) {
             fdjtDOM.remove(controller);
             fdjtDOM(span,[].concat(hidden.childNodes));}
         else {
-            fdjtDOM.replace(total_count_elt,document.createTextNode(""+count));
-            fdjtDOM.replace(hide_count_elt,document.createTextNode(""+(count-hide_start)));}
+            fdjtDOM.replace(
+                total_count_elt,document.createTextNode(""+count));
+            fdjtDOM.replace(
+                hide_count_elt,document.createTextNode(""+(count-hide_start)));}
+        return span;}
+
+    function sectag2HTML(sectag){
+        var name=sectag._id;
+        var span=fdjtDOM("span.sectname",name);
+        span.setAttribute("data-value",sectag._qid);
+        if (name.length>20) addClass(span,"longterm");
         return span;}
 
     function showaudience(outlets,spec){

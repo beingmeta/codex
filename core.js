@@ -139,8 +139,8 @@ var Codex={
         mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
         skim: 0,          // How much to trace DOM skimming
-        search: 0,        // How much to trace searches
-        clouds: 0,        // How much to trace cloud generation
+        search: 1,        // How much to trace searches
+        clouds: 1,        // How much to trace cloud generation
         target: false,    // Whether to trace target changes
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence

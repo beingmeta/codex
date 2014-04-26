@@ -518,7 +518,7 @@
                 var gscore=gscores.get(value);
                 score=(cscore/gscore)*(gweights.get(value));}
             else score=gscores.get(value);
-            if ((typeof score === "number")&&(!(Number.isNaN(score)))) {
+            if ((typeof score === "number")&&((score)||(score===0))) {
                 vscores[i]=score; sum=sum+score; count++;
                 if ((min_score<0)||(score<min_score)) min_score=score;
                 if ((max_score<0)||(score>max_score)) max_score=score;}
@@ -533,6 +533,11 @@
             var elt=byvalue.get(v);
             if (v.prime) {
                 addClass(elt,"prime"); addClass(elt,"cue");}
+            if ((roots)&&(RefDB.contains(roots,v))) {
+                addClass(elt,"cloudroot");
+                if (fsize<200)
+                    elt.style.fontSize=Math.round(fsize)+"%";
+                else elt.style.fontSize="200%";}
             if (!(s)) {
                 addClass(elt,"unscored");
                 elt.style.fontSize=""; i++; continue;}
@@ -637,9 +642,12 @@
         var cloud=((this instanceof Completions)?(this):(arg));
         var dom=cloud.dom, parent=dom.parentNode;
         var ih=dom.scrollHeight, iw=dom.scrollWidth;
-        if (!(parent)) return;
+        if (!(parent)) {
+            dom.style.fontSize="";
+            return;}
         var oh=parent.clientHeight, ow=parent.clientWidth;
-        var tweakUntil=fdjt.UI.adjustFont.tweakUntil, pct;
+        var tweakUntil=fdjt.UI.adjustFont.tweakUntil, pct=100;
+        dom.style.fontSize="";
         if (Codex.Trace.clouds)
             fdjtLog("Adjusting cloud %o: %o/%o",dom,ih,oh);
         if (ih>2*oh) return;
