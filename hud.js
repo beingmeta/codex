@@ -249,6 +249,8 @@ Codex.setMode=
                     fdjtUI.FDJT_COMPLETE_OPTIONS|
                         fdjtUI.FDJT_COMPLETE_CLOUD|
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
+            if (Codex.adjustCloudFont)
+                Codex.empty_cloud.updated=Codex.adjustCloudFont;
             Codex.DOM.empty_cloud=fdjtID("CODEXALLTAGS");
             updateScroller("CODEXALLTAGS");
             
