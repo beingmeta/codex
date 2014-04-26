@@ -1395,7 +1395,7 @@ var Codex={
         return false;}
     Codex.stopPreview=stopPreview;
 
-    function getLevel(elt){
+    function getLevel(elt,rel){
         if (elt.toclevel) {
             if (elt.toclevel==='none') {
                 elt.toclevel=false;
@@ -1415,7 +1415,11 @@ var Codex={
             if (cname.search(/\bsbookignore\b/)>=0) return 0;
             var tocloc=cname.search(/\bsbook\d+(head|sect)\b/);
             if (tocloc>=0)
-                return parseInt(cname.slice(tocloc+5),10);}
+                return parseInt(cname.slice(tocloc+5),10);
+            else if ((typeof rel ==="number")&&
+                     (cname.search(/\bsbooksubhead\b/)>=0))
+                return rel+1;
+            else {}}
         if ((Codex.notoc)&&(Codex.notoc.match(elt))) return 0;
         if ((Codex.ignore)&&(Codex.ignore.match(elt))) return 0;
         if ((typeof Codex.autotoc !== 'undefined')&&(!(Codex.autotoc)))

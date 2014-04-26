@@ -343,7 +343,7 @@ Codex.DOMScan=(function(){
                 scanstate.curlevel=curlevel; scanstate.notoc=notoc;
                 scanstate.curhead=curhead; scanstate.curinfo=curinfo;
                 return;}
-            var toclevel=((id)&&(getLevel(child)));
+            var toclevel=((id)&&(getLevel(child,curlevel)));
             // The header functionality is handled by its surrounding
             // section (which should have a toclevel of its own)
             if ((scanstate.notoc)||(tag==='header')) {
