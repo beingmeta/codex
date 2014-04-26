@@ -83,6 +83,7 @@
             Codex.qstring=qstring;
             if (query.tags.length===0)  {
                 addClass(Codex.HUD,"emptysearch");
+                Codex.empty_cloud.dom.style.fontSize="";
                 Codex.search_cloud=Codex.empty_cloud;}
             else {
                 var cloud=Codex.queryCloud(query);
@@ -171,7 +172,8 @@
         if (query.tags.length===0) {
             fdjtDOM.replace(
                 "CODEXSEARCHCLOUD",
-                fdjtDOM("div.completions.searchcloud#CODEXSEARCHCLOUD"));
+                fdjtDOM("div.completions.cloud.searchcloud.noinput#CODEXSEARCHCLOUD"));
+            Codex.empty_cloud.dom.style.fontSize="";
             Codex.empty_cloud.complete("");}
         else {
             if (cloudid) completions.id=cloudid;
@@ -179,8 +181,11 @@
                 log("Setting search cloud for %o to %o",box,completions.dom);
             cloudid=cloud.id;
             addClass(completions.dom,"hudpanel");
+            Codex.empty_cloud.dom.style.fontSize="";
             fdjtDOM.replace(cloud,completions.dom);
-            completions.complete("");}
+            completions.dom.style.fontSize="";
+            completions.complete("");
+            Codex.adjustCloudFont(completions);}
         if (n_refiners===0) {
             addClass(box,"norefiners");
             refinecount.innerHTML="no refiners";}
@@ -307,6 +312,7 @@
             (input.value.length===0)) {
             Codex.setMode(false); return;}
         else {
+            Codex.empty_cloud.dom.style.fontSize="";
             setQuery(Codex.empty_query);
             input.value="";}
         input.focus();}
