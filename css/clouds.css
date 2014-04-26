@@ -124,6 +124,21 @@ div#CODEXHUD div.completions div.nomatchmsg {
     display: none;}
 */
 
+.cloud.noinput a.completion.cue { display: inline; }
+.cloud.noinput span.completion.cue { display: inline; }
+.cloud.showall.noinput a.completion { display: inline; }
+.cloud.showall.noinput span.completion { display: inline; }
+.cloud a.completion[displayed] { display: inline;}
+.cloud span.completion[displayed] { display: inline;}
+.cloud .completion[displayed] span.variation[displayed] { 
+   display: inline; }
+.cloud a.completion.displayed { display: inline;}
+.cloud span.completion.displayed { display: inline;}
+.cloud a.completion.displayed span.variation.displayed { 
+   display: inline; }
+.cloud .completion.displayed span.variation.displayed { 
+   display: inline; }
+
 /* Emacs local variables
    ;;;  Local variables: ***
    ;;;  compile-command: "cd ../..; make" ***
