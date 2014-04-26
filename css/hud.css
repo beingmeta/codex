@@ -23,7 +23,6 @@
 #CODEXHUD .codexslice { font-size: 90%;}
 #CODEXHUD .codexslice .tochead, #CODEXHUD .codexslice .idhead {
     font-size: 80%;}
-#CODEXHUD .cloud { font-size: 70%;}
 
 /* Major HUD components, head and heart */
 
@@ -767,7 +766,7 @@ body.hudup div#CODEXHUD.overtoc div.hudpanel#CODEXTOC { overflow: hidden; }
 
 body.hudup div#CODEXHUD.help div.helphud { display: block;}
 
-div#CODEXHUD div.completions { line-height: 200%;}
+div#CODEXHUD div.completions { line-height: 150%;}
 div#CODEXHUD div.completions .weak, div#CODEXHUD div.completions .words {
     line-height: 150%; font-size: 80%;}
 div#CODEXHUD div.completions .completion {

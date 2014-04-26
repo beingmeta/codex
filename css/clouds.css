@@ -14,8 +14,6 @@ div.completions .label {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
-div.completions .completion:hover { text-decoration: underline; }
-div.completions .completion.disabled:hover { text-decoration: none; }
 
 div.completions .cloudtoggle {
     float: right; display: none;}
@@ -44,8 +42,7 @@ div#CODEXHUD .completions .showall {
     -o-border-radius: 0.5em; -webkit-border-radius: 0.5em; 
     -moz-border-radius: 0.5em;
     cursor: pointer;}
-div#CODEXHUD .completions .showall:hover {
-    border-color: blue;}
+.cxMOUSE div#CODEXHUD .completions .showall:hover {border-color: blue;}
 div#CODEXHUD .completions .showall .showless { display: none;}
 div#CODEXHUD .completions.showempty .showless {display: inline;}
 div#CODEXHUD .completions.showempty .showmore {display: none;}
@@ -53,9 +50,9 @@ div#CODEXHUD .completions.showempty .showmore {display: none;}
 div#CODEXHUD .completions span.sep { 
   font-size: 200%; font-weight: bold; 
   color: purple; vertical-align: middle;}
-div#CODEXHUD .completions span.completion {
+div#CODEXHUD span.completion {
     cursor: pointer; padding-right: 0.5ex;}
-div#CODEXHUD .completions span.completion.disabled {
+div#CODEXHUD span.completion.disabled {
     cursor: default; opacity: 0.25;}
 div#CODEXHUD .completions span.sectname, div#CODEXHUD .qtags span.sectname {
   white-space: nowrap;
@@ -77,8 +74,7 @@ div#CODEXHUD .completions.showempty.noinput span.completion.singleton.cue,
 div#CODEXHUD .completions.showempty.noinput span.completion.doubleton.cue,
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.prime {
     display: inline;}
-div#CODEXHUD #CODEXALLTAGS.completions.noinput
-  span.completion.sectname.cue {
+div#CODEXHUD #CODEXALLTAGS.completions.noinput span.completion.sectname.cue {
       display: none;}
 
 div#CODEXHUD .completions.showempty.noinput span.completion.singleton.dterm,
@@ -112,18 +108,18 @@ div#CODEXHUD div.completions div.nomatchmsg {
 
 /* Special rules */
 
-#CODEXALLTAGS.completions.showempty.noinput span.completion.sectname,
-#CODEXALLTAGS.completions.showempty.noinput span.completion.rawterm,
-#CODEXALLTAGS.completions.showempty.noinput span.completion.rootform,
-#CODEXALLTAGS.completions.showempty.noinput span.completion.singleton,
-#CODEXALLTAGS.completions.showempty.noinput span.completion.doubleton {
+#CODEXALLTAGS.showempty.noinput span.completion.sectname,
+#CODEXALLTAGS.showempty.noinput span.completion.rawterm,
+#CODEXALLTAGS.showempty.noinput span.completion.rootform,
+#CODEXALLTAGS.showempty.noinput span.completion.singleton,
+#CODEXALLTAGS.showempty.noinput span.completion.doubleton {
     display: none;}
 /*
-.searchcloud.completions.showempty.noinput span.completion.sectname,
-.searchcloud.completions.showempty.noinput span.completion.rawterm,
-.searchcloud.completions.showempty.noinput span.completion.rootform,
-.searchcloud.completions.showempty.noinput span.completion.singleton,
-.searchcloud.completions.showempty.noinput span.completion.doubleton {
+.searchcloud.showempty.noinput span.completion.sectname,
+.searchcloud.showempty.noinput span.completion.rawterm,
+.searchcloud.showempty.noinput span.completion.rootform,
+.searchcloud.showempty.noinput span.completion.singleton,
+.searchcloud.showempty.noinput span.completion.doubleton {
     display: none;}
 */
 
