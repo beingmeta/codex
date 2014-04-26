@@ -31,6 +31,12 @@ div.searchbox div.query input[type='TEXT'] {
 div.searchbox div.query img.coedexclearsearch {
     height: 2em; width: auto;}
 
+@media (pointer: coarse) {
+    div.searchbox div.query img.codexclearsearch {height: 4em;}
+    div.searchbox div.query div.input input[type='TEXT'] {font-size: 250%;}}
+@media (pointer: coarse) and (max-width: 640px) {
+    div.searchbox div.query { margin-left: 1em; }}
+
 div.searchbox div.query span.dterm {
     padding-right: 0.35em; padding-left: 1ex;
     padding-top: 0px; padding-bottom: 0px;
