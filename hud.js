@@ -631,10 +631,13 @@ Codex.setMode=
             // mode
             if (codex_mode_foci[mode]) {
                 var input=fdjtID(codex_mode_foci[mode]);
-                if (input) Codex.setFocus(input);}
+                if (input) {
+                    setTimeout(function(){
+                        Codex.setFocus(input);},
+                               50);}}
             else if (mode==="addgloss") {}
             // Moving the focus back to the body lets keys work
-            else document.body.focus();
+            else setTimeout(function(){document.body.focus();},50);
             
             if (display_sync) Codex.displaySync();}
 
