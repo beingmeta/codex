@@ -536,9 +536,9 @@
             if ((roots)&&(RefDB.contains(roots,v))) {
                 addClass(elt,"cloudroot");
                 if (fsize<200)
-                    elt.style.fontSize=fsize+"%";
+                    elt.style.fontSize=Math.round(fsize)+"%";
                 else elt.style.fontSize="200%";}
-            else elt.style.fontSize=fsize+"%";
+            else elt.style.fontSize=Math.round(fsize)+"%";
             i++;}}
     Codex.sizeCloud=sizeCloud;
 
