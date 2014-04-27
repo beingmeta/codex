@@ -134,7 +134,7 @@ var Codex={
     Timeline: {},
     // What to trace, for debugging
     Trace: {
-        startup: 0,       // Whether to trace startup
+        startup: 2,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
         mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
@@ -946,12 +946,16 @@ var Codex={
     Codex.initState=function initState() {
         var uri=Codex.docuri;
         var state=readLocal("codex.state("+uri+")",true);
-        var hash=window.location.hash;
+        var hash=Codex.inithash;
         if (hash) {
             if (hash[0]==="#") hash=hash.slice(1);}
         else hash=false;
         var elt=((hash)&&(cxID(hash)));
         if (elt) {
+            // If the hash has changed, we take that as a user action
+            //  and update the state.  If it hasn't changed, we assume
+            //  that the stored state is still current and dated whenever
+            //  it was last changed.
             if (!((state)&&(state.target===hash))) {
                 if (!(state)) state={};
                 // Hash changed
@@ -959,7 +963,8 @@ var Codex={
                 state.docuri=Codex.docuri;
                 state.target=hash;
                 state.location=false;
-                state.changed=fdjtTime.tick;}}
+                state.changed=fdjtTime.tick;
+                saveLocal("codex.state("+uri+")",state,true);}}
         if (state) Codex.state=state;};
     
     // This records the current state of the app, bundled into an
@@ -982,6 +987,7 @@ var Codex={
         if (!(state)) state=Codex.state;
         if (!(state.changed)) state.changed=fdjtTime.tick();
         if (!(state.refuri)) state.refuri=Codex.refuri;
+        if (!(state.docuri)) state.docuri=Codex.docuri;
         var title=state.title, frag=state.target;
         if ((!(title))&&(frag)&&(Codex.docinfo[frag])) {
             state.title=title=Codex.docinfo[frag].title||
@@ -1000,7 +1006,8 @@ var Codex={
         if ((!(syncing))&&(Codex.locsync)&&
             ((!(Codex.xstate))||(state.changed>Codex.xstate.changed)))
             syncState(true);
-        if ((!(skiphist))&&(frag)&&(window.history)&&(window.history.pushState))
+        if ((!(skiphist))&&(frag)&&
+            (window.history)&&(window.history.pushState))
             setHistory(state,frag,title);
     } Codex.saveState=saveState;
 
@@ -1066,9 +1073,9 @@ var Codex={
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because it's too soon");
             return;}
-        if ((!(force))&&(Codex.state)&&(!(hasClass(document.body,"cxFOCUS")))) {
+        if ((!(force))&&(Codex.state)&&(document.hidden)) {
             if (Codex.Trace.state)
-                fdjtLog("Skipping state sync because page doesn't have focus");
+                fdjtLog("Skipping state sync because page is hidden");
             return;}
         if ((Codex.locsync)&&(navigator.onLine)) {
             var uri=Codex.docuri;
@@ -1097,28 +1104,7 @@ var Codex={
                     "&CHANGED="+encodeURIComponent(state.changed);}
             var req=new XMLHttpRequest();
             syncing=state;
-            req.onreadystatechange=function(evt){
-                if (req.readyState===4) {
-                    if ((req.status>=200)&&(req.status<300)) {
-                        var xstate=JSON.parse(req.responseText);
-                        if (xstate.changed) {
-                            if (traced)
-                                fdjtLog("syncState(callback) %o %j\n\t%j",
-                                        evt,xstate,Codex.state);
-                            if (!(Codex.state)) {
-                                Codex.xstate=xstate;
-                                restoreState(xstate);}
-                            else if ((Codex.state.changed>xstate.changed)&&
-                                     (Codex.state.maxloc>xstate.maxloc))
-                                Codex.xstate=xstate;
-                            else {
-                                Codex.xstate=xstate;
-                                Codex.resolveXState(xstate);}}
-                        else if (traced)
-                            fdjtLog("syncState(callback/error) %o %d %s",
-                                    evt,req.status,req.responseText);}
-                    if (navigator.onLine) setConnected(true);
-                    syncing=false;}};
+            req.onreadystatechange=freshState;
             req.withCredentials=true;
             if (traced) fdjtLog("syncState(call) %s",sync_uri);
             try {
@@ -1136,6 +1122,38 @@ var Codex={
                 Codex.locsync=false;
                 setTimeout(function(){Codex.locsync=true;},15*60*1000);}}
     } Codex.syncState=syncState;
+
+    function freshState(evt){
+        var req=fdjtUI.T(req);
+        var traced=(Codex.Trace.state)||(Codex.Trace.network);
+        if (req.readyState===4) {
+            if ((req.status>=200)&&(req.status<300)) {
+                var xstate=JSON.parse(req.responseText);
+                if (xstate.changed) {
+                    if (traced)
+                        fdjtLog("freshState %o %j\n\t%j",
+                                evt,xstate,Codex.state);
+                    if (!(Codex.state)) {
+                        Codex.xstate=xstate;
+                        restoreState(xstate);}
+                    else if ((Codex.state.changed>xstate.changed)&&
+                             (Codex.state.maxloc>xstate.maxloc))
+                        // Our state is later, so we make it the xstate
+                        Codex.xstate=xstate;
+                    else {
+                        var now=fdjtTime.tick();
+                        var last_local=Codex.state.changed;
+                        if ((xstate.changed>last_local)&&
+                            ((now-last_local)<(15*60))) {
+                            /* Ignore remote change */ }
+                        else {
+                            Codex.xstate=xstate;
+                            Codex.resolveXState(xstate);}}}}
+                else if (traced)
+                    fdjtLog("syncState(callback/error) %o %d %s",
+                            evt,req.status,req.responseText);
+            if (navigator.onLine) setConnected(true);
+            syncing=false;}}
 
     function forceSync(){
         if (Codex.connected) Codex.update();

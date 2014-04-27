@@ -584,7 +584,7 @@ Codex.Startup=
                     // Clear the loadinfo "left over" from startup,
                     //  which should now be in the database
                     window._sbook_loadinfo=false;}
-                
+            
             if ((Codex.nologin)||(Codex.user)) {}
             else if ((window._sbook_loadinfo)&&
                      (window._sbook_loadinfo.userinfo)) {
@@ -646,10 +646,22 @@ Codex.Startup=
                         Codex.Trace[trace_name]=parseInt(trace_val,10);
                     else Codex.Trace[trace_name]=trace_val;}}}
 
+        var glosshash_pat=/G[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+        
         function CodexStartup(force){
             var metadata=false;
             if (Codex._setup) return;
             if ((!force)&&(getQuery("nocodex"))) return;
+            /* Cleanup, save initial hash location */
+            if ((location.hash==="null")||(location.hash==="#null"))
+                location.hash="";
+            if ((location.hash)&&(location.hash!=="#")) {
+                var hash=location.hash
+                if (hash[0]==='#') hash=hash.slice(1);
+                if (glosspat.exec(location.hash))
+                    Codex.glosshash=hash;
+                else Codex.inithash=location.hash;}
+            Codex._starting=fdjtTime();
             addClass(document.body,"cxSTARTUP");
             // This is all of the startup that we need to do synchronously
             syncStartup();
@@ -780,7 +792,7 @@ Codex.Startup=
                     Codex.state.location=info.starts_at;
                     // Save current state, skip history, force save
                     Codex.saveState(false,true,true);}}
-                    
+            
             if (Codex.scandone) {
                 var donefn=Codex.scandone;
                 delete Codex.scandone;
@@ -806,6 +818,7 @@ Codex.Startup=
             if (mode) Codex.setMode(mode);
             else mode=Codex.mode;
             Codex._setup=new Date();
+            Codex._starting=false;
             if (Codex.onsetup) {
                 var onsetup=Codex.onsetup;
                 Codex.onsetup=false;
@@ -952,7 +965,7 @@ Codex.Startup=
                 Codex.updatehash=false;
                 Codex.iscroll=true;}
             else if ((useragent.search("Safari/")>0)&&
-                (useragent.search("Mobile/")>0)) { 
+                     (useragent.search("Mobile/")>0)) { 
                 hide_mobile_safari_address_bar();
                 Codex.iscroll=false;
                 Codex.updatehash=false;
@@ -1075,7 +1088,7 @@ Codex.Startup=
 
         var viewport_spec=
             "width=device-width,initial-scale=1.0,user-scalable=no";
-       function viewportSetup(){
+        function viewportSetup(){
             var head=fdjtDOM.getHEAD();
             var viewport=getMeta("viewport",false,false,true);
             if (!(viewport)) {
@@ -1411,7 +1424,7 @@ Codex.Startup=
                 sbooksapp.setAttribute("scrolling","auto");}
             layers.appendChild(sbooksapp);
             Codex.DOM.sbooksapp=sbooksapp;
-                
+            
             var about=fdjtID("CODEXABOUTBOOK");
             if (!(about)) {
                 about=fdjtDOM("div#CODEXABOUTBOOK");
@@ -1475,12 +1488,12 @@ Codex.Startup=
             var mode=scan.getAttribute("data-mode");
             // No longer have cover buttons be toggles
             /* 
-            if ((mode)&&(cover.className===mode)) {
-                if (cover.getAttribute("data-defaultclass"))
-                    cover.className=cover.getAttribute("data-defaultclass");
-                else cover.className="bookcover";
-                fdjt.UI.cancel(evt);
-                return;}
+               if ((mode)&&(cover.className===mode)) {
+               if (cover.getAttribute("data-defaultclass"))
+               cover.className=cover.getAttribute("data-defaultclass");
+               else cover.className="bookcover";
+               fdjt.UI.cancel(evt);
+               return;}
             */
             if ((mode==="layers")&&
                 (!(fdjtID("SBOOKSAPP").src))&&
@@ -1966,26 +1979,26 @@ Codex.Startup=
             if (Codex.glosses) Codex.glosses.update();}
         Codex.loadInfo=loadInfo;
 
-     function infoLoaded(info){
-         var keepdata=(Codex.cacheglosses);
-         if (info.etc) gotInfo("etc",info.etc,keepdata);
-         if (info.sources) gotInfo("sources",info.sources,keepdata);
-         if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
-         if (info.layers) gotInfo("layers",info.layers,keepdata);
-         addOutlets2UI(info.outlets);
-         if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
-             Codex.setSync(info.sync);}
-         Codex.loaded=info.loaded=fdjtTime();
-         if (Codex.whenloaded) {
-             var whenloaded=Codex.whenloaded;
-             Codex.whenloaded=false;
-             setTimeout(whenloaded,10);}
-         if (keepdata) {
-             Codex.glossdb.save(true);
-             Codex.sourcedb.save(true);}
-         if (Codex.glosshash) {
-             if (Codex.showGloss(Codex.glosshash))
-                 Codex.glosshash=false;}}
+        function infoLoaded(info){
+            var keepdata=(Codex.cacheglosses);
+            if (info.etc) gotInfo("etc",info.etc,keepdata);
+            if (info.sources) gotInfo("sources",info.sources,keepdata);
+            if (info.outlets) gotInfo("outlets",info.outlets,keepdata);
+            if (info.layers) gotInfo("layers",info.layers,keepdata);
+            addOutlets2UI(info.outlets);
+            if ((info.sync)&&((!(Codex.sync))||(info.sync>=Codex.sync))) {
+                Codex.setSync(info.sync);}
+            Codex.loaded=info.loaded=fdjtTime();
+            if (Codex.whenloaded) {
+                var whenloaded=Codex.whenloaded;
+                Codex.whenloaded=false;
+                setTimeout(whenloaded,10);}
+            if (keepdata) {
+                Codex.glossdb.save(true);
+                Codex.sourcedb.save(true);}
+            if (Codex.glosshash) {
+                if (Codex.showGloss(Codex.glosshash))
+                    Codex.glosshash=false;}}
 
         var updating=false;
         var noajax=false;
@@ -2104,7 +2117,7 @@ Codex.Startup=
             var started=fdjtTime();
             if (Codex.Trace.startup>1)
                 fdjtLog("Setting up user %s (%s)",userinfo._id,
-                       userinfo.name||userinfo.email);
+                        userinfo.name||userinfo.email);
             if (userinfo) {
                 fdjtDOM.dropClass(document.body,"cxNOUSER");
                 fdjtDOM.addClass(document.body,"cxUSER");}
@@ -2169,7 +2182,7 @@ Codex.Startup=
                         names[i++].innerHTML=username;}}
             if (fdjtID("SBOOKMARKUSER"))
                 fdjtID("SBOOKMARKUSER").value=Codex.user._id;
-        
+            
             // Initialize the splashform, which provides easy login
             // and social features
             var splashform=fdjtID("CODEXSPLASHFORM");
@@ -2254,7 +2267,7 @@ Codex.Startup=
             Codex[name]=qids;
             if (Codex.cacheglosses)
                 saveLocal("codex."+name+"("+refuri+")",qids,true);}
-            
+        
         // Processes info loaded remotely
         function gotInfo(name,info,persist) {
             if (info) {
@@ -2337,10 +2350,7 @@ Codex.Startup=
                            // This is the beginning of the 21st century
                            changed: 978307200};
                 else state={location: 1,changed: 978307200};}
-            if ((state)&&(state.changed)&&(Codex.state)&&
-                (state.changed>Codex.state.changed))
-                Codex.saveState(state,true);
-            else Codex.state=state;}
+            Codex.saveState(state,true,true);}
         Codex.initLocation=initLocation;
 
         function resolveXState(xstate) {
@@ -2356,22 +2366,31 @@ Codex.Startup=
             if (!(state)) {
                 Codex.restoreState(xstate);
                 return;}
-            else if (state.changed>=xstate.changed) return;
-            if ((fdjtTime()-state.changed)<(600)) {
-                if (xstate.maxloc>state.maxloc) {
-                    state.maxloc=xstate.maxloc;
-                    var statestring=JSON.stringify(state);
-                    var uri=Codex.docuri;
-                    saveLocal("codex.state("+uri+")",statestring);
-                    return;}}
-            fdjtLog("Resolving local state with %j",xstate);
-            fdjtLog("Local state is %j",state);
-            var msg1="Sync To";
+            else if (xstate.maxloc>state.maxloc) {
+                state.maxloc=xstate.maxloc;
+                var statestring=JSON.stringify(state);
+                var uri=Codex.docuri;
+                saveLocal("codex.state("+uri+")",statestring);}
+            else {}
+            if (state.changed>=xstate.changed) {
+                // The locally saved state is newer than the server,
+                //  so we ignore the xstate (it might get synced
+                //  separately)
+                return;}
+            var now=fdjtTime.tick();
+            if ((now-state.changed)<(600)) {
+                // If our state changed in the past 10 minutes, don't
+                // bother changing the current state.
+                return;}
+            if (Codex.Trace.state) 
+                fdjtLog("Resolving local state %j with remote state %j",
+                        state,xstate);
+            var msg1="Start at";
             var choices=[];
             var latest=xstate.location, farthest=xstate.maxloc;
             if (farthest>state.location)
                 choices.push(
-                    {label: "your farthest @"+loc2pct(farthest),
+                    {label: "farthest @"+loc2pct(farthest),
                      title: "your farthest location on any device/app",
                      isdefault: false,
                      handler: function(){
@@ -2381,7 +2400,7 @@ Codex.Startup=
                          Codex.hideCover();}});
             if ((latest!==state.location)&&(latest!==farthest))
                 choices.push(
-                    {label: ("your latest @"+loc2pct(latest)),
+                    {label: ("latest @"+loc2pct(latest)),
                      title: "the most recent location on any device/app",
                      isdefault: false,
                      handler: function(){
@@ -2389,14 +2408,23 @@ Codex.Startup=
                          state.changed=fdjtTime.tick();
                          Codex.saveState(state,true,true);
                          Codex.hideCover();}});
-            if (Codex.Trace.state)
-                fdjtLog("resolveXState choices=%j",choices);
+            if (choices.length)
+                choices.push(
+                    {label: ("current @"+loc2pct(state.location)),
+                     title: "the most recent location on this device",
+                     isdefault: false,
+                     handler: function(){
+                         state.changed=fdjtTime.tick();
+                         Codex.saveState(state,true,true);
+                         Codex.hideCover();}});
             if (choices.length)
                 choices.push(
                     {label: "stop syncing",
                      title: "stop syncing this book on this device",
                      handler: function(){
                          setConfig("locsync",false);}});
+            if (Codex.Trace.state)
+                fdjtLog("resolveXState choices=%j",choices);
             if (choices.length)
                 Codex.statedialog=fdjtUI.choose(
                     {choices: choices,cancel: true,timeout: 7,nodefault: true,
@@ -2405,9 +2433,7 @@ Codex.Startup=
                          Codex.saveState(state,true,true);
                          Codex.statedialog=false;},
                      spec: "div.fdjtdialog.resolvestate#CODEXRESOLVESTATE"},
-                    fdjtDOM("div",msg1));
-            if (xstate.maxloc>state.maxloc) {
-                state.maxloc=xstate.maxloc;}}
+                    fdjtDOM("div",msg1));}
         Codex.resolveXState=resolveXState;
 
         /* Indexing tags */
@@ -2571,7 +2597,7 @@ Codex.Startup=
                                  dropClass(document.body,"cxINDEXING");
                                  if (whendone) whendone();
                                  else return state;},
-                            200,5);}
+                             200,5);}
         Codex.useIndexData=useIndexData;
         
         /* Applying various tagging schemes */
@@ -2704,11 +2730,11 @@ Codex.Startup=
                 if ((outlet.description)&&(outlet.nick))
                     completion.title=outlet.name+": "+
                     outlet.description;
-                    else if (outlet.description)
-                        completion.title=outlet.description;
-                    else if (outlet.nick) completion.title=outlet.name;
-                    fdjtDOM("#CODEXOUTLETS",completion," ");
-                    Codex.share_cloud.addCompletion(completion);}
+                else if (outlet.description)
+                    completion.title=outlet.description;
+                else if (outlet.nick) completion.title=outlet.name;
+                fdjtDOM("#CODEXOUTLETS",completion," ");
+                Codex.share_cloud.addCompletion(completion);}
             if (outlet._live) init();
             else outlet.onLoad(init,"addoutlet2cloud");}
         
