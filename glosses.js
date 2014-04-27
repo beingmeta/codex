@@ -126,6 +126,7 @@
         if (!(mode)) {
             dropClass(form,glossmodes);
             dropClass("CODEXHUD",/\bgloss\w+\b/);
+            dropClass("CODEXHUD","openheart");
             return;}
         if (mode==="addtag") input=fdjtID("CODEXTAGINPUT");
         else if (mode==="attach") {
