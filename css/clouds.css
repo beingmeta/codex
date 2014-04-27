@@ -36,8 +36,8 @@ div#CODEXHUD div.completions div.doc {
 
 div#CODEXHUD .completions .showall {
     background-color: lightgray; float: right;
-    font-size: 32px; width: 100px; padding: 8px;
-    margin-right: 8px; margin-bottom: 6px; margin-top: 0px;
+    font-size: 32px; line-height: 100%; width: 100px; padding: 8px;
+    margin-left: 6px; margin-right: 8px; margin-bottom: 6px; margin-top: 0px;
     border: solid black 2px; border-radius: 12px;
     -o-border-radius: 12px; -webkit-border-radius: 12px; 
     -moz-border-radius: 12px;
@@ -57,7 +57,7 @@ div#CODEXHUD span.completion.cloudroot {
 div#CODEXHUD .completions span.sectname, div#CODEXHUD .qtags span.sectname {
   white-space: nowrap;
   font-weight: normal; font-style: italic;
-  background-color: ivory; color: purple; max-width: 25%;
+  background-color: ivory; color: purple;
   padding: 0px; padding-left: 3px; padding-right: 3px; 
   margin: 0px; margin-left: 3px; margin-right: 3px; 
   -o-border-radius: 6px; 
@@ -76,6 +76,8 @@ div#CODEXHUD .completions.showall.noinput span.completion.singleton.prime {
     display: inline;}
 div#CODEXHUD #CODEXALLTAGS.completions.noinput span.completion.sectname.cue {
       display: none;}
+div#CODEXHUD #CODEXALLTAGS.completions.noinput.showall span.completion.sectname.cue {
+      display: inline;}
 
 div#CODEXHUD .completions.showall.noinput span.completion.singleton.dterm,
 div#CODEXHUD .completions.showall.noinput span.completion.doubleton.dterm {
@@ -124,6 +126,19 @@ div#CODEXHUD div.completions div.nomatchmsg {
     display: none;}
 */
 
+.cloud span.dterm {
+    padding-top: 0.1ex; padding-bottom: 0.1ex;}
+.cloud span.dterm.longterm {
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;}
+
+.cloud.sizingtags .completion, .cloud.sizingtags .completion.displayed {
+    display: none !important;}
+.cloud.sizingcloud .completion, .cloud.sizingtags .completion.displayed {
+    visibility: hidden;}
+
+.cloud { max-width: 100%; }
+
 .cloud.showall .sectname.longterm .ellipsis {
     font-size: 70%; letter-spacing: -0.5px;}
 .cloud.showall .sectname .ellipsis .elision { display: none;}
@@ -158,7 +173,7 @@ div#CODEXHUD div.completions div.nomatchmsg {
    display: inline-block; line-height: 100%;
    vertical-align: top; margin-bottom: 2px;}
 
-/*
+
 .cloud.noinput a.completion.cue,
 .cloud.noinput span.completion.cue,
 .cloud.showall.noinput a.completion,
@@ -171,8 +186,11 @@ div#CODEXHUD div.completions div.nomatchmsg {
 .cloud a.completion.displayed span.variation.displayed,
 .cloud .completion.displayed span.variation.displayed { 
    display: inline-block; line-height: 100%;
-   vertical-align: top; margin-bottom: 2px;}
-*/
+   margin: 2px; margin-left: 0.5ex;}
+
+div#CODEXHUD #CODEXALLTAGS.completions.cloud .noinput.showall span.completion.sectname.cue { 
+   display: inline-block; line-height: 100%;
+   margin: 2px; margin-left: 0.5ex;}
 
 /* Emacs local variables
    ;;;  Local variables: ***

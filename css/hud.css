@@ -196,7 +196,7 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
     background-color: ivory;
     border-color: rgba(70, 130, 180, 0.54);}
 #CODEXHUD.openheart #CODEXHEARTFRAME {
-    top: 100px; bottom: 100px;}
+    top: 60px; bottom: 50px;}
 body.hudup #CODEXHEARTFRAME {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -1176,6 +1176,8 @@ body.cxFULLHEIGHT.hudup div#CODEXFOOT {
     border-radius: 0px;}
 body.cxFULLHEIGHT div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     left: auto; right: auto; width: 100%;}
+
+div#CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT { bottom: 10px; }
 
 /* Emacs local variables
 ;;;  Local variables: ***

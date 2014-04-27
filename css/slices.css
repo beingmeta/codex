@@ -64,13 +64,12 @@ div.codexslice div.codexthread div.codexcard:first-child div.locbar {
     display:block;}
 
 div.codexslice div.codexskimpoint {
-    border-left: solid steelblue 16px;
-    border-top: solid steelblue 4px;
-    border-bottom: solid steelblue 4px;
+    border-left: solid red 16px;
+    border-top: solid red 4px;
+    border-bottom: solid red 4px;
     margin-left: 0px;
     background-color: white;}
-div.codexslice div.codexskimpoint.codexcard {
-    font-size: 150%;}
+div.codexslice div.codexskimpoint.codexcard {}
 div.codexslice div.codexskimpoint.codexcard .tool {
     font-size: 47%; font-weight: bold;}
 div.codexslice div.codexskimpoint.codexcard img.userpic,

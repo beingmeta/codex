@@ -259,12 +259,13 @@
             // Section names as tags
             if ((tag instanceof KNode)&&(qid[0]==="\u00A7")) {
                 var sectname=tag._id.slice(1), showname;
-                if (sectname.length>20)
+                /* if (sectname.length>20)
                     showname=fdjtDOM(
                         "span.name.ellipsis",sectname.slice(0,20),
                         fdjtDOM("span.elision","\u2026"),
                         fdjtDOM("span.elided",sectname.slice(20)));
-                else showname=fdjtDOM("span.name",sectname);
+                else showname=fdjtDOM("span.name",sectname); */
+                showname=fdjtDOM("span.name",sectname);
                 entry=fdjtDOM("span.completion.sectname","\u00A7",showname);
                 entry.setAttribute("data-key",sectname);
                 entry.setAttribute("data-value",tag._qid||tag.getQID());
@@ -477,6 +478,8 @@
                 if (xt<yt) return -1;
                 else if (xt>yt) return 1;
                 else return 0;}
+            if ((sx[0]==='\u00a7')&&(sy[0]!=='\u00a7')) return 1;
+            if ((sy[0]==='\u00a7')&&(sx[0]!=='\u00a7')) return -1;
             if (sx.search(/\w/)>0) sx=sx.slice(sx.search(/\w/));
             if (sy.search(/\w/)>0) sy=sy.slice(sy.search(/\w/));
             if (sx<sy) return -1;
@@ -639,6 +642,7 @@
     Codex.setCloudCuesFromTarget=setCloudCuesFromTarget;
 
     function adjustCloudFont(arg){
+        var round=Math.round, sqrt=Math.sqrt;
         var cloud=((this instanceof Completions)?(this):(arg));
         var dom=cloud.dom, parent=dom.parentNode;
         var ih=dom.scrollHeight, iw=dom.scrollWidth;
@@ -646,28 +650,18 @@
             dom.style.fontSize="";
             return;}
         var oh=parent.clientHeight, ow=parent.clientWidth;
-        var tweakUntil=fdjt.UI.adjustFont.tweakUntil, pct=100;
+        var tweakUntil=fdjt.UI.adjustFont.tweakUntil;
+        var pct=100;
         dom.style.fontSize="";
         if (Codex.Trace.clouds)
             fdjtLog("Adjusting cloud %o: %o/%o",dom,ih,oh);
-        if (ih>2*oh) return;
-        else if ((ih<oh)&&(ih>(oh*0.9))) return;
-        else if (ih>oh) 
-            pct=tweakUntil(function(){
-                if (dom.scrollHeight<oh) return 0;
-                else return 1;},
-                           dom,{},[10,5,1],false,10,300);
-        else if (ih<oh) {
-            pct=tweakUntil(function(){
-                if (dom.scrollHeight<0.99*oh) return -1;
-                else if (dom.scrollHeight<=oh) return 0;
-                else return 1;},
-                           dom,{},[10,5,1],false,10,300);
-            pct=tweakUntil(function(){
-                if (dom.scrollHeight<=oh) return 0;
-                else return 1;},
-                           dom,{},[10,5,1],false,10,300);}
-        else {}}
+        if ((ih<oh)&&(ih>(oh*0.7))) return;
+        else if ((ih>oh)&&(ih>(oh*2))) return;
+        else {
+            if (ih<oh)
+                pct=(round(sqrt(oh/ih)*(pct/100)*100));
+            else pct=(round((oh/ih)*(pct/100)*100));
+            dom.style.fontSize=pct+"%";}}
     Codex.adjustCloudFont=adjustCloudFont;
 })();
 
