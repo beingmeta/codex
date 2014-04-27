@@ -551,8 +551,18 @@ div.codexglossform form div.addglossmenu > img {
     display: none; }
 div.codexglossform form div.addglossmenu > img.held {
     background-color: lightgreen; border-color: green;}
-div.codexglossform form div.addglossmenu > img[alt="hamburger"] {
+@media (pointer: coarse) {
+    div.codexglossform form div.addglossmenu > img.held {
+        width: 80px; height: 80px; margin-left: -20px;}
+    div.codexglossform form div.addglossmenu > img.held.menutop {
+        width: 40px; height: 40px; margin-left: 0px;}}
+div.codexglossform form div.addglossmenu > img.menutop[alt="downmenu"],
+div.codexglossform form div.addglossmenu.expanded > img.menutop[alt="upmenu"],
+div.codexglossform form div.addglossmenu.held > img.menutop[alt="holdmenu"] {
     display: block; }
+div.codexglossform form div.addglossmenu.expanded.held > img.menutop[alt="upmenu"] {
+    display: none;}
+
 div.codexglossform form div.addglossmenu.expanded > img {
     display: block; opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -561,36 +571,27 @@ div.codexglossform form div.addglossmenu.expanded > img {
     -khtml-opacity: 0.90;
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
-div.codexglossform form div.addglossmenu.expanded > img[alt="hamburger"] {
-    opacity: 0.95;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
-    filter: alpha(opacity=95);
-    -webkit-opacity: 0.95;
-    -khtml-opacity: 0.95;
-    -moz-opacity: 0.95;
-    -o-opacity: 0.95;}
+div.codexglossform form div.addglossmenu.expanded > img.menutop {
+    display: none;}
 
-div.codexglossform form.addtag div.addglossmenu > img[alt="hamburger"] {
+div.codexglossform form.addtag div.addglossmenu > img.menutop {
     display: none; }
 div.codexglossform form.addtag div.addglossmenu > img[alt="addtag"] {
     display: block; }
 
-div.codexglossform form.attach div.addglossmenu > img[alt="hamburger"] {
+div.codexglossform form.attach div.addglossmenu > img.menutop {
     display: none; }
 div.codexglossform form.attach div.addglossmenu > img[alt="attach"] {
     display: block; }
 
-div.codexglossform form.editdetail div.addglossmenu > img[alt="hamburger"] {
+div.codexglossform form.editdetail div.addglossmenu > img.menutop {
     display: none; }
 div.codexglossform form.editdetail div.addglossmenu > img[alt="editdetail"] {
     display: block; }
 
-div.codexglossform form.addoutlet div.addglossmenu > img[alt="hamburger"] {
+div.codexglossform form.addoutlet div.addglossmenu > img.menutop {
     display: none; }
 div.codexglossform form.addoutlet div.addglossmenu > img[alt="addoutlet"] {
-    display: block; }
-
-div.codexglossform form div.addglossmenu.expanded > img[alt="hamburger"] {
     display: block; }
 
 div.codexglossform.glossreply form div.addglossmenu.expanded > img[alt="glossrespond"],

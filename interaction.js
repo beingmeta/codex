@@ -239,7 +239,8 @@
                 if (input) {Codex.setFocus(input); input.focus();}},
                        150);
             return;}
-        if ((hasParent(target,".addglossmenu"))||(hasParent(target,".glossexposure")))
+        if ((hasParent(target,".addglossmenu"))||
+            (hasParent(target,".glossexposure")))
             return;
         if (!(hasParent(target,".textbox"))) fdjtUI.cancel(evt);
         addClass(div,"focused");
@@ -2253,9 +2254,12 @@
         var form=getParent(target,'form');
         var div=getParent(form,"div.codexglossform");
         
-        if (alt==="hamburger") {
-            Codex.setGlossMode(false,form);
-            toggleClass(menu,"expanded");}
+        if (alt==="downmenu") {
+            addClass(menu,"expanded");
+            dropClass(menu,"held");}
+        else if (alt==="upmenu") {
+            dropClass(menu,"expanded");
+            dropClass(menu,"held");}
         else if (alt==="glossdelete") 
             addgloss_delete(menu,form);
         else if (alt==="glosscancel") 
@@ -2293,9 +2297,12 @@
 
         var menu=getParent(target,'.addglossmenu');
         
-        addClass(target,"held");
-
-        addClass(menu,"expanded");}
+        if (hasClass(menu,"expanded")) {
+            addClass(menu,"held");
+            addClass(target,"held");}
+        else {
+            addClass(menu,"expanded");
+            addClass(menu,"held");}}
 
     function glossmode_release(evt) {
         evt=evt||event;
@@ -2305,21 +2312,23 @@
         var div=getParent(form,"div.codexglossform");
         var alt=target.alt;
         dropClass(target,"held");
-        if (alt==="glossdelete") 
+        if (hasClass(target,"menutop")) {
+            Codex.setGlossMode(false,form);}
+        else if (alt==="glossdelete") 
             addgloss_delete(menu,form);
         else if (alt==="glosscancel") 
             addgloss_cancel(menu,form,div);
         else if (alt==="glosspush")
             Codex.submitGloss(form,false);
         else if (alt==="glossupdate") {
-            Codex.submitGloss(form,false);
-            dropClass(menu,"expanded");}
+            Codex.submitGloss(form,false);}
         else if (alt==="glossrespond") 
             addgloss_respond(menu,form);
         else if (Codex.glossmodes.exec(alt))
             Codex.setGlossMode(alt,form);
         else fdjtLog.warn("Bad alt=%s in glossmode_release",alt);
-        dropClass(menu,"expanded");}
+        dropClass(menu,"expanded");
+        dropClass(menu,"held");}
 
     function glossmode_slip(evt) {
         evt=evt||event;

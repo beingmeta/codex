@@ -411,7 +411,7 @@ Codex.setMode=
         /* Mode controls */
         
         var CodexModes=/\b((search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
-        var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossdetail))\b/g;
+        var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossaddtag)|(glossaddtag)|(glossaddoutlet)|(glosseditdetail))\b/g;
         var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(shownote))\b/g;
         var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
@@ -510,6 +510,13 @@ Codex.setMode=
                     dropClass(CodexHUD,"openhead");
                     dropClass(CodexHUD,"openheart");
                     fdjtDOM.swapClass(CodexHUD,CodexModes,"minimal");}
+                else if (mode==="addgloss") {
+                    // addgloss has submodes which may specify the
+                    //  open heart configuration
+                    addClass(CodexHUD,"openhead");
+                    if (CodexHUD.className.search(codexHeartModes)<0)
+                        dropClass(CodexHUD,"openheart");
+                    else addClass(CodexHUD,"openheart");}
                 else {
                     if (mode.search(codexHeartModes)<0) {
                         dropClass(CodexHUD,"openheart");}

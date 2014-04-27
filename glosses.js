@@ -147,6 +147,8 @@
         form.className=mode;
         swapClass("CODEXHUD",/\bgloss\w+\b/,"gloss"+mode);
         Codex.setHUD(true);
+        if ((mode)&&(/(editdetail|addtag|addoutlet)/.exec(mode)))
+            addClass("CODEXHUD","openheart");
         if (input) Codex.setFocus(input);}
     Codex.setGlossMode=setGlossMode;
 
