@@ -795,7 +795,8 @@ Codex.Paginate=
                         if (!(nextspan)) break;
                         head1=head2; head2=head3; head3=head2.head;
                         span1=span2; span2=span3; span3=nextspan;}
-                    var marker1=fdjtID("CODEXSECTMARKER1"), marker2=fdjtID("CODEXSECTMARKER2");
+                    var marker1=fdjtID("CODEXSECTMARKER1");
+                    var marker2=fdjtID("CODEXSECTMARKER2");
                     var marker3=fdjtID("CODEXSECTMARKER3");
                     if ((span1)&&(span1.width)) {
                         marker1.style.left=(100*((span1.start-1)/npages))+"%";
@@ -848,10 +849,15 @@ Codex.Paginate=
             else Codex.CSS.pagespanrule=fdjtDOM.addCSSRule(
                 "div.pagespans > span","width: "+spanwidth+"px;");
             while (i<n) {
+                var page=Codex.layout.pages[i];
+                var topid=(page)&&(page.getAttribute("data-topid"));
+                var topinfo=(topid)&&(Codex.docinfo[topid]);
+                var zstyle=(((topinfo)&&(topinfo.level))?
+                            ("; z-index: 50;"):(""));
                 html.push("<span id='CODEXPAGESPAN"+(i+1)+"' "+
                           "class='pagespan' "+
                           "title='p"+(i+1)+". Hold to glimpse, tap to jump' "+
-                          "style='left: "+(100*(i/n))+"%'"+
+                          "style='left: "+(100*(i/n))+"%"+zstyle+"'"+
                           ">"+(i+1)+"</span>");
                 i++;}
             var spans=fdjtID("CODEXPAGESPANS");
