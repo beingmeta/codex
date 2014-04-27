@@ -658,7 +658,7 @@ Codex.Startup=
             if ((location.hash)&&(location.hash!=="#")) {
                 var hash=location.hash
                 if (hash[0]==='#') hash=hash.slice(1);
-                if (glosspat.exec(location.hash))
+                if (glosshash_pat.exec(location.hash))
                     Codex.glosshash=hash;
                 else Codex.inithash=location.hash;}
             Codex._starting=fdjtTime();
