@@ -658,6 +658,7 @@
         if ((ih<oh)&&(ih>(oh*0.7))) return;
         else if ((ih>oh)&&(ih>(oh*2))) return;
         else {
+            oh=oh*0.9;
             if (ih<oh)
                 pct=(round(sqrt(oh/ih)*(pct/100)*100));
             else pct=(round((oh/ih)*(pct/100)*100));
