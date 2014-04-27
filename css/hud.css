@@ -1177,7 +1177,10 @@ body.cxFULLHEIGHT.hudup div#CODEXFOOT {
 body.cxFULLHEIGHT div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     left: auto; right: auto; width: 100%;}
 
-div#CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT { bottom: 10px; }
+div#CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT {
+    bottom: 10px; }
+body.cxSKIMMING div#CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT {
+    bottom: 30px; }
 
 /* Emacs local variables
 ;;;  Local variables: ***
