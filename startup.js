@@ -656,7 +656,7 @@ Codex.Startup=
             if ((location.hash==="null")||(location.hash==="#null"))
                 location.hash="";
             if ((location.hash)&&(location.hash!=="#")) {
-                var hash=location.hash
+                var hash=location.hash;
                 if (hash[0]==='#') hash=hash.slice(1);
                 if (glosshash_pat.exec(location.hash))
                     Codex.glosshash=hash;
@@ -2461,46 +2461,52 @@ Codex.Startup=
             fdjtTime.slowmap(function(tag){
                 var elt=addTag2Cloud(tag,empty_cloud,Codex.knodule,
                                      Codex.tagweights,tagfreqs,false);
-                if (tag instanceof KNode) addClass(elt,"cue");
-                if ((tag instanceof KNode)||
-                    ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
-                    addTag2Cloud(tag,gloss_cloud);},
-                             searchtags,
-                             function(state,i,lim){
-                                 if (state!=='suspend') return;
-                                 var pct=(i*100)/lim;
-                                 if (tracelevel>1)
-                                     startupLog("Added %d (%d%% of %d tags) to clouds",
-                                                i,Math.floor(pct),lim);
-                                 fdjtUI.ProgressBar.setProgress(
-                                     "CODEXINDEXMESSAGE",pct);
-                                 fdjtUI.ProgressBar.setMessage(
-                                     "CODEXINDEXMESSAGE",
-                                     fdjtString(
-                                         "Added %d tags (%d%% of %d) to clouds",
-                                         i,Math.floor(pct),lim));},
-                             function(){
-                                 var eq=Codex.empty_query;
-                                 if (Codex.Trace.startup>1)
-                                     fdjtLog("Done populating clouds");
-                                 fdjtUI.ProgressBar.setProgress(
-                                     "CODEXINDEXMESSAGE",100);
-                                 fdjtUI.ProgressBar.setMessage(
-                                     "CODEXINDEXMESSAGE",
-                                     fdjtString("Added all %d tags to search/gloss clouds",
-                                                searchtags.length));
-                                 dropClass(document.body,"cxINDEXING");
-                                 eq.cloud=empty_cloud;
-                                 if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
-                                     fdjtDOM.prepend(
-                                         empty_cloud.dom,
-                                         Codex.UI.getShowAll(
-                                             true,empty_cloud.values.length));
-                                 Codex.sortCloud(empty_cloud);
-                                 Codex.sizeCloud(empty_cloud);
-                                 Codex.sortCloud(gloss_cloud);
-                                 Codex.sizeCloud(gloss_cloud);},
+                var sectag=((tag instanceof Knode)&&(tag._id[0]==="\u00a7"));
+                if (!(sectag)) {
+                    if (tag instanceof KNode) addClass(elt,"cue");
+                    if ((tag instanceof KNode)||
+                        ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
+                        addTag2Cloud(tag,gloss_cloud);}},
+                             searchtags,searchtags_progress,searchtags_done,
                              200,5);}
+
+        function searchtags_done(searchtags){
+            var eq=Codex.empty_query;
+            var empty_cloud=Codex.empty_cloud;
+            var gloss_cloud=Codex.gloss_cloud;
+            if (Codex.Trace.startup>1)
+                fdjtLog("Done populating clouds");
+            fdjtUI.ProgressBar.setProgress(
+                "CODEXINDEXMESSAGE",100);
+            fdjtUI.ProgressBar.setMessage(
+                "CODEXINDEXMESSAGE",
+                fdjtString("Added all %d tags to search/gloss clouds",
+                           searchtags.length));
+            dropClass(document.body,"cxINDEXING");
+            eq.cloud=empty_cloud;
+            if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
+                fdjtDOM.prepend(empty_cloud.dom,
+                                Codex.UI.getShowAll(
+                                    true,empty_cloud.values.length));
+            Codex.sortCloud(empty_cloud);
+            Codex.sizeCloud(
+                empty_cloud,Codex.tagweights,[]);
+            Codex.sortCloud(gloss_cloud);
+            Codex.sizeCloud(
+                gloss_cloud,Codex.tagweights,[]);}
+
+        function searchtags_progress(state,i,lim){
+            var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);
+            if (state!=='suspend') return;
+            var pct=(i*100)/lim;
+            if (tracelevel>1)
+                startupLog("Added %d (%d%% of %d tags) to clouds",
+                           i,Math.floor(pct),lim);
+            fdjtUI.ProgressBar.setProgress("CODEXINDEXMESSAGE",pct);
+            fdjtUI.ProgressBar.setMessage(
+                "CODEXINDEXMESSAGE",fdjtString(
+                    "Added %d tags (%d%% of %d) to clouds",
+                    i,Math.floor(pct),lim));}
         
         var addTags=Codex.addTags;
         
