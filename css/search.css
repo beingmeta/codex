@@ -11,21 +11,23 @@ div.searchbox { text-align: center;}
 
 div.searchbox div.query {
     margin-left: 2em; text-align: left; margin-top: 2px;
+    box-sizing: border-box;
     font-size: 16px;}
-#CODEXHUD.emptysearch div.searchbox div.query #CODEXSEARCHLABEL {
+#CODEXHUD.emptysearch  #CODEXSEARCHLABEL {
     display: none;}
 
-div.searchbox div.query .codexclearsearch {
+div.searchbox .codexclearsearch {
+    box-sizing: border-box;
     float: right;}
-div.searchbox div.query .codexclearsearch {
+div.searchbox .codexclearsearch {
     box-sizing: border-box;
     border: solid transparent 2px;
-    width: 10%; height: auto;
+    width: 2.5em; height: auto;
     padding: 0.5ex; padding-top: 0px;}
-div.searchbox div.query .codexclearsearch.tapholdtarget {
+div.searchbox .codexclearsearch.tapholdtarget {
     border-color: blue;}
 
-div.searchbox div.query input[type='TEXT'] {
+div.searchbox div.input input[type='TEXT'] {
     background-position: right top;
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon.svgz);
@@ -35,7 +37,7 @@ div.searchbox div.query input[type='TEXT'] {
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon.svgz);}
 
 @media (pointer: coarse) {
-    div.searchbox div.query div.input input[type='TEXT'] {font-size: 250%;}}
+    div.searchbox div.input input[type='TEXT'] {font-size: 250%;}}
 @media (pointer: coarse) and (max-width: 640px) {
     div.searchbox div.query { margin-left: 1em; }}
 
@@ -50,11 +52,8 @@ div.searchbox div.toolbox div.tags {
 div.searchbox .completions div.tags {
     min-height: 1ex; clear: both; text-align: center;}
 
-div.searchbox div.tags img.codexclearsearch { float: right; color: red;}
-div.searchbox div.tags img.codexclearsearch { float: right; color: red;}
-
 div.searchbox div.input {
-    box-sizing: border-box; width: 90%; clear: none;}
+    box-sizing: border-box; margin-right: 3em; clear: none;}
 div.searchbox div.input input[type='TEXT'] {
     width: 100%; font-size: 150%; min-height: 1.5em;
     padding-left: 0.5ex; padding-right: 2em;
