@@ -133,7 +133,7 @@
         // Put the cloud back into the flow (if neccessary)
         if (breadcrumb) breadcrumb.parentNode.replaceChild(dom,breadcrumb);
 
-        completions.updated=adjustCloudFont;
+        completions.updated=function(){adjustCloudFont(this);};
 
         return completions;}
     Codex.makeCloud=makeCloud;
@@ -641,16 +641,13 @@
     Codex.setCloudCues=setCloudCues;
     Codex.setCloudCuesFromTarget=setCloudCuesFromTarget;
 
-    function adjustCloudFont(arg){
+    function adjustCloudFont(cloud){
         var round=Math.round, sqrt=Math.sqrt;
-        var cloud=((this instanceof Completions)?(this):(arg));
         var dom=cloud.dom, parent=dom.parentNode;
-        var ih=dom.scrollHeight, iw=dom.scrollWidth;
         if (!(parent)) {
             dom.style.fontSize="";
             return;}
-        var oh=parent.clientHeight, ow=parent.clientWidth;
-        var tweakUntil=fdjt.UI.adjustFont.tweakUntil;
+        var ih=dom.scrollHeight, oh=parent.clientHeight;
         var pct=100;
         dom.style.fontSize="";
         if (Codex.Trace.clouds)
@@ -664,6 +661,9 @@
             else pct=(round((oh/ih)*(pct/100)*100));
             dom.style.fontSize=pct+"%";}}
     Codex.adjustCloudFont=adjustCloudFont;
+    Completions.prototype.adjustCloudFont=function(){
+        return adjustCloudFont(this);};
+
 })();
 
 /* Emacs local variables

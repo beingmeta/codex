@@ -250,7 +250,8 @@ Codex.setMode=
                         fdjtUI.FDJT_COMPLETE_CLOUD|
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
             if (Codex.adjustCloudFont)
-                Codex.empty_cloud.updated=Codex.adjustCloudFont;
+                Codex.empty_cloud.updated=function(){
+                    Codex.adjustCloudFont(this);};
             Codex.DOM.empty_cloud=fdjtID("CODEXALLTAGS");
             updateScroller("CODEXALLTAGS");
             
@@ -413,7 +414,6 @@ Codex.setMode=
         var CodexModes=/\b((search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
         var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossaddtag)|(glossaddtag)|(glossaddoutlet)|(glosseditdetail))\b/g;
         var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(shownote))\b/g;
-        var CodexBodyModes=/\b((addgloss)|(openglossmark)|(shownote)|(showaside))\b/g;
         var CodexPopModes=/\b((glossdetail))\b/g;
         var CodexCoverModes=/\b((welcome)|(help)|(layers)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
         var CodexSearchModes=/((refinesearch)|(searchresults)|(expandsearch))/;
