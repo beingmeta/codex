@@ -203,6 +203,9 @@ var Codex={
         fdjtState.dropSession(key);}
     Codex.clearLocal=clearLocal;
 
+    Codex.focusBody=function(){
+        // document.body.focus();
+        };
     
     function initDB() {
         if (Codex.Trace.start>1) fdjtLog("Initializing DB");

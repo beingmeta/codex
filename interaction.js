@@ -2466,11 +2466,6 @@
             Codex.textinput=false;
             Codex.freezelayout=false;
             if (cur) cur.blur();
-            setTimeout(function(){
-                document.body.blur();
-                setTimeout(function(){
-                    document.body.focus();},0);},
-                       0);
             return;}
         else if (Codex.textinput===target) return;
         else {

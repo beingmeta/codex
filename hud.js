@@ -387,7 +387,7 @@ Codex.setMode=
                     Codex.mode=false;}
                 dropClass(document.body,"hudup");
                 dropClass(document.body,"openhud");
-                document.body.focus();}}
+                Codex.focusBody();}}
         Codex.setHUD=setHUD;
 
         /* Opening and closing the cover */
@@ -538,7 +538,7 @@ Codex.setMode=
                     fdjtID("CODEXOPENGLOSSMARK").id="";
                 if (Codex.textinput) {
                     Codex.setFocus(false);}
-                document.body.focus();
+                Codex.focusBody();
                 if (Codex.skimming) {
                     var dups=Codex.getDups(Codex.target);
                     Codex.clearHighlights(dups);
@@ -643,7 +643,7 @@ Codex.setMode=
                                50);}}
             else if (mode==="addgloss") {}
             // Moving the focus back to the body lets keys work
-            else setTimeout(function(){document.body.focus();},50);
+            else setTimeout(Codex.focusBody,50);
             
             if (display_sync) Codex.displaySync();}
 
