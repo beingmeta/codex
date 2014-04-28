@@ -488,10 +488,10 @@ div#CODEXHUD img.hudbutton {
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-.cxMOUSE div#CODEXHUD img.hudbutton:hover,
 div#CODEXHUD .hudbutton.tapholdtarget {
-    border-color: blue;}
-
+    border-color: blue; opacity: 0.99;}
+.cxMOUSE div#CODEXHUD img.hudbutton:hover {
+    border-color: blue; border-style: dotted; opacity: 0.99;}
 body.cxSKIMMING div#CODEXHUD img.hudbutton {
     opacity: 0.80;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
@@ -518,7 +518,8 @@ body.cxSKIMMING div#CODEXHUD.searchresults
    img.hudbutton[hudmode="searchresults"] {
     display: inline-block; }
 body div#CODEXHUD.addgloss img.hudbutton[hudmode="allglosses"],
-body.cxSKIMMING div#CODEXHUD.searchresults img.hudbutton[hudmode="allglosses"] {
+body.cxSKIMMING div#CODEXHUD.searchresults
+  img.hudbutton[hudmode="allglosses"] {
     display: none; }
 
 body.hudup div#CODEXHUD img.hudbutton  {}
@@ -588,6 +589,7 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
     cursor: pointer;
     font-variant: small-caps;
     display: inline-block;}
+#CODEXSHOWCOVER.tapholdtarget { border-color: blue; }
 #CODEXFRAME.cxANIMATE #CODEXSHOWCOVER {
     transition-property: opacity;
     -o-transition-property: opacity;

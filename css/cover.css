@@ -389,7 +389,9 @@ div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
     margin-top: 0.7ex; padding:  0px 1em 0px 1em;
     border: solid transparent 2px;
     font-variant: small-caps; border-radius: 1em; }
-div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE:hover {
+body.cxMOUSE div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE:hover {
+    border-color: blue; border-style: dotted;}
+div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE.tapholdtarget {
     border-color: blue; }
 body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
 body div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {

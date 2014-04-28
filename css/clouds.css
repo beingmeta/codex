@@ -42,7 +42,9 @@ div#CODEXHUD .completions .showall {
     -o-border-radius: 12px; -webkit-border-radius: 12px; 
     -moz-border-radius: 12px;
     cursor: pointer;}
-.cxMOUSE div#CODEXHUD .completions .showall:hover {border-color: blue;}
+.cxMOUSE div#CODEXHUD .completions .showall:hover,
+div#CODEXHUD .completions .showall.tapholdtarget {
+    border-color: blue;}
 div#CODEXHUD .completions .showall .showless { display: none;}
 div#CODEXHUD .completions.showall .showless {display: inline;}
 div#CODEXHUD .completions.showall .showmore {display: none;}
@@ -132,6 +134,7 @@ div#CODEXHUD div.completions div.nomatchmsg {
     border-top-left-radius: 1em;
     border-bottom-left-radius: 1em;}
 
+.cloud.addingtags .completion, .cloud.addingtags .completion.displayed,
 .cloud.sizingtags .completion, .cloud.sizingtags .completion.displayed {
     display: none !important;}
 .cloud.sizingcloud .completion, .cloud.sizingtags .completion.displayed {
@@ -173,6 +176,8 @@ div#CODEXHUD div.completions div.nomatchmsg {
    display: inline-block; line-height: 100%;
    vertical-align: top; margin-bottom: 2px;}
 
+.cloud .completion.tapholdtarget {
+    border-color: blue;}
 
 .cloud.noinput a.completion.cue,
 .cloud.noinput span.completion.cue,
@@ -188,7 +193,8 @@ div#CODEXHUD div.completions div.nomatchmsg {
    display: inline-block; line-height: 100%;
    margin: 2px; margin-left: 0.5ex;}
 
-div#CODEXHUD #CODEXALLTAGS.completions.cloud .noinput.showall span.completion.sectname.cue { 
+div#CODEXHUD #CODEXALLTAGS.completions.cloud.noinput.showall
+  span.completion.sectname.cue { 
    display: inline-block; line-height: 100%;
    margin: 2px; margin-left: 0.5ex;}
 
