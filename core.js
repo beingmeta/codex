@@ -140,7 +140,7 @@ var Codex={
         nav: false,       // Whether to trace book navigation
         skim: 0,          // How much to trace DOM skimming
         search: 0,        // How much to trace searches
-        clouds: 0,        // How much to trace cloud generation
+        clouds: 2,        // How much to trace cloud generation
         target: false,    // Whether to trace target changes
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence

@@ -2460,8 +2460,12 @@ Codex.Startup=
                 fdjtLog("Setting up initial tag clouds for %d tags",
                         searchtags.length);
             addClass(document.body,"cxINDEXING");
-            addClass(empty_cloud.dom,"addingtags");
-            addClass(gloss_cloud.dom,"addingtags");
+            fdjtDOM(empty_cloud.dom,
+                    fdjtDOM("div.cloudprogress","Cloud Shaping in Progress"));
+            addClass(empty_cloud.dom,"working");
+            fdjtDOM(gloss_cloud.dom,
+                    fdjtDOM("div.cloudprogress","Cloud Shaping in Progress"));
+            addClass(gloss_cloud.dom,"working");
             fdjtTime.slowmap(function(tag){
                 var elt=addTag2Cloud(tag,empty_cloud,Codex.knodule,
                                      Codex.tagweights,tagfreqs,false);
@@ -2471,21 +2475,15 @@ Codex.Startup=
                     if ((tag instanceof KNode)||
                         ((tagfreqs[tag]>4)&&(tagfreqs[tag]<(max_freq/2))))
                         addTag2Cloud(tag,gloss_cloud);}},
-                             searchtags,searchtags_progress,searchtags_done,
-                             200,5);}
-
-        function searchtags_done(searchtags){
+                             searchtags,addtags_progress,addtags_done,
+                             200,20);}
+        
+        function addtags_done(searchtags){
             var eq=Codex.empty_query;
             var empty_cloud=Codex.empty_cloud;
             var gloss_cloud=Codex.gloss_cloud;
             if (Codex.Trace.startup>1)
                 fdjtLog("Done populating clouds");
-            fdjtUI.ProgressBar.setProgress(
-                "CODEXINDEXMESSAGE",100);
-            fdjtUI.ProgressBar.setMessage(
-                "CODEXINDEXMESSAGE",
-                fdjtString("Added all %d tags to search/gloss clouds",
-                           searchtags.length));
             dropClass(document.body,"cxINDEXING");
             eq.cloud=empty_cloud;
             if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
@@ -2494,14 +2492,15 @@ Codex.Startup=
                                     true,empty_cloud.values.length));
             Codex.sortCloud(empty_cloud);
             Codex.sortCloud(gloss_cloud);
-            dropClass(empty_cloud.dom,"addingtags");
-            dropClass(gloss_cloud.dom,"addingtags");
             Codex.sizeCloud(empty_cloud,Codex.tagweights,[]);
             Codex.sizeCloud(gloss_cloud,Codex.tagweights,[]);}
 
-        function searchtags_progress(state,i,lim){
+        function addtags_progress(state,i,lim){
             var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);
-            if (state!=='suspend') return;
+            var empty_cloud=Codex.empty_cloud;
+            var gloss_cloud=Codex.gloss_cloud;
+            var pct=((i*100)/lim);
+            if (state!=='after') return;
             var pct=(i*100)/lim;
             if (tracelevel>1)
                 startupLog("Added %d (%d%% of %d tags) to clouds",
@@ -2717,7 +2716,10 @@ Codex.Startup=
         function handle_inline_tags(info){
             if (info.atags) addTags(info,info.atags);
             if (info.sectag)
-                addTags(info,info.sectag,"tags",Codex.knodule);}
+                addTags(info,info.sectag,"tags",Codex.knodule);
+            var knode=Codex.knodule.ref(info.sectag);
+            Codex.tagweights.set(
+                knode,Codex.docdb.find('head',info).length);}
         
         /* Setting up the clouds */
         

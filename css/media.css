@@ -63,7 +63,7 @@
     div.searchbox div.query .codexclearsearch {
         width: 10%; height: auto;}
     div.searchbox div.query div.input {
-        width: auto; margin-left: 10%;}
+        width: auto; margin-right: 10%;}
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
     #CODEXHUD #CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}

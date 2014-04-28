@@ -131,11 +131,22 @@ div.completions.noinput .cloudtoggle {
     border-top-left-radius: 1em;
     border-bottom-left-radius: 1em;}
 
-.cloud.addingtags .completion, .cloud.addingtags .completion.displayed,
-.cloud.sizingtags .completion, .cloud.sizingtags .completion.displayed {
+.cloud.working { background-color: lightgray; }
+
+.cloud.working .completion, .cloud.working .completion.displayed,
+.cloud.working .completion, .cloud.working .completion.displayed {
     display: none !important;}
-.cloud.sizingcloud .completion, .cloud.sizingtags .completion.displayed {
-    visibility: hidden;}
+
+.cloudprogress {
+    font-size: 32px; line-height: 150%; padding-bottom: 1ex;
+    display: none;}
+.cloud.working .cloudprogress { display: block;}
+.cloudprogress progress {
+    clear: both; width: 80%; margin-left: 10%; margin-right: 10%;
+    box-sizing: border-box;}
+
+.cloud.sizingcloud .completion {
+    visibility: hidden; opacity: 0;}
 
 .cloud { max-width: 100%; }
 

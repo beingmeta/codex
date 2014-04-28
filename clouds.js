@@ -510,7 +510,7 @@
         var i=0, lim=values.length;
         var min_score=Infinity, max_score=-1;
         if (Codex.Trace.clouds)
-            fdjtLog("Sizing %d values in cloud %o with roots %o",
+            fdjtLog("Sizing %d tags in cloud %o with roots %o",
                     values.length,cloud.dom,roots);
         while (i<lim) {
             var value=values[i], score;
@@ -552,12 +552,13 @@
             fdjtLog("Finished computing sizes for %o using scores [%o,%o]",
                     cloud.dom,min_score,max_score);
         cloud.dom.style.display='';
+        dropClass(cloud.dom,"working");
         if (Codex.Trace.clouds)
             fdjtLog("Rendered new cloud %o using scores [%o,%o]",
                     cloud.dom,min_score,max_score);
         if (cloud.dom.parentNode) adjustCloudFont(cloud);
         if (Codex.Trace.clouds)
-            fdjtLog("Finished sizing cloud %o using scores [%o,%o]",
+            fdjtLog("Finished sizing tags in %o using scores [%o,%o]",
                     cloud.dom,min_score,max_score);}
     Codex.sizeCloud=sizeCloud;
 
@@ -647,19 +648,22 @@
         if (!(parent)) {
             dom.style.fontSize="";
             return;}
-        var ih=dom.scrollHeight, oh=parent.clientHeight;
         var pct=100;
         dom.style.fontSize="";
+        var ih=dom.scrollHeight, oh=parent.clientHeight;
         if (Codex.Trace.clouds)
             fdjtLog("Adjusting cloud %o: %o/%o",dom,ih,oh);
-        if ((ih<oh)&&(ih>(oh*0.7))) return;
-        else if ((ih>oh)&&(ih>(oh*2))) return;
+        if ((oh===0)||(ih===0)) return;
+        if ((ih<oh)&&(ih>(oh*0.8))) return;
+        else if (ih>(oh*2)) return;
         else {
             oh=oh*0.9;
             if (ih<oh)
                 pct=(round(sqrt(oh/ih)*(pct/100)*100));
             else pct=(round((oh/ih)*(pct/100)*100));
-            dom.style.fontSize=pct+"%";}}
+            dom.style.fontSize=pct+"%";
+            if (Codex.Trace.clouds)
+                fdjtLog("Adjusted cloud %o: %o/%o to %o%%",dom,ih,oh,pct);}}
     Codex.adjustCloudFont=adjustCloudFont;
     Completions.prototype.adjustCloudFont=function(){
         return adjustCloudFont(this);};

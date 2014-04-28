@@ -37,7 +37,7 @@ div.searchbox div.input input[type='TEXT'] {
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon.svgz);}
 
 @media (pointer: coarse) {
-    div.searchbox div.input input[type='TEXT'] {font-size: 250%;}}
+    div.searchbox div.query div.input input[type='TEXT'] {font-size: 250%;}}
 @media (pointer: coarse) and (max-width: 640px) {
     div.searchbox div.query { margin-left: 1em; }}
 
