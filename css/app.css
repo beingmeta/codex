@@ -221,6 +221,12 @@ body.cxTOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
 .fdjtselectstart, .fdjtselectend {
     box-shadow: 0px 0px 0.5ex 0.5ex rgba(255, 215, 0, 0.33);}
 
+/* Other default rules */
+
+.tapholdtarget { border-color: blue;}
+.fdjtselecting .tapholdtarget { border-color: none;}
+#CODEXPAGEBAR .tapholdtarget { border-color: none;}
+
 /*
 body.cxANIMATE .fdjtselectwrap > span {
     transition-property: background-color;

@@ -465,7 +465,6 @@ Codex.setMode=
                         var input=fdjtID(codex_mode_foci[Codex.mode]);
                         input.blur();}
                     dropClass(CodexHUD,CodexModes);
-                    // dropClass(CodexHUD,CodexSubModes);
                     Codex.mode=false;
                     Codex.last_mode=true;}
                 else if (typeof mode !== 'string') 
@@ -550,15 +549,14 @@ Codex.setMode=
                 dropClass(document.body,"codexhelp");
                 dropClass(document.body,"cxPREVIEW");
                 dropClass(document.body,"cxSHRINK");
+                dropClass(CodexHUD,CodexModes);
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
                 if (nohud) Codex.setHUD(false);
                 else if (CodexBodyModes.test(oldmode)) {
-                    // dropClass(CodexHUD,CodexSubModes);
                     setHUD(false);}
                 else setTimeout(function(){
                     if (Codex.mode===oldmode) {
-                        // dropClass(CodexHUD,CodexSubModes);
                         setHUD(false);}},
                                 500);}}
         
@@ -579,7 +577,6 @@ Codex.setMode=
                 fdjtLog("changeMode %o, cur=%o dbc=%o",
                         mode,Codex.mode,document.body.className);
             fdjtDOM.dropClass(CodexHUD,CodexModes);
-            // fdjtDOM.dropClass(CodexHUD,CodexSubModes);
             fdjtDOM.addClass(CodexHUD,mode);
             scrollSlices(mode);
             if (mode==="statictoc") {

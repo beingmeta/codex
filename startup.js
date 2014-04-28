@@ -2443,11 +2443,13 @@ Codex.Startup=
             if (Codex._setup) setupClouds();
             else Codex.onsetup=setupClouds;}
         
+        var cloud_setup_start=false;
         function setupClouds(){
             var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);
             var addTag2Cloud=Codex.addTag2Cloud;
             var empty_cloud=Codex.empty_cloud;
             var gloss_cloud=Codex.gloss_cloud;
+            cloud_setup_start=fdjtTime();
             Codex.empty_query.results=
                 [].concat(Codex.glossdb.allrefs).concat(Codex.docdb.allrefs);
             var searchtags=Codex.searchtags=Codex.empty_query.getCoTags();
@@ -2458,6 +2460,8 @@ Codex.Startup=
                 fdjtLog("Setting up initial tag clouds for %d tags",
                         searchtags.length);
             addClass(document.body,"cxINDEXING");
+            addClass(empty_cloud.dom,"addingtags");
+            addClass(gloss_cloud.dom,"addingtags");
             fdjtTime.slowmap(function(tag){
                 var elt=addTag2Cloud(tag,empty_cloud,Codex.knodule,
                                      Codex.tagweights,tagfreqs,false);
@@ -2489,11 +2493,11 @@ Codex.Startup=
                                 Codex.UI.getShowAll(
                                     true,empty_cloud.values.length));
             Codex.sortCloud(empty_cloud);
-            Codex.sizeCloud(
-                empty_cloud,Codex.tagweights,[]);
             Codex.sortCloud(gloss_cloud);
-            Codex.sizeCloud(
-                gloss_cloud,Codex.tagweights,[]);}
+            dropClass(empty_cloud.dom,"addingtags");
+            dropClass(gloss_cloud.dom,"addingtags");
+            Codex.sizeCloud(empty_cloud,Codex.tagweights,[]);
+            Codex.sizeCloud(gloss_cloud,Codex.tagweights,[]);}
 
         function searchtags_progress(state,i,lim){
             var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);

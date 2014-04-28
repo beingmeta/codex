@@ -18,7 +18,12 @@ div#CODEXHUD.emptysearch div.searchbox div.query #CODEXSEARCHLABEL {
 div.searchbox div.query .codexclearsearch {
     float: right;}
 div.searchbox div.query .codexclearsearch {
-    height: 2em; width: auto; margin: 0.5ex; margin-top: 0px;}
+    box-sizing: border-box;
+    border: solid transparent 2px;
+    height: 2em; width: auto;
+    margin: 0.5ex; margin-top: 0px;}
+div.searchbox div.query .codexclearsearch.tapholdtarget {
+    border-color: blue;}
 
 div.searchbox div.query input[type='TEXT'] {
     background-position: right top;

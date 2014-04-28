@@ -136,7 +136,7 @@ var Codex={
     Trace: {
         startup: 2,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
-        mode: false,      // Whether to trace mode changes
+        mode: true,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
         skim: 0,          // How much to trace DOM skimming
         search: 1,        // How much to trace searches
@@ -158,7 +158,7 @@ var Codex={
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
         highlight: 0,     // Whether to trace highlighting
         indexing: 1,      // How much to trace document indexing
-        gestures: 0}      // How much to trace gestures
+        gestures: 2}      // How much to trace gestures
 };
 
 (function(){
