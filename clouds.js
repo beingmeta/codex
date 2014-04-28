@@ -508,13 +508,13 @@
         var values=cloud.values, byvalue=cloud.byvalue;
         var vscores=new Array(values.length);
         var i=0, lim=values.length;
-        var min_score=-1, max_score=-1, sum=0, count=0;
+        var min_score=Infinity, max_score=-1;
         if (Codex.Trace.clouds)
-            fdjtLog("Sizing %d values in cloud %o using scores %o with roots %o",
-                    values.length,cloud.dom,scores,roots);
+            fdjtLog("Sizing %d values in cloud %o with roots %o",
+                    values.length,cloud.dom,roots);
         while (i<lim) {
             var value=values[i], score;
-            if ((roots)&&(RefDB.contains(roots,value))) {
+            if ((roots)&&(roots.length)&&(roots.indexOf(value)>=0)) {
                 vscores[i++]=false; continue;}
             if (scores) {
                 var cscore=scores.get(value);
@@ -522,39 +522,39 @@
                 score=(cscore/gscore)*(gweights.get(value));}
             else score=gscores.get(value);
             if ((typeof score === "number")&&((score)||(score===0))) {
-                vscores[i]=score; sum=sum+score; count++;
-                if ((min_score<0)||(score<min_score)) min_score=score;
-                if ((max_score<0)||(score>max_score)) max_score=score;}
+                vscores[i]=score;
+                if (score<min_score) min_score=score;
+                if (score>max_score) max_score=score;}
             else vscores[i]=false;
             i++;}
         if (Codex.Trace.clouds)
-            fdjtLog("Sizing cloud %o using scores [%o,%o]",
-                    cloud.dom,min_score,max_score);
+            fdjtLog("Sizing %d tags in %o with scores in [%o,%o]",
+                    values.length,cloud.dom,min_score,max_score);
         cloud.dom.style.display='none';
         i=0; while (i<lim) {
             var v=values[i], s=vscores[i];
             var elt=byvalue.get(v);
             if (v.prime) {
                 addClass(elt,"prime"); addClass(elt,"cue");}
-            if ((roots)&&(RefDB.contains(roots,v))) {
+            if ((roots)&&(roots.length)&&(roots.indexOf(v)>=0)) 
                 addClass(elt,"cloudroot");
-                if (fsize<200)
-                    elt.style.fontSize=Math.round(fsize)+"%";
-                else elt.style.fontSize="200%";}
             if (!(s)) {
                 addClass(elt,"unscored");
-                elt.style.fontSize=""; i++; continue;}
-            else {}
+                elt.style.fontSize=""; i++;
+                continue;}
             var factor=(s-min_score)/(max_score-min_score);
             var fsize=50+(150*factor);
-            if ((roots)&&(RefDB.contains(roots,v))) {
-                addClass(elt,"cloudroot");
-                if (fsize<200)
-                    elt.style.fontSize=Math.round(fsize)+"%";
-                else elt.style.fontSize="200%";}
-            else elt.style.fontSize=Math.round(fsize)+"%";
+            if (fsize<200)
+                elt.style.fontSize=Math.round(fsize)+"%";
+            else elt.style.fontSize="200%";
             i++;}
+        if (Codex.Trace.clouds)
+            fdjtLog("Finished computing sizes for %o using scores [%o,%o]",
+                    cloud.dom,min_score,max_score);
         cloud.dom.style.display='';
+        if (Codex.Trace.clouds)
+            fdjtLog("Rendered new cloud %o using scores [%o,%o]",
+                    cloud.dom,min_score,max_score);
         if (cloud.dom.parentNode) adjustCloudFont(cloud);
         if (Codex.Trace.clouds)
             fdjtLog("Finished sizing cloud %o using scores [%o,%o]",
