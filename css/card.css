@@ -74,7 +74,7 @@ div.codexcard > hr {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
-div#CODEXHUD .codexcard span.oldterm {color: blue; }
+#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard span.user { 
   color: green; font-size: 125%; font-style: italic;}
 .codexcard span.outlet { color: green;}
@@ -178,7 +178,8 @@ div#CODEXHUD .codexcard span.oldterm {color: blue; }
 .codexcard .tool {
     font-weight: normal; cursor: pointer;
     font-size: 70%; text-decoration: none;}
-.codexcard .tool > * { float: right; }
+.codexcard .tool > span, .codexcard .tool > a, .codexcard .tool > img {
+    float: right; }
 .codexcard .tool span.label {
   font-weight: bold; color: blue;
   padding-right: 1ex; padding-left: 1ex; padding-bottom: 1ex; 

@@ -6,40 +6,40 @@
 
 /* The Flyleaf */
 
-div#CODEXHUD div#CODEXHEART table {
+#CODEXHUD #CODEXHEART table {
     width: 90%; margin-left: auto; margin-right: auto; vertical-align: top;}
 
-div#CODEXHUD div#CODEXHEART .tabcontent {
+#CODEXHUD #CODEXHEART .tabcontent {
     overflow-y: hidden; overflow-x: hidden;}
-div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP,
-div#CODEXHUD.login div#CODEXHEART .tabcontent#CODEXLOGIN {
+#CODEXHUD.sbooksapp #CODEXHEART .tabcontent#SBOOKSAPP,
+#CODEXHUD.login #CODEXHEART .tabcontent#CODEXLOGIN {
     overflow: visible;}
-div#CODEXHUD.sbooksapp div#CODEXHEART .tabcontent#SBOOKSAPP {
+#CODEXHUD.sbooksapp #CODEXHEART .tabcontent#SBOOKSAPP {
     width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px;}
-div#CODEXHUD.login div#CODEXHEART .tabcontent#CODEXLOGIN {
+#CODEXHUD.login #CODEXHEART .tabcontent#CODEXLOGIN {
     width: 100%; border: 0px; margin: 0px; padding: 0px;}
-div#CODEXHUD div#CODEXHEART .tabcontent section { clear: both;}
+#CODEXHUD #CODEXHEART .tabcontent section { clear: both;}
 
 body.cxNOUSER a.logout {display: none;}
 
 /* CODEXHEART content rules */
 
-div#CODEXHUD div#CODEXHEART a,
-div#CODEXHUD div#CODEXHEART a:visited { 
+#CODEXHUD #CODEXHEART a,
+#CODEXHUD #CODEXHEART a:visited { 
   color: darkblue; text-decoration: none;}
-div#CODEXHUD div#CODEXHEART a:hover { text-decoration: underline;}
-div#CODEXHUD div#CODEXHEART .flyleafplate a,
-div#CODEXHUD div#CODEXHEART .flyleafplate a:visited {
+#CODEXHUD #CODEXHEART a:hover { text-decoration: underline;}
+#CODEXHUD #CODEXHEART .flyleafplate a,
+#CODEXHUD #CODEXHEART .flyleafplate a:visited {
     text-decoration: none; color: blue;}
-div#CODEXHUD div#CODEXHEART .flyleafplate a:hover {
+#CODEXHUD #CODEXHEART .flyleafplate a:hover {
     text-decoration: underline;}
 
-div#CODEXHUD #CODEXABOUTBOOK.hudpanel { text-align: left;}
-div#CODEXABOUTBOOK div.links {
+#CODEXHUD #CODEXABOUTBOOK.hudpanel { text-align: left;}
+#CODEXABOUTBOOK div.links {
     height: 1em; border-bottom: solid purple 3px; margin-bottom: 1em;}
-div#CODEXABOUTBOOK div.links a.metadata {
+#CODEXABOUTBOOK div.links a.metadata {
     float: right; font-weight: bold; font-size: 80%;}
-div#CODEXABOUTBOOK div.links a.reviews {
+#CODEXABOUTBOOK div.links a.reviews {
     float: left; font-weight: bold; font-size: 80%;}
 
 #CODEXABOUTBOOK div, #CODEXABOUTBOOK section {

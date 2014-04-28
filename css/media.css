@@ -7,9 +7,9 @@
 @charset "UTF-8";
 
 @media screen and (max-width: 640px) {
-    div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
         left: auto; right: auto; width: 100%;}
-    div#CODEXHUD.openhead #CODEXTOP {
+    #CODEXHUD.openhead #CODEXTOP {
         left: 5px; right: 5px;}
     #CODEXSKIMMER {
         border-width: 2px;
@@ -40,29 +40,29 @@
         margin-bottom: 2px; margin-top: 2px;
         left: 5px; right: 5px;
         font-size: 75%;}
-    div#CODEXHUD div.codexhelp.hudpanel {
+    #CODEXHUD div.codexhelp.hudpanel {
         left: 5px; right: 5px; top: 60px; bottom: 60px;}
-  div#CODEXHUD div.helphud.rightmiddle,
-  div#CODEXHUD div.helphud.leftmiddle {
+  #CODEXHUD div.helphud.rightmiddle,
+  #CODEXHUD div.helphud.leftmiddle {
         display: none;}
     div.helpbox blockquote {
         margin-left: 2px; margin-right: 2px;}
     div.helpbox blockquote p {
         margin-right: 0px; margin-left: 1ex; text-indent: -1ex;}
 
-    div#CODEXHEART div#CODEXSTATICTOC {
+    #CODEXHEART #CODEXSTATICTOC {
         margin-left: 0.5em; margin-right: 0.5em;}
 
     div.fdjtprogress#CODEXLAYOUTMESSAGE {
         left: 50px; right: 50px;}
 
-    div#CODEXPAGE { left: 1.5em; right: 1.5em;}
+    #CODEXPAGE { left: 1.5em; right: 1.5em;}
     body.cxBYPAGE .codexglossmark {margin-right: 0em;}
 
     div.searchbox div.query { font-size: 12px; }
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
-    div#CODEXHUD div#CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
+    #CODEXHUD #CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
 
 }
 
@@ -70,17 +70,17 @@
 /* Handheld media rules */
 
 @media (max-device-width: 500px) {
-    div#CODEXFOOT div#CODEXPAGEBAR {
+    #CODEXFOOT #CODEXPAGEBAR {
         left: 0px; right: 0px;}
 
-    div#CODEXHEAD img.hudbutton[hudmode="allglosses"],
-    div#CODEXHEAD img.hudbutton[hudmode="help"] {
+    #CODEXHEAD img.hudbutton[hudmode="allglosses"],
+    #CODEXHEAD img.hudbutton[hudmode="help"] {
         display: inline-block;}
-    div#CODEXFOOT img.hudbutton[hudmode="allglosses"],
-    div#CODEXFOOT img.hudbutton[hudmode="help"] {
+    #CODEXFOOT img.hudbutton[hudmode="allglosses"],
+    #CODEXFOOT img.hudbutton[hudmode="help"] {
         display: none;}
     
-    div#CODEXPAGE {
+    #CODEXPAGE {
         top: 0px; bottom: 0px;
         left: 5px; right: 5px;}
 }
@@ -88,7 +88,7 @@
 @media handheld and (orientation: landscape) {
     #CODEXPAGE {
         height: 98%; top: 1%; bottom: 1%;}
-    div#CODEXFOOT div#CODEXPAGEBAR {
+    #CODEXFOOT #CODEXPAGEBAR {
         margin-left: 0px; margin-right: 0px;}
 }
 

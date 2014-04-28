@@ -20,9 +20,9 @@ div.completions .cloudtoggle {
 div.completions.noinput .cloudtoggle {
     display: block;}
 
-div#CODEXHUD div.completions {
+#CODEXHUD div.completions {
     text-align: center; display: none;}
-div#CODEXHUD div.completions div.doc {
+#CODEXHUD div.completions div.doc {
     background-color: ivory; text-align: left;
     font-size: 80%; line-height: 100%;
     font-style: italic; color: black;
@@ -34,7 +34,7 @@ div#CODEXHUD div.completions div.doc {
     /* Hide this for now */
     display: none;}
 
-div#CODEXHUD .completions .showall {
+.cloud .showall {
     background-color: lightgray; float: right;
     font-size: 32px; line-height: 100%; width: 100px; padding: 8px;
     margin-left: 6px; margin-right: 8px; margin-bottom: 6px; margin-top: 0px;
@@ -42,21 +42,19 @@ div#CODEXHUD .completions .showall {
     -o-border-radius: 12px; -webkit-border-radius: 12px; 
     -moz-border-radius: 12px;
     cursor: pointer;}
-.cxMOUSE div#CODEXHUD .completions .showall:hover,
-div#CODEXHUD .completions .showall.tapholdtarget {
+.cxMOUSE .cloud .showall:hover,
+.cloud .showall.tapholdtarget {
     border-color: blue;}
-div#CODEXHUD .completions .showall .showless { display: none;}
-div#CODEXHUD .completions.showall .showless {display: inline;}
-div#CODEXHUD .completions.showall .showmore {display: none;}
+.cloud .showall .showless { display: none;}
+.cloud.showall .showless {display: inline;}
+.cloud.showall .showmore {display: none;}
 
-div#CODEXHUD .completions span.sep { 
+.cloud span.sep { 
   font-size: 200%; font-weight: bold; 
   color: purple; vertical-align: middle;}
-div#CODEXHUD span.completion {
-    cursor: pointer; padding-right: 0.5ex;}
-div#CODEXHUD span.completion.cloudroot {
+.completion.cloudroot {
     cursor: default; opacity: 0.25;}
-div#CODEXHUD .completions span.sectname, div#CODEXHUD .qtags span.sectname {
+#CODEXHUD .cloud .sectname, #CODEXHUD .qtags .sectname {
   white-space: nowrap;
   font-weight: normal; font-style: italic;
   background-color: ivory; color: purple;
@@ -66,47 +64,46 @@ div#CODEXHUD .completions span.sectname, div#CODEXHUD .qtags span.sectname {
   -webkit-border-radius: 6px; 
   -moz-border-radius: 6px; 
   border-radius: 6px;}
-div#CODEXHUD .completions .sectname .name,
-div#CODEXHUD .qtags span.sectname .name {
+.cloud .sectname .name,
+#CODEXHUD .qtags span.sectname .name {
   font-size: 80%;}
 
-div#CODEXHUD .completions.showall.noinput span.completion.rawterm.cue,
-div#CODEXHUD .completions.showall.noinput span.completion.rootform.cue,
-div#CODEXHUD .completions.showall.noinput span.completion.singleton.cue,
-div#CODEXHUD .completions.showall.noinput span.completion.doubleton.cue,
-div#CODEXHUD .completions.showall.noinput span.completion.singleton.prime {
+.cloud.showall.noinput span.completion.rawterm.cue,
+.cloud.showall.noinput span.completion.rootform.cue,
+.cloud.showall.noinput span.completion.singleton.cue,
+.cloud.showall.noinput span.completion.doubleton.cue,
+.cloud.showall.noinput span.completion.singleton.prime {
     display: inline;}
-div#CODEXHUD #CODEXALLTAGS.completions.noinput span.completion.sectname.cue {
+#CODEXHUD #CODEXALLTAGS.completions.noinput span.completion.sectname.cue {
       display: none;}
-div#CODEXHUD #CODEXALLTAGS.completions.noinput.showall span.completion.sectname.cue {
+#CODEXHUD #CODEXALLTAGS.completions.noinput.showall span.completion.sectname.cue {
       display: inline;}
 
-div#CODEXHUD .completions.showall.noinput span.completion.singleton.dterm,
-div#CODEXHUD .completions.showall.noinput span.completion.doubleton.dterm {
+.cloud.showall.noinput span.completion.singleton.dterm,
+.cloud.showall.noinput span.completion.doubleton.dterm {
     display: inline;}
-div#CODEXHUD .completions { }
-div#CODEXHUD .completions .completion.prime { 
+.cloud { }
+.cloud .completion.prime { 
     font-weight: bold;}
-div#CODEXHUD .completions .completion .sectname { 
+.cloud .completion .sectname { 
   white-space: nowrap;}
 
-div#CODEXHUD .completions .completion .variation { 
+.cloud .variation { 
   font-size: 70%; color: purple; font-style: italic;}
-div#CODEXHUD .completions .completion .dterm {}
-.completion .dterm, .completion.dterm {
+.cloud .dterm {
     padding-right: 0.35em; padding-left: 0.35em; 
     color: darkblue; background-color: gold; border: solid yellow 2px;}
-.completion .dterm sup, .completion.dterm sup {padding-left: 0.5ex;}
-.completion .dterm.weak, .completion.dterm.weak,
-.completion .rawterm, .completion.rawterm,
-.completion .rootform, .completion.rootform {
+.cloud .dterm sup, .cloud .dterm sup {
+    padding-left: 0.5ex;}
+
+.cloud > .dterm.weak, .cloud > .rawterm, .cloud > .rootform {
     padding-right: 0em; padding-left: 0em; 
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
     color: gray; background-color: inherit; border: none;}
-.completion .rootform, .completion.rootform {
+.cloud > .rootform {
     color: rbga(0,0,0,0.8); font-weight: bold;}
 
-div#CODEXHUD div.completions div.nomatchmsg {
+.cloud .nomatchmsg {
     text-align: center; font-size: 200%; font-weight: bold;
     margin-top: 1em;}
 
@@ -193,7 +190,7 @@ div#CODEXHUD div.completions div.nomatchmsg {
    display: inline-block; line-height: 100%;
    margin: 2px; margin-left: 0.5ex;}
 
-div#CODEXHUD #CODEXALLTAGS.completions.cloud.noinput.showall
+#CODEXHUD #CODEXALLTAGS.completions.cloud.noinput.showall
   span.completion.sectname.cue { 
    display: inline-block; line-height: 100%;
    margin: 2px; margin-left: 0.5ex;}

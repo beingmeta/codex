@@ -127,11 +127,11 @@ body.hudup #CODEXTOP .hudpanel {
 #CODEXTOP {
     opacity: 0.0; max-height: 0px;
     display: block;}
-body #CODEXHUD.openhead #CODEXTOP {
+#CODEXHUD.openhead #CODEXTOP {
     max-height: inherit; opacity: 1.0;
     left: 50px; right: 50px; width: auto;}
 body.hudup #CODEXTOP {display: block;}
-body #CODEXHUD.openhead #CODEXTOP,
+#CODEXHUD.openhead #CODEXTOP,
 body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -153,16 +153,16 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
 
 body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}
-body #CODEXHUD.openglossmark #CODEXSKIMMER,
+#CODEXHUD.openglossmark #CODEXSKIMMER,
 body.cxSKIMMING #CODEXHUD #CODEXSKIMMER,
-body #CODEXHUD.allglosses #CODEXSKIMMER {
+#CODEXHUD.allglosses #CODEXSKIMMER {
     overflow: hidden;}
-body #CODEXHUD.addgloss #CODEXTOP {
+#CODEXHUD.addgloss #CODEXTOP {
     overflow: visible;
     z-index: 500;}
 
 body.hudup #CODEXHUD #CODEXFOOT { height: 50px;}
-body #CODEXHUD.openfoot #CODEXFOOT
+#CODEXHUD.openfoot #CODEXFOOT
 {
     background-color: ivory; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -171,8 +171,8 @@ body #CODEXHUD.openfoot #CODEXFOOT
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     height: 50px;}
 
-body #CODEXHUD.openhead #CODEXTOP {max-height: 50%;}
-body #CODEXHUD.openglossmark #CODEXSKIMMER.expanded,
+#CODEXHUD.openhead #CODEXTOP {max-height: 50%;}
+#CODEXHUD.openglossmark #CODEXSKIMMER.expanded,
 body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded,
 body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
     height: auto; max-height: 50%; overflow: visible;}
@@ -221,27 +221,27 @@ body.hudup #CODEXHEARTFRAME {
 #CODEXHUD #CODEXHEART {
     position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;
     background-color: ivory;}
-div#CODEXHUD #CODEXHEART div.hudpanel {
+#CODEXHUD #CODEXHEART div.hudpanel {
     background-color: transparent;
     padding-bottom: 20px;}
 
-div#CODEXHUD #CODEXHEART {
+#CODEXHUD #CODEXHEART {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     background-color: ivory; z-index: 0;
     border-radius: 1em;}
-div#CODEXHUD #CODEXHEART > * {
+#CODEXHUD #CODEXHEART > div, #CODEXHUD #CODEXHEART > iframe {
     overflow: visible;}
-div#CODEXHUD #CODEXHEART div.hudpanel h1 {
+#CODEXHUD #CODEXHEART div.hudpanel h1 {
     margin-top: 3px; margin-bottom: 1ex;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
+#CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
     border: solid rgba(0,0,255,0.52) 3px;
     z-index: 200; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -252,38 +252,38 @@ body #CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
     -o-opacity: 1;
     display: block;}
 
-div#CODEXHUD.refinesearch div#CODEXRIBBON,
-div#CODEXHUD.expandsearch div#CODEXRIBBON,
-div#CODEXHUD.searchresults div#CODEXRIBBON,
-div#CODEXHUD.glossaddtag div#CODEXRIBBON,
-div#CODEXHUD.glossaddoutlet div#CODEXRIBBON {
+#CODEXHUD.refinesearch #CODEXRIBBON,
+#CODEXHUD.expandsearch #CODEXRIBBON,
+#CODEXHUD.searchresults #CODEXRIBBON,
+#CODEXHUD.glossaddtag #CODEXRIBBON,
+#CODEXHUD.glossaddoutlet #CODEXRIBBON {
     border-bottom: solid blue 2px;
     height: 35px;}
-div#CODEXHUD.refinesearch div#CODEXHEART,
-div#CODEXHUD.expandsearch div#CODEXHEART,
-div#CODEXHUD.searchresults div#CODEXHEART,
-div#CODEXHUD.glossaddtag div#CODEXHEART,
-div#CODEXHUD.glossaddoutlet div#CODEXHEART {
+#CODEXHUD.refinesearch #CODEXHEART,
+#CODEXHUD.expandsearch #CODEXHEART,
+#CODEXHUD.searchresults #CODEXHEART,
+#CODEXHUD.glossaddtag #CODEXHEART,
+#CODEXHUD.glossaddoutlet #CODEXHEART {
     top: 37px; margin-top: 0px;
     border-radius: 0px;}
 
-body #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
-body #CODEXHUD.addgloss.glosstagging #CODEXHEART,
-body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
-body #CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
-body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
-body #CODEXHUD.addgloss.glossattach #CODEXHEART {
+#CODEXHUD.addgloss.glossaddtag #CODEXHEART,
+#CODEXHUD.addgloss.glosstagging #CODEXHEART,
+#CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
+#CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
+#CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
+#CODEXHUD.addgloss.glossattach #CODEXHEART {
     margin-bottom: 1.5ex; margin-top: 1.5ex; 
     padding-bottom: 1em; padding-top: 1ex;
     margin-right: 1px;}
 
 body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss.glossaddtag #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss.glosstagging #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss.glosseditdetail #CODEXHEART div.hudpanel,
-body #CODEXHUD.addgloss.glossattach #CODEXHEART div.hudpanel {
+#CODEXHUD.addgloss.glossaddtag #CODEXHEART div.hudpanel,
+#CODEXHUD.addgloss.glosstagging #CODEXHEART div.hudpanel,
+#CODEXHUD.addgloss.glosstagoutlet #CODEXHEART div.hudpanel,
+#CODEXHUD.addgloss.glossaddoutlet #CODEXHEART div.hudpanel,
+#CODEXHUD.addgloss.glosseditdetail #CODEXHEART div.hudpanel,
+#CODEXHUD.addgloss.glossattach #CODEXHEART div.hudpanel {
     margin-top: 0px; margin-bottom: 0px;}
 body.hudup #CODEXHUD.allglosses.openheart #CODEXHEART,
 body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
@@ -313,36 +313,36 @@ body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME {
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
-body #CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
-body #CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME {
+#CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
+#CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME {
     top: 70px; bottom: 50px; height: auto;}
-body #CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
+#CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
     top: 150px; height: auto; min-height: 10em;}
-body #CODEXHUD.addgloss.glossattach #CODEXHEART {
+#CODEXHUD.addgloss.glossattach #CODEXHEART {
     height: auto; min-height: 8em; padding-top: 0px;
     overflow: visible;}
 
-div#CODEXHUD #CODEXFOOT {
+#CODEXHUD #CODEXFOOT {
     position: absolute; bottom: 0px; z-index: 300;}
 
 body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {display: block;}
 
 /* HUD panels */
 
-div#CODEXHUD div.hudpanel {
+#CODEXHUD div.hudpanel {
     color: #4682b4; background-color: rgba(255,255,240,0.7);
     z-index: 100; border: 0px;}
-div#CODEXHUD.overtoc div.hudpanel {
+#CODEXHUD.overtoc div.hudpanel {
     }
 /* Being on top */
-div#CODEXHUD .hudpanel {
+#CODEXHUD .hudpanel {
     position: absolute; left: 0px; right: 0px;
     text-align: center; overflow: visible;}
 /* Being invisible */
-div#CODEXHUD .hudpanel {
+#CODEXHUD .hudpanel {
     display: none; opacity: 0.001; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -351,7 +351,7 @@ div#CODEXHUD .hudpanel {
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
 /* Being visible when the HUD is up */
-body.hudup div#CODEXHUD div.hudpanel {
+body.hudup #CODEXHUD div.hudpanel {
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -360,7 +360,7 @@ body.hudup div#CODEXHUD div.hudpanel {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 /* When animating, transition opacity and height */
-#CODEXFRAME.cxANIMATE div#CODEXHUD div.hudpanel {
+#CODEXFRAME.cxANIMATE #CODEXHUD div.hudpanel {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -371,13 +371,13 @@ body.hudup div#CODEXHUD div.hudpanel {
 /* Mode display rules */
 
 /* Head rules */
-div#CODEXHUD.overtoc div#CODEXTOC,
-div#CODEXHUD.allglosses div#CODEXSOURCES,
-div#CODEXHUD.addgloss div#CODEXADDGLOSS,
-div#CODEXHUD.shownote div#CODEXNOTETEXT,
-div#CODEXHUD.refinesearch div#CODEXSEARCH,
-div#CODEXHUD.expandsearch div#CODEXSEARCH,
-div#CODEXHUD.searchresults div#CODEXSEARCH {
+#CODEXHUD.overtoc #CODEXTOC,
+#CODEXHUD.allglosses #CODEXSOURCES,
+#CODEXHUD.addgloss #CODEXADDGLOSS,
+#CODEXHUD.shownote #CODEXNOTETEXT,
+#CODEXHUD.refinesearch #CODEXSEARCH,
+#CODEXHUD.expandsearch #CODEXSEARCH,
+#CODEXHUD.searchresults #CODEXSEARCH {
     position: static; display: block; opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
     filter: alpha(opacity=98);
@@ -386,27 +386,27 @@ div#CODEXHUD.searchresults div#CODEXSEARCH {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-body.cxSKIMMING div#CODEXHUD.allglosses div#CODEXSOURCES,
-body.cxSKIMMING div#CODEXHUD.searchresults div#CODEXSEARCH {
+body.cxSKIMMING #CODEXHUD.allglosses #CODEXSOURCES,
+body.cxSKIMMING #CODEXHUD.searchresults #CODEXSEARCH {
     display: none; }
 
 /* Heart rules */
-div#CODEXHUD.allglosses div#CODEXALLGLOSSES.hudpanel,
-div#CODEXHUD.showaside div#CODEXASIDE.hudpanel,
-div#CODEXHUD.statictoc div#CODEXSTATICTOC.hudpanel,
-div#CODEXHUD.about div#CODEXABOUTBOOK.hudpanel,
-div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART div#CODEXGLOSSCLOUD.hudpanel,
-div#CODEXHUD.addgloss.glosstagging div#CODEXHEART div#CODEXGLOSSCLOUD.hudpanel,
-div#CODEXHUD.addgloss.glosstagoutlet div#CODEXHEART div#CODEXSHARECLOUD.hudpanel,
-div#CODEXHUD.addgloss.glossaddoutlet div#CODEXHEART div#CODEXSHARECLOUD.hudpanel,
-div#CODEXHUD.addgloss.glossattach div#CODEXHEART div#CODEXGLOSSATTACH.hudpanel,
-div#CODEXHUD.addgloss.glosseditdetail div#CODEXHEART div#CODEXGLOSSEDITDETAIL.hudpanel,
-div#CODEXHUD.glossdetail div#CODEXHEART div#CODEXGLOSSDETAIL.hudpanel,
-div#CODEXHUD.refinesearch div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel,
-div#CODEXHUD.expandsearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
-div#CODEXHUD.refinesearch.emptysearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
-div#CODEXHUD.searchresults div#CODEXHEART div#CODEXSEARCHRESULTS.hudpanel,
-div#CODEXHUD.login div#CODEXLOGIN.hudpanel {
+#CODEXHUD.allglosses #CODEXALLGLOSSES.hudpanel,
+#CODEXHUD.showaside #CODEXASIDE.hudpanel,
+#CODEXHUD.statictoc #CODEXSTATICTOC.hudpanel,
+#CODEXHUD.about #CODEXABOUTBOOK.hudpanel,
+#CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXGLOSSCLOUD.hudpanel,
+#CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXGLOSSCLOUD.hudpanel,
+#CODEXHUD.addgloss.glosstagoutlet #CODEXHEART #CODEXSHARECLOUD.hudpanel,
+#CODEXHUD.addgloss.glossaddoutlet #CODEXHEART #CODEXSHARECLOUD.hudpanel,
+#CODEXHUD.addgloss.glossattach #CODEXHEART #CODEXGLOSSATTACH.hudpanel,
+#CODEXHUD.addgloss.glosseditdetail #CODEXHEART #CODEXGLOSSEDITDETAIL.hudpanel,
+#CODEXHUD.glossdetail #CODEXHEART #CODEXGLOSSDETAIL.hudpanel,
+#CODEXHUD.refinesearch #CODEXHEART #CODEXSEARCHCLOUD.hudpanel,
+#CODEXHUD.expandsearch #CODEXHEART #CODEXALLTAGS.hudpanel,
+#CODEXHUD.refinesearch.emptysearch #CODEXHEART #CODEXALLTAGS.hudpanel,
+#CODEXHUD.searchresults #CODEXHEART #CODEXSEARCHRESULTS.hudpanel,
+#CODEXHUD.login #CODEXLOGIN.hudpanel {
     position: static; display: block;
     opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -416,20 +416,20 @@ div#CODEXHUD.login div#CODEXLOGIN.hudpanel {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-div#CODEXHUD.refinesearch div#CODEXHEART div#CODEXALLTAGS.hudpanel,
-div#CODEXHUD.refinesearch.emptysearch div#CODEXHEART div#CODEXSEARCHCLOUD.hudpanel {
+#CODEXHUD.refinesearch #CODEXHEART #CODEXALLTAGS.hudpanel,
+#CODEXHUD.refinesearch.emptysearch #CODEXHEART #CODEXSEARCHCLOUD.hudpanel {
     display: none;}
 
-div#CODEXHUD div#CODEXHEART div#CODEXSEARCHCLOUD,
-div#CODEXHUD div#CODEXHEART div#CODEXALLTAGS {
+#CODEXHUD #CODEXHEART #CODEXSEARCHCLOUD,
+#CODEXHUD #CODEXHEART #CODEXALLTAGS {
     padding-top: 12px;}
 
-div#CODEXHEART div#CODEXSEARCHBLOCK.hudpanel {
+#CODEXHEART #CODEXSEARCHBLOCK.hudpanel {
     margin-left: 0px; margin-right: 0px;
     background-color: transparent;}
-div#CODEXHUD.refinesearch div#CODEXSEARCHBLOCK.hudpanel,
-div#CODEXHUD.expandsearch div#CODEXSEARCHBLOCK.hudpanel,
-div#CODEXHUD.searchresults div#CODEXSEARCHBLOCK.hudpanel {
+#CODEXHUD.refinesearch #CODEXSEARCHBLOCK.hudpanel,
+#CODEXHUD.expandsearch #CODEXSEARCHBLOCK.hudpanel,
+#CODEXHUD.searchresults #CODEXSEARCHBLOCK.hudpanel {
     position: absolute; display: block; overflow: hidden;
     top: 0px; bottom: 0px; left: 0px; right: 0px;
     opacity: 0.98;
@@ -447,23 +447,23 @@ div.completions.hudpanel { line-height: 120%;}
 div.completions.hudpanel .prime { line-height: 250%;}
 div.completions.hudpanel .normal { line-height: 250%;}
 
-div#CODEXGLOSSDETAIL.hudpanel {
+#CODEXGLOSSDETAIL.hudpanel {
     text-align: left;
     margin-left: 1em; margin-right: 1em;}
 
-div#CODEXHUD div#CODEXNOTETEXT, div#CODEXHUD div#CODEXASIDE {
+#CODEXHUD #CODEXNOTETEXT, #CODEXHUD #CODEXASIDE {
     padding-left: 2em; padding-right: 2em;
     text-align: left;}
-div#CODEXHUD div#CODEXNOTETEXT p { margin-top: 1ex; margin-bottom: 1ex;}
-div#CODEXHUD div#CODEXNOTETEXT p:first-child { margin-top: 2px; }
-div#CODEXNOTETEXT span.sbooknotelabel {
+#CODEXHUD #CODEXNOTETEXT p { margin-top: 1ex; margin-bottom: 1ex;}
+#CODEXHUD #CODEXNOTETEXT p:first-child { margin-top: 2px; }
+#CODEXNOTETEXT span.sbooknotelabel {
     font-size: 150%; color: darkblue;
     position: relative; left: -1em;
     padding-right: 0.3ex;}
 
 /* HUD buttons */
 
-div#CODEXHUD img.hudbutton {
+#CODEXHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px;
     border: solid transparent 2px; opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=05)";
@@ -472,7 +472,7 @@ div#CODEXHUD img.hudbutton {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-.cxMOUSE div#CODEXHUD:hover img.hudbutton {
+.cxMOUSE #CODEXHUD:hover img.hudbutton {
     opacity: 0.30;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
     filter: alpha(opacity=30);
@@ -480,7 +480,7 @@ div#CODEXHUD img.hudbutton {
     -khtml-opacity: 0.30;
     -moz-opacity: 0.30;
     -o-opacity: 0.30;}
-.hudup.cxMOUSE div#CODEXHUD:hover img.hudbutton {
+.hudup.cxMOUSE #CODEXHUD:hover img.hudbutton {
     opacity: 0.99;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
     filter: alpha(opacity=99);
@@ -488,11 +488,11 @@ div#CODEXHUD img.hudbutton {
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-div#CODEXHUD .hudbutton.tapholdtarget {
+#CODEXHUD .hudbutton.tapholdtarget {
     border-color: blue; opacity: 0.99;}
-.cxMOUSE div#CODEXHUD img.hudbutton:hover {
+.cxMOUSE #CODEXHUD img.hudbutton:hover {
     border-color: blue; border-style: dotted; opacity: 0.99;}
-body.cxSKIMMING div#CODEXHUD img.hudbutton {
+body.cxSKIMMING #CODEXHUD img.hudbutton {
     opacity: 0.80;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -501,31 +501,31 @@ body.cxSKIMMING div#CODEXHUD img.hudbutton {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-div#CODEXHEAD img.hudbutton[hudmode="allglosses"],
-div#CODEXHEAD img.hudbutton[hudmode="help"] {
+#CODEXHEAD img.hudbutton[hudmode="allglosses"],
+#CODEXHEAD img.hudbutton[hudmode="help"] {
     top: 0px; display: none;}
-div#CODEXHEAD img.hudbutton[hudmode="allglosses"] {right: 60px;}
-div#CODEXHEAD img.hudbutton[hudmode="help"] {left: 60px;}
+#CODEXHEAD img.hudbutton[hudmode="allglosses"] {right: 60px;}
+#CODEXHEAD img.hudbutton[hudmode="help"] {left: 60px;}
 
-div#CODEXFOOT img.hudbutton[hudmode="searchresults"],
-div#CODEXFOOT img.hudbutton[alt="save gloss"] {
+#CODEXFOOT img.hudbutton[hudmode="searchresults"],
+#CODEXFOOT img.hudbutton[alt="save gloss"] {
     display: none; }
-body div#CODEXHUD.addgloss div#CODEXFOOT img.hudbutton {
+#CODEXHUD.addgloss #CODEXFOOT img.hudbutton {
     opacity: 0.8; -webkit-opacity: 0.8;
     -moz-opacity: 0.8; -o-opacity: 0.8;}
-body div#CODEXHUD.addgloss div#CODEXFOOT img.hudbutton[alt="save gloss"],
-body.cxSKIMMING div#CODEXHUD.searchresults
+#CODEXHUD.addgloss #CODEXFOOT img.hudbutton[alt="save gloss"],
+body.cxSKIMMING #CODEXHUD.searchresults
    img.hudbutton[hudmode="searchresults"] {
     display: inline-block; }
-body div#CODEXHUD.addgloss img.hudbutton[hudmode="allglosses"],
-body.cxSKIMMING div#CODEXHUD.searchresults
+#CODEXHUD.addgloss img.hudbutton[hudmode="allglosses"],
+body.cxSKIMMING #CODEXHUD.searchresults
   img.hudbutton[hudmode="allglosses"] {
     display: none; }
 
-body.hudup div#CODEXHUD img.hudbutton  {}
-body.cxMOUSE div#CODEXHUD img.hudbutton:hover,
-body div#CODEXHUD #CODEXFOOT.tapholding img.hudbutton,
-body div#CODEXHUD #CODEXHEAD.tapholding img.hudbutton {
+body.hudup #CODEXHUD img.hudbutton  {}
+body.cxMOUSE #CODEXHUD img.hudbutton:hover,
+#CODEXHUD #CODEXFOOT.tapholding img.hudbutton,
+#CODEXHUD #CODEXHEAD.tapholding img.hudbutton {
     opacity: 0.45;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
     filter: alpha(opacity=45);
@@ -534,33 +534,33 @@ body div#CODEXHUD #CODEXHEAD.tapholding img.hudbutton {
     -moz-opacity: 0.45;
     -o-opacity: 0.45;}
 
-div#CODEXHUD .topleft {top: 0px; left: 0px;}
-div#CODEXHUD .topright {top: 0px; right: 0px;}
-div#CODEXHUD .botleft {bottom: 0px; left: 0px;}
-div#CODEXHUD .botright {bottom: 0px; right: 0px;}
+#CODEXHUD .topleft {top: 0px; left: 0px;}
+#CODEXHUD .topright {top: 0px; right: 0px;}
+#CODEXHUD .botleft {bottom: 0px; left: 0px;}
+#CODEXHUD .botright {bottom: 0px; right: 0px;}
 
-div#CODEXHUD img.topleft {
+#CODEXHUD img.topleft {
     border-top-width: 0px; border-left-width: 0px;
     border-bottom-right-radius: 6px;
     -o-border-bottom-right-radius: 6px; 
     -webkit-border-bottom-right-radius: 6px; 
     -moz-border-radius-bottomright: 6px;
     -o-border-radius-bottomright: 6px;}
-div#CODEXHUD img.topright {
+#CODEXHUD img.topright {
     border-top-width: 0px; border-right-width: 0px;
     border-bottom-left-radius: 6px;
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;
     -o-border-radius-bottomleft: 6px;}
-div#CODEXHUD img.botleft {
+#CODEXHUD img.botleft {
     border-bottom-width: 0px; border-left-width: 0px;
     border-top-right-radius: 6px;
     -o-border-top-right-radius: 6px; 
     -webkit-border-top-right-radius: 6px; 
     -moz-border-radius-topright: 6px;
     -o-border-radius-topright: 6px;}
-div#CODEXHUD img.botright {
+#CODEXHUD img.botright {
     border-bottom-width: 0px; border-right-width: 0px;
     border-top-left-radius: 6px;
     -o-border-top-left-radius: 6px; 
@@ -571,12 +571,12 @@ div#CODEXHUD img.botright {
 img.closebutton, img.codexpagebutton, img.codexskimbutton, img.hudbutton {
     cursor: pointer; z-index: 500;}
 
-body div#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
-body div#CODEXHUD.statictoc #CODEXHEART .tabcontent#CODEXSTATICTOC,
-body div#CODEXHUD.login div#CODEXHEART .tabcontent#CODEXLOGIN {
+#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
+#CODEXHUD.statictoc #CODEXHEART .tabcontent#CODEXSTATICTOC,
+#CODEXHUD.login #CODEXHEART .tabcontent#CODEXLOGIN {
     display: block;}
 
-div#CODEXHUD.about div#CODEXHEART .tabcontent {
+#CODEXHUD.about #CODEXHEART .tabcontent {
     margin-top: 0px;}
 
 #CODEXSHOWCOVER {
@@ -605,16 +605,16 @@ div#CODEXHUD.about div#CODEXHEART .tabcontent {
     -khtml-opacity: 0.00;
     -moz-opacity: 0.00;
     -o-opacity: 0.00;}
-div#CODEXHEAD:hover #CODEXSHOWCOVER,
-div#CODEXHEAD.tapholding #CODEXSHOWCOVER,
-body.cxTOUCH div#CODEXHEAD.tapholding:hover #CODEXSHOWCOVER {
+#CODEXHEAD:hover #CODEXSHOWCOVER,
+#CODEXHEAD.tapholding #CODEXSHOWCOVER,
+body.cxTOUCH #CODEXHEAD.tapholding:hover #CODEXSHOWCOVER {
     opacity: 0.5;}
-body.cxTOUCH div#CODEXHEAD:hover #CODEXSHOWCOVER {opacity: 0;}
-body.hudup #CODEXSHOWCOVER, body.hudup div#CODEXHEAD:hover #CODEXSHOWCOVER {
+body.cxTOUCH #CODEXHEAD:hover #CODEXSHOWCOVER {opacity: 0;}
+body.hudup #CODEXSHOWCOVER, body.hudup #CODEXHEAD:hover #CODEXSHOWCOVER {
     opacity: 1.0;}
 body.cxPREVIEW #CODEXSHOWCOVER, 
 body.cxPREVIEW.hudup #CODEXSHOWCOVER,
-body.hudup div#CODEXHUD.openhead #CODEXSHOWCOVER {
+body.hudup #CODEXHUD.openhead #CODEXSHOWCOVER {
     opacity: 0;}
 #CODEXSHOWCOVER { pointer-events: none; }
 body.hudup #CODEXSHOWCOVER, #CODEXHEAD.tapholding #CODEXSHOWCOVER,
@@ -627,24 +627,24 @@ body.cxMOUSE #CODEXSHOWCOVER:hover {
 body.cxNOUSER a.logout {
     display: none !important;}
 
-div#CODEXHUD div#CODEXBUTTON.toc img[alt='toc'],
-div#CODEXHUD div#CODEXBUTTON.search img[alt='search'],
-div#CODEXHUD div#CODEXBUTTON.browse img[alt='search'],
-div#CODEXHUD div#CODEXBUTTON.scan img[alt='scan'],
-div#CODEXHUD div#CODEXBUTTON.addgloss img[alt='addgloss'],
-div#CODEXHUD div#CODEXBUTTON.allglosses img[alt='allglosses'],
-div#CODEXHUD div#CODEXBUTTON.help img[alt='help'],
-div#CODEXHUD div#CODEXBUTTON.about img[alt='about'],
-div#CODEXHUD div#CODEXBUTTON.login img[alt='login'],
-div#CODEXHUD div#CODEXBUTTON.statictoc img[alt='statictoc'],
-div#CODEXHUD div#CODEXBUTTON.skimming img[alt='skimming'],
-div#CODEXHUD div#CODEXBUTTON.device img[alt='device'] {
+#CODEXHUD #CODEXBUTTON.toc img[alt='toc'],
+#CODEXHUD #CODEXBUTTON.search img[alt='search'],
+#CODEXHUD #CODEXBUTTON.browse img[alt='search'],
+#CODEXHUD #CODEXBUTTON.scan img[alt='scan'],
+#CODEXHUD #CODEXBUTTON.addgloss img[alt='addgloss'],
+#CODEXHUD #CODEXBUTTON.allglosses img[alt='allglosses'],
+#CODEXHUD #CODEXBUTTON.help img[alt='help'],
+#CODEXHUD #CODEXBUTTON.about img[alt='about'],
+#CODEXHUD #CODEXBUTTON.login img[alt='login'],
+#CODEXHUD #CODEXBUTTON.statictoc img[alt='statictoc'],
+#CODEXHUD #CODEXBUTTON.skimming img[alt='skimming'],
+#CODEXHUD #CODEXBUTTON.device img[alt='device'] {
     display: block;}
 
 /* HUDUP rules */
 
-body.hudup div#CODEXHUD { }
-body.hudup div#CODEXHUD .hudbutton {
+body.hudup #CODEXHUD { }
+body.hudup #CODEXHUD .hudbutton {
     opacity: 0.6;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
     filter: alpha(opacity=60);
@@ -652,8 +652,8 @@ body.hudup div#CODEXHUD .hudbutton {
     -khtml-opacity: 0.60;
     -moz-opacity: 0.60;
     -o-opacity: 0.60;}
-body.hudup.cxMOUSE div#CODEXHUD img.hudbutton:hover,
-body.hudup.cxFULLHEIGHT div#CODEXHUD .hudbutton {
+body.hudup.cxMOUSE #CODEXHUD img.hudbutton:hover,
+body.hudup.cxFULLHEIGHT #CODEXHUD .hudbutton {
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -662,12 +662,12 @@ body.hudup.cxFULLHEIGHT div#CODEXHUD .hudbutton {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 
-body.hudup div#CODEXPAGE p, body.hudup div#CODEXPAGE div { cursor: pointer;}
+body.hudup #CODEXPAGE p, body.hudup #CODEXPAGE div { cursor: pointer;}
 
 /* CODEXPOINTGLOSSES rules */
 
-div#CODEXPOINTGLOSSES div.codexcard { margin-left: 0px;}
-div#CODEXHUD div#CODEXPOINTGLOSSES.hudpanel {
+#CODEXPOINTGLOSSES div.codexcard { margin-left: 0px;}
+#CODEXHUD #CODEXPOINTGLOSSES.hudpanel {
     top: 100px; left: auto; right: 100px;
     max-width: 40em; min-width: 20em; min-height: 20px; 
     background-color: rgb(255,255,240);
@@ -675,7 +675,7 @@ div#CODEXHUD div#CODEXPOINTGLOSSES.hudpanel {
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;
     position: absolute;}
-div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
+#CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -684,17 +684,17 @@ div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 
-div#CODEXHUD div#CODEXPOINTGLOSSES.hudpanel div.codexslice {
+#CODEXHUD #CODEXPOINTGLOSSES.hudpanel div.codexslice {
     overflow: hidden;}
-div#CODEXHUD div#CODEXPOINTGLOSSES.hudpanel {
+#CODEXHUD #CODEXPOINTGLOSSES.hudpanel {
     border: solid blue 2px;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;}
 
-div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
+#CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
     display: block;}
 
-body.hudup div#CODEXHUD.openglossmark div.hudpanel#CODEXPOINTGLOSSES {
+body.hudup #CODEXHUD.openglossmark div.hudpanel#CODEXPOINTGLOSSES {
     min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
@@ -702,14 +702,14 @@ body.hudup div#CODEXHUD.openglossmark div.hudpanel#CODEXPOINTGLOSSES {
     -o-box-shadow: 1em 1em 1em #cccccc;
     display: block;}
 
-body.cxTOUCH #CODEXFRAME > #CODEXHUD > div#CODEXPOINTGLOSSES {
+body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXPOINTGLOSSES {
     pointer-events: all;}
 
 /* The CODEXSKIMMER */
 
-body.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSKIMMER,
-body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSKIMMER,
-body.cxSKIMMING div#CODEXHUD div#CODEXSKIMMER {
+body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER,
+body.cxPREVIEW #CODEXHUD.searchresults #CODEXSKIMMER,
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
     display: block; overflow: hidden; border-color: steelblue;
     opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -719,87 +719,87 @@ body.cxSKIMMING div#CODEXHUD div#CODEXSKIMMER {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-div#CODEXHUD div#CODEXSKIMMER.expanded, body.hudup div#CODEXSKIMMER.expanded,
-div#CODEXTOP div#CODEXSKIMMER.expanded {
+#CODEXHUD #CODEXSKIMMER.expanded, body.hudup #CODEXSKIMMER.expanded,
+#CODEXTOP #CODEXSKIMMER.expanded {
     height: inherit; max-height: inherit; overflow: auto;}
 
-div#CODEXSKIMMER.expanded .ellipsis .elided { display: inline; }
-div#CODEXSKIMMER.expanded .ellipsis .elision,
-div#CODEXSKIMMER.expanded .ellipsis .delision {
+#CODEXSKIMMER.expanded .ellipsis .elided { display: inline; }
+#CODEXSKIMMER.expanded .ellipsis .elision,
+#CODEXSKIMMER.expanded .ellipsis .delision {
   display: none;}
 
 /* This is the twisty control */
-div#CODEXSKIMMER span.expander {
+#CODEXSKIMMER span.expander {
     position: absolute; left: 0px; top: 1.5em;}
-div#CODEXSKIMMER span.expander img { width: 40px; height: 40px;}
-div#CODEXSKIMMER span.expander img[alt='-'] { display: none;}
-div#CODEXSKIMMER.expanded span.expander img[alt='-'] { display: inline;}
-div#CODEXSKIMMER.expanded span.expander img[alt='+'] { display: none;}
+#CODEXSKIMMER span.expander img { width: 40px; height: 40px;}
+#CODEXSKIMMER span.expander img[alt='-'] { display: none;}
+#CODEXSKIMMER.expanded span.expander img[alt='-'] { display: inline;}
+#CODEXSKIMMER.expanded span.expander img[alt='+'] { display: none;}
 
-div#CODEXSKIMMER span.expander {display: none;}
+#CODEXSKIMMER span.expander {display: none;}
 
-div#CODEXSKIMMER .codexskiminfo {
+#CODEXSKIMMER .codexskiminfo {
     position: absolute; right: 2px; top: 1px; z-index: 100;
     font-size: 90%; color:  cyan;}
-div#CODEXSKIMMER #CODEXSKIMCONTROLS .expanded { display: none;}
-div#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .expanded {
+#CODEXSKIMMER #CODEXSKIMCONTROLS .expanded { display: none;}
+#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .expanded {
     display: inline;}
-div#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .collapsed {
+#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .collapsed {
     display: none;}
 
-div#CODEXSKIMMER div.tochead, div#CODEXPOINTGLOSSES div.tochead {
+#CODEXSKIMMER div.tochead, #CODEXPOINTGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
-div#CODEXPOINTGLOSSES div.tochead { display: none; }
+#CODEXPOINTGLOSSES div.tochead { display: none; }
 
-div#CODEXSKIMMER div.codexcard.gloss > div.tochead,
-div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody  {
+#CODEXSKIMMER div.codexcard.gloss > div.tochead,
+#CODEXSKIMMER div.codexcard.gloss div.codexcardbody  {
   margin-left: 50px; padding-left: 0px;}
-div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
-div#CODEXSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
+#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
+#CODEXSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
   position: absolute; top: 0px; left: 0px; margin-top: 0px;}
 
 
-body div#CODEXHUD.overtoc div#CODEXTOP {
+#CODEXHUD.overtoc #CODEXTOP {
     background-color: rgba(255,255,255,0.5);}
-body div#CODEXHUD div.hudpanel#CODEXTOC {
+#CODEXHUD div.hudpanel#CODEXTOC {
     background-color: rgba(255,255,255,0.5);
     z-index: 100; }
-body.hudup div#CODEXHUD.overtoc div.hudpanel#CODEXTOC { overflow: hidden; }
+body.hudup #CODEXHUD.overtoc div.hudpanel#CODEXTOC { overflow: hidden; }
 
-body.hudup div#CODEXHUD.help div.helphud { display: block;}
+body.hudup #CODEXHUD.help div.helphud { display: block;}
 
-div#CODEXHUD div.completions { line-height: 150%;}
-div#CODEXHUD div.completions .weak, div#CODEXHUD div.completions .words {
+#CODEXHUD .completions { line-height: 150%;}
+#CODEXHUD .completions .weak, #CODEXHUD .completions .words {
     line-height: 150%; font-size: 80%;}
-div#CODEXHUD div.completions .completion {
+#CODEXHUD .completions .completion {
     white-space: nowrap;}
-div#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
+#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
 
-div#CODEXHUD.refinesearch div.completions#CODEXSEARCHCLOUD { display: block;}
-div#CODEXHUD.refinesearch.emptysearch div.completions#CODEXSEARCHCLOUD {
+#CODEXHUD.refinesearch div.completions#CODEXSEARCHCLOUD { display: block;}
+#CODEXHUD.refinesearch.emptysearch div.completions#CODEXSEARCHCLOUD {
     display: none;}
-div#CODEXHUD.refinesearch div.completions#CODEXALLTAGS { display: none;}
-div#CODEXHUD.refinesearch.emptysearch div.completions#CODEXALLTAGS,
-div#CODEXHUD.expandsearch div.completions#CODEXALLTAGS {
+#CODEXHUD.refinesearch div.completions#CODEXALLTAGS { display: none;}
+#CODEXHUD.refinesearch.emptysearch div.completions#CODEXALLTAGS,
+#CODEXHUD.expandsearch div.completions#CODEXALLTAGS {
     display: block;}
 
-div#CODEXHUD.refinesearch div#CODEXSEARCH.norefiners
+#CODEXHUD.refinesearch #CODEXSEARCH.norefiners
    div.completions#CODEXSEARCHCLOUD { display: none;}
-div#CODEXHUD.refinesearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
-div#CODEXHUD.expandsearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
-div#CODEXHUD.searchresults div.codexslice#CODEXSEARCHRESULTS { display: block;}
-div#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
+#CODEXHUD.refinesearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
+#CODEXHUD.expandsearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
+#CODEXHUD.searchresults div.codexslice#CODEXSEARCHRESULTS { display: block;}
+#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
 
-div#CODEXHUD.addgloss.glossaddtag div#CODEXHEART #CODEXGLOSSCLOUD,
-div#CODEXHUD.addgloss.glosstagging div#CODEXHEART #CODEXGLOSSCLOUD {
+#CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXGLOSSCLOUD,
+#CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXGLOSSCLOUD {
     display: block;}
 
-div#CODEXPOINTGLOSSES div.codexthread { border-right-width: 0px;}
-div#SBOOKGLOSSES div.codexthread {
+#CODEXPOINTGLOSSES div.codexthread { border-right-width: 0px;}
+#SBOOKGLOSSES div.codexthread {
     border-left: none; margin-left: 0px;
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
 
-body.hudup div#CODEXHUD.addgloss .hudbutton {
+body.hudup #CODEXHUD.addgloss .hudbutton {
     opacity: 0.15;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
     filter: alpha(opacity=15);
@@ -808,71 +808,71 @@ body.hudup div#CODEXHUD.addgloss .hudbutton {
     -moz-opacity: 0.15;
     -o-opacity: 0.15;}
 
-div#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
-div#CODEXHUD.refinesearch .hudbutton[alt='search'],
-div#CODEXHUD.expandsearch .hudbutton[alt='search'],
-div#CODEXHUD.searchresults .hudbutton[alt='search'],
-div#CODEXHUD.overtoc .hudbutton[alt='toc'] {
+#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
+#CODEXHUD.refinesearch .hudbutton[alt='search'],
+#CODEXHUD.expandsearch .hudbutton[alt='search'],
+#CODEXHUD.searchresults .hudbutton[alt='search'],
+#CODEXHUD.overtoc .hudbutton[alt='toc'] {
     border-color: darkblue;
     /* background-color: #4682b4; */
     background-color: silver;}
 
 /* Skimmer rules */
 
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="beginning"],
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="prev"] {
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="beginning"],
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="end"], 
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="next"] {
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="end"], 
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="next"] {
     position: absolute; right: 0px; top: 8px;}
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="beginning"],
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="end"] {
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="beginning"],
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="end"] {
     display: none;}
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="beginning"],
-body.hudup div#CODEXHUD div#CODEXSKIMMER img[alt="end"] {
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="beginning"],
+body.hudup #CODEXHUD #CODEXSKIMMER img[alt="end"] {
     z-index: 100;}
-body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatend img[alt="next"] {display: none;}
-body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatend img[alt="end"] {display: block;}
-body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatstart img[alt="prev"] {display: none;}
-body.hudup div#CODEXHUD div#CODEXSKIMMER.sbookatstart img[alt="beginning"] {display: block;}
+body.hudup #CODEXHUD #CODEXSKIMMER.sbookatend img[alt="next"] {display: none;}
+body.hudup #CODEXHUD #CODEXSKIMMER.sbookatend img[alt="end"] {display: block;}
+body.hudup #CODEXHUD #CODEXSKIMMER.sbookatstart img[alt="prev"] {display: none;}
+body.hudup #CODEXHUD #CODEXSKIMMER.sbookatstart img[alt="beginning"] {display: block;}
 
-div#CODEXHUD div#CODEXSKIMMER.expanded .controller,
-div#CODEXHUD div#CODEXSKIMMER.expanded span.whenexpanded {
+#CODEXHUD #CODEXSKIMMER.expanded .controller,
+#CODEXHUD #CODEXSKIMMER.expanded span.whenexpanded {
     display: inline;}
-div#CODEXHUD div#CODEXSKIMMER.expanded .controller,
-div#CODEXHUD div#CODEXSKIMMER.expanded span.whencollapsed {
+#CODEXHUD #CODEXSKIMMER.expanded .controller,
+#CODEXHUD #CODEXSKIMMER.expanded span.whencollapsed {
     display: none;}
 
-div#CODEXSKIMMER div.codexcard {
+#CODEXSKIMMER div.codexcard {
     margin-left: 0px;}
-div#CODEXSKIMMER div.codexcard > div.tochead {
+#CODEXSKIMMER div.codexcard > div.tochead {
     margin-left: 0px; }
-div#CODEXSKIMMER div.codexcard > div.idhead {
+#CODEXSKIMMER div.codexcard > div.idhead {
     margin-left: 0px;}
 
-div#CODEXHUD div#CODEXSKIMMER div.idhead,
-div#CODEXHUD div#CODEXPOINTGLOSSES div.idhead {
+#CODEXHUD #CODEXSKIMMER div.idhead,
+#CODEXHUD #CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
-div#CODEXHUD div#CODEXSKIMMER #CODEXSKIM img.button { display: none;}
-div#CODEXHUD div#CODEXSKIMMER #CODEXSKIM .tool span.label { display: inline;}
-div#CODEXHUD div#CODEXSKIMMER.expanded #CODEXSKIM .tool span.label { display: none;}
-div#CODEXHUD div#CODEXSKIMMER.expanded #CODEXSKIM img.button {
+#CODEXHUD #CODEXSKIMMER #CODEXSKIM img.button { display: none;}
+#CODEXHUD #CODEXSKIMMER #CODEXSKIM .tool span.label { display: inline;}
+#CODEXHUD #CODEXSKIMMER.expanded #CODEXSKIM .tool span.label { display: none;}
+#CODEXHUD #CODEXSKIMMER.expanded #CODEXSKIM img.button {
     display: inline;}
 
-div#CODEXSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
+#CODEXSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
 
-body div#CODEXHUD div#CODEXSKIMMER.expanded img.glosspic,
-body div#CODEXHUD div.hudpanel#CODEXSKIMMER.expanded {
+#CODEXHUD #CODEXSKIMMER.expanded img.glosspic,
+#CODEXHUD div.hudpanel#CODEXSKIMMER.expanded {
     max-height: inherit; height: inherit;}
 
-#CODEXFRAME.cxANIMATE div#CODEXHUD div#CODEXSKIMMER {
+#CODEXFRAME.cxANIMATE #CODEXHUD #CODEXSKIMMER {
     transition-property: background-color;
     -o-transition-property: background-color;
     -moz-transition-property: background-color;
     -webkit-transition-property: background-color; 
     transition-duration: 0.5s; -o-transition-duration: 0.5s;
     -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;}
-div#CODEXHUD div#CODEXSKIMMER div.codexcard span.glossinfo span.isclickable {
+#CODEXHUD #CODEXSKIMMER div.codexcard span.glossinfo span.isclickable {
     display: none;}
 body img.codexskimbutton {
     width: 50px; height: 100px;
@@ -956,19 +956,19 @@ body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXNEXTSKIM,
 body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
     display: none;}
 
-div#CODEXHUD div#SBOOKABOUT {
+#CODEXHUD #SBOOKABOUT {
     display: block; max-width: 40em; margin-left: auto; margin-right: auto;}
-div#CODEXHUD div#SBOOKABOUT img { max-width: 25%;}
+#CODEXHUD #SBOOKABOUT img { max-width: 25%;}
 
-div#CODEXHUD div#SBOOKABOUT div.textblock {
+#CODEXHUD #SBOOKABOUT div.textblock {
     margin-bottom: 2ex; clear: both;}
 
-div#CODEXHUD div#SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
-div#CODEXHUD div#SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
+#CODEXHUD #SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
+#CODEXHUD #SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
 /* CODEXADDGLOSS rules */
 
-div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
+#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
     opacity: 0.95; margin-left: 0px; margin-right: 0px;
     border-color: silver; overflow: visible;
     background-color: transparent;
@@ -981,19 +981,19 @@ div#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
 
 /* SBOOKGLOSSES */
 
-div#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
-div#CODEXHUD div#CODEXSOURCES.hudpanel {
+#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
+#CODEXHUD #CODEXSOURCES.hudpanel {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;
     padding-top: 2px;}
 
 /* Buttons */
 
-div#CODEXHUD.about div#CODEXHEART .tabcontent {
+#CODEXHUD.about #CODEXHEART .tabcontent {
     margin-top: 0px;}
 
 /* The start page */
 
-div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
+#CODEXHUD #CODEXSTARTPAGE.hudpanel {
     position: absolute; text-align: left; padding: 1em;
     background-color: silver; color: black; opacity: 1.0;
     top: 75px; bottom: 75px; left: 75px; right: 75px; height: auto; width: auto;
@@ -1008,38 +1008,38 @@ div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;
     overflow: auto;}
-div#CODEXHUD div#CODEXSTARTPAGE.hudpanel > div {
+#CODEXHUD #CODEXSTARTPAGE.hudpanel > div {
     overflow: hidden; display: none;}
-div#CODEXHUD div#CODEXSTARTPAGE.hudpanel {
+#CODEXHUD #CODEXSTARTPAGE.hudpanel {
     border: solid blue 3px;
     border-radius: 1em; -webkit-border-radius: 1em;
     -moz-border-radius: 1em; -o-border-radius: 1em;}
-#CODEXFRAME.cxANIMATE div#CODEXHUD div#CODEXSTARTPAGE {
+#CODEXFRAME.cxANIMATE #CODEXHUD #CODEXSTARTPAGE {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
-div#CODEXHUD div#CODEXSTARTPAGE p.head {
+#CODEXHUD #CODEXSTARTPAGE p.head {
     font-weight: bold; text-align: center; margin-bottom: 0.40em;}
 
-div#CODEXHUD div#CODEXSTARTPAGE h2, div#CODEXHUD div#CODEXSTARTPAGE h3 {
+#CODEXHUD #CODEXSTARTPAGE h2, #CODEXHUD #CODEXSTARTPAGE h3 {
     text-align: center; margin: .25em;}
-div#CODEXHUD div#CODEXSTARTPAGE h2:first-child {
+#CODEXHUD #CODEXSTARTPAGE h2:first-child {
     margin-top: 0px; margin-bottom: 0px;}
-div#CODEXHUD div#CODEXSTARTPAGE .codexclicktohide {
+#CODEXHUD #CODEXSTARTPAGE .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
     text-align: center; color: red;}
-div#CODEXSTARTPAGE div.codexhelp p {
+#CODEXSTARTPAGE div.codexhelp p {
     text-align: left; margin-left: 32px; margin-right: 2em;
     text-indent: -32px;}
-div#CODEXSTARTPAGE div.codexhelp td p {
+#CODEXSTARTPAGE div.codexhelp td p {
     margin-left: 0px; text-indent: 0px;
     margin-top: 0px; margin-bottom: 0px;}
 
 
 /* The page layout message/progress indicator */
 
-body.cxLAYOUT.cxLAYOUTMESSAGE div#CODEXLAYOUTMESSAGE {
+body.cxLAYOUT.cxLAYOUTMESSAGE #CODEXLAYOUTMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -1061,8 +1061,8 @@ body.cxLAYOUT.cxLAYOUTMESSAGE div#CODEXLAYOUTMESSAGE {
 
 /* The cloud population message/progress indicator */
 
-body.cxINDEXING div#CODEXHUD.search div#CODEXINDEXMESSAGE,
-body.cxINDEXING div#CODEXHUD.searchresults div#CODEXINDEXMESSAGE {
+body.cxINDEXING #CODEXHUD.search #CODEXINDEXMESSAGE,
+body.cxINDEXING #CODEXHUD.searchresults #CODEXINDEXMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -1085,10 +1085,10 @@ body.cxINDEXING div#CODEXHUD.searchresults div#CODEXINDEXMESSAGE {
 
 /* Stuff at the top */
 
-div#CODEXLOGIN form {
+#CODEXLOGIN form {
     margin-left: auto; margin-right: auto;}
 
-div#CODEXHUD div.tabcontent img.closebutton {
+#CODEXHUD div.tabcontent img.closebutton {
     float: right; max-width: 12%; padding-right: 1ex;}
 
 form.sbooksapp {
@@ -1173,15 +1173,15 @@ body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {
 
 body.cxFULLHEIGHT #CODEXSHOWCOVER {
     padding: 0px; }
-body.cxFULLHEIGHT.hudup div#CODEXFOOT {
+body.cxFULLHEIGHT.hudup #CODEXFOOT {
     padding-top: 2px;
     border-radius: 0px;}
-body.cxFULLHEIGHT div#CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.cxFULLHEIGHT #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     left: auto; right: auto; width: 100%;}
 
-div#CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT {
+#CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT {
     bottom: 10px; }
-body.cxSKIMMING div#CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT {
+body.cxSKIMMING #CODEXHUD.openheart #CODEXFOOT #CODEXSHOWTEXT {
     bottom: 30px; }
 
 /* Emacs local variables

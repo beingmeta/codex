@@ -720,7 +720,7 @@ Codex.Paginate=
             var hscale=height/lheight, vscale=width/lwidth;
             var scale=((hscale<vscale)?(hscale):(vscale));
             if (!(cheaprule)) {
-                var s="div#CODEXPAGE div.codexpage";
+                var s="#CODEXPAGE div.codexpage";
                 Codex.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
                     s+", body.cxANIMATE.cxPREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transformOrigin]="left top";

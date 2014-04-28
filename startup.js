@@ -1452,7 +1452,7 @@ Codex.Startup=
 
             // Make the cover hidden by default
             Codex.CSS.hidecover=fdjtDOM.addCSSRule(
-                "div#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
+                "#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
             if (Codex.Trace.startup>1)
                 fdjtLog("Cover setup done in %dms",fdjtTime()-started);
             return cover;}
@@ -2201,19 +2201,19 @@ Codex.Startup=
             var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
             if (Codex.user.fbid)  
                 ss.insertRule(
-                    "div#CODEXHUD span.facebook_share { display: inline;}",
+                    "#CODEXHUD span.facebook_share { display: inline;}",
                     ss.cssRules.length);
             if (Codex.user.twitterid) 
                 ss.insertRule(
-                    "div#CODEXHUD span.twitter_share { display: inline;}",
+                    "#CODEXHUD span.twitter_share { display: inline;}",
                     ss.cssRules.length);
             if (Codex.user.linkedinid) 
                 ss.insertRule(
-                    "div#CODEXHUD span.linkedin_share { display: inline;}",
+                    "#CODEXHUD span.linkedin_share { display: inline;}",
                     ss.cssRules.length);
             if (Codex.user.googleid) 
                 ss.insertRule(
-                    "div#CODEXHUD span.google_share { display: inline;}",
+                    "#CODEXHUD span.google_share { display: inline;}",
                     ss.cssRules.length);
             var maker=fdjtDOM.getInput(form,"MAKER");
             if (maker) maker.value=Codex.user._id;

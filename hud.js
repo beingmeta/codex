@@ -553,12 +553,7 @@ Codex.setMode=
                 Codex.cxthelp=false;
                 if (display_sync) Codex.displaySync();
                 if (nohud) Codex.setHUD(false);
-                else if (CodexBodyModes.test(oldmode)) {
-                    setHUD(false);}
-                else setTimeout(function(){
-                    if (Codex.mode===oldmode) {
-                        setHUD(false);}},
-                                500);}}
+                else setHUD(false);}}
         
         function scrollSlices(mode){
             if (mode==="allglosses") {

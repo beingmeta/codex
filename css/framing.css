@@ -68,7 +68,8 @@ body {
     box-sizing: border-box;
     pointer-events: none;
     z-index: -50;}
-#CODEXFRAME > *, #CODEXFRAME > * > * { box-sizing: border-box;}
+#CODEXFRAME > div, #CODEXFRAME > div > div, #CODEXFRAME > div > a {
+    box-sizing: border-box;}
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
 body.cxSKIMMING #CODEXFRAME, body.openhud #CODEXFRAME,
 body.cxMEDIA #CODEXFRAME {
@@ -89,13 +90,13 @@ body.codexhelp #CODEXFRAME, body.cxMEDIA #CODEXFRAME {
     position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;
     width: 100%; height: 100%;
     pointer-events: none;}
-#CODEXFRAME > #CODEXHUD > * {
+#CODEXFRAME > #CODEXHUD > div {
     pointer-events: all;}
-body.cxTOUCH #CODEXFRAME > #CODEXHUD > * {
+body.cxTOUCH #CODEXFRAME > #CODEXHUD > div {
     pointer-events: none;}
-body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > *,
-body.cxTOUCH #CODEXFRAME > #CODEXHUD.addgloss > *,
-body.cxTOUCH.cxSKIMMING #CODEXFRAME > #CODEXHUD > div#CODEXSKIMMER {
+body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > div,
+body.cxTOUCH #CODEXFRAME > #CODEXHUD.addgloss > div,
+body.cxTOUCH.cxSKIMMING #CODEXFRAME > #CODEXHUD > #CODEXSKIMMER {
     pointer-events: all;}
 
 body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHEAD,
@@ -107,7 +108,7 @@ body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXFOOT {
    (coverpage, title, blurbs, etc) and also contains elements which
    aren't part of physical books: settings, layer management, and
    a small Codex tutorial. */
-div#CODEXCOVER {
+#CODEXCOVER {
     position: absolute; width: 100%; height: 100%;
     top: 0px; bottom: 0px; left: 0px; right: 0px;
     margin: 0px; border: 0px; padding: 0px;
@@ -121,10 +122,10 @@ body.cxCOVER #CODEXFRAME > #CODEXCOVER { pointer-events: all; }
 #CODEXFRAME.codexuifontnormal #CODEXCOVER { font-size: 1.5em; }
 #CODEXFRAME.codexuifontsmall #CODEXCOVER { font-size: 1em; }
 
-#CODEXFRAME.codexuifontlarge div#CODEXCOVER > div#CODEXCOVERCONTROLS {
+#CODEXFRAME.codexuifontlarge #CODEXCOVER > #CODEXCOVERCONTROLS {
     font-size: 0.8em; }
 
-body.cxCOVER div#CODEXCOVER {
+body.cxCOVER #CODEXCOVER {
     opacity: 1.0; z-index: 100; pointer-events: all;}
 body.cxCOVER #CODEXBODY {
     visibility: hidden; z-index: -50; pointer-events: none;}
@@ -156,17 +157,17 @@ body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
 
 /* CODEXBODY is where all of the content lives, whether broken into
    pages or not. */
-div#CODEXBODY {}
+#CODEXBODY {}
 
 /* CODEXCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region
    (whether scrolled or paged), so the width can be controlled by
-   putting constraints on div#CODEXCONTENT */
-div#CODEXCONTENT {}
+   putting constraints on #CODEXCONTENT */
+#CODEXCONTENT {}
 
 /* CODEXPAGE is the fixed position wrapper for paged layout.
    It's left and right styles are set based on the content width. */
-div#CODEXPAGE {
+#CODEXPAGE {
     position: absolute; overflow: visible;
     padding: 0px; margin: 0px;
     left: 50px; right: 50px;

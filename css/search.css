@@ -6,13 +6,13 @@
 
 /* The SEARCHBOX */
 
-div#CODEXHUD.emptysearch div.searchbox div.tags { display: none;}
+#CODEXHUD.emptysearch div.searchbox div.tags { display: none;}
 div.searchbox { text-align: center;}
 
 div.searchbox div.query {
     margin-left: 2em; text-align: left; margin-top: 2px;
     font-size: 16px;}
-div#CODEXHUD.emptysearch div.searchbox div.query #CODEXSEARCHLABEL {
+#CODEXHUD.emptysearch div.searchbox div.query #CODEXSEARCHLABEL {
     display: none;}
 
 div.searchbox div.query .codexclearsearch {
@@ -20,8 +20,8 @@ div.searchbox div.query .codexclearsearch {
 div.searchbox div.query .codexclearsearch {
     box-sizing: border-box;
     border: solid transparent 2px;
-    height: 2em; width: auto;
-    margin: 0.5ex; margin-top: 0px;}
+    width: 10%; height: auto;
+    padding: 0.5ex; padding-top: 0px;}
 div.searchbox div.query .codexclearsearch.tapholdtarget {
     border-color: blue;}
 
@@ -33,11 +33,8 @@ div.searchbox div.query input[type='TEXT'] {
     background-size: contain;
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon.svgz);}
-div.searchbox div.query img.coedexclearsearch {
-    height: 2em; width: auto;}
 
 @media (pointer: coarse) {
-    div.searchbox div.query img.codexclearsearch {height: 4em;}
     div.searchbox div.query div.input input[type='TEXT'] {font-size: 250%;}}
 @media (pointer: coarse) and (max-width: 640px) {
     div.searchbox div.query { margin-left: 1em; }}
@@ -57,7 +54,7 @@ div.searchbox div.tags img.codexclearsearch { float: right; color: red;}
 div.searchbox div.tags img.codexclearsearch { float: right; color: red;}
 
 div.searchbox div.input {
-    max-width: 90%; clear: none;}
+    box-sizing: border-box; width: 90%; clear: none;}
 div.searchbox div.input input[type='TEXT'] {
     width: 100%; font-size: 150%; min-height: 1.5em;
     padding-left: 0.5ex; padding-right: 2em;
@@ -68,35 +65,35 @@ div.resultinfo .noresults, div.resultinfo .noquery, div.resultinfo .stats {
 
 div.resultinfo .noresults { display: none;}
 div.resultinfo.noresults .noresults { display: block;}
-div#CODEXHUD.emptysearch .resultinfo.noresults .noresults {
+#CODEXHUD.emptysearch .resultinfo.noresults .noresults {
     display: none;}
 
 div.resultinfo .noquery { display: none;}
-div#CODEXHUD.emptysearch div.resultinfo .noquery { display: block;}
+#CODEXHUD.emptysearch div.resultinfo .noquery { display: block;}
 
 div.resultinfo.noresults span { display: none;}
-div#CODEXHUD.emptysearch div.resultinfo span { display: none;}
+#CODEXHUD.emptysearch div.resultinfo span { display: none;}
 
-div#CODEXHUD div.resultinfo {
+#CODEXHUD div.resultinfo {
     text-align: left; font-size: 120%;
     min-height: 1ex; max-height: 100%;
     margin-bottom: 1ex; padding-right: 1em;}
-div#CODEXHUD div.resultinfo span.resultcount,
-div#CODEXHUD div.resultinfo span.refinecount,
-div#CODEXHUD div.resultinfo span.showalltags {
+#CODEXHUD div.resultinfo span.resultcount,
+#CODEXHUD div.resultinfo span.refinecount,
+#CODEXHUD div.resultinfo span.showalltags {
     cursor: pointer; text-decoration: underline;}
-div#CODEXHUD.refinesearch div.resultinfo span.refinecount, 
-div#CODEXHUD.expandsearch div.resultinfo span.showalltags,
-div#CODEXHUD.searchresults div.resultinfo span.resultcount {
+#CODEXHUD.refinesearch div.resultinfo span.refinecount, 
+#CODEXHUD.expandsearch div.resultinfo span.showalltags,
+#CODEXHUD.searchresults div.resultinfo span.resultcount {
     font-weight: bold; text-decoration: none; cursor: default;}
 
-div#CODEXHUD div#CODEXSEARCHINFO {
+#CODEXHUD #CODEXSEARCHINFO {
     height: 100%; display: none;}
-div#CODEXHUD.refinesearch div#CODEXSEARCHINFO,
-div#CODEXHUD.expandsearch div#CODEXSEARCHINFO,
-div#CODEXHUD.searchresults div#CODEXSEARCHINFO {
+#CODEXHUD.refinesearch #CODEXSEARCHINFO,
+#CODEXHUD.expandsearch #CODEXSEARCHINFO,
+#CODEXHUD.searchresults #CODEXSEARCHINFO {
     display: block;}
-div#CODEXSEARCHINFO .qtags {
+#CODEXSEARCHINFO .qtags {
     box-sizing: border-box; height: 100%;
     padding-top: 7px; padding-right: 7px;
     margin-left: 10px; margin-bottom: 0px;

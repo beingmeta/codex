@@ -34,14 +34,14 @@
 /* Major wrappers and rules */
 
 body.cxFULLWIDTH #CODEXPAGE { max-width: inherit;}
-body.cxSCROLL div#CODEXPAGE, img.codexpagebutton { display: none;}
+body.cxSCROLL #CODEXPAGE, img.codexpagebutton { display: none;}
 
 body.cxBYPAGE { overflow: hidden; }
-body.cxBYPAGE div#CODEXCONTENT { display: none;}
-body.cxLAYOUT div#CODEXCONTENT { display: none;}
+body.cxBYPAGE #CODEXCONTENT { display: none;}
+body.cxLAYOUT #CODEXCONTENT { display: none;}
 
 /* The page content gets a little transparent when the HUD comes up*/
-body.cxANIMATE.hudup div#CODEXPAGE {
+body.cxANIMATE.hudup #CODEXPAGE {
     transition-property: opacity;
     -webkit-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -58,52 +58,52 @@ body.cxANIMATE.hudup div#CODEXPAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 /* When the page is shrunk, the border is visible */
-body.cxPREVIEW div#CODEXPAGE, body.cxSHRINK div#CODEXPAGE  {
+body.cxPREVIEW #CODEXPAGE, body.cxSHRINK #CODEXPAGE  {
     border-color: rgba(48, 60, 97, 0.54);}
 
 /* This is for page shrinking when appropriate */
-body.cxANIMATE div#CODEXPAGE {
+body.cxANIMATE #CODEXPAGE {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
     -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 0.25s; -webkit-transition-duration: 0.25s;
     -moz-duration: 0.25s; -o-transition-duration: 0.25s;}
-body.cxANIMATE div#CODEXPAGE {
+body.cxANIMATE #CODEXPAGE {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
-body.cxANIMATE.cxNOSHRINK div#CODEXPAGE {
+body.cxANIMATE.cxNOSHRINK #CODEXPAGE {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body.cxANIMATE.cxSHRINK div#CODEXPAGE,
-body.cxANIMATE.cxPREVIEW div#CODEXPAGE {
+body.cxANIMATE.cxSHRINK #CODEXPAGE,
+body.cxANIMATE.cxPREVIEW #CODEXPAGE {
     transform: scale(0.95,0.95); -webkit-transform:scale(0.95,0.95);
     -moz-transform: scale(0.95,0.95); -o-transform:scale(0.95,0.95);}
 
-body.cxANIMATE.cxNOSHRINK div#CODEXPAGE .codexpage {
+body.cxANIMATE.cxNOSHRINK #CODEXPAGE .codexpage {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body.cxANIMATE.cxSHRINK div#CODEXPAGE .codexpage,
-body.cxANIMATE.cxPREVIEW div#CODEXPAGE .codexpage {
+body.cxANIMATE.cxSHRINK #CODEXPAGE .codexpage,
+body.cxANIMATE.cxPREVIEW #CODEXPAGE .codexpage {
     transform: scale(0.98,0.98); -webkit-transform:scale(0.98,0.98);
     -moz-transform: scale(0.98,0.98); -o-transform:scale(0.98,0.98);}
 
-div#CODEXPAGERIGHT {
+#CODEXPAGERIGHT {
     position: absolute; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
     width: 50px; right: 0px;
     top: 60px; bottom: 60px;}
-div#CODEXPAGELEFT {
+#CODEXPAGELEFT {
     position: absolute; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
     width: 50px; left: 0px;
     top: 60px; bottom: 60px;}
-div#CODEXPAGE div#CODEXPAGES {
+#CODEXPAGE #CODEXPAGES {
     position: absolute;
     top: 0px; bottom:0px; left: 0px; right: 0px;
     padding: 0px; margin: 0px; border: 0px;
     overflow: visible;}
-div#CODEXPAGE div#CODEXPAGE.codexpaginating div#CODEXPAGES {
+#CODEXPAGE #CODEXPAGE.codexpaginating #CODEXPAGES {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -116,19 +116,19 @@ body.cxBYPAGE {
     margin-top: 0px; margin-bottom: 0px;
     margin-left: 0px; margin-right: 0px;}
 
-body.cxSCROLL div#CODEXCONTENT {
+body.cxSCROLL #CODEXCONTENT {
     padding-left: 3em; padding-right: 3em;}
 
-div#CODEXCONTENT > * {
+#CODEXCONTENT > * {
     max-width: inherit;}
 
-div#CODEXCONTENT, div#CODEXCONTENT p, div#CODEXCONTENT div {
+#CODEXCONTENT, #CODEXCONTENT p, #CODEXCONTENT div {
     user-select: auto;
     -o-user-select: auto;
     -moz-user-select: auto;
     -webkit-user-select: auto;}
 
-body.cxSTARTUP div#CODEXCONTENT {
+body.cxSTARTUP #CODEXCONTENT {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -137,14 +137,14 @@ body.cxSTARTUP div#CODEXCONTENT {
     -moz-opacity: 0.35;
     -o-opacity: 0.35;}
 
-div#CODEXPAGE div#CODEXPAGES div#CODEXCONTENT {
+#CODEXPAGE #CODEXPAGES #CODEXCONTENT {
     text-align: left;
     padding: 0px; margin: 0px; border: 0px;
     /* This should make space for glossmarks and buttons */
     padding-left: 32px; padding-right: 32px;
     margin-right: 0px;}
 
-body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
+body.cxBYPAGE #CODEXPAGE #CODEXCONTENT .codexpagebreak {
     column-break-before: always;
     break-before: always;
     -o-column-break-before: always;
@@ -160,7 +160,7 @@ body.cxBYPAGE div#CODEXPAGE div#CODEXCONTENT .codexpagebreak {
     top: 60px; left: 60px; right: 60px;
     display: none;}
 
-div#CODEXPAGINATING {
+#CODEXPAGINATING {
     position: absolute;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     font-size: 200%; font-weight: bold;
@@ -207,7 +207,7 @@ span.note.ellipsis span.elision, span.note.ellipsis span.delision {
 
 /* Define some rules inside of the HUD */
 
-div#CODEXFRAME table tr {
+#CODEXFRAME table tr {
     /* Some documents may define style rules for TR which we want to override */
     background-color: transparent;
     border: 0px transparent;}
@@ -244,8 +244,8 @@ body.cxANIMATE .fdjtselectwrap > span {
 /* "Leading" to fill out the top and bottom */
 
 div.leading { height: 50px; width: 100%;}
-div#SBOOKTOPLEADING { height: 50px; width: 100%;}
-div#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
+#SBOOKTOPLEADING { height: 50px; width: 100%;}
+#SBOOKBOTTOMLEADING { height: 50px; width: 100%;}
 
 /* Margins */
 
@@ -265,7 +265,7 @@ body div.codexmargin#CODEXPAGEHEAD { top: 0px; }
 body div.codexmargin#CODEXPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 body.cxSCROLL #CODEXPAGEFOOT, body.cxSCROLL #CODEXPAGEHEAD { display: none;}
 
-div#CODEXPAGES.pageswitch {
+#CODEXPAGES.pageswitch {
     opacity: 0.0001;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -332,13 +332,13 @@ div.locbar hr {
 #CODEXPAGE .codexglossmark {margin-right: -50px;}
 body.cxNARROW div.fdjtselecting .codexglossmark {
     width: 10px; z-index: -20; }
-div.fdjtselecting .codexglossmark > * {
+div.fdjtselecting .codexglossmark > img {
     visibility: hidden;}
-div.fdjtselecting .codexglossmark:hover > * {
+div.fdjtselecting .codexglossmark:hover > img {
     visibility: visible;}
 /* #CODEXCONTENT .codexglossmark { right: 5px;} */
 
-body .codexglossmark > * {
+body .codexglossmark > img {
     opacity: 0.01;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
     filter: alpha(opacity=01);
@@ -347,7 +347,7 @@ body .codexglossmark > * {
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
 
-body .codexglossmark:hover > *, body .codexglossmark.hover > * {
+body .codexglossmark:hover > img, body .codexglossmark.hover > img {
     opacity: 0.50;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
@@ -356,9 +356,9 @@ body .codexglossmark:hover > *, body .codexglossmark.hover > * {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
-body .codexglossmark#CODEXOPENGLOSSMARK > *,
-body .codexglossmark#CODEXOPENGLOSSMARK:hover > *,
-body .codexglossmark#CODEXOPENGLOSSMARK.hover > * {
+body .codexglossmark#CODEXOPENGLOSSMARK > img,
+body .codexglossmark#CODEXOPENGLOSSMARK:hover > img,
+body .codexglossmark#CODEXOPENGLOSSMARK.hover > img {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -435,7 +435,7 @@ body.codextarget { color: inherit;}
 
 /* body.cxSKIMMING .codextarget {outline: dotted steelblue 2px;} */
 
-body.cxANIMATE .codexglossmark > * {
+body.cxANIMATE .codexglossmark > img {
     transition-property: opacity;
     transition-duration: 0.5s;
     -o-transition-property: opacity;
@@ -445,8 +445,8 @@ body.cxANIMATE .codexglossmark > * {
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.5s;}
 
-body.hudup .codextarget .codexglossmark:hover > *,
-body.hudup .codextarget .codexglossmark.hover > * {
+body.hudup .codextarget .codexglossmark:hover > img,
+body.hudup .codextarget .codexglossmark.hover > img {
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -459,7 +459,7 @@ body.hudup .codextarget .codexglossmark.hover > * {
 
 body.cxNOUSER a.logout {display: none;}
 body.cxNOUSER #SBOOKLOGOUT { display: none;}
-body.cxNOUSER div#CODEXHUD div.hud#CODEXSOURCES img.button.login {
+body.cxNOUSER #CODEXHUD div.hud#CODEXSOURCES img.button.login {
   display: block;}
 
 .cxwithuser, .cxdisconn, .cxwithconn, .cxneedlogin { display: none;}
@@ -652,15 +652,15 @@ details > summary , .html5details > summary {
 
 /* Block elements */
 
-#CODEXBODY div#SBOOKDETAILS,
-#CODEXBODY div#SBOOKASIDES,
-#CODEXBODY div#SBOOKNOTES {
+#CODEXBODY #SBOOKDETAILS,
+#CODEXBODY #SBOOKASIDES,
+#CODEXBODY #SBOOKNOTES {
     page-break-before: always;}
 
-#CODEXBODY div#SBOOKDETAILS detail,
-#CODEXBODY div#SBOOKDETAILS .sbookdetail,
-#CODEXBODY div#SBOOKDETAILS aside,
-#CODEXBODY div#SBOOKDETAILS .sbookaside {
+#CODEXBODY #SBOOKDETAILS detail,
+#CODEXBODY #SBOOKDETAILS .sbookdetail,
+#CODEXBODY #SBOOKDETAILS aside,
+#CODEXBODY #SBOOKDETAILS .sbookaside {
     page-break-before: always;}
 
 div.codexglossform form table {
@@ -700,7 +700,7 @@ body.cxANIMATE.cxPREVIEW div.codexpage {
     -moz-transition-property: none !important;
     -webkit-transition-property: none !important;}
 
-body.cxANIMATE div#CODEXPAGE div.codexpage {
+body.cxANIMATE #CODEXPAGE div.codexpage {
     transition-duration: 0.15s;
     -o-transition-duration: 0.15s;
     -moz-transition-duration: 0.15s;
@@ -779,7 +779,7 @@ body #CODEXBODY #CODEXPAGE .codexpage .codexdupend {
     border-top-width: 0px;
     margin-top: 0px;}
 
-div#CODEXPAGE.codexpaginating div.codexpage { visibility: hidden;}
+#CODEXPAGE.codexpaginating div.codexpage { visibility: hidden;}
 
 img.codexcoverpage {
     display: block;
@@ -819,7 +819,7 @@ section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
 
 /* Startup messages */
 
-div#CODEXSTARTUPMESSAGES {
+#CODEXSTARTUPMESSAGES {
     position: absolute; z-index: -50;
     top: 0px; left: 100px; right: 100px; height: 50px;
     opacity: 0.0;
@@ -830,7 +830,7 @@ div#CODEXSTARTUPMESSAGES {
     -moz-opacity: 0;
     -o-opacity: 0;
     display: none;}
-body.cxANIMATE div#CODEXSTARTUPMESSAGES {
+body.cxANIMATE #CODEXSTARTUPMESSAGES {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
@@ -838,7 +838,7 @@ body.cxANIMATE div#CODEXSTARTUPMESSAGES {
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
     -moz-transition-duration: 1s;}
-body.cxSTARTUP div#CODEXSTARTUPMESSAGES { display: block;}
+body.cxSTARTUP #CODEXSTARTUPMESSAGES { display: block;}
 div.startupmessage { display: none;}
 div.startupmessage {
     text-align: center; font-size: 20px; font-weight: bold;
@@ -884,16 +884,16 @@ div.fdjtdialog .closebutton {
 /* Media rules */
 
 @media screen and (min-width: 500px) and (max-width: 700px) {
-    div#CODEXPAGE {left: 25px; right: 25px;}}
+    #CODEXPAGE {left: 25px; right: 25px;}}
 @media screen and (min-width: 350px) and (max-width: 500px) {
-    div#CODEXPAGE {left: 10px; right: 10px;}}
+    #CODEXPAGE {left: 10px; right: 10px;}}
 @media screen and (max-width: 300px) {
-    div#CODEXPAGE {left: 5px; right: 5px;}}
+    #CODEXPAGE {left: 5px; right: 5px;}}
 
 @media screen and (min-height: 300px) and (max-height: 500px) {
-    div#CODEXPAGE {top: 10px; bottom: 20px;}}
+    #CODEXPAGE {top: 10px; bottom: 20px;}}
 @media screen and (max-height: 300px) {
-    div#CODEXPAGE {top: 5px; bottom: 15px;}}
+    #CODEXPAGE {top: 5px; bottom: 15px;}}
 
 /* Emacs local variables
 ;;;  Local variables: ***

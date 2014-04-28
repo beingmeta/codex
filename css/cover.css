@@ -31,33 +31,33 @@
 
 @charset "UTF-8";
 
-div#CODEXCOVER {}
+#CODEXCOVER {}
 
-body.cxSTARTUP div#CODEXCOVER, body.cxWORKING div#CODEXCOVER,
-body.cxLAYOUT div#CODEXCOVER {
+body.cxSTARTUP #CODEXCOVER, body.cxWORKING #CODEXCOVER,
+body.cxLAYOUT #CODEXCOVER {
     pointer: progress;}
 
 body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 #CODEXHUD.openglossmark, body.codexhelp #CODEXHUD {
     z-index: 100; }
 
-div#CODEXCOVER > div {
+#CODEXCOVER > div {
     position: absolute;
     top: 75px; left: 50px; right: 50px;
     bottom: 100px; height: auto; width: auto;
     border: solid black 3px; /* border-radius: 1em; */
     opacity: 0.0; overflow: auto; z-index: -50;
     display: none;}
-#CODEXFRAME.cxANIMATE div#CODEXCOVER > div {
+#CODEXFRAME.cxANIMATE #CODEXCOVER > div {
     transition-property: opacity; transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;}
 
-div#CODEXCOVER > div > div.fdjtadjusted {
+#CODEXCOVER > div > div.fdjtadjusted {
     height: 100%; width: 100%;}
 
-div#CODEXCOVER >  div#CODEXCOVERMESSAGE {
+#CODEXCOVER >  #CODEXCOVERMESSAGE {
     position: absolute; white-space: nowrap;
     font-size: 1.5em; font-style: italic; opacity: 1.0;
     font-family: Arial,Verdana,Helvetica,sans-serif;
@@ -69,7 +69,7 @@ div#CODEXCOVER >  div#CODEXCOVERMESSAGE {
     display: block;
     z-index: 50;}
 
-div#CODEXCOVER > div#CODEXCOVERCONTROLS {
+#CODEXCOVER > #CODEXCOVERCONTROLS {
     box-sizing: border-box; -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box; 
     position: absolute;
@@ -78,82 +78,82 @@ div#CODEXCOVER > div#CODEXCOVERCONTROLS {
     padding-left: 1ex; padding-right: 1ex;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     opacity: 1; display: block;}
-div#CODEXCOVERCONTROLS > .username {
+#CODEXCOVERCONTROLS > .username {
     float: left; vertical-align: top;}
-div#CODEXCOVERCONTROLS > .control > img {
+#CODEXCOVERCONTROLS > .control > img {
     width: 90%; height: auto; clear: both;}
 
-div#CODEXCOVERCONTROLS > span.control {
+#CODEXCOVERCONTROLS > span.control {
     font-size: 1.8em; color: silver; white-space: nowrap;
     padding-left: 0.5ex; padding-right: 0.5ex; padding-bottom: 0.5ex;
     cursor: pointer;}
 @media (max-width: 650px) {
-    div#CODEXCOVERCONTROLS > span.control { font-size: 1.5em;}}
+    #CODEXCOVERCONTROLS > span.control { font-size: 1.5em;}}
 
-div#CODEXCOVERCONTROLS > span.control:hover {
+#CODEXCOVERCONTROLS > span.control:hover {
     text-decoration: underline;}
 
-#CODEXFRAME.cxANIMATE div#CODEXCOVER div.loginbox,
-#CODEXFRAME.cxANIMATE div#CODEXCOVER div.userbox { 
+#CODEXFRAME.cxANIMATE #CODEXCOVER div.loginbox,
+#CODEXFRAME.cxANIMATE #CODEXCOVER div.userbox { 
     transition-property: height; transition-duration: 2s;
     -webkit-transition-property: height; -webkit-transition-duration: 2s;
     -moz-transition-property: height; -moz-transition-duration: 2s;
     -o-transition-property: height; -o-transition-duration: 2s;}
-div#CODEXCOVER div.loginbox, div#CODEXCOVER div.userbox {
+#CODEXCOVER div.loginbox, #CODEXCOVER div.userbox {
     position: absolute; left: 0px; right: 0px; bottom: 0px; top: auto;
     z-index: 50; font-size: 1.5em; color: gold;
     opacity: 1.0;}
-div#CODEXCOVER #CODEXCOVERCONTROLS div.userbox,
-div#CODEXCOVER #CODEXCOVERCONTROLS div.loginbox {
+#CODEXCOVER #CODEXCOVERCONTROLS div.userbox,
+#CODEXCOVER #CODEXCOVERCONTROLS div.loginbox {
     bottom: -40px;}
 
-body.cxNOUSER div#CODEXCOVER div.loginbox,
-body.cxUSER div#CODEXCOVER div.userbox {
+body.cxNOUSER #CODEXCOVER div.loginbox,
+body.cxUSER #CODEXCOVER div.userbox {
     display: block; vertical-align: top; color: gold;}
 
-div#CODEXCOVER div.loginbox {
+#CODEXCOVER div.loginbox {
     margin: 0px; padding: 0px;
     height: 0px; overflow: hidden;}
-div#CODEXCOVER div.loginbox button { padding: 1px;}
-div#CODEXCOVER div.loginbox button > img { height: 1.5em; width: auto;}
+#CODEXCOVER div.loginbox button { padding: 1px;}
+#CODEXCOVER div.loginbox button > img { height: 1.5em; width: auto;}
 div.loginbox form > button, div.loginbox form > input[TYPE="TEXT"],
 div.loginbox form > span {
     vertical-align: top;}
 
-div#CODEXCOVER > div.userbox {
+#CODEXCOVER > div.userbox {
     background-color: black; color: gold;
     text-align: center;
     font-size: 1.5em;}
-div#CODEXCOVER div.userbox a, div#CODEXCOVER div.userbox a:visited {
+#CODEXCOVER div.userbox a, #CODEXCOVER div.userbox a:visited {
     color: silver;}
-div#CODEXCOVER div.userbox span.sbooks em { color: silver;}
-div#CODEXCOVER div.userbox a.sbooks em { color: steelblue;}
-body.cxUSER div#CODEXCOVER div.userbox {
+#CODEXCOVER div.userbox span.sbooks em { color: silver;}
+#CODEXCOVER div.userbox a.sbooks em { color: steelblue;}
+body.cxUSER #CODEXCOVER div.userbox {
     height: 40px;}
 
-div#CODEXCOVER.bookcover > div#CODEXBOOKCOVER,
-div#CODEXCOVER.bookcover > div#CODEXBOOKCOVERHOLDER,
-div#CODEXCOVER.titlepage > div#CODEXTITLEPAGE,
-div#CODEXCOVER.titlepage > div#CODEXTITLEPAGEHOLDER,
-div#CODEXCOVER.bookcredits > div#CODEXBOOKCREDITS,
-div#CODEXCOVER.bookcredits > div#CODEXBOOKCREDITSHOLDER,
-div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOK,
-div#CODEXCOVER.aboutbook > div#CODEXABOUTBOOKHOLDER,
-div#CODEXCOVER.help > div#CODEXAPPHELP,
-div#CODEXCOVER.aboutsbooks > div#CODEXABOUTSBOOKS,
-div#CODEXCOVER.console > div#CODEXCONSOLE,
-div#CODEXCOVER.settings > div#CODEXSETTINGS, 
-div#CODEXCOVER.layers > div#CODEXLAYERS {
+#CODEXCOVER.bookcover > #CODEXBOOKCOVER,
+#CODEXCOVER.bookcover > #CODEXBOOKCOVERHOLDER,
+#CODEXCOVER.titlepage > #CODEXTITLEPAGE,
+#CODEXCOVER.titlepage > #CODEXTITLEPAGEHOLDER,
+#CODEXCOVER.bookcredits > #CODEXBOOKCREDITS,
+#CODEXCOVER.bookcredits > #CODEXBOOKCREDITSHOLDER,
+#CODEXCOVER.aboutbook > #CODEXABOUTBOOK,
+#CODEXCOVER.aboutbook > #CODEXABOUTBOOKHOLDER,
+#CODEXCOVER.help > #CODEXAPPHELP,
+#CODEXCOVER.aboutsbooks > #CODEXABOUTSBOOKS,
+#CODEXCOVER.console > #CODEXCONSOLE,
+#CODEXCOVER.settings > #CODEXSETTINGS, 
+#CODEXCOVER.layers > #CODEXLAYERS {
     opacity: 1.0; z-index: 20; display: block;}
 
-div#CODEXCOVER.bookcover .control[data-mode='bookcover'],
-div#CODEXCOVER.titlepage .control[data-mode='titlepage'],
-div#CODEXCOVER.layers .control[data-mode='layers'],
-div#CODEXCOVER.aboutbook .control[data-mode='aboutbook'],
-div#CODEXCOVER.settings .control[data-mode='settings'],
-div#CODEXCOVER.help .control[data-mode='help'],
-div#CODEXCOVER.console .control[data-mode='console'],
-div#CODEXCOVER.login .control[data-mode='login'] {
+#CODEXCOVER.bookcover .control[data-mode='bookcover'],
+#CODEXCOVER.titlepage .control[data-mode='titlepage'],
+#CODEXCOVER.layers .control[data-mode='layers'],
+#CODEXCOVER.aboutbook .control[data-mode='aboutbook'],
+#CODEXCOVER.settings .control[data-mode='settings'],
+#CODEXCOVER.help .control[data-mode='help'],
+#CODEXCOVER.console .control[data-mode='console'],
+#CODEXCOVER.login .control[data-mode='login'] {
     outline-color: transparent;
     color: gold;}
 
@@ -168,55 +168,55 @@ body.cxUSER span.control[data-mode='layers'] .notloggedin {
     display: none;}
 body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
 
-div#CODEXCOVERCONTROLS.nobookcover .control[data-mode='bookcover'] {
+#CODEXCOVERCONTROLS.nobookcover .control[data-mode='bookcover'] {
     display: none;}
 
-div#CODEXCOVERCONTROLS.havecreditspage .control[data-mode='creditspage'] {
+#CODEXCOVERCONTROLS.havecreditspage .control[data-mode='creditspage'] {
     display: inline;}
 
-div#CODEXTITLEPAGE, div#CODEXABOUTBOOK, div#CODEXBOOKCREDITS,
-div#CODEXABOUTSBOOKS, div#CODEXAPPHELP {
+#CODEXTITLEPAGE, #CODEXABOUTBOOK, #CODEXBOOKCREDITS,
+#CODEXABOUTSBOOKS, #CODEXAPPHELP {
     padding-top: 1ex; padding-bottom: 1ex;
     margin-left: auto; margin-right: auto;
     background-color: ivory;}
-div#CODEXABOUTBOOK, div#CODEXAPPHELP, div#CODEXABOUTSBOOKS,
-div#CODEXBOOKCREDITS {
+#CODEXABOUTBOOK, #CODEXAPPHELP, #CODEXABOUTSBOOKS,
+#CODEXBOOKCREDITS {
     padding-left: 2em; padding-right: 2em; text-align: left;
     -webkit-overflow-scrolling: touch;
     overflow: auto;}
 
 /* The sBooks app for managing layers */
 
-div#CODEXCOVER > div#CODEXLAYERS iframe#SBOOKSAPP {
+#CODEXCOVER > #CODEXLAYERS iframe#SBOOKSAPP {
     height: 100%; width: 100%; margin: 0px; padding: 0px;
     background-color: ivory;}
 
 /* The book cover */
 
-div#CODEXBOOKCOVER img {
+#CODEXBOOKCOVER img {
     max-width: 95%; max-height: 95%;
     width: auto; height: auto;}
 
 /* Help */
 
-div#CODEXAPPHELP {
+#CODEXAPPHELP {
     background-color: ivory;
     padding-left: 2em; padding-right: 2em;}
-div#CODEXAPPHELP table, div#CODEXAPPHELP p {
+#CODEXAPPHELP table, #CODEXAPPHELP p {
     margin-left: auto; margin-right: auto;
     max-width: 40em;}
 
-div#CODEXABOUTBOOK, div#ABOUTSBOOKS {
+#CODEXABOUTBOOK, #ABOUTSBOOKS {
     background-color: ivory; }
-div#CODEXCONSOLE, div#CODEXSETTINGS {
+#CODEXCONSOLE, #CODEXSETTINGS {
     overflow: auto; background-color: ivory;}
 
 body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
 /* Title page */
 
-div#CODEXTITLEPAGE { display: none; }
-div#CODEXCOVER div#CODEXTITLEPAGE {
+#CODEXTITLEPAGE { display: none; }
+#CODEXCOVER #CODEXTITLEPAGE {
   display: block; padding: 2em; padding-top: 1ex;
   font-size: 2em;}
 
@@ -257,50 +257,50 @@ div#CODEXCOVER div#CODEXTITLEPAGE {
 
 /* Settings */
 
-div#CODEXSETTINGS { padding: 1em; }
+#CODEXSETTINGS { padding: 1em; }
 
-div#CODEXSETTINGS h1 { margin-top: 0px; text-align: left;}
-div#CODEXSETTINGS h1 a.logout {
+#CODEXSETTINGS h1 { margin-top: 0px; text-align: left;}
+#CODEXSETTINGS h1 a.logout {
     float: right; color: red; text-decoration: none;
     font-size: 60%; font-variant: small-caps;}
-div#CODEXSETTINGS h1 a.logout:visited {color: red;}
-div#CODEXSETTINGS table.settings td span#CODEXSETTINGSMESSAGE {
+#CODEXSETTINGS h1 a.logout:visited {color: red;}
+#CODEXSETTINGS table.settings td span#CODEXSETTINGSMESSAGE {
     float: right; color: red; font-size: 40%;}
-body.cxNOUSER div#CODEXSETTINGS h1 a.logout {display:none;}
+body.cxNOUSER #CODEXSETTINGS h1 a.logout {display:none;}
 
-div#CODEXSETTINGS div.setting {
+#CODEXSETTINGS div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
-div#CODEXSETTINGS div.setting span.checkspan {
+#CODEXSETTINGS div.setting span.checkspan {
      font-size: 125%; color: orange;}
-div#CODEXSETTINGS div.setting span.checkspan input[type='CHECKBOX'] {
+#CODEXSETTINGS div.setting span.checkspan input[type='CHECKBOX'] {
       width: 16px; height: 16px; color: orange; background-color: orange;
       vertical-align: bottom;}
-div#CODEXSETTINGS div.setting div.explanation { 
+#CODEXSETTINGS div.setting div.explanation { 
       font-style: italic; clear: both; margin-left: 3em;}
-div#CODEXSETTINGS table.settings {
+#CODEXSETTINGS table.settings {
     width: 98%; margin-left: auto; margin-right: auto; vertical-align: top;}
-div#CODEXSETTINGS table.settings .codexhighlightsetting {
+#CODEXSETTINGS table.settings .codexhighlightsetting {
     font-size: 120%; background-color: yellow;}
-div#CODEXSETTINGS table.settings tbody { margin-bottom: 1ex;}
-div#CODEXSETTINGS table.settings th {
+#CODEXSETTINGS table.settings tbody { margin-bottom: 1ex;}
+#CODEXSETTINGS table.settings th {
     text-align: right; vertical-align: top;
     white-space: nowrap;}
-div#CODEXSETTINGS table.settings td {
+#CODEXSETTINGS table.settings td {
     text-align: left; vertical-align: top; padding-left: 12px;}
-div#CODEXSETTINGS table.settings td button { float: right; margin-bottom: 3px;}
-div#CODEXSETTINGS table.settings td input[type='TEXT'] {
+#CODEXSETTINGS table.settings td button { float: right; margin-bottom: 3px;}
+#CODEXSETTINGS table.settings td input[type='TEXT'] {
     width: 100%;}
-div#CODEXSETTINGS table.settings tr.buttons td {
+#CODEXSETTINGS table.settings tr.buttons td {
     text-align: right;}
-div#CODEXSETTINGS table.settings th.buttons button {
+#CODEXSETTINGS table.settings th.buttons button {
     min-width: 6em; text-align: left;}
-div#CODEXSETTINGS table.settings th.buttons button img {
+#CODEXSETTINGS table.settings th.buttons button img {
     height: 1em; width: auto;}
 
 table.settings .checkspan.ischecked {
     font-weight: normal; color: rgb(0,61,111); font-size: 100%;}
 
-div#CODEXSETTINGS table.settings .smallbutton {
+#CODEXSETTINGS table.settings .smallbutton {
     cursor: pointer;
     margin-left: 4px; margin-right: 4px; padding: 3px;
     background-color: gold; color: darkblue;
@@ -310,7 +310,7 @@ div#CODEXSETTINGS table.settings .smallbutton {
     -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;}
 
-div#CODEXSETTINGS .button {
+#CODEXSETTINGS .button {
     font-size: 125%; cursor: pointer;
     font-family: verdana,helvetica,sans,sans-serif; font-weight: bold;
     color: white; background-color: silver;
@@ -319,21 +319,21 @@ div#CODEXSETTINGS .button {
     -o-border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;}
-div#CODEXSETTINGS h1 .button, div#CODEXSETTINGS h1 .message {
+#CODEXSETTINGS h1 .button, #CODEXSETTINGS h1 .message {
     font-size: 50%; float: right;}
 @media (pointer: coarse) {
-    div#CODEXSETTINGS h1 .button { font-size: 80%;}
-    div#CODEXSETTINGS .button, div#CODEXSETTINGS button { font-size: 120%;}}
-div#CODEXSETTINGS .button.exit {
+    #CODEXSETTINGS h1 .button { font-size: 80%;}
+    #CODEXSETTINGS .button, #CODEXSETTINGS button { font-size: 120%;}}
+#CODEXSETTINGS .button.exit {
     color: red; background-color: white;}
-div#CODEXSETTINGS h1 #CODEXSETTINGSMESSAGE {
+#CODEXSETTINGS h1 #CODEXSETTINGSMESSAGE {
     float: right;}
-div#CODEXSETTINGS .codexsettingschanged {
+#CODEXSETTINGS .codexsettingschanged {
     float: right; color: red; display: none;}
-div#CODEXSETTINGS.changed .codexsettingschanged { display: block;}
-body.cxNOUSER div#CODEXSETTINGS h1 a.logout {display:none;}
+#CODEXSETTINGS.changed .codexsettingschanged { display: block;}
+body.cxNOUSER #CODEXSETTINGS h1 a.logout {display:none;}
 
-div#CODEXSETTINGS tr.codexlayoutsettings { display: none; }
+#CODEXSETTINGS tr.codexlayoutsettings { display: none; }
 
 table.settings td { padding-bottom: 0.5ex;}
 
@@ -348,62 +348,62 @@ table.settings tr.buttons td, table.settings tr.buttons th { padding-top: 1ex;}
 
 /* The Console */
 
-div#CODEXCONSOLE { font-size: 70%;}
+#CODEXCONSOLE { font-size: 70%;}
 
-div#CODEXCONSOLE h1 {
+#CODEXCONSOLE h1 {
     font-size: 1.5em; text-align: center;
     margin-top: 4px; margin-bottom: 1em;}
-div#CODEXCONSOLE div#CODEXCONSOLELOG { }
-div#CODEXCONSOLE div.fdjtlog {
+#CODEXCONSOLE #CODEXCONSOLELOG { }
+#CODEXCONSOLE div.fdjtlog {
     margin-left: 0.5em; border-top: solid black 1px;}
-div#CODEXCONSOLE div.message {
+#CODEXCONSOLE div.message {
     text-align: center; font-size: 150%;}
 
-div#CODEXCONSOLE div#CODEXCONSOLEINPUT { margin-left: 4em;}
-div#CODEXCONSOLE div#CODEXCONSOLEINPUT span.button { float: right;}
-div#CODEXCONSOLE div#CODEXCONSOLEINPUT textarea { width: 90%;}
+#CODEXCONSOLE #CODEXCONSOLEINPUT { margin-left: 4em;}
+#CODEXCONSOLE #CODEXCONSOLEINPUT span.button { float: right;}
+#CODEXCONSOLE #CODEXCONSOLEINPUT textarea { width: 90%;}
 
 /* The cover message */
 
-div#CODEXCOVERMESSAGE {
+#CODEXCOVERMESSAGE {
     text-align: center;}
-div#CODEXCOVER > .sbookslogo, div#CODEXCOVER > .publisherlogo {
+#CODEXCOVER > .sbookslogo, #CODEXCOVER > .publisherlogo {
   position: absolute; top: 0px; z-index: 200;
   color: silver; font-size: 2em;
   display: none; }
-div#CODEXCOVER > .sbookslogo {left: 0px;}
-div#CODEXCOVER > .publisherlogo {right: 0px;}
+#CODEXCOVER > .sbookslogo {left: 0px;}
+#CODEXCOVER > .publisherlogo {right: 0px;}
 
-div#CODEXCOVER > .sbookslogo em {color: steelblue;}
+#CODEXCOVER > .sbookslogo em {color: steelblue;}
 
-div#CODEXCOVERMESSAGE > div {
+#CODEXCOVERMESSAGE > div {
     color: silver; display: none;
     padding-left: 1em; padding-right: 1em;
     padding-top: 0px;
     box-sizing: border-box;
     width: 100%;}
-div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
+#CODEXCOVERMESSAGE > #CODEXREADYMESSAGE {
     display: inline-block; width: 7em;  box-sizing: border-box;
     margin-left: auto; margin-right: auto;
     font-size: 1.5em; color: white; background-color: gray;
     margin-top: 0.7ex; padding:  0px 1em 0px 1em;
     border: solid transparent 2px;
     font-variant: small-caps; border-radius: 1em; }
-body.cxMOUSE div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE:hover {
+body.cxMOUSE #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE:hover {
     border-color: blue; border-style: dotted;}
-div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE.tapholdtarget {
+#CODEXCOVERMESSAGE > #CODEXREADYMESSAGE.tapholdtarget {
     border-color: blue; }
-body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXLAYOUTMESSAGE,
-body div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
+body.cxLAYOUT #CODEXCOVERMESSAGE > #CODEXLAYOUTMESSAGE,
+body #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE {
     display: inline-block;}
-body.cxLAYOUT div#CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
+body.cxLAYOUT #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE {
     display: none;}
 
-div#CODEXREADYMESSAGE { padding-bottom: 1ex; }
+#CODEXREADYMESSAGE { padding-bottom: 1ex; }
 
-div#CODEXCOVERMESSAGE > div > div.box {
+#CODEXCOVERMESSAGE > div > div.box {
     width: 100%; border: solid silver 2px; border-top: 0px;}
-div#CODEXCOVERMESSAGE div.indicator {
+#CODEXCOVERMESSAGE div.indicator {
     height: 1ex; background-color: gold;}
 
 /* Emacs local variables

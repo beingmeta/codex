@@ -52,7 +52,7 @@ body.hudup.cxPREVIEW #CODEXHUD.openheart #CODEXHEARTFRAME {
     -moz-opacity: 0;
     -o-opacity: 0;}
 
-body.hudup.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSOURCES {
+body.hudup.cxPREVIEW #CODEXHUD.allglosses #CODEXSOURCES {
     opacity: 0.01;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -61,7 +61,7 @@ body.hudup.cxPREVIEW div#CODEXHUD.allglosses div#CODEXSOURCES {
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
 
-body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
+body.cxPREVIEW #CODEXHUD.searchresults #CODEXSEARCH.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -69,7 +69,7 @@ body.cxPREVIEW div#CODEXHUD.searchresults div#CODEXSEARCH.hudpanel {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body.cxPREVIEW div#CODEXHUD.openglossmark div#CODEXPOINTGLOSSES.hudpanel {
+body.cxPREVIEW #CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -94,10 +94,10 @@ body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER {
     -o-box-shadow: none;
     border-color: transparent;}
 
-div#CODEXPAGEBARHELP, div#CODEXSEETHRUHELP {
+#CODEXPAGEBARHELP, #CODEXSEETHRUHELP {
     pointer-events: none; opacity: 0.0;
     display: none;}
-div#CODEXPAGEBARHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
+#CODEXPAGEBARHELP.helpbox, #CODEXSEETHRUHELP.helpbox {
     top: 0px; left: 40px; right: 40px; max-height: 70px;
     border-top: 0px; padding: 1ex; padding-top: 0px; padding-bottom: 0px;
     text-align: center; overflow: hidden;
@@ -111,19 +111,19 @@ div#CODEXPAGEBARHELP.helpbox, div#CODEXSEETHRUHELP.helpbox {
     -webkit-border-bottom-right-radius: 1ex; 
     -moz-border-radius-bottomright: 1ex;
     -o-border-radius-bottomright: 1ex;}
-div#CODEXPAGEBARHELP.helpbox p, div#CODEXSEETHRUHELP.helpbox p {
+#CODEXPAGEBARHELP.helpbox p, #CODEXSEETHRUHELP.helpbox p {
     margin: 0px; padding: 0px; text-align: center; text-indent: 0px;
     max-width: inherit;}
-div#CODEXPAGEBARHELP.helpbox dfn, div#CODEXSEETHRUHELP.helpbox dfn {
+#CODEXPAGEBARHELP.helpbox dfn, #CODEXSEETHRUHELP.helpbox dfn {
     font-size: 125%;}
 
-body.cxPREVIEW.cxPAGEPREVIEW div#CODEXPAGEBARHELP,
-body.cxPREVIEW div#CODEXSEETHRUHELP {
+body.cxPREVIEW.cxPAGEPREVIEW #CODEXPAGEBARHELP,
+body.cxPREVIEW #CODEXSEETHRUHELP {
     display: block; opacity: 0.9;}
-body.cxPREVIEW.cxPAGEPREVIEW div#CODEXSEETHRUHELP { display: none;}
+body.cxPREVIEW.cxPAGEPREVIEW #CODEXSEETHRUHELP { display: none;}
 
-body.cxPREVIEW.hudup div#CODEXHUD.searchresults div#CODEXSEETHRUHELP,
-body.cxPREVIEW.hudup div#CODEXHUD.allglosses div#CODEXSEETHRUHELP {
+body.cxPREVIEW.hudup #CODEXHUD.searchresults #CODEXSEETHRUHELP,
+body.cxPREVIEW.hudup #CODEXHUD.allglosses #CODEXSEETHRUHELP {
     display: none;}
 
 body.cxPREVIEW #CODEXPAGENOTEXT, body.cxPREVIEW #CODEXLOCPCT, body.cxPREVIEW #CODEXLOCOFF {

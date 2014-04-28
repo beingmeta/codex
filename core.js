@@ -134,13 +134,13 @@ var Codex={
     Timeline: {},
     // What to trace, for debugging
     Trace: {
-        startup: 2,       // Whether to trace startup
+        startup: 0,       // Whether to trace startup
         config: 0,        // Whether to trace config setup/modification/etc
-        mode: true,      // Whether to trace mode changes
+        mode: false,      // Whether to trace mode changes
         nav: false,       // Whether to trace book navigation
         skim: 0,          // How much to trace DOM skimming
-        search: 1,        // How much to trace searches
-        clouds: 1,        // How much to trace cloud generation
+        search: 0,        // How much to trace searches
+        clouds: 0,        // How much to trace cloud generation
         target: false,    // Whether to trace target changes
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
@@ -157,8 +157,8 @@ var Codex={
         selection: false, // Whether to trace text selection events
         iscroll: false,   // Whether to trace HUD scrolling with iScroll
         highlight: 0,     // Whether to trace highlighting
-        indexing: 1,      // How much to trace document indexing
-        gestures: 2}      // How much to trace gestures
+        indexing: 0,      // How much to trace document indexing
+        gestures: 0}      // How much to trace gestures
 };
 
 (function(){

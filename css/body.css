@@ -35,7 +35,7 @@
 
 body.sbook { font-size: 62.5%; }
 
-#CODEXBODY div#CODEXCONTENT {
+#CODEXBODY #CODEXCONTENT {
     margin-left: 3em; margin-right: 3em;}
 
 #CODEXPAGE { max-width: 40em;}
