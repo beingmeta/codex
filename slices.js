@@ -90,7 +90,7 @@ Codex.Slice=(function () {
                     // (fdjtUI.Ellipsis("span.note",info.note,140))
                     ((info.detail)&&(fdjtDOM("span.detail","DETAIL")))," ",
                     ((excerpt_len>0)&&(showexcerpts(info.excerpt)))," ",
-                    (((info.alltags)||(info.tags))&&(showtags(info)))," ",
+                    (((info.alltags)||(info.tags))&&(showtags(info,query)))," ",
                     ((info.links)&&(showlinks(info.links)))," ",
                     ((info.attachments)&&
                      (showlinks(info.attachments,"span.attachments")))," ",
@@ -135,70 +135,49 @@ Codex.Slice=(function () {
             return Codex.md2DOM(note.slice(close+1),true);}
         else return note;}
 
-    var show_tag_thresh=7;
-
-    function toarray(arg){
-        if (!(arg)) return [];
-        else if (arg instanceof Array) return arg;
-        else return [arg];}
-    function showtags(info){
+    function showtags(info,query){
         var tagicon=fdjtDOM.Image(cxicon("tagicon",64,64),
                                   "img.tagicon","tags");
-        var span=fdjtDOM("span.tags.fdjtexpands",tagicon);
-        var tagspan=span, hidden=false;
-        var controller=false, hide_count_elt=false;
-        var total_count_elt=false, hide_start=false;
-        var count=0, seen={}, i, lim;
-        var tagvecs=[toarray(info["**tags"]),toarray(info["*tags"]),
-                     toarray(info["+tags"]),toarray(info["+tags*"]),
-                     toarray(info.knodes),toarray(info.tags),
-                     toarray(info["**tags*"]),toarray(info["*tags*"]),
-                     toarray(info["tags*"]),
-                     // toarray(info["~tags"]),toarray(info["~tags*"]),
-                     toarray(info["^tags"]),toarray(info["^tags*"])];
-        var j=0, nvecs=tagvecs.length;
-        while (j<nvecs) {
-            var tags=tagvecs[j++];
-            i=0; lim=tags.length;
-            while (i<tags.length) {
+        var matches=((query)&&(fdjtDOM("span.matches")));
+        var toptags=fdjtDOM("span.top");
+        var sectags=fdjtDOM("span.sectags");
+        var othertags=fdjtDOM("span.other");
+        var count=0, seen={};
+        var tagslots=["**tags","*tags","+tags","+tags*","knodes","tags",
+                      "**tags*","*tags*","tags*","^tags","^tags*"];
+        var j=0, nslots=tagslots.length;
+        while (j<nslots) {
+            var slot=tagslots[j++], tags=info[slot];
+            if ((!(tags))||(tags.length===0)) continue;
+            var i=0, lim=tags.length;
+            while (i<lim) {
                 var tag=tags[i++];
                 if (!(tag)) continue;
-                var tagstring=
-                    ((typeof tag === "string")?(tag):
-                     ((tag._qid)||(tag.getQID())));
+                var tagstring=((typeof tag === "string")?(tag):
+                               ((tag._qid)||(tag.getQID())));
                 if (seen[tagstring]) continue;
                 else {count++; seen[tagstring]=tag;}
-                if ((!controller)&&(count>show_tag_thresh)) {
-                    hide_count_elt=document.createTextNode("K");
-                    total_count_elt=document.createTextNode("N");
-                    controller=fdjtDOM("span.controller.clickable",
-                                       fdjtDOM("span.whenexpanded","-",
-                                               "hide ",hide_count_elt," tags"),
-                                       fdjtDOM("span.whencollapsed","+",
+                var sectag=((tag._qid)&&(tag._qid[0]==="\u00a7"));
+                var elt=((sectag)?(sectag2HTML(tag)):
+                         (Knodule.HTML(tag,Codex.knodule)));
+                if ((matches)&&(tag_matchp(tag,query)))
+                    fdjtDOM(matches," ",elt);
+                else if (sectag) fdjtDOM(sectags," ",elt);
+                else if (count<4) fdjtDOM(toptags," ",elt);
+                else fdjtDOM(othertags," ",elt);}}
+        return fdjtDOM("span.tags",tagicon,
+                       matches,toptags,othertags,sectags);}
 
-                                               "all ",total_count_elt," tags"));
-                    hidden=fdjtDOM("span.whenexpanded");
-                    controller.setAttribute(
-                        "onclick",
-                        "fdjt.UI.Expansion.toggle(event); "+
-                            "fdjt.UI.cancel(event);");
-                    fdjtDOM(span," ",controller," ",hidden);
-                    hide_start=count-1;
-                    tagspan=hidden;}
-                var tag_elt=
-                    (((tag._qid)&&(tag._qid[0]==="\u00a7"))?
-                     (sectag2HTML(tag)):Knodule.HTML(tag,Codex.knodule));
-                fdjtDOM.append(
-                    tagspan,((count>1)?"\u00a0\u00b7 ":" "),tag_elt);}}
-        if ((count-hide_start)<(show_tag_thresh/2)) {
-            fdjtDOM.remove(controller);
-            fdjtDOM(span,[].concat(hidden.childNodes));}
-        else {
-            fdjtDOM.replace(
-                total_count_elt,document.createTextNode(""+count));
-            fdjtDOM.replace(
-                hide_count_elt,document.createTextNode(""+(count-hide_start)));}
-        return span;}
+    function tag_matchp(tag,query){
+        var qtags=query.tags;
+        var i=0, lim=qtags.length;
+        while (i<lim) {
+            var qtag=qtags[i++];
+            if (qtag===tag) return true;
+            else if ((tag.allways)&&(tag.allways.indexOf(qtag)>=0))
+                return true;
+            else {}}
+        return false;}
 
     function sectag2HTML(sectag){
         var name=sectag._id;
@@ -314,7 +293,7 @@ Codex.Slice=(function () {
                  (" \u2014 ")),
                 tool];}
     function showdocinfo(info) {
-        return fdjtDOM("span.marker",((info.toclevel)?("\u00a7"):("\u00b6")));}
+        if (info) return false; else return false;}
 
     function getoverdoc(info){
         if (info.sources) {

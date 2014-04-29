@@ -13,10 +13,10 @@ div.codexslice img.button, div.codexslice .tool {
 div.codexslice input[TYPE="TEXT"], div.codexslice textarea { cursor: text; }
 
 div.codexslice div.codexcard { margin-left: 20px;}
-@media (pointer: coarse) {
-  div.codexslice div.codexcard { margin-left: 0px;}}
 div.codexslice.sourced div.codexcard { display: none;}
 div.codexslice.sourced div.codexcard.sourced { display: block;}
+@media (pointer: coarse) and (max-width: 650px) {
+    div.codexslice div.codexcard { font-size: 150%; }}
 
 div.codexslice.sourced div.codexthread { display: none;}
 div.codexslice.sourced div.codexthread > div { display: none;}
@@ -47,6 +47,7 @@ div.codexslice .showdetail div.detail { display: block;}
 div.codexslice div.xrefs { display: none;}
 div.codexslice .showxrefs div.xrefs { display: block;}
 div.codexslice div.xrefs a { display: block;}
+div.codexslice div.codexcard span.tags span.other { display: none;}
 
 div.codexthread {
     clear: both; margin: 0px; border: none;
@@ -176,10 +177,6 @@ div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
   div.codexcardbody,
 #CODEXSKIMMER div.codexcard div.codexcardbody {
     border-top: 0px; padding-left: 1em; padding-top: 0.5ex;}
-#CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage
-  div.codexcardbody span.marker,
-#CODEXSKIMMER div.codexcard div.codexcardbody span.marker {
-    margin-left: -1ex;}
 #CODEXSKIMMER div.codexcard div.idhead {
     border-bottom: 0px;}
 
