@@ -132,6 +132,8 @@ var Codex={
     xtargets: {},
     // Where various event timestamps are stored
     Timeline: {},
+    // Word/phrase indexing structures
+    allterms: [], prefixes: {},
     // What to trace, for debugging
     Trace: {
         startup: 0,       // Whether to trace startup
@@ -140,7 +142,7 @@ var Codex={
         nav: false,       // Whether to trace book navigation
         skim: 0,          // How much to trace DOM skimming
         search: 0,        // How much to trace searches
-        clouds: 2,        // How much to trace cloud generation
+        clouds: 0,        // How much to trace cloud generation
         target: false,    // Whether to trace target changes
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
@@ -891,10 +893,11 @@ var Codex={
             if (!(node.toclevel)) continue;
             var passages=docdb.find('head',node);
             if ((passages)&&(passages.length))
-                knoduleAddTags(passages,tags,docdb,tagdb,"^"+slotid,Codex.tagscores);
+                knoduleAddTags(passages,tags,docdb,tagdb,
+                               "^"+slotid,Codex.tagscores);
             var subheads=docdb.find('heads',node);
             if ((subheads)&&(subheads.length))
-                addTags(subheads,tags,slotid,tagdb,slotid,Codex.tagscores);}}
+                addTags(subheads,tags,"^"+slotid,tagdb);}}
     Codex.addTags=addTags;
         
     /* Navigation */

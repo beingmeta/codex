@@ -255,7 +255,7 @@
             if (cloud) cloud.addCompletion(entry,strungout,tag);
             return entry;}
         else {
-            var qid=tag._qid||tag.getQID();
+            var qid=tag._qid||tag.getQID(), id=tag._id||tag.dterm;
             // Section names as tags
             if ((tag instanceof KNode)&&(qid[0]==="\u00A7")) {
                 var sectname=tag._id.slice(1), showname;
@@ -274,11 +274,11 @@
                 if (cloud) cloud.addCompletion(entry,sectname,tag);
                 return entry;}
             else if (tag instanceof KNode) 
-                entry=fdjtDOM(((qid.length>20)?
+                entry=fdjtDOM(((id.length>20)?
                                ("span.completion.dterm.longterm"):
                                ("span.completion.dterm")),
                               qid);
-            else entry=fdjtDOM(((qid.length>20)?
+            else entry=fdjtDOM(((id.length>20)?
                                 ("span.completion.longterm"):
                                 ("span.completion")),
                                qid);

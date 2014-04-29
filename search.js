@@ -245,7 +245,11 @@
                     completeinfo.select(new Selector(".cue"))||
                     completeinfo.select();
                 // Signal error?
-                if (!(completion)) return;
+                if (!(completion)) {
+                    var found=Codex.docdb.find("~tags",qstring);
+                    if ((found)&&(found.length))
+                        setQuery(extendQuery(Codex.query,qstring));
+                    return;}
                 var value=completeinfo.getValue(completion);
                 setQuery(extendQuery(Codex.query,value));}
             fdjtDOM.cancel(evt);

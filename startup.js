@@ -2467,9 +2467,10 @@ Codex.Startup=
                     fdjtDOM("div.cloudprogress","Cloud Shaping in Progress"));
             addClass(gloss_cloud.dom,"working");
             fdjtTime.slowmap(function(tag){
+                if (!(tag instanceof KNode)) return;
                 var elt=addTag2Cloud(tag,empty_cloud,Codex.knodule,
                                      Codex.tagweights,tagfreqs,false);
-                var sectag=((tag instanceof KNode)&&(tag._id[0]==="\u00a7"));
+                var sectag=(tag._id[0]==="\u00a7");
                 if (!(sectag)) {
                     if (tag instanceof KNode) addClass(elt,"cue");
                     if ((tag instanceof KNode)||
@@ -2501,7 +2502,6 @@ Codex.Startup=
             var gloss_cloud=Codex.gloss_cloud;
             var pct=((i*100)/lim);
             if (state!=='after') return;
-            var pct=(i*100)/lim;
             if (tracelevel>1)
                 startupLog("Added %d (%d%% of %d tags) to clouds",
                            i,Math.floor(pct),lim);
@@ -2516,6 +2516,7 @@ Codex.Startup=
         /* Using the autoindex generated during book building */
         function useIndexData(autoindex,knodule,baseweight,whendone){
             var ntags=0, nitems=0;
+            var allterms=Codex.allterms, prefixes=Codex.prefixes;
             var tagweights=Codex.tagweights;
             var maxweight=Codex.tagmaxweight, minweight=Codex.tagminweight;
             var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.indexing);
@@ -2530,15 +2531,21 @@ Codex.Startup=
             function handleIndexEntry(tag){
                 var ids=autoindex[tag]; ntags++;
                 var occurrences=[];
-                var bar=tag.indexOf('|');
-                var taghead=tag, tagbase=tag, tagstart, knode;
-                if (bar>0) tagbase=taghead=tag.slice(0,bar);
+                var bar=tag.indexOf('|'), tagstart=tag.search(/[^*~]/);
+                var taghead=tag, tagterm=tag, knode=false, weight=false;
+                if (bar>0) {
+                    taghead=tag.slice(0,bar);
+                    tagterm=tag.slice(tagstart,bar);}
+                else tagbase=taghead=tag.slice(tagstart);
                 if (tag[0]!=='~')
                     knode=Codex.knodule.handleSubjectEntry(tag);
-                else knode=Codex.knodule.probe(tagbase);
-                tagstart=taghead.search(/[^*~]/);
-                if (tagstart>0) tagbase=taghead.slice(tagstart);
-                if (bar>0) {
+                else knode=Codex.knodule.probe(taghead)||
+                    Codex.knodule.probe(tagterm);
+                /* Track weights */
+                if (knode) {
+                    weight=knode.weight;
+                    tagweights.set(knode,weight);}
+                else if (bar>0) {
                     var defbody=tag.slice(bar);
                     var field_at=defbody.search("|:weight=");
                     if (field_at>=0) {
@@ -2547,11 +2554,17 @@ Codex.Startup=
                             ((end>=0)?
                              (parseFloat(defbody.slice(field_at+9,end))):
                              (parseFloat(defbody.slice(field_at+9))));
-                        tagweights.set(knode||tagbase,weight);
-                        if (weight>maxweight) maxweight=weight;
-                        if (weight<minweight) minweight=weight;
-                        tag=taghead;}
-                    if (field_at===0) tag=taghead;}
+                        tagweights.set(tagterm,weight);}}
+                else {}
+                if (weight>maxweight) maxweight=weight;
+                if (weight<minweight) minweight=weight;
+                if (!(knode)) {
+                    var prefix=((tagterm.length<3)?(tagterm):
+                                (tagterm.slice(0,3)));
+                    allterms.push(tagterm);
+                    if (prefixes.hasOwnProperty(prefix))
+                        prefixes[prefix].push(tagterm);
+                    else prefixes[prefix]=[tagterm];}
                 var i=0; var lim=ids.length; nitems=nitems+lim;
                 while (i<lim) {
                     var idinfo=ids[i++];
@@ -2570,44 +2583,36 @@ Codex.Startup=
                         // basis for the tag (we use this for
                         // highlighting).
                         var knodeterms=info.knodeterms, terms;
+                        var tagid=((knode)?(knode._qid):(tagterm));
                         // If it's the regular case, we just assume that
                         if (!(info.knodeterms)) {
                             knodeterms=info.knodeterms={};
-                            knodeterms[tagbase]=terms=[];}
-                        else if ((terms=knodeterms[tagbase])) {}
-                        else knodeterms[tagbase]=terms=[];
+                            knodeterms[tagid]=terms=[];}
+                        else if ((terms=knodeterms[tagid])) {}
+                        else knodeterms[tagid]=terms=[];
                         var j=1; var jlim=idinfo.length;
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
-                addTags(occurrences,tag);}
+                addTags(occurrences,knode||taghead);}
             addClass(document.body,"cxINDEXING");
-            fdjtTime.slowmap(handleIndexEntry,alltags,
-                             ((alltags.length>100)&&
-                              (function(state,i,lim){
-                                  if (state!=='suspend') return;
-                                  // For chunks:
-                                  var pct=(i*100)/lim;
-                                  if (tracelevel>1)
-                                      fdjtLog("Processed %d/%d (%d%%) of provided tags",
-                                              i,lim,Math.floor(pct));
-                                  fdjtUI.ProgressBar.setProgress(
-                                      "CODEXINDEXMESSAGE",pct);
-                                  fdjtUI.ProgressBar.setMessage(
-                                      "CODEXINDEXMESSAGE",
-                                      fdjtString(
-                                          "Assimilated %d tags (%d%% of %d) from the robo-index",
-                                          i,Math.floor(pct),lim));})),
-                             function(state){
-                                 // At end:
-                                 Codex.tagmaxweight=maxweight;
-                                 Codex.tagminweight=minweight;
-                                 fdjtLog("Processed provided index of %d keys over %d items",
-                                         ntags,nitems);
-                                 dropClass(document.body,"cxINDEXING");
-                                 if (whendone) whendone();
-                                 else return state;},
-                             200,5);}
+            fdjtTime.slowmap(
+                handleIndexEntry,alltags,
+                ((alltags.length>100)&&(tracelevel>1)&&(indexProgress)),
+                function(state){
+                    fdjtLog("Book index links %d keys to %d refs",ntags,nitems);
+                    dropClass(document.body,"cxINDEXING");
+                    Codex.tagmaxweight=maxweight;
+                    Codex.tagminweight=minweight;
+                    if (whendone) return whendone();
+                    else return state;},
+                200,10);}
         Codex.useIndexData=useIndexData;
+        function indexProgress(state,i,lim){
+            if (state!=='suspend') return;
+            // For chunks:
+            var pct=(i*100)/lim;
+            fdjtLog("Processed %d/%d (%d%%) of provided tags",
+                    i,lim,Math.floor(pct));}
         
         /* Applying various tagging schemes */
 
