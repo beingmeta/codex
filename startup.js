@@ -2484,7 +2484,8 @@ Codex.Startup=
             var empty_cloud=Codex.empty_cloud;
             var gloss_cloud=Codex.gloss_cloud;
             if (Codex.Trace.startup>1)
-                fdjtLog("Done populating clouds");
+                fdjtLog("Done populating clouds with %d tags",
+                        searchtags.length);
             dropClass(document.body,"cxINDEXING");
             eq.cloud=empty_cloud;
             if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
@@ -2534,7 +2535,7 @@ Codex.Startup=
                 if (bar>0) {
                     taghead=tag.slice(0,bar);
                     tagterm=tag.slice(tagstart,bar);}
-                else tagbase=taghead=tag.slice(tagstart);
+                else tagterm=taghead=tag.slice(tagstart);
                 if (tag[0]!=='~')
                     knode=Codex.knodule.handleSubjectEntry(tag);
                 else knode=Codex.knodule.probe(taghead)||
@@ -2544,14 +2545,13 @@ Codex.Startup=
                     weight=knode.weight;
                     tagweights.set(knode,weight);}
                 else if (bar>0) {
-                    var defbody=tag.slice(bar);
-                    var field_at=defbody.search("|:weight=");
+                    var body=tag.slice(bar);
+                    var field_at=body.search("|:weight=");
                     if (field_at>=0) {
-                        var end=defbody.indexOf('|',field_at+1);
-                        var weight=
-                            ((end>=0)?
-                             (parseFloat(defbody.slice(field_at+9,end))):
-                             (parseFloat(defbody.slice(field_at+9))));
+                        var end=body.indexOf('|',field_at+1);
+                        weight=((end>=0)?
+                                (parseFloat(body.slice(field_at+9,end))):
+                                (parseFloat(body.slice(field_at+9))));
                         tagweights.set(tagterm,weight);}}
                 else {}
                 if (weight>maxweight) maxweight=weight;
