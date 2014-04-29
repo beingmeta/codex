@@ -2412,7 +2412,7 @@ Codex.Startup=
                 choices.push(
                     {label: ("current @"+loc2pct(state.location)),
                      title: "the most recent location on this device",
-                     isdefault: false,
+                     isdefault: true,
                      handler: function(){
                          state.changed=fdjtTime.tick();
                          Codex.saveState(state,true,true);
