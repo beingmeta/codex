@@ -2498,8 +2498,6 @@ Codex.Startup=
 
         function addtags_progress(state,i,lim){
             var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);
-            var empty_cloud=Codex.empty_cloud;
-            var gloss_cloud=Codex.gloss_cloud;
             var pct=((i*100)/lim);
             if (state!=='after') return;
             if (tracelevel>1)
