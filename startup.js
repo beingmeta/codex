@@ -2497,11 +2497,8 @@ Codex.Startup=
 
         function addtags_progress(state,i,lim){
             var tracelevel=Math.max(Codex.Trace.startup,Codex.Trace.clouds);
-            var empty_cloud=Codex.empty_cloud;
-            var gloss_cloud=Codex.gloss_cloud;
             var pct=((i*100)/lim);
             if (state!=='after') return;
-            var pct=(i*100)/lim;
             if (tracelevel>1)
                 startupLog("Added %d (%d%% of %d tags) to clouds",
                            i,Math.floor(pct),lim);
