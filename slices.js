@@ -154,7 +154,7 @@ Codex.Slice=(function () {
                      toarray(info.knodes),toarray(info.tags),
                      toarray(info["**tags*"]),toarray(info["*tags*"]),
                      toarray(info["tags*"]),
-                     toarray(info["~tags"]),toarray(info["~tags*"]),
+                     // toarray(info["~tags"]),toarray(info["~tags*"]),
                      toarray(info["^tags"]),toarray(info["^tags*"])];
         var j=0, nvecs=tagvecs.length;
         while (j<nvecs) {
