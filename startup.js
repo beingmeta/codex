@@ -117,12 +117,14 @@ Codex.Startup=
         var default_config=
             {layout: 'bypage',forcelayout: false,
              bodysize: 'normal',bodyfamily: 'serif',
+             justify: false,linespacing: 'normal',
              uisize: 'normal',showconsole: false,
              animatecontent: true,animatehud: true,
              hidesplash: false,keyboardhelp: true,
              holdmsecs: 150,wandermsecs: 1500,
              syncinterval: 60,glossupdate: 5*60,
-             locsync: true, cacheglosses: true};
+             locsync: true, cacheglosses: true,
+             soundeffects: false, buzzeffects: false};
         var current_config={};
         var saved_config={};
 

@@ -73,7 +73,7 @@ var Codex={
     //  many milliseconds to generate
     long_layout_thresh: 5000,
     // Whether to force new layouts
-    forcelayout: false,
+    forcelayout: true,
     // Whether layout is temporarily frozen, for example during text
     // input (on tablets, there may be extraneous resizes when the
     // on-screen keyboard appears)

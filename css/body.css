@@ -55,6 +55,16 @@ body.sbook { font-size: 62.5%; }
     font-size: 1.5em;}
 #CODEXBODY.codexbodysizetiny {
     font-size: 0.9em;}
+.codexbody.codexlinespacingsingle {
+    line-height: 100%;}
+.codexbody.codexlinespacingdouble {
+    line-height: 200%;}
+.codexbody.codexlinespacingnormal {}
+.codexbody.codexlinespacingonefive {
+    line-height: 150%;}
+
+.codexbody.codexjustifytrue p, .codexbody.codexjustifytrue li {
+    text-align: justify;}
 
 #CODEXBODY.codexfamilydefault {
     font-family: inherit;}

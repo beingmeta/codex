@@ -556,6 +556,10 @@ div.codexglossform form div.addglossmenu > img.held {
         width: 80px; height: 80px; margin-left: -20px;}
     div.codexglossform form div.addglossmenu > img.held.menutop {
         width: 40px; height: 40px; margin-left: 0px;}}
+body.cxTOUCH div.codexglossform form div.addglossmenu > img.held {
+    width: 80px; height: 80px; margin-left: -20px;}
+body.cxTOUCH div.codexglossform form div.addglossmenu > img.held.menutop {
+    width: 40px; height: 40px; margin-left: 0px;}
 div.codexglossform form div.addglossmenu > img.menutop[alt="downmenu"],
 div.codexglossform form div.addglossmenu.expanded > img.menutop[alt="upmenu"],
 div.codexglossform form div.addglossmenu.held > img.menutop[alt="holdmenu"] {

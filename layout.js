@@ -405,6 +405,8 @@ Codex.Paginate=
                     Codex.Paginate(name);}}}
         Codex.addConfig("bodysize",updateLayoutProperty);
         Codex.addConfig("bodyfamily",updateLayoutProperty);
+        Codex.addConfig("bodyspacing",updateLayoutProperty);
+        Codex.addConfig("justify",updateLayoutProperty);
         
         function getLayoutID(width,height,family,size,source_id){
             var page=fdjtID("CODEXPAGE");
