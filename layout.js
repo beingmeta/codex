@@ -509,8 +509,6 @@ Codex.Paginate=
                 if (hasClass(node,"codexpage")) {}
                 else if ((node.id)&&(docinfo[node.id])) {
                     if (hasContent(node,true)) return node;}
-                else if ((node.codexbaseid)&&(docinfo[node.codexbaseid])) {
-                    if (hasContent(node,true)) return node;}
                 else {}
                 var children=node.childNodes;
                 if (children) {
@@ -520,7 +518,25 @@ Codex.Paginate=
                         if (child.nodeType===1) {
                             var first=getPageTop(child);
                             if (first) return first;}}}
-                return false;}
+                return getDupPageTop(node);}
+            function getDupPageTop(node) {
+                var found=false;
+                if (hasClass(node,"codexpage")) {}
+                else if ((node.id)&&(docinfo[node.id])) {
+                    if (hasContent(node,true)) return node;}
+                else {}
+                var children=node.childNodes;
+                if (children) {
+                    var i=0; var lim=children.length;
+                    while (i<lim) {
+                        var child=children[i++];
+                        if (child.nodeType===1) {
+                            found=getDupPageTop(child);
+                            if (found) break;}}}
+                if (found) return found;
+                else if ((node.codexbaseid)&&(docinfo[node.codexbaseid]))
+                    return node;
+                else return false;}
 
             function getPageLastID(node,id) {
                 if (hasClass(node,"codexpage")) {}

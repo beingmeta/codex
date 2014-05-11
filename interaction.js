@@ -159,7 +159,7 @@
             Codex.TapHold.page=fdjtUI.TapHold(
                 fdjt.ID("CODEXPAGE"),
                 {override: true,noslip: true,id: "CODEXPAGE",
-                 untouchable: externClickable,
+                 untouchable: externClickable,maxtouches: 2,
                  movethresh: 10});
             Codex.TapHold.content=fdjtUI.TapHold(
                 fdjt.ID("CODEXCONTENT"),
@@ -690,8 +690,8 @@
         var vw=fdjtDOM.viewWidth();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
         if (Trace.gestures)
-            fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o",
-                    dx,dy,adx,ady,evt.startX,evt.startY,vw);
+            fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o, n=%o",
+                    dx,dy,adx,ady,evt.startX,evt.startY,vw,evt.ntouches);
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (dx<-(Codex.minswipe||10)) {
