@@ -689,6 +689,7 @@
         var dx=evt.deltaX, dy=evt.deltaY;
         var vw=fdjtDOM.viewWidth();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
+        var head=Codex.head, headinfo=((head)&&(head.id)&&(Codex.docinfo[head.id]));
         if (Trace.gestures)
             fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o, n=%o",
                     dx,dy,adx,ady,evt.startX,evt.startY,vw,evt.ntouches);
@@ -697,10 +698,30 @@
             if (dx<-(Codex.minswipe||10)) {
                 if (hasClass(document.body,"cxSKIMMING"))
                     Codex.skimForward(evt);
+                else if (evt.ntouches>1) {
+                    if (!(headinfo)) Codex.Forward(evt);
+                    else if ((headinfo.sub)&&(headinfo.sub.length)) 
+                        Codex.GoTo(headinfo.sub[0].frag,"doubleswipe");
+                    else if (headinfo.next)
+                        Codex.GoTo(headinfo.next.frag,"doubleswipe");
+                    else if (headinfo.head)
+                        Codex.GoTo(headinfo.head.frag,"doubleswipe");
+                    else Codex.Forward(evt);}
                 else Codex.Forward(evt);}
             else if (dx>(Codex.minswipe||10)) {
                 if (hasClass(document.body,"cxSKIMMING"))
                     Codex.skimBackward(evt);
+                else if (evt.ntouches>1) {
+                    if (!(headinfo)) Codex.Forward(evt);
+                    else if (headinfo.prev)
+                        Codex.GoTo(headinfo.prev.frag,"doubleswipe");
+                    else {
+                        var scan=headinfo.head;
+                        while (scan) {
+                            if (scan.prev)
+                                return Codex.GoTo(scan.prev.frag,"doubleswipe");
+                            else scan=scan.head;}
+                        Codex.Backward(evt);}}
                 else Codex.Backward(evt);}}
         else if (ady>(adx*2)) {
             // Vertical swipe
