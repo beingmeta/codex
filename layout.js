@@ -506,9 +506,11 @@ Codex.Paginate=
                                10);}}
             
             function getPageTop(node) {
+                var last=false;
                 if (hasClass(node,"codexpage")) {}
-                else if ((node.id)&&(docinfo[node.id])) {
-                    if (hasContent(node,true)) return node;}
+                else if (((node.id)&&(docinfo[node.id]))||
+                         ((node.codexbaseid)&&(docinfo[node.codexbaseid]))) {
+                    if (hasContent(node,true)) last=node;}
                 else {}
                 var children=node.childNodes;
                 if (children) {
@@ -518,7 +520,7 @@ Codex.Paginate=
                         if (child.nodeType===1) {
                             var first=getPageTop(child);
                             if (first) return first;}}}
-                return getDupPageTop(node);}
+                return last;}
             function getDupPageTop(node) {
                 var found=false;
                 if (hasClass(node,"codexpage")) {}
@@ -579,13 +581,10 @@ Codex.Paginate=
                 while ((elt)&&(elt!==topnode)) {
                     var width=textWidth(elt);
                     if (width) locoff=locoff+width;
-                    pagescan=pages[++pagenum];
+                    pagescan=pages[pagenum++];
                     if (pagescan) elt=getDupNode(pagescan,id);
                     else return locoff;}
                 return locoff;}
-
-
-
 
             var saved_sourceid=
                 fdjtState.getLocal("codex.sourceid("+Codex.refuri+")");
