@@ -91,6 +91,9 @@ body.sbook { font-size: 62.5%; }
 #CODEXBODY.codexcontrastmedium { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrastlow  { background-color: #e5e0d4; color: #333; }
 
+p { line-height: 1.2;}
+#CODEXPAGES .codexpage.codexcoversize p { line-height: 1.05;}
+
 /*
 #CODEXBODY .tapholdtarget {outline: dotted blue 1px;}
 #CODEXBODY .tapholdtarget .tapholdtarget {outline: none;}
