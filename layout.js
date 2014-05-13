@@ -497,7 +497,7 @@ Codex.Paginate=
                                 page.setAttribute("data-sbookloc",prevoff);
                             else page.setAttribute("data-sbookloc","0");}}}
                 if ((typeof curloc === "number")&&(pagenum)&&
-                    (Codex.state)&&(goneto!==Codex.state)&&
+                    (!(Codex.curpage))&&(Codex.state)&&(goneto!==Codex.state)&&
                     (Codex.state.hasOwnProperty('location'))&&
                     (curloc>=Codex.state.location)) {
                     goneto=Codex.state;
