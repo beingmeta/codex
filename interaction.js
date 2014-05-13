@@ -1496,6 +1496,7 @@
             fdjtLog("hudmodebutton() %o mode=%o cl=%o skim=%o sbh=%o mode=%o",
                     evt,mode,(isClickable(target)),
                     Codex.skimming,Codex.hudup,Codex.setMode());
+        Codex.clearStateDialog();
         if (reticle.live) reticle.flash();
         fdjtUI.cancel(evt);
         if (!(mode)) return;

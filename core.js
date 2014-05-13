@@ -73,7 +73,7 @@ var Codex={
     //  many milliseconds to generate
     long_layout_thresh: 5000,
     // Whether to force new layouts
-    forcelayout: true,
+    forcelayout: false,
     // Whether layout is temporarily frozen, for example during text
     // input (on tablets, there may be extraneous resizes when the
     // on-screen keyboard appears)
@@ -147,7 +147,7 @@ var Codex={
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
         network: 0,       // How much to trace server interaction
-        state: false,     // Whether to trace synchronization
+        state: 2,     // Whether to trace synchronization
         savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
         addgloss: 0,      // Note whenever a gloss post completes
@@ -1202,6 +1202,7 @@ var Codex={
         if (typeof istarget === 'undefined') istarget=true;
         if (typeof savestate === 'undefined') savestate=true;
         var target, location, locinfo;
+        if (savestate) Codex.clearStateDialog();
         if (!(arg)) {
             fdjtLog.warn("falsy arg (%s) to codexGoTo from %s",arg,caller);
             return;}

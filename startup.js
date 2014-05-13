@@ -2438,6 +2438,13 @@ Codex.Startup=
                     fdjtDOM("div",msg1));}
         Codex.resolveXState=resolveXState;
 
+        function clearStateDialog(){
+            if (Codex.statedialog) {
+                fdjt.Dialog.close(Codex.statedialog);
+                Codex.statedialog=false;}}
+        Codex.clearStateDialog=clearStateDialog;
+
+
         /* Indexing tags */
         
         function indexingDone(){

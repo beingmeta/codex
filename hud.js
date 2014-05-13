@@ -396,15 +396,18 @@ Codex.setMode=
         function showCover(){
             if (Codex._setup)
                 fdjtState.dropLocal("codex.opened("+Codex.docuri+")");
+            Codex.clearStateDialog();
             addClass(document.body,"cxCOVER");}
         Codex.showCover=showCover;
         function hideCover(){
             if (Codex._setup)
                 fdjtState.setLocal(
                     "codex.opened("+Codex.docuri+")",fdjtTime());
+            Codex.clearStateDialog();
             dropClass(document.body,"cxCOVER");}
         Codex.hideCover=hideCover;
         function toggleCover(){
+            Codex.clearStateDialog();
             if (hasClass(document.body,"cxCOVER")) hideCover();
             else showCover();}
         Codex.toggleCover=toggleCover;

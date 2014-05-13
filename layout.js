@@ -901,6 +901,7 @@ Codex.Paginate=
             if (page) {
                 var pagenum=parseInt(page.getAttribute("data-pagenum"),10);
                 var dirclass=false;
+                if (savestate) Codex.clearStateDialog();
                 if (Codex.Trace.flips)
                     fdjtLog("GoToPage/%s Flipping to %o (%d) for %o",
                             caller,page,pagenum,spec);
