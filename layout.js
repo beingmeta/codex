@@ -521,6 +521,7 @@ Codex.Paginate=
                             var first=getPageTop(child);
                             if (first) return first;}}}
                 return last;}
+            /*
             function getDupPageTop(node) {
                 var found=false;
                 if (hasClass(node,"codexpage")) {}
@@ -539,6 +540,7 @@ Codex.Paginate=
                 else if ((node.codexbaseid)&&(docinfo[node.codexbaseid]))
                     return node;
                 else return false;}
+            */
 
             function getPageLastID(node,id) {
                 if (hasClass(node,"codexpage")) {}
