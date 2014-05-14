@@ -1271,12 +1271,18 @@ Codex.Startup=
                 fdjtID("CODEXCREDITSPAGEHOLDER").removeAttribute("style");
             if (fdjtID("CODEXABOUTBOOKHOLDER"))
                 fdjtID("CODEXABOUTBOOKHOLDER").removeAttribute("style");
-            if (fdjtID("CODEXLAYERS")) fdjtID("CODEXLAYERS").removeAttribute("style");
-            if (fdjtID("CODEXCONSOLE")) fdjtID("CODEXCONSOLE").removeAttribute("style");
-            if (fdjtID("CODEXSETTINGS")) fdjtID("CODEXSETTINGS").removeAttribute("style");
-            if (fdjtID("CODEXAPPHELP")) fdjtID("CODEXAPPHELP").removeAttribute("style");
-            if (fdjtID("CODEXREADYMESSAGE")) fdjtID("CODEXREADYMESSAGE").removeAttribute("style");
-            if (fdjtID("CODEXCOVERCONTROLS")) fdjtID("CODEXCOVERCONTROLS").removeAttribute("style");
+            if (fdjtID("CODEXLAYERS"))
+                fdjtID("CODEXLAYERS").removeAttribute("style");
+            if (fdjtID("CODEXCONSOLE"))
+                fdjtID("CODEXCONSOLE").removeAttribute("style");
+            if (fdjtID("CODEXSETTINGS"))
+                fdjtID("CODEXSETTINGS").removeAttribute("style");
+            if (fdjtID("CODEXAPPHELP"))
+                fdjtID("CODEXAPPHELP").removeAttribute("style");
+            if (fdjtID("CODEXREADYMESSAGE"))
+                fdjtID("CODEXREADYMESSAGE").removeAttribute("style");
+            if (fdjtID("CODEXCOVERCONTROLS"))
+                fdjtID("CODEXCOVERCONTROLS").removeAttribute("style");
             
             var coverpage=fdjtID("CODEXCOVERPAGE");
             if (coverpage) 
@@ -1306,7 +1312,7 @@ Codex.Startup=
             if (coverpage) {
                 coverpage.style.opacity=0.0; coverpage.style.display="block";
                 coverpage.style.overflow="visible";
-                fdjtDOM.scaleToFit(coverpage,0.9);
+                fdjtDOM.scaleToFit(coverpage,1.0);
                 coverpage.style.opacity=null; coverpage.style.display=null;
                 coverpage.style.overflow=null;}
             if (fdjtID("CODEXBOOKCOVERHOLDER"))
