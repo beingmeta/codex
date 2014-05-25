@@ -73,7 +73,7 @@ div.codexcard > hr {
 .codexcard span.user { 
   color: green; font-size: 125%; font-style: italic;}
 .codexcard span.outlet { color: green;}
-.codexcard span.overdoc { 
+.codexcard span.overlay { 
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
 .codexcard span.links:before { content: " //"; }

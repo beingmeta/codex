@@ -83,7 +83,7 @@
                 if (pic) {}
                 else if (kind===':CIRCLE')
                     pic=cxicon("readingcircle",64,64);
-                else if (kind===':OVERDOC')
+                else if (kind===':OVERLAY')
                     pic=cxicon("sideguide",64,64);
                 else {}
                 if (pic)
@@ -95,7 +95,7 @@
                                fdjtString.getInitials(info.name));}
                 var title=
                     ((kind===':CIRCLE')?("the reading circle "):
-                     (kind===':OVERDOC')?("the reading guide "):
+                     (kind===':OVERLAY')?("the reading guide "):
                      ("the layer "))+
                     ((info.name)?("“"+(info.name)+"”"):"")+
                     ((info.about)?": ":"")+

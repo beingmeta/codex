@@ -84,6 +84,10 @@
     #CODEXFOOT img.hudbutton[hudmode="help"] {
         display: none;}
     
+    #CODEXSHOWCOVER {
+        font-size: 1em; width: 4em; padding: 0px;
+        border-radius: 0.5ex;}
+
     #CODEXPAGE {
         top: 0px; bottom: 0px;
         left: 5px; right: 5px;}

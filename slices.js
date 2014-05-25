@@ -76,10 +76,10 @@ Codex.Slice=(function () {
         var score=((query)&&(query.scores.get(info)));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
         var note_len=((info.note)?(info.note.length):(0));
-        var overdoc=getoverdoc(info);
+        var overlay=getoverlay(info);
         var shared=(info.shared)||[];
         if (typeof shared === 'string') shared=[shared];
-        if (overdoc) shared=RefDB.remove(shared,(overdoc._qid||overdoc._id));
+        if (overlay) shared=RefDB.remove(shared,(overlay._qid||overlay._id));
         var body=
             fdjtDOM("div.codexcardbody",
                     ((score)&&(showscore(score,query))),
@@ -274,7 +274,7 @@ Codex.Slice=(function () {
         addListener(tool,"release",glossaction);
         
         var picinfo=getpicinfo(info);
-        var overdoc=getoverdoc(info);
+        var overlay=getoverlay(info);
         
         var pic=((picinfo)?
                  (fdjtDOM.Image(picinfo.src,picinfo.classname,picinfo.alt)):
@@ -282,27 +282,27 @@ Codex.Slice=(function () {
         if (pic) fdjtDOM.addListener(pic,"touchstart",fdjt.UI.noDefault);
 
         return [pic,
-                ((overdoc)&&(overdoc.name)&&
-                 (fdjtDOM("span.overdoc",(overdoc.name)))),
-                /* ((overdoc)&&(overdoc.name)&&(" \u00b7 ")), */
-                (((!(overdoc))&&(userinfo)&&
+                ((overlay)&&(overlay.name)&&
+                 (fdjtDOM("span.overlay",(overlay.name)))),
+                /* ((overlay)&&(overlay.name)&&(" \u00b7 ")), */
+                (((!(overlay))&&(userinfo)&&
                   ((userinfo.name)||(userinfo.userid)))&&
                  (fdjtDOM("span.user",((userinfo.name)||(userinfo.userid))))),
-                ((!(overdoc))&&(userinfo)&&
+                ((!(overlay))&&(userinfo)&&
                  ((userinfo.name)||(userinfo.userid))&&
                  (" \u2014 ")),
                 tool];}
     function showdocinfo(info) {
         if (info) return false; else return false;}
 
-    function getoverdoc(info){
+    function getoverlay(info){
         if (info.sources) {
             var sources=info.sources;
             if (typeof sources === 'string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
                 var source=Codex.sourcedb.loadref(sources[i++]);
-                if ((source)&&(source.kind===':OVERDOC'))
+                if ((source)&&(source.kind===':OVERLAY'))
                     return source;}
             return false;}
         else return false;}
@@ -324,7 +324,7 @@ Codex.Slice=(function () {
             if (typeof sources==='string') sources=[sources];
             i=0; lim=sources.length; while (i<lim) {
                 var source=Codex.sourcedb.loadref(sources[i++]);
-                if ((source)&&(source.kind===':OVERDOC')&&(source.pic))
+                if ((source)&&(source.kind===':OVERLAY')&&(source.pic))
                     return { src: source.pic, alt: source.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.links) {
