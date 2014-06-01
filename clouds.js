@@ -53,6 +53,7 @@
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
     var fdjtID=fdjt.ID;
+    var TapHold=fdjt.TapHold;
     var RefDB=fdjt.RefDB, Ref=fdjt.Ref;
     var KNode=Knodule.KNode;
 
@@ -86,7 +87,8 @@
         if (dom) addClass(dom,"completions");
         else if ((completions)&&(completions.dom))
             dom=completions.dom;
-        else dom=fdjtDOM("div.completions.cloud.noinput",getShowAll(usecues,n_terms));
+        else dom=fdjtDOM("div.completions.cloud.noinput",
+                         getShowAll(usecues,n_terms));
         var maxmsg=fdjtDOM(
             "div.maxcompletemsg",
             "There are a lot ","(",fdjtDOM("span.completioncount","really"),")",
@@ -371,8 +373,10 @@
                 cotags,query.tagscores,query.tagfreqs,
                 cotags.length,false,false,query.tags);
             var cloud=completions.dom;
+            if (!(completions.taphold))
+                completions.taphold=new TapHold(cloud);
             addClass(cloud,"searchcloud");
-            cloud.onclick=searchcloud_ontap;
+            Codex.setupGestures(cloud);
             var n_refiners=cotags.length;
             var hide_some=(n_refiners>Codex.show_refiners);
             if (hide_some) {
@@ -562,7 +566,7 @@
                     cloud.dom,min_score,max_score);}
     Codex.sizeCloud=sizeCloud;
 
-    function searchcloud_ontap(evt){
+    function searchcloud_select(evt){
         evt=evt||event;
         var target=fdjtDOM.T(evt);
         var completion=getParent(target,".completion");
@@ -597,7 +601,7 @@
             fdjtDOM.toggleClass(completions,"showall");
             fdjtDOM.cancel(evt);}
         else {}}
-    Codex.UI.handlers.searchcloud_ontap=searchcloud_ontap;
+    Codex.UI.handlers.searchcloud_select=searchcloud_select;
 
     function add_searchtag(value){
         Codex.setQuery(Codex.extendQuery(Codex.query,value));}

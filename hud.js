@@ -57,6 +57,7 @@ Codex.setMode=
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
         var fdjtID=fdjt.ID;
+        var TapHold=fdjtUI.TapHold;
         var cxID=Codex.ID;
         
         // Helpful dimensions
@@ -224,7 +225,7 @@ Codex.setMode=
             Codex.TapHold.head=
                 new fdjtUI.TapHold(Codex.DOM.head,{override: true});
             Codex.DOM.skimmer=fdjtID("CODEXSKIMMER");
-            Codex.TapHold.skimmer=new fdjtUI.TapHold(Codex.DOM.skimmer);
+            Codex.TapHold.skimmer=new TapHold(Codex.DOM.skimmer);
             
             var help=Codex.DOM.help=fdjtID("CODEXHELP");
             help.innerHTML=fixStaticRefs(Codex.HTML.help);
@@ -242,6 +243,7 @@ Codex.setMode=
                         fdjtUI.FDJT_COMPLETE_CLOUD|
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
             updateScroller("CODEXGLOSSCLOUD");
+            Codex.TapHold.gloss_cloud=new TapHold(Codex.gloss_cloud.dom);
 
             Codex.empty_cloud=
                 new fdjtUI.Completions(
@@ -254,6 +256,7 @@ Codex.setMode=
                     Codex.adjustCloudFont(this);};
             Codex.DOM.empty_cloud=fdjtID("CODEXALLTAGS");
             updateScroller("CODEXALLTAGS");
+            Codex.TapHold.empty_cloud=new TapHold(Codex.empty_cloud.dom);
             
             var dom_share_cloud=fdjtID("CODEXSHARECLOUD");
             Codex.share_cloud=
@@ -264,6 +267,7 @@ Codex.setMode=
                         fdjtUI.FDJT_COMPLETE_ANYWORD);
             Codex.DOM.share_cloud=dom_share_cloud;
             updateScroller("CODEXSHARECLOUD");
+            Codex.TapHold.share_cloud=new TapHold(Codex.share_cloud.dom);
 
             fdjtDOM.setupCustomInputs(fdjtID("CODEXHUD"));
 

@@ -2248,9 +2248,9 @@
         else if (getParent(target,".sharing"))
             toggleClass(getParent(target,".sharing"),"expanded");
         else {}}
-    Codex.UI.outlets_tapped=glossform_outlets_tapped;
+    Codex.UI.glossform_outlets_tapped=glossform_outlets_tapped;
 
-    function outlet_tapped(evt){
+    function outlet_select(evt){
         var target=fdjtUI.T(evt);
         var outletspan=getParent(target,'.outlet');
         if (!(outletspan)) return;
@@ -2259,7 +2259,6 @@
         var outlet=outletspan.value;
         Codex.addOutlet2Form(form,outlet);
         fdjtUI.cancel(evt);}
-
 
     /* The addgloss menu */
 
@@ -2718,10 +2717,14 @@
          "#CODEXATTACHTITLE": {keydown: attach_keydown},
          "#CODEXATTACHOK": {click: attach_action},
          "#CODEXATTACHCANCEL": {click: attach_cancel},
-         "#CODEXGLOSSCLOUD": {click: Codex.UI.handlers.glosscloud_ontap},
-         "#CODEXSHARECLOUD": {click: outlet_tapped},
-         "#CODEXALLTAGS": {click: Codex.UI.handlers.searchcloud_ontap},
-         "#CODEXSEARCHCLOUD": {click: Codex.UI.handlers.searchcloud_ontap},
+         "#CODEXGLOSSCLOUD": {
+             tap: Codex.UI.handlers.glosscloud_select,
+             release: Codex.UI.handlers.glosscloud_select},
+         "#CODEXSHARECLOUD": {
+             tap: outlet_select,release: outlet_select},
+         ".searchcloud": {
+             tap: Codex.UI.handlers.searchcloud_select,
+             release: Codex.UI.handlers.searchcloud_select},
          "#CODEXHELPBUTTON": {
              tap: toggleHelp,
              hold: function(evt){setHelp(true); cancel(evt);},
@@ -2870,10 +2873,14 @@
          "#CODEXATTACHTITLE": {keydown: attach_keydown},
          "#CODEXATTACHOK": {click: attach_action},
          "#CODEXATTACHCANCEL": {click: attach_cancel},
-         "#CODEXGLOSSCLOUD": {touchend: Codex.UI.handlers.glosscloud_ontap},
-         "#CODEXALLTAGS": {touchend: Codex.UI.handlers.searchcloud_ontap},
-         "#CODEXSEARCHCLOUD": {touchend: Codex.UI.handlers.searchcloud_ontap},
-         "#CODEXSHARECLOUD": {touchend: outlet_tapped},
+         "#CODEXGLOSSCLOUD": {
+             tap: Codex.UI.handlers.glosscloud_select,
+             release: Codex.UI.handlers.glosscloud_select},
+         "#CODEXSHARECLOUD": {
+             tap: outlet_select,release: outlet_select},
+         ".searchcloud": {
+             tap: Codex.UI.handlers.searchcloud_select,
+             release: Codex.UI.handlers.searchcloud_select},
          "#CODEXNEXTPAGE": {touchstart: function(evt){
              Codex.pageForward(evt); cancel(evt);}},
          "#CODEXPREVPAGE": {touchstart: function(evt){

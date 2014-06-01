@@ -1022,7 +1022,7 @@
 
     /***** The Gloss Cloud *****/
 
-    function glosscloud_ontap(evt){
+    function glosscloud_select(evt){
         var target=fdjtUI.T(evt);
         var completion=getParent(target,'.completion');
         if (completion) {
@@ -1036,7 +1036,7 @@
                 var input=getInput(form,"NOTE");
                 if ((input)&&(tagstring)) tagclear(input);}}
         fdjtUI.cancel(evt);}
-    Codex.UI.handlers.glosscloud_ontap=glosscloud_ontap;
+    Codex.UI.handlers.glosscloud_select=glosscloud_select;
 
     /***** The Outlet Cloud *****/
 
