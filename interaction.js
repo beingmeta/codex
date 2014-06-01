@@ -625,7 +625,7 @@
             fdjtLog("content_held/select_start %o %o %o",
                     selecting,passage,evt);
         // This makes a selection start on the region we just created.
-        setTimeout(function(){selecting.startEvent(evt);},0);}
+        setTimeout(function(){selecting.startEvent(evt,1000);},0);}
     Codex.getTextSelectors=function getTextSelectors(){return selectors;};
 
     function abortSelect(except){
