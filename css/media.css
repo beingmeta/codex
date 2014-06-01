@@ -84,8 +84,14 @@
     #CODEXFOOT img.hudbutton[hudmode="help"] {
         display: none;}
     
-    #CODEXSHOWCOVER {
-        font-size: 1em; width: 4em; padding: 0px;
+   #CODEXHEAD { max-height: 60px; height: 60px; background-color: rgba(255,255,255,0.7); }
+
+   #CODEXHUD #CODEXPOINTGLOSSES.hudpanel {
+     max-width: 90%; min-width: inherit; left: 5px; right: 10px; }
+
+   #CODEXSHOWCOVER {
+        font-size: 1.5em; width: 4em; padding: 0px;
+        margin-top: 0.25ex;
         border-radius: 0.5ex;}
 
     #CODEXPAGE {

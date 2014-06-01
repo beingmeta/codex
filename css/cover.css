@@ -131,11 +131,11 @@ div.loginbox form > span {
 body.cxUSER #CODEXCOVER div.userbox {
     height: 40px;}
 
-#CODEXCOVER div.userbox a.sblogo { display: none;}
+#CODEXCOVER div.userbox a.sbookslogo { display: none;}
 
 @media (max-width: 600px) {
     #CODEXCOVER div.userbox span.text {display: none;}
-    #CODEXCOVER div.userbox a.sblogo { display: inline; float: left;}
+    #CODEXCOVER div.userbox a.sbookslogo { float: left; display: inline-block;}
     #CODEXCOVER div.userbox a.sbooks { display: none;}
     #CODEXCOVER div.userbox a.codexusername { float: right;}}
 
