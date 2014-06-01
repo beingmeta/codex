@@ -106,6 +106,10 @@
         margin-left: 0px; margin-right: 0px;}
 }
 
+body.cxTOUCH .checkspan input[TYPE="CHECKBOX"], body.cxTOUCH .checkspan input[TYPE="RADIO"] {
+     height: 1em; width: 1em;}}
+
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***
