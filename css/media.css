@@ -67,9 +67,7 @@
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
     #CODEXHUD #CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
-
 }
-
 
 /* Handheld media rules */
 
@@ -77,7 +75,12 @@
     #CODEXFOOT #CODEXPAGEBAR {
         left: 0px; right: 0px;}
 
-    #CODEXHEAD img.hudbutton[hudmode="allglosses"],
+    #CODEXCOVERMESSAGE > div {
+        font-size: 0.7em;}
+    #CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
+        font-size: 1.0;em;}
+
+   #CODEXHEAD img.hudbutton[hudmode="allglosses"],
     #CODEXHEAD img.hudbutton[hudmode="help"] {
         display: inline-block;}
     #CODEXFOOT img.hudbutton[hudmode="allglosses"],

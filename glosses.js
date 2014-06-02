@@ -434,6 +434,8 @@
                     evt,Codex.mode,fdjt.ID("CODEXLIVEGLOSS"));
         if (Codex.mode!=="addgloss") 
             Codex.setMode("addgloss",false);
+        else if ((Codex.modechange)&&
+                 ((fdjtTime()-Codex.modechange)<1500)) {}
         else Codex.setHUD(false);
         fdjtUI.cancel(evt);
         return;}

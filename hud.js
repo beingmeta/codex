@@ -479,9 +479,11 @@ Codex.setMode=
                 else if (CodexCoverModes.test(mode)) {
                     fdjtID("CODEXCOVER").className=mode;
                     showCover();
+                    Codex.modechange=fdjtTime();
                     return;}
                 else {
                     Codex.hideCover();
+                    Codex.modechange=fdjtTime();
                     if (codex_mode_foci[Codex.mode]) {
                         var modeinput=fdjtID(codex_mode_foci[Codex.mode]);
                         modeinput.blur();}

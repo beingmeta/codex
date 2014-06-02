@@ -813,6 +813,8 @@ Codex.Startup=
             fdjtLog("Startup done");
             Codex.displaySync();
             fdjtDOM.dropClass(document.body,"cxSTARTUP");
+            if (fdjtID("CODEXREADYMESSAGE"))
+                fdjtID("CODEXREADYMESSAGE").innerHTML="Open";
             if (mode) {}
             else if (getQuery("startmode"))
                 mode=getQuery("startmode");
@@ -1279,8 +1281,10 @@ Codex.Startup=
                 fdjtID("CODEXSETTINGS").removeAttribute("style");
             if (fdjtID("CODEXAPPHELP"))
                 fdjtID("CODEXAPPHELP").removeAttribute("style");
-            if (fdjtID("CODEXREADYMESSAGE"))
+            if (fdjtID("CODEXREADYMESSAGE")) 
                 fdjtID("CODEXREADYMESSAGE").removeAttribute("style");
+            if (fdjtID("CODEXBUSYMESSAGE"))
+                fdjtID("CODEXBUSYMESSAGE").removeAttribute("style");
             if (fdjtID("CODEXCOVERCONTROLS"))
                 fdjtID("CODEXCOVERCONTROLS").removeAttribute("style");
             
