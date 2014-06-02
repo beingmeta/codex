@@ -281,6 +281,9 @@ div.sbookabout div.title { font-size: 150%;}
 div.sbookabout div.byline { font-size: 125%; font-weight: bold;}
 div.sbookabout div.publisher { font-style: italic;}
 
+.sbookabout img.portrait, .sbookabout img.cover {
+    max-width: 25%; height: auto; float: right;}
+
 /* Conditional display */
 
 div.logindoc { display: none;}

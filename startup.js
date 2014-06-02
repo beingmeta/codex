@@ -1539,7 +1539,8 @@ Codex.Startup=
         function fillAboutInfo(about){
             var bookabout=fdjtID("SBOOKABOUTBOOK")||
                 fdjtID("SBOOKABOUTPAGE")||fdjtID("SBOOKABOUT");
-            var authorabout=fdjtID("SBOOKAUTHORPAGE")||
+            var authorabout=fdjtID("SBOOKABOUTORIGIN")||
+                fdjtID("SBOOKAUTHORPAGE")||
                 fdjtID("SBOOKABOUTAUTHOR");
             var acknowledgements=
                 fdjtID("SBOOKACKNOWLEDGEMENTSPAGE")||
