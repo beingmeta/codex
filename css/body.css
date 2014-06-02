@@ -101,6 +101,11 @@ p { line-height: 1.2;}
 
 .codexbody .titlepage, .codexbody .sbooktitlepage { text-align: center;}
 
+.sbooktitlepage .title h1, .sbooktitlepage .credits h1,
+.sbooktitlepage .title h2, .sbooktitlepage .credits h2,
+.sbooktitlepage .title h3, .sbooktitlepage .credits h3 {
+    margin-top: 0px; margin-bottom: 0.5ex;}
+
 body.codexpagesizedefault #CODEXPAGE {}
 body.codexpagesizefull #CODEXPAGE {
     height: 98%; top: 1%; bottom: 1%;
