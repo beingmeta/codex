@@ -612,6 +612,8 @@ img.sbookfullpage, img.sbookcover {
     display: block;}
 
 .sbooktitlepage {text-align: center;}
+.sbooktitlepage .titleblock {
+    white-space: nowrap;}
 
 /* HTML5ish elements */
 
