@@ -101,6 +101,10 @@ p { line-height: 1.2;}
 
 .codexbody .titlepage, .codexbody .sbooktitlepage { text-align: center;}
 
+.sbooktitlepage .title { margin-bottom: 1em; }
+.sbooktitlepage .credits {
+    margin-top: 1em; margin-bottom: 1em; }
+
 .sbooktitlepage .title h1, .sbooktitlepage .credits h1,
 .sbooktitlepage .title h2, .sbooktitlepage .credits h2,
 .sbooktitlepage .title h3, .sbooktitlepage .credits h3 {
