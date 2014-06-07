@@ -1481,14 +1481,15 @@ var Codex={
         // This should generate a textual cover page
         else if ((!(fdjt.ID("CODEXTITLEPAGE")))&&
                  (!(fdjt.ID("SBOOKTITLEPAGE")))) {
-            cover=fdjtDOM("div.codexcoverpage.codexfullpage#SBOOKTITLEPAGE","\n",
-                          ((Codex.booktitle)?
-                           (fdjtDOM("h1.title",Codex.booktitle)):
-                           null),
-                          "\n",
-                          ((Codex.bookauthor)?
-                           (fdjtDOM("h1.author",Codex.bookauthor)):
-                           null));
+            cover=fdjtDOM(
+                "div.codexcoverpage.codexfullpage#SBOOKTITLEPAGE","\n",
+                ((Codex.booktitle)?
+                 (fdjtDOM("h1.title",Codex.booktitle)):
+                 null),
+                "\n",
+                ((Codex.bookauthor)?
+                 (fdjtDOM("h1.author",Codex.bookauthor)):
+                 null));
             fdjtDOM.prepend(Codex.content,cover);}
         if (cover) Codex.cover=cover;
         return cover;}

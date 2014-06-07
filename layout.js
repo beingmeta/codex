@@ -661,10 +661,11 @@ Codex.Paginate=
                         fdjtDOM.getMeta("SBOOKS.dontbreakinside",true));
             if ((abi)&&(abi.length)) args.avoidbreakinside=fdjtDOM.sel(abi);
 
-            var fullpages=[".sbookfullpage",".sbooktitlepage",".sbookpage"].concat(
-                fdjtDOM.getMeta("SBOOKS.fullpage",true)).concat(
+            var fullpages=[".sbookfullpage",".sbooktitlepage",".sbookpage"].
+                concat(
                     fdjtDOM.getMeta("SBOOKS.fullpage",true)).concat(
-                        fdjtDOM.getMeta("sbookfullpage",true));
+                        fdjtDOM.getMeta("SBOOKS.fullpage",true)).concat(
+                            fdjtDOM.getMeta("sbookfullpage",true));
             if ((fullpages)&&(fullpages.length))
                 args.fullpages=fdjtDOM.sel(fullpages);
             

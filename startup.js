@@ -1351,9 +1351,9 @@ Codex.Startup=
                 titlepage.setAttribute("style","");
                 titlepage.style.opacity=0.0; titlepage.style.display="block";
                 titlepage.style.overflow="visible";
-                fdjtDOM.scaleToFit(titlepage,0.9);
-                titlepage.style.opacity=null; titlepage.style.display=null;
-                titlepage.style.overflow=null;}
+                fdjtDOM.tweakFont(titlepage);
+                titlepage.style.opacity=""; titlepage.style.display="";
+                titlepage.style.overflow="";}
             if ((fdjtID("CODEXTITLEPAGE"))&&(fdjtID("CODEXTITLEPAGEHOLDER")))
                 fdjtDOM.remove("CODEXTITLEPAGEHOLDER");
             
