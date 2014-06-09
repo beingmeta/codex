@@ -109,6 +109,8 @@ p { line-height: 1.2;}
 .sbooktitlepage .title h2, .sbooktitlepage .credits h2,
 .sbooktitlepage .title h3, .sbooktitlepage .credits h3 {
     margin-top: 0px; margin-bottom: 0.5ex;}
+.sbooktitlepage .credits .lifespan {
+    white-space: nowrap; font-size: 0.9em;}
 
 body.codexpagesizedefault #CODEXPAGE {}
 body.codexpagesizefull #CODEXPAGE {
