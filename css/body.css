@@ -94,6 +94,9 @@ body.sbook { font-size: 62.5%; }
 p { line-height: 1.2;}
 #CODEXPAGES .codexpage.codexcoversize p { line-height: 1.05;}
 
+body span { font-size: inherit; }
+span { font-size: inherit; }
+
 /*
 #CODEXBODY .tapholdtarget {outline: dotted blue 1px;}
 #CODEXBODY .tapholdtarget .tapholdtarget {outline: none;}
