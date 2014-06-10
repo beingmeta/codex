@@ -85,26 +85,26 @@ body.cxLAYOUT #CODEXLAYOUTADJUST { display: block; }
 body.cxLAYOUT hr#CODEXLAYOUTINDICATOR {
     display: block; opacity: 0.8;}
 
-#CODEXFOOT #CODEXPAGEBAR .pagespans {
+#CODEXFOOT #CODEXPAGEBAR .codexpagespans {
   position: absolute; bottom: 0px;
   width: 100%; height: 100%; z-index: 10;}
-#CODEXFOOT #CODEXPAGEBAR .pagespans span {
+#CODEXFOOT #CODEXPAGEBAR .codexpagespans span {
   opacity: 0.0; overflow: hidden; z-index: 20; height: 100%;
   display: inline-block; position: absolute; bottom: 0px;
   box-sizing: border-box; vertical-align: top;}
-body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span {
     height: 100%;}
-#CODEXFOOT #CODEXPAGEBAR .pagespans span.current {
+#CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
   background-color: lightblue; color: transparent; 
   visibility: visible; opacity: 1.0; z-index: 100;
   overflow: visible; z-index: 50;}
-body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans {
   top: 0px; bottom: auto;}
-body #CODEXFOOT #CODEXPAGEBAR .pagespans span.current {
+body #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
     vertical-align: bottom; height: 50%;}
-body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span.current {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
     height: 100%;}
-body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span.current {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
   overflow: visible; visibility: visible; z-index: 60; color: black;
   opacity: 1.0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -113,12 +113,12 @@ body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span.current {
   -khtml-opacity: 1.00;
   -moz-opacity: 1.00;
   -o-opacity: 1.00;}
-body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span.preview {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview {
   background-color: gold; overflow: visible;
   visibility: visible; opacity: 1.0; z-index: 100;
   font-size: 200%; height: 150%; width: 1.5em;
   pointer-events: none;}
-body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span.current {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
     font-size: 200%; height: 75%;}
 
 #CODEXFOOT #CODEXPAGEBAR #CODEXPAGEPROGRESS {
@@ -145,7 +145,7 @@ body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span.current {
 
 body.cxTOUCH.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR {
     height: 150px;}
-body.cxTOUCH.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .pagespans span.preview  {
+body.cxTOUCH.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview  {
     height: 100%;}
 
 #CODEXHUD .codexgoto {

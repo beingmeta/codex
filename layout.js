@@ -282,7 +282,7 @@ Codex.Paginate=
                             indicator.style.width=Math.floor(pct)+"%";
                         fdjtDOM.replace(
                             "CODEXPAGENOTEXT",
-                            fdjtDOM("div.pageno#CODEXPAGENOTEXT",
+                            fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
                                     Codex.curpage||"?",
                                     "/",pagenum," (",Math.floor(pct),
                                     "%)"));
@@ -305,7 +305,7 @@ Codex.Paginate=
                                 indicator.style.width=Math.floor(pct)+"%";
                             fdjtDOM.replace(
                                 "CODEXPAGENOTEXT",
-                                fdjtDOM("div.pageno#CODEXPAGENOTEXT",
+                                fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
                                         Codex.curpage||"?",
                                         "/",pagenum," (",Math.floor(pct),
                                         "%)"));
@@ -758,7 +758,7 @@ Codex.Paginate=
             if (Codex.CSS.pagespanrule)
                 Codex.CSS.pagespanrule.style.width=spanwidth+"px";
             else Codex.CSS.pagespanrule=fdjtDOM.addCSSRule(
-                "div.pagespans > span","width: "+spanwidth+"px;");
+                "div.codexpagespans > span","width: "+spanwidth+"px;");
             addClass(document.body,"cxSCALEDLAYOUT");}
         Codex.scaleLayout=scaleLayout;
         
@@ -787,7 +787,7 @@ Codex.Paginate=
                 locoff.title=location+"/"+max_loc;}
             else locoff=fdjtDOM("span.locoff#CODEXLOCPCT");
             var pageno_text=fdjtDOM(
-                "span#CODEXPAGENOTEXT.pageno",pagenum,"/",npages);
+                "span#CODEXPAGENOTEXT.codexpageno",pagenum,"/",npages);
             fdjtDOM.replace("CODEXPAGENOTEXT",pageno_text);
             fdjtDOM.replace("CODEXLOCPCT",locoff);
             locoff.title=
@@ -867,7 +867,7 @@ Codex.Paginate=
             if (Codex.CSS.pagespanrule)
                 Codex.CSS.pagespanrule.style.width=spanwidth+"px";
             else Codex.CSS.pagespanrule=fdjtDOM.addCSSRule(
-                "div.pagespans > span","width: "+spanwidth+"px;");
+                "div.codexpagespans > span","width: "+spanwidth+"px;");
             while (i<n) {
                 var page=Codex.layout.pages[i];
                 var topid=(page)&&(page.getAttribute("data-topid"));

@@ -377,9 +377,10 @@ Codex.Startup=
             // tags, etc), including settings or guidance for
             // skimming, graphics, layout, glosses, etc.
             readBookSettings();
-            fdjtLog("Book %s (%s) %s (%s)",
+            fdjtLog("Book %s (%s) %s (%s%s)",
                     Codex.docref||"@??",Codex.bookbuild||"",
-                    Codex.refuri,Codex.sourceid);
+                    Codex.refuri,Codex.sourceid,
+                    ((Codex.sourcetime)?(": "+Codex.sourcetime):("")));
             
             // Get config information
             initConfig();
@@ -879,6 +880,7 @@ Codex.Startup=
 
             Codex.sourceid=getMeta("SBOOKS.sourceid")||getMeta("SBOOKS.fileid")||
                 Codex.docuri;
+            Codex.sourcetime=getMeta("SBOOKS.sourcetime");
             var oldid=getLocal("codex.sourceid("+Codex.docuri+")");
             if ((oldid)&&(oldid!==Codex.sourceid)) {
                 var layouts=getLocal("codex.layouts("+oldid+")");
@@ -1400,7 +1402,14 @@ Codex.Startup=
                 cover.appendChild(settings);}
             settings.innerHTML=fixStaticRefs(Codex.HTML.settings);
             Codex.DOM.settings=settings;
-
+            var codexbookinfo=fdjt.ID("CODEXBOOKINFO");
+            if (!(codexbookinfo)) {
+                codexbookinfo=fdjtDOM("div#CODEXBOOKINFO");
+                fdjtDOM(settings,"\n",codexbookinfo);}
+            codexbookinfo.innerHTML=
+                "Doc "+Codex.docref+"; sourceid="+Codex.sourceid+
+                ((Codex.sourcetime)?(" ("+Codex.sourcetime+")"):(""))+
+                "; Codex version "+Codex.version+" built "+Codex.buildstamp+" on "+Codex.buildhost;
             var help=Codex.DOM.help=fdjtID("CODEXAPPHELP");
             if (!(help)) {
                 help=fdjtDOM("div#CODEXAPPHELP");
