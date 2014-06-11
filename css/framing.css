@@ -48,6 +48,8 @@
 body {
     /* -- Sets 1em to equal 10px -- */ 
     font-size: 62.5%;
+    /* Don't set line-height here, it will get inherited funny */
+    line-height: inherit;
     /* Override any width definition on body itself */
     width: inherit; margin-left: auto; margin-right: auto;
     /* We do our own selection handling, to be consistent */

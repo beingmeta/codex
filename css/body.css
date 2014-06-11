@@ -33,7 +33,7 @@
 
 /* Style variants */
 
-body.sbook { font-size: 62.5%; }
+body.sbook { font-size: 62.5%; line-height: inherit;}
 
 #CODEXBODY #CODEXCONTENT {
     margin-left: 3em; margin-right: 3em;}
