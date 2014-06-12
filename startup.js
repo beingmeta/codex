@@ -878,7 +878,8 @@ Codex.Startup=
             
             var refuris=getLocal("codex.refuris",true)||[];
 
-            Codex.sourceid=getMeta("SBOOKS.sourceid")||getMeta("SBOOKS.fileid")||
+            Codex.sourceid=
+                getMeta("SBOOKS.sourceid")||getMeta("SBOOKS.fileid")||
                 Codex.docuri;
             Codex.sourcetime=getMeta("SBOOKS.sourcetime");
             var oldid=getLocal("codex.sourceid("+Codex.docuri+")");
@@ -929,6 +930,9 @@ Codex.Startup=
                 Codex.targetids=new RegExp("^"+prefix);
             else Codex.targetids=false;
             
+            if (getMeta("CODEX.forcelayout"))
+                default_config.forcelayout=true;
+
             var autotoc=getMeta("SBOOKS.autotoc");
             if (autotoc) {
                 if ((autotoc[0]==="y")||(autotoc[0]==="Y")||
