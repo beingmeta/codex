@@ -99,6 +99,7 @@ body.cxTOUCH #CODEXFRAME > #CODEXHUD > div {
 body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > div,
 body.cxTOUCH #CODEXFRAME > #CODEXHUD.addgloss > div,
 body.cxTOUCH.cxSKIMMING #CODEXFRAME > #CODEXHUD > #CODEXSKIMMER {
+    background-color: transparent;
     pointer-events: all;}
 
 body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHEAD,

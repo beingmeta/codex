@@ -721,7 +721,7 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
 
 #CODEXHUD #CODEXSKIMMER.expanded, body.hudup #CODEXSKIMMER.expanded,
 #CODEXTOP #CODEXSKIMMER.expanded {
-    height: inherit; max-height: inherit; overflow: auto;}
+    max-height: inherit; overflow: auto;}
 
 #CODEXSKIMMER.expanded .ellipsis .elided { display: inline; }
 #CODEXSKIMMER.expanded .ellipsis .elision,
@@ -861,9 +861,8 @@ body.hudup #CODEXHUD #CODEXSKIMMER.sbookatstart img[alt="beginning"] {display: b
 
 #CODEXSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
 
-#CODEXHUD #CODEXSKIMMER.expanded img.glosspic,
-#CODEXHUD div.hudpanel#CODEXSKIMMER.expanded {
-    max-height: inherit; height: inherit;}
+#CODEXHUD div.hudpanel#CODEXSKIMMER.expanded { max-height: inherit; }
+#CODEXHUD #CODEXSKIMMER.expanded img.glosspic {  height: inherit; }
 
 #CODEXFRAME.cxANIMATE #CODEXHUD #CODEXSKIMMER {
     transition-property: background-color;
