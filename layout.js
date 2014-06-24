@@ -875,7 +875,7 @@ Codex.Paginate=
                 var zstyle=(((topinfo)&&(topinfo.level))?
                             ("; z-index: 50;"):(""));
                 html.push("<span id='CODEXPAGESPAN"+(i+1)+"' "+
-                          "class='pagespan' "+
+                          "class='codexpagespan' "+
                           "title='p"+(i+1)+". Hold to glimpse, tap to jump' "+
                           "style='left: "+(100*(i/n))+"%"+zstyle+"'"+
                           ">"+(i+1)+"</span>");
