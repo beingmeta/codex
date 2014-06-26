@@ -1,0 +1,39 @@
+26 June 2014
+
+New, more robust semantics.  The main change here is to use visible
+modes to help make similar actions distinct and increase robustness.
+
+First, a TapHold change,
+  add min velocity and max time to touch detection;
+
+Second, on touch devices, don't segue from starting a gloss into selecting text
+  (e.g. no fakePress)
+
+Third, two ways to start a gloss: press or one finger double tap.
+
+Fourth, top tap/swipe raises HUD, bottom tap/swipe restores last mode
+(including skim cancelling).
+
+Fifth, in slices, have "hold doc" visible somewhere.  Ideal: have
+motion change transparency and shift preview target.  Slide event?
+Make tap detection more robust.
+
+Increase HUD head and foot sizes?  100px?  Scale body more during
+skimming and preview?  Set preview/skim scaling rule based on view
+size.
+
+In skimmer, have swipe left-right advance/reverse.  Swipe down
+expands, swipe up contracts, tap clicks.  (With mouse, tap
+expands/contracts except on clickables.  Click body or escape key also
+contracts.)
+
+New directions:
+  One finger left/right to move by pages.
+  Two finger swipe to move through sections, matches, or glosses.
+  Blue bars indicate glosses, touch or swipe left to view.
+  Press/hold or double (tap/click) to add your own gloss.  Press and
+   drag to highlight text.
+  Tap top/swipe down to see book tools.
+  
+
+  
