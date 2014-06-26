@@ -77,7 +77,7 @@ Codex.DOMScan=(function(){
         docinfo._heads=allheads;
         docinfo._ids=allids;
         if (!(root.id)) root.id="SBOOKROOT";
-        if ((Codex.Trace.startup>1)||(Codex.Trace.scan)) {
+        if ((Codex.Trace.startup>1)||(Codex.Trace.domscan)) {
             if (root.id) 
                 fdjtLog("Scanning %s#%s for structure and metadata",
                         root.tagName,root.id);
@@ -175,7 +175,7 @@ Codex.DOMScan=(function(){
                 (docinfo[headid]=new ScanInfo(headid,scanstate));
             scanstate.headcount++;
             allheads.push(headid);
-            if (Codex.Trace.scan>1)
+            if (Codex.Trace.domscan>1)
                 fdjtLog("Scanning head item %o under %o at level %d w/id=#%s ",
                         head,curhead,level,headid);
             /* Iniitalize the headinfo */
@@ -213,7 +213,7 @@ Codex.DOMScan=(function(){
                 /* Climb the stack of headers, closing off entries and setting up
                    prev/next pointers where needed. */
                 while (scaninfo) {
-                    if (Codex.Trace.scan>2)
+                    if (Codex.Trace.domscan>2)
                         fdjtLog("Finding head@%d: scan=%o, info=%j, sbook_head=%o, cmp=%o",
                                 scanlevel,scan||false,scaninfo,(scanlevel<level));
                     if (scanlevel<level) break;
@@ -225,7 +225,7 @@ Codex.DOMScan=(function(){
                     scaninfo=scaninfo.head;
                     scan=scaninfo.elt||document.getElementById(scaninfo.frag);
                     scanlevel=((scaninfo)?(scaninfo.level):(0));}
-                if (Codex.Trace.scan>2)
+                if (Codex.Trace.domscan>2)
                     fdjtLog("Found parent: up=%o, upinfo=%o, atlevel=%d, sbook_head=%o",
                             scan||false,scaninfo,scaninfo.level,scaninfo.head);
                 /* We've found the enclosing head for this head, so we
@@ -243,7 +243,7 @@ Codex.DOMScan=(function(){
             if (supinfo) newheads.push(supinfo);
             headinfo.heads=newheads;
             headinfo.indexRef('heads',newheads);
-            if (Codex.Trace.scan>2)
+            if (Codex.Trace.domscan>2)
                 fdjtLog("@%d: Found head=%o, headinfo=%o, sbook_head=%o",
                         scanstate.location,head,headinfo,headinfo.head);
             /* Update the toc state */
@@ -280,7 +280,7 @@ Codex.DOMScan=(function(){
                 return;
             if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
 
-            if (Codex.Trace.scan>3)
+            if (Codex.Trace.domscan>3)
                 fdjtLog("Scanning %o level=%o, loc=%o, head=%o: %j",
                         child,curlevel,location,curhead,curinfo);
 
@@ -433,7 +433,7 @@ Codex.DOMScan=(function(){
             scaninfo.ends_at=scanstate.location;
             scaninfo=scaninfo.head;}
         var done=new Date();
-        if ((Codex.Trace.startup)||(Codex.Trace.scan))
+        if ((Codex.Trace.startup)||(Codex.Trace.domscan))
             fdjtLog('Gathered metadata in %f secs over %d heads, %d nodes',
                     (done.getTime()-start.getTime())/1000,
                     scanstate.headcount,scanstate.eltcount);
