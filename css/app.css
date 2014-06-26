@@ -75,11 +75,11 @@ body #CODEXPAGE {
 body.cxNOSHRINK #CODEXPAGE {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-/*
 body.cxSHRINK #CODEXPAGE, body.cxPREVIEW #CODEXPAGE {
-    transform: scale(0.95,0.95); -webkit-transform:scale(0.95,0.95);
-    -moz-transform: scale(0.95,0.95); -o-transform:scale(0.95,0.95);}
-*/
+    transform-origin: center bottom;
+    -webkit-transform-origin: center bottom;
+    -moz-transform-origin: center bottom;
+    -o-transform: center bottom;}
 
 body.cxANIMATE.cxNOSHRINK #CODEXPAGE .codexpage {
     transform: inherit; -webkit-transform: inherit;

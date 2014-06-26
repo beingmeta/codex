@@ -1478,12 +1478,6 @@ Codex.Startup=
             // Make the cover hidden by default
             Codex.CSS.hidecover=fdjtDOM.addCSSRule(
                 "#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
-            var shrink_rule=
-                Codex.CSS.shrinkrule=fdjtDOM.addCSSRule(
-                    "body.cxSHRINK #CODEXPAGE,body.cxPREVIEW #CODEXPAGE, body.cxSKIMMING #CODEXPAGE", 
-                    fdjt.DOM.transform+": scale(0.95,0.95);");
-            // shrink_rule.style[fdjtDOM.transform]="scale(0.95,0.95);";
-
             if (Codex.Trace.startup>1)
                 fdjtLog("Cover setup done in %dms",fdjtTime()-started);
             return cover;}
@@ -1804,6 +1798,15 @@ Codex.Startup=
             else Codex.CSS.glossmark_rule=fdjtDOM.addCSSRule(
                 "#CODEXPAGE .codexglossmark","margin-right: "+
                     (-glossmark_offset)+"px;");
+            
+            var shrinkrule=Codex.CSS.shrinkrule;
+            if (!(shrinkrule)) {
+                shrinkrule=fdjtDOM.addCSSRule(
+                    "body.cxSHRINK #CODEXPAGE,body.cxPREVIEW #CODEXPAGE, body.cxSKIMMING #CODEXPAGE", "");
+                Codex.CSS.shrinkrule=shrinkrule;}
+            var ph=geom.height, sh=ph-50, vs=(sh/ph);
+            shrinkrule.style[fdjtDOM.transform]="scale("+vs+","+vs+")";
+
             document.body.style.overflow='';
             if (Codex.Trace.startup>1)
                 fdjtLog("Content sizing took %dms",fdjtTime()-started);

@@ -39,7 +39,7 @@
     position: absolute; left: 60px; right: 60px; z-index: 100;
     background-color: white;
     border: solid steelblue 4px; padding: 0px;
-    max-height: 50px;}
+    max-height: 100px;}
 #CODEXSKIMMER.flash { background-color: silver;}
 #CODEXSKIMMER.expanded { max-height: inherit; }
 #CODEXSKIMMER .tochead {
@@ -118,6 +118,11 @@ body.hudup #CODEXTOP .hudpanel {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
+body.cxANIMATE #CODEXSKIMMER.transanimate {
+    transition-property: transform; transition-duration: 0.5s;
+    -webkit-property: -webkit-transform; -webkit-transition-duration: 0.5s;
+    -moz-property: -moz-transform; -moz-transition-duration: 0.5s;
+    -o-property: -o-transform; -o-transition-duration: 0.5s;}
 
 #CODEXFRAME.cxANIMATE #CODEXTOP {
     transition-property: opacity; transition-duration: 2s;
@@ -131,8 +136,7 @@ body.hudup #CODEXTOP .hudpanel {
     max-height: inherit; opacity: 1.0;
     left: 50px; right: 50px; width: auto;}
 body.hudup #CODEXTOP {display: block;}
-#CODEXHUD.openhead #CODEXTOP,
-body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
+#CODEXHUD.openhead #CODEXTOP {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;

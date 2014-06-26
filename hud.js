@@ -723,22 +723,42 @@ Codex.setMode=
 
         /* Skimming */
 
-        function CodexSkim(elt,src,backward,expanded){
+        function CodexSkim(elt,src,dir,expanded){
             var nextSlice=Codex.nextSlice, prevSlice=Codex.prevSlice;
             var pelt=Codex.skimming;
             var i=0, lim=0;
+            if (typeof dir !== "number") dir=0;
             addClass(document.body,"cxSKIMMING"); setHUD(false,false);
-            if (Codex.Trace.mode)
-                fdjtLog("CodexSkim() %o (src=%o) mode=%o scn=%o/%o",
-                        elt,src,Codex.mode,Codex.skimming,Codex.target);
+            if (true) // (Codex.Trace.mode)
+                fdjtLog("CodexSkim() %o (src=%o) mode=%o scn=%o/%o dir=%o",
+                        elt,src,Codex.mode,Codex.skimming,Codex.target,
+                        dir);
             // Copy the description of what we're skimming into the
             // skimmer (at the top of the page during skimming and
             // preview)
             if (Codex.skimming!==src) {
-                var clone=src.cloneNode(true); clone.id="CODEXSKIM";
+                var skimmer=fdjtID("CODEXSKIMMER");
+                var clone=src.cloneNode(true);
                 var next=nextSlice(src), prev=prevSlice(src);
                 var before=0, after=0, slice=prev;
+                var pct=((dir<0)?("-120%"):(dir>0)?("120%"):(false));
+                dropClass(skimmer,"transimate");
                 fdjtDOM.replace("CODEXSKIM",clone);
+                var dropTransAnimate=function(){
+                    dropClass(skimmer,"transanimate");
+                    fdjtDOM.removeListener(
+                        skimmer,"transitionend",dropTransAnimate);};
+                if ((Codex.skimming)&&(pct)) {
+                    skimmer.style[fdjtDOM.transform]=
+                        "translate("+pct+",0)";
+                    setTimeout(function(){
+                        addClass(skimmer,"transanimate");
+                        fdjtDOM.addListener(
+                            skimmer,"transitionend",dropTransAnimate);
+                        setTimeout(function(){
+                            skimmer.style[fdjtDOM.transform]="";},
+                                   0);},
+                               0);}
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
                 if (next) dropClass(document.body,"cxSKIMEND");
@@ -809,7 +829,7 @@ Codex.setMode=
                     if (skimpoints.length)
                         Codex.skimpoints=skimpoints;
                     else Codex.skimpoints=possible;
-                    if (backward) 
+                    if (dir<0) 
                         Codex.skimoff=Codex.skimpoints.length-1;
                     else Codex.skimoff=0;
                     Codex.GoTo(Codex.skimpoints[Codex.skimoff]);}

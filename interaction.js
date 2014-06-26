@@ -955,7 +955,7 @@
             Codex.setMode("glossdetail");
             return fdjtUI.cancel(evt);}
         else if ((!(gloss))&&(passage)) {
-            Codex.Skim(passage,card,false);
+            Codex.Skim(passage,card,0);
             return fdjtUI.cancel(evt);}
         else if ((gloss)&&(getParent(target,".tool"))) {
             var form=Codex.setGlossTarget(gloss);           
@@ -963,7 +963,7 @@
             Codex.setMode("addgloss");
             return fdjtUI.cancel(evt);}
         else if (gloss) {
-            Codex.Skim(passage,card,false);
+            Codex.Skim(passage,card,0);
             return fdjtUI.cancel(evt);}
         else return;}
     function slice_held(evt){
@@ -1971,7 +1971,7 @@
         if ((Trace.gestures)||(Trace.flips)||(Trace.nav)) 
             fdjtLog("scanForward (on %o) from %o/%o to %o/%o under %o",
                     evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
-        if ((ref)&&(scan)) Codex.Skim(ref,scan);
+        if ((ref)&&(scan)) Codex.Skim(ref,scan,1);
         return scan;}
     Codex.skimForward=skimForward;
 
@@ -2026,7 +2026,7 @@
         if ((Trace.gestures)||(Trace.flips)||(Trace.nav))
             fdjtLog("skimBackward (on %o) from %o/%o to %o/%o under %o",
                     evt,start,Codex.getRef(start),scan,ref,Codex.skimming);
-        if ((ref)&&(scan)) Codex.Skim(ref,scan,true);
+        if ((ref)&&(scan)) Codex.Skim(ref,scan,-1);
         return scan;}
     Codex.skimBackward=skimBackward;
 

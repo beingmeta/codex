@@ -86,8 +86,7 @@ body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXTOP {
 body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.addgloss #CODEXTOP,
 body.cxPREVIEW #CODEXHUD.openglossmark #CODEXSKIMMER,
-body.cxPREVIEW.cxSKIMMING #CODEXHUD #CODEXSKIMMER,
-body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER {
+body.cxPREVIEW.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
