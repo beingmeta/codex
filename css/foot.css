@@ -168,7 +168,7 @@ body.cxTOUCH.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview  {
 
 #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     position: absolute; z-index: 500; opacity: 0.9;
-    bottom: 10px; left: 100px; right: 100px;
+    bottom: 5px; left: 100px; right: 100px;
     text-align: center;
     font-size: 2em; font-weight: bold;
     padding: 0px;
