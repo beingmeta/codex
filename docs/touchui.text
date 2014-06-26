@@ -21,7 +21,7 @@ Make tap detection more robust.
 Increase HUD head and foot sizes?  100px?  [done]
 
 Scale body more during skimming and preview?  Set preview/skim scaling
-rule based on view size.
+rule based on view size. [done]
 
 In skimmer, have swipe left-right advance/reverse.  Swipe down
 expands, swipe up contracts, tap clicks.  (With mouse, tap
