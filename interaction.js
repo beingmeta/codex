@@ -117,9 +117,6 @@
 
     /* For tracking gestures */
     var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
-    var double_touch=false;
-    
-    var addgloss_timer=false;
     var preview_timer=false;
 
     Codex.uiclasses=/\b(codexui|codexglossmark)\b/gi;
@@ -159,12 +156,13 @@
             Codex.TapHold.page=fdjtUI.TapHold(
                 fdjt.ID("CODEXPAGE"),
                 {override: true,noslip: true,id: "CODEXPAGE",
-                 untouchable: externClickable,maxtouches: 2,
+                 taptapthresh: 300,maxtouches: 2,
+                 untouchable: externClickable,
                  movethresh: 10});
             Codex.TapHold.content=fdjtUI.TapHold(
                 fdjt.ID("CODEXCONTENT"),
                 {override: true,noslip: true,id: "CODEXCONTENT",
-                 untouchable: externClickable,
+                 taptapthresh: 300,untouchable: externClickable,
                  movethresh: 10});
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
@@ -315,21 +313,6 @@
         var cX=evt.clientX, cY=evt.clientY;
         var now=fdjtTime(), touch=false;
 
-        // Detect touches with two fingers, which we may treat especially
-        if ((evt.touches)||(evt.shiftKey)) {
-            if (Trace.gestures)
-                fdjtLog("content_tapped(double/shift) dt=%o now=%o",
-                        double_touch,now);
-            if ((evt.touches.length>1)||(evt.shiftKey)) {
-                double_touch=now;
-                if (addgloss_timer) {
-                    clearTimeout(addgloss_timer);
-                    addgloss_timer=false;}
-                gesture_start=false;
-                return;}
-            else if (!(double_touch)) {}
-            else if ((now-double_touch)>2000) double_touch=false;
-            else {}}
         if (Trace.gestures)
             fdjtLog("content_tapped %o c=%d,%d now=%o p=%o",
                     evt,cX,cY,now,Codex.previewing);
@@ -621,12 +604,50 @@
         selectors[passage.id]=selecting;
         fdjtUI.TapHold.clear();
         startAddGloss(passage,false,evt);
-        if ((Trace.gestures)||(Trace.selecting)) 
-            fdjtLog("content_held/select_start %o %o %o",
-                    selecting,passage,evt);
         // This makes a selection start on the region we just created.
-        setTimeout(function(){selecting.startEvent(evt,1000);},0);}
+        if (!(Codex.touch)) {
+            if ((Trace.gestures)||(Trace.selecting)) 
+                fdjtLog("content_held/select_wait %o %o %o",
+                        selecting,passage,evt);
+            setTimeout(function(){
+                if ((Trace.gestures)||(Trace.selecting)) 
+                    fdjtLog("content_held/select_start %o %o %o",
+                            selecting,passage,evt);
+                selecting.startEvent(evt,1000);},
+                       0);}}
     Codex.getTextSelectors=function getTextSelectors(){return selectors;};
+
+    function content_taptap(evt){
+        var target=fdjtUI.T(evt);
+        var passage=getTarget(target);
+        if (Trace.gestures) 
+            fdjtLog("content_taptap %o p=%o p.p=%o bc=%s hc=%s t=%o gt=%o",
+                    evt,passage,((passage)&&(passage.parentNode)),
+                    document.body.className,Codex.HUD.className,
+                    target,Codex.glosstarget);
+        if (Codex.glosstarget) {
+            if (hasParent(target,Codex.glosstarget)) {
+                Codex.setMode("addgloss",false);}
+            else if (saving_dialog) {}
+            else {
+                saveGlossDialog();
+                fdjtUI.cancel(evt);
+                return;}}
+        if (!(passage)) return;
+        if (Codex.glosstarget===passage) {
+            if (Codex.mode!=="addgloss")
+                Codex.setMode("addgloss",false);
+            return;}
+        var selecting=Codex.UI.selectText(passage);
+        if ((Codex.TapHold.page)&&(Codex.TapHold.page.abort))
+            Codex.TapHold.page.abort();
+        if ((Codex.TapHold.content)&&(Codex.TapHold.page.content))
+            Codex.TapHold.content.abort();
+        Codex.select_target=passage;
+        selectors.push(selecting);
+        selectors[passage.id]=selecting;
+        fdjtUI.TapHold.clear();
+        startAddGloss(passage,false,evt);}
 
     function abortSelect(except){
         var i=0, lim=selectors.length;
@@ -2664,6 +2685,7 @@
             focus: codexfocus,
             blur: codexblur},
          content: {tap: content_tapped,
+                   taptap: content_taptap,
                    hold: content_held,
                    release: content_released,
                    click: content_click},
@@ -2812,6 +2834,7 @@
             blur: codexblur},
          content: {tap: content_tapped,
                    hold: content_held,
+                   taptap: content_taptap,
                    release: content_released,
                    swipe: content_swiped,
                    touchmove: noDefault,
