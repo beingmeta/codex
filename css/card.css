@@ -182,7 +182,7 @@ div.codexcard > hr {
 .codexcard .tool img {
     height: 40px; width: 40px; opacity: 0.3; clear: right;
     /* This makes it overlap the date, tightening things up generally */
-    margin-right: 3px; margin-top: -1.5ex;}
+    margin-right: 6px; margin-top: -1em;}
 .codexcard span.detail {
     background-color: lightblue; color: black;
     padding: 2px; margin-top: 2px;
@@ -190,7 +190,7 @@ div.codexcard > hr {
     -webkit-border-radius: 1ex; -khtml-border-radius: 1ex;
     -moz-border-radius: 1ex; -o-border-radius: 1ex;}
 .codexcard .age {
-    color: rgb(18, 141, 238);
+    color: rgb(18, 141, 238); font-weight: bold;
     vertical-align: top; padding-right: 0.5em;
     clear: none;}
 .codexcard .age:hover {text-decoration: underline;} 

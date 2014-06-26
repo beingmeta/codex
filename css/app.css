@@ -75,7 +75,8 @@ body #CODEXPAGE {
 body.cxNOSHRINK #CODEXPAGE {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body.cxSHRINK #CODEXPAGE, body.cxPREVIEW #CODEXPAGE {
+body.cxSHRINK #CODEXPAGE, body.cxPREVIEW #CODEXPAGE,
+body.cxSKIMMING #CODEXPAGE {
     transform-origin: center bottom;
     -webkit-transform-origin: center bottom;
     -moz-transform-origin: center bottom;

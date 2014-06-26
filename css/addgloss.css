@@ -54,6 +54,9 @@ div.codexglossform.focused form div.textbox input[type="TEXT"] {
     -webkit-border-top-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
+#CODEXADDGLOSS div.codexglossform {
+    background-color: ivory;
+    padding-bottom: 1ex;}
 
 div.codexglossform { display: none;}
 div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}

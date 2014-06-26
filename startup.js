@@ -1804,13 +1804,12 @@ Codex.Startup=
                 shrinkrule=fdjtDOM.addCSSRule(
                     "body.cxSHRINK #CODEXPAGE,body.cxPREVIEW #CODEXPAGE, body.cxSKIMMING #CODEXPAGE", "");
                 Codex.CSS.shrinkrule=shrinkrule;}
-            var ph=geom.height, sh=ph-50, vs=(sh/ph);
+            var ph=geom.height, sh=ph-25, vs=(sh/ph);
             shrinkrule.style[fdjtDOM.transform]="scale("+vs+","+vs+")";
 
             document.body.style.overflow='';
             if (Codex.Trace.startup>1)
-                fdjtLog("Content sizing took %dms",fdjtTime()-started);
-        }
+                fdjtLog("Content sizing took %dms",fdjtTime()-started);}
         Codex.sizeContent=sizeContent;
         
         /* Margin creation */

@@ -200,7 +200,7 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
     background-color: ivory;
     border-color: rgba(70, 130, 180, 0.54);}
 #CODEXHUD.openheart #CODEXHEARTFRAME {
-    top: 60px; bottom: 50px;}
+    top: 100px; bottom: 50px;}
 body.hudup #CODEXHEARTFRAME {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -772,8 +772,12 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
 #CODEXPOINTGLOSSES div.tochead { display: none; }
 
 #CODEXSKIMMER div.codexcard.gloss > div.tochead,
-#CODEXSKIMMER div.codexcard.gloss div.codexcardbody  {
-  margin-left: 50px; padding-left: 0px;}
+#CODEXSKIMMER div.codexcard.gloss div.codexcardbody {
+    margin-left: 50px;}
+#CODEXSKIMMER div.codexcard.gloss div.codexcardbody {
+    padding-left: 4px;}
+#CODEXSKIMMER div.codexcard.gloss  > div.tochead {
+    padding-left: 0px;}
 #CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
 #CODEXSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
   position: absolute; top: 0px; left: 0px; margin-top: 0px;}
@@ -873,11 +877,15 @@ body.hudup #CODEXHUD #CODEXSKIMMER.sbookatstart img[alt="beginning"] {display: b
 #CODEXHUD #CODEXSKIMMER div.idhead,
 #CODEXHUD #CODEXPOINTGLOSSES div.idhead {
     height: 0px;}
+/* Hide button, show label in the SKIM node, suppressed
+   for now */
+/*
 #CODEXHUD #CODEXSKIMMER #CODEXSKIM img.button { display: none;}
 #CODEXHUD #CODEXSKIMMER #CODEXSKIM .tool span.label { display: inline;}
 #CODEXHUD #CODEXSKIMMER.expanded #CODEXSKIM .tool span.label { display: none;}
 #CODEXHUD #CODEXSKIMMER.expanded #CODEXSKIM img.button {
     display: inline;}
+*/
 
 #CODEXSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
 

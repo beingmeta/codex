@@ -176,7 +176,7 @@ div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
 #CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage
   div.codexcardbody,
 #CODEXSKIMMER div.codexcard div.codexcardbody {
-    border-top: 0px; padding-left: 1em; padding-top: 0.5ex;}
+    border-top: 0px; padding-left: 1em; padding-top: 0.25ex;}
 #CODEXSKIMMER div.codexcard div.idhead {
     border-bottom: 0px;}
 
