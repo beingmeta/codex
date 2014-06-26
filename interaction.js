@@ -2053,20 +2053,12 @@
                 Codex.setMode("addgloss");
                 return;}
             else return;}
-        if (getParent(target,".codexskiminfo"))
-            Codex.stopSkimming();
-        else if (getParent(target,".tochead")) {
+        if (getParent(target,".tochead")) {
             var anchor=getParent(target,".tocref");
             var href=(anchor)&&(anchor.getAttribute("data-tocref"));
             Codex.GoTOC(href);}
         else toggleClass("CODEXSKIMMER","expanded");
         fdjtUI.cancel(evt);
-        return;}
-
-    function skimmer_held(evt){
-        evt=evt||event;
-        Codex.stopSkimming();
-        cancel(evt);
         return;}
 
     /* Entering page numbers and locations */
@@ -2718,7 +2710,7 @@
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to skimmer
-         "#CODEXSKIMMER": {tap: skimmer_tapped, hold: skimmer_held},
+         "#CODEXSKIMMER": {tap: skimmer_tapped},
          // Expanding/contracting the skimmer
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {click: head_tap},
@@ -2815,10 +2807,7 @@
              click: function(evt){
                  evt=evt||event;
                  Codex.UI.handlers.everyone_ontap(evt);
-                 fdjt.UI.cancel(event);}},
-         "#CODEXSKIMMER .codexskiminfo": {
-             click: function(evt){
-                 evt=evt||event; Codex.stopSkimming(); cancel(evt);}}});
+                 fdjt.UI.cancel(event);}}});
 
     fdjt.DOM.defListeners(
         Codex.UI.handlers.touch,
@@ -2873,7 +2862,7 @@
          "#CODEXLOCPCT": {tap: enterPercentage},
          "#CODEXLOCOFF": {tap: enterLocation},
          // Return to skimming
-         "#CODEXSKIMMER": {tap: skimmer_tapped,hold: skimmer_held},
+         "#CODEXSKIMMER": {tap: skimmer_tapped},
          // Expanding/contracting the skimmer
          // Raise and lower HUD
          "#CODEXPAGEHEAD": {touchstart: head_tap},
@@ -2996,11 +2985,7 @@
              touchend: function(evt){
                  evt=evt||event;
                  Codex.UI.handlers.everyone_ontap(evt);
-                 fdjt.UI.cancel(event);}},
-         "#CODEXSKIMMER .codexskiminfo": {
-             touchstart: cancel,
-             touchend: function(evt){
-                 evt=evt||event; Codex.stopSkimming(); cancel(evt);}}});
+                 fdjt.UI.cancel(event);}}});
     
 })();
 

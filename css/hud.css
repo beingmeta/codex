@@ -39,7 +39,13 @@
     position: absolute; left: 60px; right: 60px; z-index: 100;
     background-color: white;
     border: solid steelblue 4px; padding: 0px;
-    max-height: 100px;}
+    max-height: 75px;}
+.cxANIMATE #CODEXSKIMMER {
+    transition-property: height; transition-duration: 0.5x;
+    -webkit-transition-property: height; -webkit-transition-duration: 0.5x;
+    -moz-transition-property: height; -moz-transition-duration: 0.5x;
+    -o-transition-property: height; -o-transition-duration: 0.5x;}
+
 #CODEXSKIMMER.flash { background-color: silver;}
 #CODEXSKIMMER.expanded { max-height: inherit; }
 #CODEXSKIMMER .tochead {
