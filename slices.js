@@ -545,12 +545,12 @@ Codex.Slice=(function () {
                      (RefDB.overlaps(sourcerefs,gloss.sources))||
                      (RefDB.overlaps(sourcerefs,gloss.shared))));});
         Codex.UI.updateScroller(slice.container);
-        if (Codex.target) scrollGlosses(Codex.target,slice);}
+        if (Codex.target) scrollSlice(Codex.target,slice);}
     Codex.UI.selectSources=selectSources;
 
     /* Scrolling slices */
 
-    function scrollGlosses(elt,slice,top){
+    function scrollSlice(elt,slice,top){
         if (Codex.iscroll) {
             var scroller=Codex.scrollers[elt.id]||
                 ((elt.parentNode)&&(Codex.scrollers[elt.parentNode.id]));
@@ -561,7 +561,7 @@ Codex.Slice=(function () {
                 var scrollto=cardinfo.dom;
                 if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
                     scrollto.scrollIntoView(true);}}}}
-    Codex.UI.scrollGlosses=scrollGlosses;
+    Codex.UI.scrollSlice=scrollSlice;
     
     /* Results handlers */
 
@@ -643,7 +643,8 @@ Codex.Slice=(function () {
             return this.byid.get(id);}
         else if (ref.nodeType===1) {
             if (!(ref.id)) ref=getFirstID(ref);
-            if (ref) return this.byid.get(ref.id)||this.byfrag.get(ref.id);}
+            if (ref) return this.byid.get(ref.id)||
+                this.byfrag.get(ref.id);}
         else return ((ref._qid)&&(this.byid.get(ref._qid)))||
             ((ref._id)&&(this.byid.get(ref._id)));};
     function getFirstID(node){
@@ -699,10 +700,12 @@ Codex.Slice=(function () {
         if (!(adds)) return;
         if (!(adds instanceof Array)) adds=[adds];
         if (adds.length===0) return;
-        var byid=this.byid, cards=this.cards; var i=0, lim=adds.length;
+        var byid=this.byid, cards=this.cards;
+        var i=0, lim=adds.length;
         while (i<lim) {
             var add=adds[i++], info=false, card, id, about=false, replace=false;
-            if ((add.nodeType)&&(add.nodeType===1)&&(hasClass(add,"codexcard"))) {
+            if ((add.nodeType)&&(add.nodeType===1)&&
+                (hasClass(add,"codexcard"))) {
                 card=add; id=add.name||add.getAttribute("name");
                 if (!(id)) continue;
                 if ((info=byid[id])) {

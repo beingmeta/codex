@@ -567,11 +567,11 @@ Codex.setMode=
         function scrollSlices(mode){
             if (mode==="allglosses") {
                 if ((Codex.skimming)||(Codex.point))
-                    Codex.UI.scrollGlosses(
+                    Codex.UI.scrollSlice(
                         Codex.skimming||Codex.point,Codex.glosses);}
             else if (mode==="searchresults") {
                 if ((Codex.skimming)||(Codex.point))
-                    Codex.UI.scrollGlosses(
+                    Codex.UI.scrollSlice(
                         Codex.skimming||Codex.point,Codex.query.listing);}
             else {}}
         Codex.scrollSlices=scrollSlices;
@@ -612,18 +612,18 @@ Codex.setMode=
                     if (hasClass(card,"newhead")) lasthead=card;
                     var loc=card.getAttribute("data-location");
                     if (loc) loc=parseInt(loc,10);
-                    if (loc>curloc) break;}
+                    if (loc>=curloc) break;}
                 if (i>=lim) card=lastcard=false;
-                if ((lastcard)&&(lasthead)&&(Codex.iscroll)) {
+                if ((card)&&(lasthead)&&(Codex.iscroll)) {
                     Codex.heartscroller.scrollToElement(lasthead,0);
-                    Codex.heartscroller.scrollToElement(lastcard,0);}
-                else if ((lastcard)&&(Codex.iscroll)) {
-                    Codex.heartscroller.scrollToElement(lastcard,0);}
-                else if ((lastcard)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {
+                    Codex.heartscroller.scrollToElement(card,0);}
+                else if ((card)&&(Codex.iscroll)) {
+                    Codex.heartscroller.scrollToElement(card,0);}
+                else if ((card)&&(lasthead)&&(card.scrollIntoViewIfNeeded)) {
                     lasthead.scrollIntoView();
-                    lastcard.scrollIntoViewIfNeeded();}
-                else if ((lastcard)&&(lastcard.scrollIntoView))
-                    lastcard.scrollIntoView();}
+                    card.scrollIntoViewIfNeeded();}
+                else if ((card)&&(lastcard.scrollIntoView))
+                    card.scrollIntoView();}
             else {}
             
             // This updates scroller dimensions, we delay it
