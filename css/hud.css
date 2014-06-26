@@ -500,6 +500,16 @@ body.cxSKIMMING #CODEXHUD img.hudbutton {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
+#CODEXHUD img.hudbutton {
+    transition-property: width, height, opacity;
+    transition-duration: 1s;
+    -webkit-transition-property: width, height, opacity;
+    -webkit-transition-duration: 1s;}
+
+.hudup #CODEXHUD img.hudbutton {
+    width: 75px; height: 75px;}
+.hudup #CODEXHUD.openheart img.hudbutton {
+    width: 50px; height: 50px;}
 
 #CODEXHEAD img.hudbutton[hudmode="allglosses"],
 #CODEXHEAD img.hudbutton[hudmode="help"] {
@@ -533,6 +543,12 @@ body.cxMOUSE #CODEXHUD img.hudbutton:hover,
     -khtml-opacity: 0.45;
     -moz-opacity: 0.45;
     -o-opacity: 0.45;}
+#CODEXHUD #CODEXFOOT.tapholding img.hudbutton.tapholdtarget,
+#CODEXHUD #CODEXHEAD.tapholding img.hudbutton {
+    width: 75px; height: 75px;}
+.cxTOUCH #CODEXHUD #CODEXFOOT.tapholding img.hudbutton.tapholdtarget,
+.cxTOUCH #CODEXHUD #CODEXHEAD.tapholding img.hudbutton.tapholdtarget {
+    width: 125px; height: 125px;}
 
 #CODEXHUD .topleft {top: 0px; left: 0px;}
 #CODEXHUD .topright {top: 0px; right: 0px;}
