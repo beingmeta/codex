@@ -16,7 +16,7 @@ div.codexslice div.codexcard { margin-left: 20px;}
 div.codexslice.sourced div.codexcard { display: none;}
 div.codexslice.sourced div.codexcard.sourced { display: block;}
 @media (pointer: coarse) and (max-width: 650px) {
-    div.codexslice div.codexcard { font-size: 150%; }}
+    div.codexslice div.codexcard { font-size: 120%; }}
 
 div.codexslice.sourced div.codexthread { display: none;}
 div.codexslice.sourced div.codexthread > div { display: none;}

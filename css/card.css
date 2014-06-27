@@ -191,7 +191,7 @@ div.codexcard > hr {
     -moz-border-radius: 1ex; -o-border-radius: 1ex;}
 .codexcard .age {
     color: rgb(18, 141, 238); font-weight: bold;
-    vertical-align: top; padding-right: 0.5em;
+    vertical-align: top; padding-right: 0.5em; padding-left: 0.4ex;
     clear: none;}
 .codexcard .age:hover {text-decoration: underline;} 
 .codexcard a.deletebutton { 
