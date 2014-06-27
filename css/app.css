@@ -91,18 +91,6 @@ body.cxSKIMMING #CODEXPAGE .codexpage {
     transform: scale(0.98,0.98); -webkit-transform:scale(0.98,0.98);
     -moz-transform: scale(0.98,0.98); -o-transform:scale(0.98,0.98);}
 
-#CODEXPAGERIGHT {
-    position: absolute; overflow: visible;
-    padding: 0px; margin: 0px; border: 0px;
-    width: 50px; right: 0px;
-    top: 60px; bottom: 60px;
-    z-index: -50;}
-#CODEXPAGELEFT {
-    position: absolute; overflow: visible;
-    padding: 0px; margin: 0px; border: 0px;
-    width: 50px; left: 0px;
-    top: 60px; bottom: 60px;
-    z-index: -50;}
 #CODEXPAGE #CODEXPAGES {
     position: absolute;
     top: 0px; bottom:0px; left: 0px; right: 0px;

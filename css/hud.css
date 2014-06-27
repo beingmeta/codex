@@ -159,7 +159,11 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
     -moz-box-shadow: none; -o-box-shadow: none;}
     
 #CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD {
+    pointer-events: none;}
+#CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD > * {
     display: none;}
+#CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD > .hudmodebutton {
+    display: inline-block; pointer-events: all; opacity: 0.5;}
 
 body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}

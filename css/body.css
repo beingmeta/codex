@@ -86,7 +86,6 @@ body.sbook { font-size: 62.5%; line-height: inherit;}
 #CODEXBODY.codexbodysizexlarge dt, #CODEXBODY.codexbodysizexlarge dd {
     font-size: 130%;}
 
-#CODEXBODY { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrasthigh { background-color: #ffffff; color: #111; }
 #CODEXBODY.codexcontrastmedium { background-color: #ffffff; color: #444; }
 #CODEXBODY.codexcontrastlow  { background-color: #e5e0d4; color: #333; }

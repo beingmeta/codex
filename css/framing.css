@@ -69,7 +69,7 @@ body {
     font-family: Arial,Verdana,Helvetica,sans-serif;
     box-sizing: border-box;
     pointer-events: none;
-    z-index: -50;}
+    z-index: -20;}
 #CODEXFRAME > div, #CODEXFRAME > div > div, #CODEXFRAME > div > a {
     box-sizing: border-box;}
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
@@ -78,7 +78,9 @@ body.cxMEDIA #CODEXFRAME {
     display: block;}
 body.hudup #CODEXHUD, body.cxSKIMMING #CODEXHUD,
 body.openhud #CODEXHUD, body.cxCOVER #CODEXCOVER,
-body.cxCOVER #CODEXMEDIA, body.cxCOVER #CODEXCLOSEMEDIA {
+body.cxMEDIA #CODEXMEDIA, body.cxMEDIA #CODEXCLOSEMEDIA {
+    top: 0px; bottom: 0px; left: 0px; right: 0px;
+    height: 100%; width: 100%;
     display: block;}
 
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
@@ -131,16 +133,15 @@ body.cxCOVER #CODEXFRAME > #CODEXCOVER { pointer-events: all; }
 body.cxCOVER #CODEXCOVER {
     opacity: 1.0; z-index: 100; pointer-events: all;}
 body.cxCOVER #CODEXBODY {
-    visibility: hidden; z-index: -50; pointer-events: none;}
+    visibility: hidden; pointer-events: none;}
 body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
     visibility: hidden; z-index: -50; pointer-events: none;}
 
 #CODEXFRAME > #CODEXMEDIA {
-  top: 0px; bottom: 0px; left: 0px; right: 0px;
-  height: 100%; width: 100%;}
+  top: 0px; left: 0px; height: 0px; width: 0px;}
 
-#CODEXFRAME > #CODEXCLOSEMEDIA {
-  z-index: 100; opacity: 0.5;
+#CODEXFRAME #CODEXCLOSEMEDIA {
+  z-index: 100; opacity: 0.5; display: none;
   background-image:
    url(https://s3.amazonaws.com/beingmeta/static/g/codex/redx.svgz);
   top: 0px;  right: 0px;}
@@ -160,7 +161,12 @@ body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
 
 /* CODEXBODY is where all of the content lives, whether broken into
    pages or not. */
-#CODEXBODY {}
+#CODEXBODY {
+    position: fixed; overflow: visible;
+    left: 0px; right: 0px; top: 0px; bottom: 0px;
+    z-index: -50;}
+#CODEXBODY { background-color: #ffffff; color: #444; }
+
 
 /* CODEXCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region

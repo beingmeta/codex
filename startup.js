@@ -1477,7 +1477,7 @@ Codex.Startup=
 
             // Make the cover hidden by default
             Codex.CSS.hidecover=fdjtDOM.addCSSRule(
-                "#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none;");
+                "#CODEXCOVER","opacity: 0.0; z-index: -10; pointer-events: none; height: 0px; width: 0px;");
             if (Codex.Trace.startup>1)
                 fdjtLog("Cover setup done in %dms",fdjtTime()-started);
             return cover;}
@@ -1774,8 +1774,6 @@ Codex.Startup=
             // There might be a better way to get the .codexpage settings,
             //  but this seems to work.
             var fakepage_geom=getGeometry(fakepage,page,true);
-            fdjtID("CODEXPAGELEFT").style.width=page_margin+"px";
-            fdjtID("CODEXPAGERIGHT").style.width=page_margin+"px";
             var inner_width=geom.inner_width, inner_height=geom.inner_height;
             // The (-2) is for the two pixel wide border on the right side of
             //  the glossmark
@@ -1820,9 +1818,6 @@ Codex.Startup=
                 fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
             topleading.codexui=true; bottomleading.codexui=true;
             
-            var pageright=fdjtDOM("div#CODEXPAGERIGHT");
-            var pageleft=fdjtDOM("div#CODEXPAGELEFT");
-            
             var skimleft=document.createDocumentFragment();
             var skimright=document.createDocumentFragment();
             var holder=fdjtDOM("div");
@@ -1834,15 +1829,7 @@ Codex.Startup=
             nodes=fdjtDOM.toArray(holder.childNodes); i=0; lim=nodes.length;
             while (i<lim) skimright.appendChild(nodes[i++]);
 
-            fdjtDOM.prepend(document.body,/* pagehead,pagefoot, */
-                            skimleft,skimright,
-                            pageleft,pageright);
-
-            Codex.TapHold.pageleft=new fdjt.TapHold(pageleft,{override:true});
-            Codex.TapHold.pageright=new fdjt.TapHold(pageright,{override:true});
-            for (var pagelt in [pageright,pageleft]) { /* pagehead,pagefoot  */
-                fdjtDOM.addListeners(
-                    pagelt,Codex.UI.handlers[Codex.ui]["#"+pagelt.id]);}
+            fdjtDOM.prepend(document.body,skimleft,skimright);
 
             window.scrollTo(0,0);
             

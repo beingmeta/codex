@@ -149,20 +149,12 @@
             addHandlers(false,'window');
             addHandlers(document,'document');
             addHandlers(document.body,'body');
-            if (Codex.bypage) {
-                addHandlers(fdjtID("CODEXPAGE"),'content');}
-            else {
-                addHandlers(fdjtID("CODEXCONTENT"),'content');}
+            addHandlers(fdjtID("CODEXBODY"),'content');
             Codex.TapHold.page=fdjtUI.TapHold(
-                fdjt.ID("CODEXPAGE"),
-                {override: true,noslip: true,id: "CODEXPAGE",
+                fdjt.ID("CODEXBODY"),
+                {override: true,noslip: true,id: "CODEXBODY",
                  taptapthresh: 300,maxtouches: 2,
                  untouchable: externClickable,
-                 movethresh: 10});
-            Codex.TapHold.content=fdjtUI.TapHold(
-                fdjt.ID("CODEXCONTENT"),
-                {override: true,noslip: true,id: "CODEXCONTENT",
-                 taptapthresh: 300,untouchable: externClickable,
                  movethresh: 10});
             addHandlers(Codex.HUD,'hud');}
         if (mode) {
@@ -306,7 +298,7 @@
     var gesture_start=false;
     var clicked=false;
 
-    function content_tapped(evt){
+    function body_tapped(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var sX=evt.screenX, sY=evt.screenY;
@@ -314,14 +306,14 @@
         var now=fdjtTime(), touch=false;
 
         if (Trace.gestures)
-            fdjtLog("content_tapped %o c=%d,%d now=%o p=%o",
+            fdjtLog("body_tapped %o c=%d,%d now=%o p=%o",
                     evt,cX,cY,now,Codex.previewing);
         
         // If we're previewing, stop it and go to the page we're
         //  previewing (which was touched)
         if (Codex.previewing) {
             var jumpto=getTarget(target);
-            Codex.stopPreview("content_tapped/stop_preview",jumpto||true);
+            Codex.stopPreview("body_tapped/stop_preview",jumpto||true);
             fdjtUI.TapHold.clear();
             fdjt.UI.cancel(evt);
             return false;}
@@ -367,7 +359,7 @@
 
         // Various kinds of content click handling (anchors, details,
         // asides, etc)
-        if (handle_content_click(target)) {
+        if (handle_body_click(target)) {
             fdjtUI.cancel(evt);
             return false;}
 
@@ -383,7 +375,7 @@
             sX=touch.screenX; sY=touch.screenY;
             cX=touch.clientX; cY=touch.clientY;}
         if (Trace.gestures)
-            fdjtLog("content_tapped/fallthrough (%o) %o, m=%o, @%o,%o, vw=%o",
+            fdjtLog("body_tapped/fallthrough (%o) %o, m=%o, @%o,%o, vw=%o",
                     evt,target,Codex.mode,cX,cY,fdjtDOM.viewWidth());
         if ((Codex.fullheight)&&(!(Codex.hudup))&&
             ((cY<50)||(cY>(fdjtDOM.viewHeight()-50)))) 
@@ -438,13 +430,13 @@
 
     var CodexSlice=Codex.Slice;
 
-    function handle_content_click(target){
+    function handle_body_click(target){
         // Assume 3s gaps are spurious
         if ((clicked)&&((fdjtTime()-clicked)<3000)) return true;
 
         // Handle various click-like operations, overriding to sBook
         //  navigation where appropriate.  Set *clicked* to the
-        //  current time when you do so, letting the content_click handler
+        //  current time when you do so, letting the body_click handler
         //  appropriately ignore its invocation.
         var anchor=getParent(target,"A"), href, elt=false;
         // If you tap on a relative anchor, move there using Codex
@@ -569,12 +561,12 @@
     
     var selectors=[];
     var slip_timer=false;
-    function content_held(evt){
+    function body_held(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
         if (Trace.gestures) 
-            fdjtLog("content_held %o p=%o p.p=%o bc=%s hc=%s",
+            fdjtLog("body_held %o p=%o p.p=%o bc=%s hc=%s",
                     evt,passage,((passage)&&(passage.parentNode)),
                     document.body.className,
                     Codex.HUD.className);
@@ -585,7 +577,7 @@
             fdjtUI.cancel(evt);
             if ((href)&&(href[0]==="#")&&(cxID(href.slice(1)))) {
                 if (Trace.gestures) 
-                    fdjtLog("anchor_preview/content_held %o %o %o",
+                    fdjtLog("anchor_preview/body_held %o %o %o",
                             evt,anchor,href);
                 Codex.startPreview(href.slice(1),"content/anchor_held");
                 return;}}
@@ -607,21 +599,21 @@
         // This makes a selection start on the region we just created.
         if (!(Codex.touch)) {
             if ((Trace.gestures)||(Trace.selecting)) 
-                fdjtLog("content_held/select_wait %o %o %o",
+                fdjtLog("body_held/select_wait %o %o %o",
                         selecting,passage,evt);
             setTimeout(function(){
                 if ((Trace.gestures)||(Trace.selecting)) 
-                    fdjtLog("content_held/select_start %o %o %o",
+                    fdjtLog("body_held/select_start %o %o %o",
                             selecting,passage,evt);
                 selecting.startEvent(evt,1000);},
                        0);}}
     Codex.getTextSelectors=function getTextSelectors(){return selectors;};
 
-    function content_taptap(evt){
+    function body_taptap(evt){
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
         if (Trace.gestures) 
-            fdjtLog("content_taptap %o p=%o p.p=%o bc=%s hc=%s t=%o gt=%o",
+            fdjtLog("body_taptap %o p=%o p.p=%o bc=%s hc=%s t=%o gt=%o",
                     evt,passage,((passage)&&(passage.parentNode)),
                     document.body.className,Codex.HUD.className,
                     target,Codex.glosstarget);
@@ -657,12 +649,12 @@
         selectors=[];
         Codex.select_target=false;}
 
-    function content_released(evt){
+    function body_released(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt), children=false;
-        if (Trace.gestures) fdjtLog("content_released %o",evt);
+        if (Trace.gestures) fdjtLog("body_released %o",evt);
         if (Codex.previewing) {
-            Codex.stopPreview("content_released");
+            Codex.stopPreview("body_released");
             fdjtUI.cancel(evt);
             return;}
         else if (hasParent(target,"A")) {
@@ -675,7 +667,7 @@
             if (children.length===0) {abortSelect(); return;}
             target=children[0]; passage=getTarget(target);}
         if (Trace.gestures)
-            fdjtLog("content_released %o p=%o gt=%o gf=%o",
+            fdjtLog("body_released %o p=%o gt=%o gf=%o",
                     evt,passage,Codex.glosstarget,Codex.glossform);
         if (Codex.glosstarget===passage) {
             if (Codex.glossform)
@@ -706,7 +698,7 @@
         Codex.setMode("addgloss",false);}
     Codex.startAddGloss=startAddGloss;
 
-    function content_swiped(evt){
+    function body_swiped(evt){
         var dx=evt.deltaX, dy=evt.deltaY;
         var vw=fdjtDOM.viewWidth();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
@@ -776,13 +768,13 @@
     Codex.initGlossMode=initGlossMode;
 
     // This overrides the default_tap handler
-    function content_click(evt){
+    function body_click(evt){
         evt=evt||event;
         var target=fdjtUI.T(evt);
         // This avoids double-handling of clicks
         if ((clicked)&&((fdjtTime()-clicked)<3000))
             fdjtUI.cancel(evt);
-        else if (handle_content_click(target)) {
+        else if (handle_body_click(target)) {
             fdjtUI.cancel(evt);
             return;}
         else if (isClickable(target)) return;
@@ -1749,60 +1741,6 @@
             skimForward(evt);
         else pageForward(evt);}
     Codex.Forward=forward;
-    function right_margin_tap(evt){
-        if (Trace.gestures) tracetouch("right_margin",evt);
-        if (Codex.page_turner) {
-            clearInterval(Codex.page_turner);
-            Codex.page_turner=false;}
-        if (Codex.previewing) {
-            Codex.stopPreview("right_margin_tap");
-            if (Codex.hudup) {
-                Codex.setHUD(false);
-                Codex.setMode(false);}
-            cancel(evt);
-            return;}
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
-            Codex.setMode(false);
-        else if (hasClass(document.body,"cxSKIMMING"))
-            skimForward(evt);
-        else forward(evt);
-        cancel(evt);}
-    function right_margin_hold(evt){
-        if (Trace.gestures) tracetouch("right_margin",evt);
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
-            Codex.setMode(false);
-        if (Codex.page_turner) {
-            clearInterval(Codex.page_turner);
-            Codex.page_turner=false;}
-        // Codex.page_turner=setInterval(function(){forward();},800);
-        cancel(evt);}
-    function right_margin_release(evt){
-        if (Trace.gestures) tracetouch("right_margin",evt);
-        if (Codex.page_turner) {
-            clearInterval(Codex.page_turner);
-            Codex.page_turner=false;}
-        cancel(evt);}
-    function right_margin_swipe(evt){
-        var dx=evt.deltaX, dy=evt.deltaY;
-        var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
-        if (Trace.gestures)
-            fdjtLog("Right margin swiped %o dx=%o, dy=%o, adx=%o, ady=%o",
-                    evt,dx,dy,adx,ady);
-        if (adx>(ady*2)) {
-            // Horizontal swipe
-            if (adx<10) return;
-            else if (hasClass(document.body,"cxSKIMMING"))
-                skimForward(evt);
-            else forward(evt);}
-        else if (ady>(adx*2)) {
-            // Vertical swipe
-            if (!(Codex.hudup)) {
-                if (ady<=10) return; // Ignore really short swipes 
-                else if (dy<-10) Codex.setMode("allglosses");
-                else if (dy>10) Codex.setMode("search");
-                else {}}}
-        cancel(evt);}
-
     function backward(evt){
         var now=fdjtTime();
         if (!(evt)) evt=event||false;
@@ -1815,54 +1753,6 @@
             skimBackward();
         else pageBackward();}
     Codex.Backward=backward;
-    function left_margin_tap(evt){
-	if (Trace.gestures) tracetouch("left_margin",evt);
-        stopPageTurner();
-        if (Codex.previewing) {
-            Codex.stopPreview("left_margin_tap");
-            if (Codex.hudup) {
-                Codex.setHUD(false);
-                Codex.setMode(false);}
-            cancel(evt);
-            return;}
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
-            Codex.setMode(false);
-        else if (hasClass(document.body,"cxSKIMMING"))
-            skimBackward(evt);
-        else backward(evt);
-        cancel(evt);}
-    function left_margin_hold(evt){
-        if (Trace.gestures) tracetouch("left_margin",evt);
-        if ((Codex.hudup)&&(!(hasClass(document.body,"cxSKIMMING"))))
-            Codex.setMode(false);
-        stopPageTurner();
-        // Codex.page_turner=setInterval(function(){backward();},800);
-        cancel(evt);}
-    function left_margin_release(evt){
-        if (Trace.gestures) tracetouch("left_margin",evt);
-        stopPageTurner();
-        cancel(evt);}
-    function left_margin_swipe(evt){
-        var dx=evt.deltaX, dy=evt.deltaY;
-        var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
-        if (Trace.gestures)
-            fdjtLog("Right margin swiped %o dx=%o, dy=%o, adx=%o, ady=%o",
-                    evt,dx,dy,adx,ady);
-        stopPageTurner();
-        if (adx>(ady*2)) {
-            // Horizontal swipe
-            if (adx<10) return;
-            else if (hasClass(document.body,"cxSKIMMING"))
-                skimForward(evt);
-            else forward(evt);}
-        else if (ady>(adx*2)) {
-            // Vertical swipe
-            if (!(Codex.hudup)) {
-                if (ady<=10) return; // Ignore really short swipes 
-                else if (dy<-10) Codex.setMode("help");
-                else if (dy>10) Codex.setMode("statictoc");
-                else {}}}
-        cancel(evt);}
 
     function preview_touchmove_nodefault(evt){
         if (Codex.previewing) fdjtUI.noDefault(evt);}
@@ -2676,11 +2566,11 @@
             click: default_tap,
             focus: codexfocus,
             blur: codexblur},
-         content: {tap: content_tapped,
-                   taptap: content_taptap,
-                   hold: content_held,
-                   release: content_released,
-                   click: content_click},
+         content: {tap: body_tapped,
+                   taptap: body_taptap,
+                   hold: body_held,
+                   release: body_released,
+                   click: body_click},
          toc: {tap: toc_tapped,hold: toc_held,
                release: toc_released, slip: toc_slipped,
                mouseover: fdjtUI.CoHi.onmouseover,
@@ -2717,13 +2607,6 @@
          "#CODEXTABS": {click: head_tap},
          "#CODEXTOP": {click: head_tap},
          "#CODEXPAGEFOOT": {tap: foot_tap},
-         // Forward and backwards
-         "#CODEXPAGELEFT": {tap: left_margin_tap,
-                            hold: left_margin_hold,
-                            release: left_margin_release},
-         "#CODEXPAGERIGHT": {tap: right_margin_tap,
-                             hold: right_margin_hold,
-                             release: right_margin_release},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
          "#CODEXATTACHFORM": {submit: attach_submit},
@@ -2821,13 +2704,13 @@
             touchmove: preview_touchmove_nodefault,
             focus: codexfocus,
             blur: codexblur},
-         content: {tap: content_tapped,
-                   hold: content_held,
-                   taptap: content_taptap,
-                   release: content_released,
-                   swipe: content_swiped,
+         content: {tap: body_tapped,
+                   hold: body_held,
+                   taptap: body_taptap,
+                   release: body_released,
+                   swipe: body_swiped,
                    touchmove: noDefault,
-                   click: content_click},
+                   click: body_click},
          hud: {touchend: handleXTarget, tap: handleXTarget},
          toc: {tap: toc_tapped,hold: toc_held,
                slip: toc_slipped, release: toc_released,
@@ -2869,15 +2752,6 @@
          "#CODEXTABS": {touchstart: head_tap},
          "#CODEXTOP": {touchend: head_tap},
          "#CODEXFOOT": {tap: foot_tap,touchstart: noDefault,touchmove: noDefault},
-         // Forward and backwards
-         "#CODEXPAGELEFT": {tap: left_margin_tap,
-                            hold: left_margin_hold,
-                            release: left_margin_release,
-                            swipe: left_margin_swipe},
-         "#CODEXPAGERIGHT": {tap: right_margin_tap,
-                             hold: right_margin_hold,
-                             release: right_margin_release,
-                             swipe: right_margin_swipe},
          "#CODEXTAGINPUT": {keydown: addtag_keydown},
          "#CODEXOUTLETINPUT": {keydown: addoutlet_keydown},
          "#CODEXATTACHFORM": {submit: attach_submit},
