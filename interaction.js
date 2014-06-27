@@ -116,7 +116,6 @@
     var reticle=fdjtUI.Reticle;
 
     /* For tracking gestures */
-    var start_x=-1; var start_y=-1; var last_x=-1; var last_y=-1;
     var preview_timer=false;
 
     Codex.uiclasses=/\b(codexui|codexglossmark)\b/gi;
@@ -1546,47 +1545,7 @@
 
     /* Gesture state */
 
-    var touch_started=false; var touch_ref=false;
-    var page_x=-1; var page_y=-1;
-    var touch_moves=0;
-    var touch_held=false;
-    var touch_moved=false;
-    var touch_scrolled=false;
     var n_touches=0;
-
-    /* Tracing touch */
-    
-    function tracetouch(handler,evt){
-        evt=evt||event;
-        var touches=evt.touches;
-        var touch=(((touches)&&(touches.length))?(touches[0]):(evt));
-        var target=fdjtUI.T(evt); var ref=Codex.getRef(target);
-        if (touch_started)
-            fdjtLog("%s(%o) n=%o %sts=%o %s@%o\n\t+%o %s%s%s%s%s%s%s s=%o,%o l=%o,%o p=%o,%o d=%o,%o ref=%o tm=%o",
-                    handler,evt,((touches)&&(touches.length)),
-                    ((!(touch))?(""):
-                     ("c="+touch.clientX+","+touch.clientY+";s="+touch.screenX+","+touch.screenY+" ")),
-                    touch_started,evt.type,target,
-                    fdjtTime()-touch_started,
-                    ((Codex.mode)?(Codex.mode+" "):""),
-                    ((Codex.skimming)?"skimming ":""),
-                    ((touch_held)?("held "):("")),
-                    ((touch_moved)?("moved "):("")),
-                    ((touch_scrolled)?("scrolled "):("")),
-                    ((isClickable(target))?("clickable "):("")),
-                    ((touch)?"":"notouch "),
-                    start_x,start_y,last_x,last_y,page_x,page_y,
-                    (((touch)&&(touch.screenX))?(touch.screenX-page_x):0),
-                    (((touch)&&(touch.screenY))?(touch.screenY-page_y):0),
-                    touch_ref,touch_moves);
-        else fdjtLog("%s(%o) n=%o %s%s c=%o,%o p=%o,%o ts=%o %s@%o ref=%o",
-                     handler,evt,((touches)&&(touches.length)),
-                     ((Codex.mode)?(Codex.mode+" "):""),
-                     ((Codex.skimming)?"skimming ":""),
-                     touch.clientX,touch.clientY,touch.screenX,touch.screenY,
-                     touch_started,evt.type,target,ref);
-        if (ref) fdjtLog("%s(%o) ref=%o from %o",handler,evt,ref,target);}
-
 
     /* Default click/tap */
     function default_tap(evt){
