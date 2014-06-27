@@ -95,12 +95,14 @@ body.cxSKIMMING #CODEXPAGE .codexpage {
     position: absolute; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
     width: 50px; right: 0px;
-    top: 60px; bottom: 60px;}
+    top: 60px; bottom: 60px;
+    z-index: -50;}
 #CODEXPAGELEFT {
     position: absolute; overflow: visible;
     padding: 0px; margin: 0px; border: 0px;
     width: 50px; left: 0px;
-    top: 60px; bottom: 60px;}
+    top: 60px; bottom: 60px;
+    z-index: -50;}
 #CODEXPAGE #CODEXPAGES {
     position: absolute;
     top: 0px; bottom:0px; left: 0px; right: 0px;
@@ -333,7 +335,8 @@ div.locbar hr {
     border: 0px;
     border-right: solid rgba(0,0,255,0.70) 4px;
     width: 0px; overflow: visible;
-    width: 50px; height: 50px;
+    width: 54px; height: 50px;
+    box-sizing: border-box;
     z-index: 50;}
 #CODEXPAGE .codexglossmark {margin-right: -50px;}
 body.cxNARROW div.fdjtselecting .codexglossmark {
@@ -352,6 +355,8 @@ body .codexglossmark > img {
     -khtml-opacity: 0.01;
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
+div.codexpage .codexglossmark img {
+    max-width: inherit; max-height: inherit;}
 
 body .codexglossmark:hover > img, body .codexglossmark.hover > img {
     opacity: 0.50;
