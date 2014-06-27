@@ -43,8 +43,8 @@ div.codexglossform.focused form div.textbox input[type="TEXT"] {
     max-height: inherit;}
 
 #CODEXADDGLOSS div.codexglossform {
-    border-radius: 1em; -webkit-border-radius: 1em;
-    -o-border-radius: 1em; -moz-border-radius: 1em;
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -o-border-radius: 1ex; -moz-border-radius: 1ex;
     border-top-width: 0px;
     border-top-left-radius: 0px;
     -webkit-border-top-left-radius: 0px; 

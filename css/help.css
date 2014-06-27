@@ -82,8 +82,8 @@ div.helpbox {
     position: absolute;
     background-color: silver; color: black;
     padding: 1em; border: solid transparent 3px;
-    border-radius: 1em; -webkit-border-radius: 1em;
-    -moz-border-radius: 1em; -o-border-radius: 1em;
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -moz-border-radius: 1ex; -o-border-radius: 1ex;
     z-index: -250;
     opacity: 0.001;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
@@ -320,8 +320,8 @@ div.codexhelp .result span { display: none; }
     height: auto; width: auto; padding-bottom: 1em;
     font-family: helvetica,sans,sans-serif;
     background-color: lightgray; color: black; 
-    border-radius: 1em; -webkit-border-radius: 1em;
-    -moz-border-radius: 1em; -o-border-radius: 1em;
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -moz-border-radius: 1ex; -o-border-radius: 1ex;
     border: solid gray 4px;
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
@@ -336,8 +336,8 @@ div.codexhelp .result span { display: none; }
     top: 150px; left: 75px; right: 75px;
     font-size: 120%; font-family: helvetica,sans,sans-serif;
     background-color: lightgray; color: black; 
-    border-radius: 1em; -webkit-border-radius: 1em;
-    -moz-border-radius: 1em; -o-border-radius: 1em;
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -moz-border-radius: 1ex; -o-border-radius: 1ex;
     border: solid gray 4px;
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";

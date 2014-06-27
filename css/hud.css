@@ -100,8 +100,8 @@ body.hudup #CODEXTOP .hudpanel {
 
 #CODEXTOP, #CODEXTOP .hudpanel, #CODEXSKIMMER,
 #CODEXSKIMMER .codexcard, #CODEXSKIMMER .codexcardbody {
-    border-radius: 1em; -webkit-border-radius: 1em;
-    -o-border-radius: 1em; -moz-border-radius: 1em;
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -o-border-radius: 1ex; -moz-border-radius: 1ex;
     border-top-width: 0px;
     border-top-left-radius: 0px;
     -webkit-border-top-left-radius: 0px; 
@@ -112,8 +112,8 @@ body.hudup #CODEXTOP .hudpanel {
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
 #CODEXFOOT, #CODEXFOOT .hudpanel {
-    border-radius: 1em; -webkit-border-radius: 1em;
-    -o-border-radius: 1em; -moz-border-radius: 1em;
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -o-border-radius: 1ex; -moz-border-radius: 1ex;
     border-bottom-width: 0px;
     border-bottom-left-radius: 0px;
     -webkit-border-bottom-left-radius: 0px; 
@@ -140,7 +140,7 @@ body.cxANIMATE #CODEXSKIMMER.transanimate {
     display: block;}
 #CODEXHUD.openhead #CODEXTOP {
     max-height: inherit; opacity: 1.0;
-    left: 50px; right: 50px; width: auto;}
+    left: 60px; right: 60px; width: auto;}
 body.hudup #CODEXTOP {display: block;}
 #CODEXHUD.openhead #CODEXTOP {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -159,11 +159,7 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
     -moz-box-shadow: none; -o-box-shadow: none;}
     
 #CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD {
-    pointer-events: none;}
-#CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD > * {
-    display: none;}
-#CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD > .hudmodebutton {
-    display: inline-block; pointer-events: all; opacity: 0.5;}
+    z-index: -20; opacity: 0.7;}
 
 body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}
@@ -202,8 +198,8 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
     filter: alpha(opacity=0);
     -webkit-opacity: 0; -khtml-opacity: 0;
     -moz-opacity: 0; -o-opacity: 0;
-    border-radius: 1em; -o-border-radius: 1em;
-    -moz-border-radius: 1em; -webkit-border-radius: 1em;
+    border-radius: 1ex; -o-border-radius: 1ex;
+    -moz-border-radius: 1ex; -webkit-border-radius: 1ex;
     display: none;}
 #CODEXHEARTFRAME {
     /* background-color: steelblue; */
@@ -223,10 +219,10 @@ body.hudup #CODEXHEARTFRAME {
 #CODEXHEARTFRAME #CODEXRIBBON {
     border-radius: 0px; -o-border-radius: 0px;
     -moz-border-radius: 0px; -webkit-border-radius: 0px;
-    border-top-left-radius: 1em; -o-border-top-left-radius: 1em;
-    -moz-border-radius-top-left: 1em; -webkit-border-top-left-radius: 1em;
-    border-top-right-radius: 1em; -o-border-top-right-radius: 1em;
-    -moz-border-radius-top-right: 1em; -webkit-border-top-right-radius: 1em;}
+    border-top-left-radius: 1ex; -o-border-top-left-radius: 1ex;
+    -moz-border-radius-top-left: 1em; -webkit-border-top-left-radius: 1ex;
+    border-top-right-radius: 1ex; -o-border-top-right-radius: 1ex;
+    -moz-border-radius-top-right: 1em; -webkit-border-top-right-radius: 1ex;}
 #CODEXHEARTFRAME #CODEXHEART {}
 
 #CODEXHUD #CODEXRIBBON {
@@ -243,7 +239,7 @@ body.hudup #CODEXHEARTFRAME {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     background-color: ivory; z-index: 0;
-    border-radius: 1em;}
+    border-radius: 1ex;}
 #CODEXHUD #CODEXHEART > div, #CODEXHUD #CODEXHEART > iframe {
     overflow: visible;}
 #CODEXHUD #CODEXHEART div.hudpanel h1 {
@@ -1049,8 +1045,8 @@ body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
     overflow: hidden; display: none;}
 #CODEXHUD #CODEXSTARTPAGE.hudpanel {
     border: solid blue 3px;
-    border-radius: 1em; -webkit-border-radius: 1em;
-    -moz-border-radius: 1em; -o-border-radius: 1em;}
+    border-radius: 1ex; -webkit-border-radius: 1ex;
+    -moz-border-radius: 1ex; -o-border-radius: 1ex;}
 #CODEXFRAME.cxANIMATE #CODEXHUD #CODEXSTARTPAGE {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;

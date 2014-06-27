@@ -45,7 +45,7 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
     position: absolute;
     top: 75px; left: 50px; right: 50px;
     bottom: 100px; height: auto; width: auto;
-    border: solid black 3px; /* border-radius: 1em; */
+    border: solid black 3px; /* border-radius: 1ex; */
     opacity: 0.0; overflow: auto; z-index: -50;
     display: none;}
 #CODEXFRAME.cxANIMATE #CODEXCOVER > div {
@@ -402,7 +402,7 @@ table.settings tr.buttons td, table.settings tr.buttons th { padding-top: 1ex;}
     font-size: 1.5em; color: white; background-color: gray;
     margin-top: 0.7ex; padding:  0px 1em 0px 1em;
     border: solid transparent 4px;
-    font-variant: small-caps; border-radius: 1em; }
+    font-variant: small-caps; border-radius: 1ex; }
 body.cxMOUSE #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE:hover {
     border-color: blue; border-style: dotted;}
 #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE.tapholdtarget {

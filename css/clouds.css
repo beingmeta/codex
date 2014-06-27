@@ -128,8 +128,8 @@ div.completions.noinput .cloudtoggle {
 .cloud span.dterm {
     padding-top: 0.1ex; padding-bottom: 0.1ex;}
 .cloud span.dterm.longterm {
-    border-top-left-radius: 1em;
-    border-bottom-left-radius: 1em;}
+    border-top-left-radius: 1ex;
+    border-bottom-left-radius: 1ex;}
 
 .cloud.working { background-color: lightgray; }
 
