@@ -126,6 +126,7 @@ div.loginbox form > span {
     font-size: 1.5em;}
 #CODEXCOVER div.userbox a, #CODEXCOVER div.userbox a:visited {
     color: silver;}
+#CODEXCOVER div.userbox a.sbookslogo em { color: cornflowerblue; }
 #CODEXCOVER div.userbox span.sbooks em { color: silver;}
 #CODEXCOVER div.userbox a.sbooks em { color: steelblue;}
 body.cxUSER #CODEXCOVER div.userbox {
