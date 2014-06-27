@@ -268,9 +268,9 @@
                     hudwrapper.style.maxWidth=(w-20)+"px";
                     hudwrapper.style.minWidth=Math.floor(w/2)+"px";
                     hudwrapper.style.left="10px";}
-                else hudwrapper.style.maxWidth=(w-100)+"px";
-                geom=fdjtDOM.getGeometry(slicediv);
-                wgeom=fdjtDOM.getGeometry(hudwrapper);}
+                else hudwrapper.style.maxWidth=(w-100)+"px";}
+            geom=fdjtDOM.getGeometry(slicediv);
+            wgeom=fdjtDOM.getGeometry(hudwrapper);
             if ((!(Codex.fullwidth))&&(geom.width>(w-50)))
                 hudwrapper.style.left="10px";
             var wh=false;
