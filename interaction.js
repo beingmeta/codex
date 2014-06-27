@@ -149,10 +149,10 @@
             addHandlers(document,'document');
             addHandlers(document.body,'body');
             addHandlers(fdjtID("CODEXBODY"),'content');
-            Codex.TapHold.page=fdjtUI.TapHold(
+            Codex.TapHold.body=fdjtUI.TapHold(
                 fdjt.ID("CODEXBODY"),
                 {override: true,noslip: true,id: "CODEXBODY",
-                 taptapthresh: 300,maxtouches: 2,
+                 maxtouches: 2,taptapthresh: 300,
                  untouchable: externClickable,
                  movethresh: 10});
             addHandlers(Codex.HUD,'hud');}
@@ -640,6 +640,29 @@
         fdjtUI.TapHold.clear();
         startAddGloss(passage,false,evt);}
 
+    var body_tapstart=false;
+    function body_touchstart(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (target.id!=="CODEXBODY") return;
+        body_tapstart=fdjtTime();}
+
+    function body_touchend(evt){
+        evt=evt||event;
+        var target=fdjtUI.T(evt);
+        if (target.id!=="CODEXBODY") return;
+        if ((body_tapstart)&&(true) //((fdjtTime()-body_tapstart)<1000)
+            ) {
+            if (Codex.TapHold.body) Codex.TapHold.body.abort();
+            fdjtUI.cancel(evt);
+            var x=(evt.clientX)||
+                ((evt.changedTouches)&&
+                 (evt.changedTouches.length)&&
+                 (evt.changedTouches[0].clientX));
+            var w=fdjtDOM.viewWidth();
+            if (x>(w/2)) pageForward(evt);
+            else pageBackward(evt);}}
+            
     function abortSelect(except){
         var i=0, lim=selectors.length;
         while (i<lim) {
@@ -2529,6 +2552,8 @@
                    taptap: body_taptap,
                    hold: body_held,
                    release: body_released,
+                   mousedown: body_touchstart,
+                   mouseup: body_touchend,
                    click: body_click},
          toc: {tap: toc_tapped,hold: toc_held,
                release: toc_released, slip: toc_slipped,
@@ -2668,6 +2693,8 @@
                    taptap: body_taptap,
                    release: body_released,
                    swipe: body_swiped,
+                   touchstart: body_touchstart,
+                   touchend: body_touchend,
                    touchmove: noDefault,
                    click: body_click},
          hud: {touchend: handleXTarget, tap: handleXTarget},

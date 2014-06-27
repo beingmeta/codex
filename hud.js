@@ -221,9 +221,10 @@ Codex.setMode=
             Codex.TapHold.foot=
                 new fdjtUI.TapHold(
                     Codex.DOM.foot,
-                    {override: true,holdfast: true});
+                    {override: true,holdfast: true,taptapthresh: 0});
             Codex.TapHold.head=
-                new fdjtUI.TapHold(Codex.DOM.head,{override: true});
+                new fdjtUI.TapHold(Codex.DOM.head,
+                                   {override: true,taptapthresh: 0});
             Codex.DOM.skimmer=fdjtID("CODEXSKIMMER");
             Codex.TapHold.skimmer=new TapHold(Codex.DOM.skimmer);
             

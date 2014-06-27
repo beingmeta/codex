@@ -12,7 +12,7 @@ Second, on touch devices, don't segue from starting a gloss into selecting text
 Third, two ways to start a gloss: press or one finger double tap. [done]
 
 Fourth, top tap raises HUD, down swipe opens cover, bottom swipe
-raises HUD (also cancels skim).
+raises HUD (also cancels skim). [done]
 
 Fifth, in slices, have "hold doc" visible somewhere.  Ideal: have
 motion change transparency and shift preview target.  Slide event?
