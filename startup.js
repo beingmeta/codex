@@ -1323,8 +1323,8 @@ Codex.Startup=
                 coverpage.style.opacity=0.0; coverpage.style.display="block";
                 coverpage.style.overflow="visible";
                 fdjtDOM.scaleToFit(coverpage,1.0);
-                coverpage.style.opacity=null; coverpage.style.display=null;
-                coverpage.style.overflow=null;}
+                coverpage.style.opacity=""; coverpage.style.display="";
+                coverpage.style.overflow="";}
             if (fdjtID("CODEXBOOKCOVERHOLDER"))
                 fdjtDOM.remove("CODEXBOOKCOVERHOLDER");
             if ((!(fdjtID("CODEXBOOKCOVER")))&&(fdjtID("CODEXCOVERCONTROLS")))
