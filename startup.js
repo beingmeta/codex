@@ -360,6 +360,7 @@ Codex.Startup=
             if (navigator.appVersion)
                 fdjtLog("Navigator App version: %s (%s)",
                         navigator.appVersion,navigator.userAgent);
+            if (fdjtID("CODEXBODY")) Codex.body=fdjtID("CODEXBODY");
 
             // Figure out if we have a user and whether we can keep
             // user information
@@ -1738,8 +1739,16 @@ Codex.Startup=
             
             Codex.body=fdjtID("CODEXBODY");
             if (!(Codex.body)) {
-                Codex.body=fdjtDOM("div#CODEXBODY.codexbody",content,page);
-                body.appendChild(Codex.body);}
+                var cxbody=Codex.body=
+                    fdjtDOM("div#CODEXBODY.codexbody",content,page);
+                if (Codex.justify) addClass(cxbody,"codexjustify");
+                if (Codex.bodysize)
+                    addClass(cxbody,"codexbodysize"+Codex.bodysize);
+                if (Codex.bodyfamily)
+                    addClass(cxbody,"codexbodyfamily"+Codex.bodyfamily);
+                if (Codex.bodyspacing)
+                    addClass(cxbody,"codexbodyspacing"+Codex.bodyspacing);
+                body.appendChild(cxbody);}
             else Codex.body.appendChild(page);
             // Initialize the margins
             initMargins();

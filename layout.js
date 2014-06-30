@@ -95,18 +95,23 @@ Codex.Paginate=
             var forced=((init)&&(init.forced));
             var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
             var height=geom.inner_height, width=geom.width;
-            var bodysize=Codex.bodysize||"normal";
-            var bodyfamily=Codex.bodyfamily||"serif";
+            var justify=Codex.justify;
+            var spacing=Codex.bodyspacing;
+            var size=Codex.bodysize||"normal";
+            var family=Codex.bodyfamily||"serif";
             if ((!(Codex.layout))&&(Codex.Trace.startup))
                 fdjtLog("Page layout requires %dx%d %s %s pages",
-                        width,height,bodysize,bodyfamily);
+                        width,height,size,family);
             if (Codex.layout) {
                 var current=Codex.layout;
                 if ((!(forced))&&
                     (width===current.width)&&
                     (height===current.height)&&
-                    (bodysize===current.bodysize)&&
-                    (bodyfamily===current.bodyfamily)) {
+                    (size===current.bodysize)&&
+                    (family===current.bodyfamily)&&
+                    ((!(spacing))||(spacing===current.bodyspacing))&&
+                    (((justify)&&(current.justify))||
+                     ((!justify)&&(!current.justify)))) {
                     dropClass(document.body,"cxLAYOUT");
                     fdjtLog("Skipping redundant pagination for %s",
                             current.layout_id);
@@ -121,7 +126,7 @@ Codex.Paginate=
             // Create a new layout
             var layout_args=getLayoutArgs();
             var layout=new CodexLayout(layout_args);
-            layout.bodysize=bodysize; layout.bodyfamily=bodyfamily;
+            layout.bodysize=size; layout.bodyfamily=family;
             Codex.layout=layout;
             
             var layout_id=layout.layout_id;
@@ -387,8 +392,14 @@ Codex.Paginate=
 
         function updateLayoutProperty(name,val){
             // This updates layout properties
-            fdjtDOM.swapClass(
-                Codex.body,new RegExp("codex"+name+"\\w*"),"codex"+name+val);
+            if (val===true) 
+                fdjtDOM.addClass(Codex.body,"codex"+name);
+            else if (!(val))
+                fdjtDOM.dropClass(
+                    Codex.body,new RegExp("codex"+name+"\\w*"));
+            else fdjtDOM.swapClass(
+                Codex.body,new RegExp("codex"+name+"\\w*"),
+                "codex"+name+val);
             Codex[name]=val;
             if ((Codex.postconfig)&&(Codex.content)) {
                 if (Codex.postconfig.indexOf(Codex.sizeContent)<0)
@@ -408,7 +419,7 @@ Codex.Paginate=
         Codex.addConfig("bodyspacing",updateLayoutProperty);
         Codex.addConfig("justify",updateLayoutProperty);
         
-        function getLayoutID(width,height,family,size,source_id){
+        function getLayoutID(width,height,family,size,spacing,justify,source_id){
             var page=fdjtID("CODEXPAGE");
             var left=page.style.left, right=page.style.right;
             page.style.left=""; page.style.right="";
@@ -420,11 +431,16 @@ Codex.Paginate=
             if (!(size)) size=Codex.bodysize||"normal";
             if (!(source_id))
                 source_id=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri);
+            if (!(justify)) justify=Codex.justify;
+            if (!(spacing)) justify=Codex.bodyspacing;
             page.style.left=left; page.style.right=right;
-            return fdjtString("%dx%d-%s-%s(%s)",
+            return fdjtString("%dx%d-%s-%s%s%s(%s)",
                               width,height,family,size,
-                              // Layout depends on the actual file ID, if we've got
-                              // one, rather than just the REFURI
+                              ((spacing)?("-"+spacing):("")),
+                              ((justify)?("-j"):("")),
+                              // Layout depends on the actual file ID,
+                              // if we've got one, rather than just
+                              // the REFURI
                               source_id);}
         Codex.getLayoutID=getLayoutID;
 
@@ -460,9 +476,11 @@ Codex.Paginate=
             var bodyfamily=Codex.bodyfamily||"serif";
             var bodysize=Codex.bodysize||"normal";
             var sourceid=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri);
+            var justify=Codex.justify;
             var layout_id=fdjtString(
-                "%dx%d-%s-%s(%s)",
+                "%dx%d-%s-%s%s(%s)",
                 width,height,bodyfamily,bodysize,
+                ((justify)?("-j"):("")),
                 // Layout depends on the actual file ID, if we've got
                 // one, rather than just the REFURI
                 sourceid||Codex.refuri);

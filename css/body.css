@@ -63,7 +63,7 @@ body.sbook { font-size: 62.5%; line-height: inherit;}
 .codexbody.codexlinespacingonefive {
     line-height: 150%;}
 
-.codexbody.codexjustifytrue p, .codexbody.codexjustifytrue li {
+.codexbody.codexjustify p, .codexbody.codexjustify li {
     text-align: justify;}
 
 #CODEXBODY.codexfamilydefault {

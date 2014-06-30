@@ -885,6 +885,9 @@ Codex.setMode=
                 ((showconsole)&&(showconsole.length)&&(true))||false;
             var locsync=fdjtDOM.getInputValues(settings,"CODEXLOCSYNC");
             if ((locsync)&&(locsync.length)) result.locsync=true;
+            var justify=fdjtDOM.getInputValues(settings,"CODEXJUSTIFY");
+            if ((justify)&&(justify.length)) result.justify=true;
+            else result.justify=false;
             var cacheglosses=fdjtDOM.getInputValues(settings,"CODEXCACHEGLOSSES");
             if ((cacheglosses)&&(cacheglosses.length)) result.cacheglosses=true;
             else result.cacheglosses=false;
