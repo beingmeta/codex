@@ -373,11 +373,8 @@ Codex.Startup=
             // Check for any trace settings passed as query arguments
             if (getQuery("cxtrace")) readTraceSettings();
 
-            // Get device information early
-            fdjt.deviceCheck();
-
-            // Get various settings for the sBook from the HTML (META
-            // tags, etc), including settings or guidance for
+            // Get various settings for the sBook from the HTML
+            // (META tags, etc), including settings or guidance for
             // skimming, graphics, layout, glosses, etc.
             readBookSettings();
             fdjtLog("Book %s (%s) %s (%s%s)",
@@ -956,6 +953,8 @@ Codex.Startup=
             var body=document.body;
             var started=fdjtTime();
 
+            fdjtLog("Device info is %j",device);
+
             if ((!(device.touch))&&(getQuery("touch")))
                 device.touch=getQuery("touch");
             
@@ -988,10 +987,14 @@ Codex.Startup=
                 default_config.keyboardhelp=false;
                 // Have fdjtLog do it's own format conversion for the log
                 fdjtLog.doformat=true;}
-            else {
+            else if (device.touch) {
+                fdjtDOM.addClass(body,"cxTOUCH");
+                Codex.ui="touch";}
+            else if (!(Codex.ui)) {
                 // Assume desktop or laptop
                 fdjtDOM.addClass(body,"cxMOUSE");
                 Codex.ui="mouse";}
+            else {}
             if (Codex.iscroll) {
                 fdjtDOM.addClass(body,"cxISCROLL");
                 device.iscroll=true;}
