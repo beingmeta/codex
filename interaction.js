@@ -724,7 +724,8 @@
         var dx=evt.deltaX, dy=evt.deltaY;
         var vw=fdjtDOM.viewWidth();
         var adx=((dx<0)?(-dx):(dx)), ady=((dy<0)?(-dy):(dy));
-        var head=Codex.head, headinfo=((head)&&(head.id)&&(Codex.docinfo[head.id]));
+        var head=Codex.head;
+        var headinfo=((head)&&(head.id)&&(Codex.docinfo[head.id]));
         if (Trace.gestures)
             fdjtLog("swiped d=%o,%o, ad=%o,%o, s=%o,%o vw=%o, n=%o",
                     dx,dy,adx,ady,evt.startX,evt.startY,vw,evt.ntouches);

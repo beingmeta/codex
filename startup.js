@@ -373,6 +373,9 @@ Codex.Startup=
             // Check for any trace settings passed as query arguments
             if (getQuery("cxtrace")) readTraceSettings();
 
+            // Get device information early
+            fdjt.deviceCheck();
+
             // Get various settings for the sBook from the HTML (META
             // tags, etc), including settings or guidance for
             // skimming, graphics, layout, glosses, etc.
