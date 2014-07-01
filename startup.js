@@ -51,6 +51,7 @@ Codex.Startup=
         "use strict";
 
         var fdjtString=fdjt.String;
+        var fdjtDevice=fdjt.device;
         var fdjtState=fdjt.State;
         var fdjtAjax=fdjt.Ajax;
         var fdjtTime=fdjt.Time;
@@ -357,23 +358,24 @@ Codex.Startup=
                     Codex.version,Codex.buildtime,Codex.buildhost,
                     Codex._setup_start.toString(),
                     Codex.root||"somewhere");
-            if (navigator.appVersion)
-                fdjtLog("Navigator App version: %s (%s)",
-                        navigator.appVersion,navigator.userAgent);
             if (fdjtID("CODEXBODY")) Codex.body=fdjtID("CODEXBODY");
-
-            // Figure out if we have a user and whether we can keep
-            // user information
-            if (getLocal("codex.user")) Codex.persist=true;
 
             // Get window outer dimensions (this doesn't count Chrome,
             // onscreen keyboards, etc)
             outer_height=window.outerHeight;
             outer_width=window.outerWidth;
 
+            if ((fdjtDevice.standalone)&&
+                (fdjtDevice.ios)&&(fdjtDevice.mobile)&&
+                (!(getLocal("codex.user")))&&
+                (fdjtState.getQuery("SBOOKS:AUTH-"))) {
+                var authkey=fdjt.State.getQuery("SBOOKS:AUTH-");
+                fdjtLog("Got auth key %s",authkey);
+                Codex.authkey=authkey;}
+
             // Check for any trace settings passed as query arguments
             if (getQuery("cxtrace")) readTraceSettings();
-
+            
             // Get various settings for the sBook from the HTML
             // (META tags, etc), including settings or guidance for
             // skimming, graphics, layout, glosses, etc.
@@ -383,16 +385,25 @@ Codex.Startup=
                     Codex.refuri,Codex.sourceid,
                     ((Codex.sourcetime)?(": "+Codex.sourcetime):("")));
             
+            // Initialize the databases
+            Codex.initDB();
+
             // Get config information
             initConfig();
 
             // This sets various aspects of the environment
             readEnvSettings();
 
+            // Figure out if we have a user and whether we can keep
+            // user information
+            if (getLocal("codex.user")) {
+                Codex.persist=true;
+                userSetup();}
+
             // Initialize the book state (location, targets, etc)
             Codex.initState(); Codex.syncState();
 
-            // If we don't know who the user is, ask ASAP
+            // If we have no clue who the user is, ask right away (updateInfo())
             if (!((Codex.user)||(window._sbook_loadinfo)||
                   (Codex.userinfo)||(window._userinfo)||
                   (getLocal("codex.user")))) {
@@ -408,16 +419,13 @@ Codex.Startup=
             deviceSetup();
             coverSetup();
             appSetup();
+            Codex._ui_setup=fdjtTime();
             showMessage();
-            if (!(updating)) userSetup();
+            if (Codex._user_setup) setupUI4User();
             contentSetup();
 
             // Reapply config settings to update the HUD UI
             Codex.setConfig(Codex.getConfig());
-
-            // Hide the loading splash page, if any
-            if (fdjtID("CODEXSPLASH"))
-                fdjtID("CODEXSPLASH").style.display='none';
 
             var adjstart=fdjt.Time();
             fdjtDOM.tweakFonts(fdjtID("CODEXHUD"));
@@ -511,9 +519,6 @@ Codex.Startup=
             fdjtDOM(document.head,style);
             Codex.stylesheet=style.sheet;
 
-            // Initialize the databases
-            Codex.initDB();
-
             // This initializes the book tools (the HUD/Heads Up Display)
             Codex.initHUD();
 
@@ -578,23 +583,26 @@ Codex.Startup=
             if ((Codex.sync)&&(!(Codex.persist))) clearOffline();
 
             if (Codex.nologin) {}
-            else if ((Codex.persist)&&(sync)&&(getLocal("codex.user"))) {
+            else if ((Codex.persist)&&(getLocal("codex.user"))) {
                 initUserOffline();
                 if (Codex.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
                             Codex.user._id,Codex.user.name,Codex.sync);
+                // Clear any loadinfo read on startup from the
+                // application cache but already stored locally.
                 if ((Codex.user)&&(Codex.sync)&&(Codex.cacheglosses)&&
                     (window._sbook_loadinfo))
                     // Clear the loadinfo "left over" from startup,
                     //  which should now be in the database
                     window._sbook_loadinfo=false;}
             
-            if ((Codex.nologin)||(Codex.user)) {}
+            if (Codex.nologin) {}
             else if ((window._sbook_loadinfo)&&
                      (window._sbook_loadinfo.userinfo)) {
                 // Get the userinfo from the loadinfo that might have already been loaded
                 loadinfo=window._sbook_loadinfo;
                 userinfo=loadinfo.userinfo;
+                window._sbook_loadinfo=false;
                 if (Codex.Trace.storage) 
                     fdjtLog("Have window._sbook_loadinfo for %o (%s) dated %o: %j",
                             userinfo._id,userinfo.name||userinfo.email,
@@ -617,7 +625,8 @@ Codex.Startup=
                 fdjtLog("userSetup done in %dms",fdjtTime()-started);
             if (Codex.nologin) return;
             else if (!(Codex.refuri)) return;
-            else if (window.navigator.onLine) {
+            else {}
+            if (window.navigator.onLine) {
                 if ((Codex.user)&&(sync))
                     fdjtLog("Requesting new (> %s (%d)) glosses on %s from %s for %s",
                             fdjtTime.timeString(Codex.sync),Codex.sync,
@@ -950,11 +959,9 @@ Codex.Startup=
 
         function deviceSetup(){
             var useragent=navigator.userAgent;
-            var device=fdjt.device;
+            var device=fdjtDevice;
             var body=document.body;
             var started=fdjtTime();
-
-            fdjtLog("Device info is %j",device);
 
             if ((!(device.touch))&&(getQuery("touch")))
                 device.touch=getQuery("touch");
@@ -1956,7 +1963,7 @@ Codex.Startup=
             if (window._sbook_loadinfo!==info)
                 Codex.setConnected(true);
             if (info.sticky) Codex.persist=true;
-            if (!((Codex.user)&&(Codex._user_setup))) {
+            if (!(Codex.user)) {
                 if (info.userinfo)
                     setUser(info.userinfo,
                             info.outlets,info.layers,
@@ -2057,16 +2064,15 @@ Codex.Startup=
             var user=Codex.user; var start=fdjtTime();
             var uri="https://"+Codex.server+"/v1/loadinfo.js?REFURI="+
                 encodeURIComponent(Codex.refuri);
-            var ajax_headers=
-                ((Codex.sync)?
-                 ({"If-Modified-Since": (new Date(Codex.sync*1000)).toString()}):
-                 (false));
+            var ajax_headers=((Codex.sync)?({}):(false));
+            if (Codex.sync) ajax_headers["If-Modified-Since"]=((new Date(Codex.sync*1000)).toString());
             function gotInfo(req){
                 updating=false;
-                Codex.updatedInfo(
-                    JSON.parse(req.responseText),
-                    uri+((user)?("&SYNCUSER="+user._id):("&JUSTUSER=yes")),
-                    start);
+                Codex.authkey=false; // No longer needed, we should have our own authentication keys
+                var response=JSON.parse(req.responseText);
+                if ((response.glosses)&&(response.glosses.length))
+                    fdjtLog("Received %d glosses from the server",response.glosses.length);
+                Codex.updatedInfo(response,uri+((user)?("&SYNCUSER="+user._id):("&JUSTUSER=yes")),start);
                 if (user) {
                     // If there was already a user, just startup
                     //  regular updates now
@@ -2109,9 +2115,10 @@ Codex.Startup=
             glosses=getHash("GLOSS"); {
                 i=0; lim=glosses.length; while (i<lim) uri=uri+"&GLOSS="+glosses[i++];}
             if (Codex.mycopyid) uri=uri+"&MCOPYID="+encodeURIComponent(Codex.mycopyid);
+            if (Codex.authkey) uri=uri+"&SBOOKS%3aAUTH-="+encodeURIComponent(Codex.authkey);
             if (Codex.sync) uri=uri+"&SYNC="+(Codex.sync+1);
             if (user) uri=uri+"&SYNCUSER="+user._id;
-            if ((!(user))&&(Codex.Trace.startup))
+            if (true) // ((!(user))&&(Codex.Trace.startup))
                 fdjtLog("Requesting initial user information with %s using %s",
                         ((noajax)?("JSONP"):("Ajax")),uri);
             if (noajax) {
@@ -2151,9 +2158,8 @@ Codex.Startup=
 
         function setUser(userinfo,outlets,layers,sync){
             var started=fdjtTime();
-            if (Codex.Trace.startup>1)
-                fdjtLog("Setting up user %s (%s)",userinfo._id,
-                        userinfo.name||userinfo.email);
+            fdjtLog("Setting up user %s (%s)",userinfo._id,
+                    userinfo.name||userinfo.email);
             if (userinfo) {
                 fdjtDOM.dropClass(document.body,"cxNOUSER");
                 fdjtDOM.addClass(document.body,"cxUSER");}
@@ -2177,15 +2183,16 @@ Codex.Startup=
             // We also save it locally so we can get it synchronously
             saveLocal(Codex.user._id,Codex.user.Export(),true);
             if (Codex.locsync) setConfig("locsync",true);
-            Codex.cacheGlosses(Codex.cacheglosses);
             
-            var startui=fdjtTime();
-            setupUI4User();
             if (Codex.Trace.startup) {
                 var now=fdjtTime();
-                fdjtLog("setUser %s (%s) done in %dms, UI took %dms",
+                fdjtLog("setUser %s (%s) done in %dms",
                         userinfo._id,userinfo.name||userinfo.email,
-                        now-started,now-startui);}
+                        now-started);}
+            Codex._user_setup=fdjtTime();
+            // This sets up for local storage, now that we have a user 
+            if (Codex.cacheglosses) Codex.cacheGlosses(true);
+            if (Codex._ui_setup) setupUI4User();
             return Codex.user;}
         Codex.setUser=setUser;
         
@@ -2199,7 +2206,8 @@ Codex.Startup=
 
         function setupUI4User(){
             var i=0, lim;
-            if (Codex._user_setup) return;
+            var startui=fdjtTime();
+            if (Codex._user_ui_setup) return;
             if (!(Codex.user)) {
                 fdjtDOM.addClass(document.body,"cxNOUSER");
                 return;}
@@ -2219,19 +2227,6 @@ Codex.Startup=
             if (fdjtID("SBOOKMARKUSER"))
                 fdjtID("SBOOKMARKUSER").value=Codex.user._id;
             
-            // Initialize the splashform, which provides easy login
-            // and social features
-            var splashform=fdjtID("CODEXSPLASHFORM");
-            var docinput=fdjtDOM.getInput(splashform,"DOCURI");
-            if (docinput) docinput.value=Codex.docuri;
-            var refinput=fdjtDOM.getInput(splashform,"REFURI");
-            if (refinput) refinput.value=Codex.refuri;
-            var topinput=fdjtDOM.getInput(splashform,"TOPURI");
-            if (topinput) topinput.value=document.location.href;
-            var xquery=fdjtDOM.getInput(splashform,"XQUERY");
-            var query=document.location.query;
-            if (xquery) xquery.value=(((query)&&(query!=="?"))?(query):"");
-
             /* Initialize add gloss prototype */
             var ss=Codex.stylesheet;
             var form=fdjtID("CODEXADDGLOSSPROTOTYPE");
@@ -2278,7 +2273,12 @@ Codex.Startup=
                     var friend=RefDB.resolve(friends[i++],sourcedb);
                     Codex.addTag2Cloud(friend,Codex.gloss_cloud);
                     Codex.addTag2Cloud(friend,Codex.share_cloud);}}
-            Codex._user_setup=true;}
+            if (Codex.Trace.startup) {
+                var now=fdjtTime();
+                fdjtLog("setUser %s (%s), UI setup took %dms",
+                        Codex.user._id,Codex.user.name||Codex.user.email,
+                        now-startui);}
+            Codex._user_ui_setup=true;}
 
         function loginUser(info){
             Codex.user=Codex.sourcedb.Import(
