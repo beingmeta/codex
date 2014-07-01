@@ -1069,6 +1069,34 @@ var Codex={
         Codex.xstate=false;
     } Codex.clearState=clearState;
 
+    function iosKludge(){
+        if ((!(Codex.user))||(fdjt.device.standalone)||
+            (!(fdjt.device.mobilesafari)))
+            return;
+        var auth=fdjtState.getCookie("SBOOKS:AUTH-");
+        if (!(auth)) return;
+        var eauth=encodeURIComponent(auth);
+        var url=location.href, qmark=url.indexOf('?'), hashmark=url.indexOf('#');
+        var base=((qmark<0)?((hashmark<0)?(url):(url.slice(0,hashmark))):
+                  (url.slice(0,qmark)));
+        var query=((qmark<0)?(""):(hashmark<0)?(url.slice(qmark)):
+                   (url.slice(qmark+1,hashmark)));
+        var hash=((hashmark<0)?(""):(url.slice(hashmark)));
+        var old_query=false, new_query="SBOOKS%3aAUTH-="+eauth;
+        if (query.length<=2) query="?"+new_query;
+        else if (query.search("SBOOKS%3aAUTH-=")>=0) {
+            var auth_start=query.search("SBOOKS%3aAUTH-=");
+            var before=query.slice(0,auth_start);
+            var auth_len=query.slice(auth_start).search('&');
+            var after=((auth_len<0)?(""):(query.slice(auth_start+auth_len)));
+            old_query=((auth_len<0)?(query.slice(auth_start)):
+                       (query.slice(auth_start,auth_start+auth_len)));
+            query=before+new_query+after;}
+        else query=query+"&"+new_query;
+        if ((!(old_query))||(old_query!==new_query))
+            history.replaceState(history.state,window.title,
+                                 base+query+hash);}
+
     var last_sync=false;
     // Post the current state and update synced state from what's
     // returned
@@ -1134,6 +1162,9 @@ var Codex={
         var traced=(Codex.Trace.state)||(Codex.Trace.network);
         if (req.readyState===4) {
             if ((req.status>=200)&&(req.status<300)) {
+                if ((Codex.user)&&(!(fdjt.device.standalone))&&
+                    (fdjt.device.mobilesafari))
+                    iosKludge();
                 var xstate=JSON.parse(req.responseText);
                 if (xstate.changed) {
                     if (traced)
