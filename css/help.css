@@ -314,12 +314,25 @@ div.codexhelp table td.textright { text-align: right;}
 
 div.codexhelp .result span { display: none; }
 
+div.codexhelp img.narrowimage, div.codexhelp img.wideimage {
+    max-width: 100%; height: auto;}
+
+div.codexhelp img.narrowimage { display: none;}
+@media (max-width: 700) {
+    div.codexhelp img.narrowimage { display: inline;}
+    div.codexhelp img.wideimage { display: none;}}
+
+div#CODEXHELP table.textual { font-size: 120%;}
+div.codexhelp table.textual td {padding-left: 3px;}
+div.codexhelp div.glossbarbox {
+    font-weight: normal; padding-right: 2px; border-right: solid blue 3px;}
+
 #CODEXHUD div.codexhelp.hudpanel {
     position: absolute; text-align: center;
     top: 100px; bottom: 100px; left: 80px; right: 80px; 
     height: auto; width: auto; padding-bottom: 1em;
     font-family: helvetica,sans,sans-serif;
-    background-color: lightgray; color: black; 
+    background-color: lightgray; color: black;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -moz-border-radius: 1ex; -o-border-radius: 1ex;
     border: solid gray 4px;

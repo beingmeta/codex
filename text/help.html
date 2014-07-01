@@ -1,33 +1,12 @@
-<div class="fortouch">
-  <p>Swipe or tap left/right to move by pages</p>
-  <p>Swipe down to see the cover (and more).  Swipe up to see the book
-  tools.</p>
-  <p>Wherever you are, tapping the help icon will give you some
-    explanation or direction.  Tapping again hides it.</p>
-  <p>Use the pagebar at the bottom to navigate the book as a whole.
-    Hold and drag to skim through pages or tap a position to jump there.</p>
-  <p>Tap the page number (in the middle) or percentage (on the right)
-  to go to a particular location.</p>
-  <p>Blue bars in the right margin indicate <strong>glosses</strong>
-     on the text (notes, highlights, tags, links, media).  Tap or
-     slide them to their left to see more.</p>
-  <p>Press or double tap on the text to add your own gloss.  Drag your
-  finger over the text to highlight excerpts.</p>
-  <p>The book tools are located in the four corners of the page.  They
-  let you search for tags, browse the outline, or scroll through
-  overlaid glosses.</p>
-  <p>Press and hold any reference (for instance, a search result or
-    TOC entry) to see that part of the book.  Releasing brings you
-    back.  Tapping goes directly there.  If there are a set of
-    references (for example, glosses or search results) tapping
-    starts <em>skimming</em> through the results.  Swipe left or right
-    to go to the previous or next result.  Swipe up to go back to the
-    list of results.</p>
-</div>
-<table class="fdjt textual notouch">
+<table class="fdjt textual">
   <tbody>
-    <tr><th>Read</th>
-      <td class="text">
+    <tr><th>
+        <img src="{{bmg}}codex/browser_edges.svgz"
+             alt="top of browser" class="svg"/>
+        <img src="{{bmg}}codex/browser_edges32x32.png"
+             alt="top of browser" class="nosvg"/>
+      </th>
+      <td class="text" colspan='2'>
         <span class="result">To move by pages</span>, 
         <span class="action">
           <span class="fortouch">tap</span> <span class="notouch">click</span>
@@ -38,123 +17,63 @@
           or <span class="nowrap">
             <kbd>PageUp</kbd>/<kbd>PageDown</kbd></span> keys</span>.
       </td>
-      <th>
-        <img src="{{bmg}}codex/browser_edges.svgz"
-             alt="top of browser" class="svg"/>
-        <img src="{{bmg}}codex/browser_edges32x32.png"
-             alt="top of browser" class="nosvg"/>
-    </th></tr>
+    </tr>
     <tr class="padding"></tr>
     <tr><th>
         <img src="{{bmg}}codex/browser_bottom.svgz"
              alt="bottom of browser" class="svg"/>
         <img src="{{bmg}}codex/browser_bottom32x32.png"
              alt="bottom of browser" class="nosvg"/></th>
-      <td class="text">
-        Use the <dfn>pagebar</dfn> at the bottom of the page
-        to <span class="result">see and change</span> your location in
-        the book as a whole.  <span class="action">Press, hold, and
-          drag</span> in the <em>pagebar</em> to <dfn>preview</dfn> other
-        parts of the book.  <span class="action">Let go</span>
-        to <span class="result">settle where you are</span>; move out of
+      <td class="text" colspan="2">
+        Use the <dfn>pagebar</dfn> at the bottom
+        to <span class="result">see and change</span> your
+        location.  <span class="action">Press, hold, and drag</span>
+        to run through the pages.
+        <img src="{{bmg}}codex/docs/pagebar_wide.png"
+        class="wideimage"/>
+        <img src="{{bmg}}codex/docs/pagebar_wide.png"
+        class="narrowimage"/></td>
+    </tr>
+    <tr>
+      <th><img src="{{bmg}}codex/docs/pagebar_zoom.png"/></th>
+      <td colspan='2'>
+        The dark blue line is your current location and
+        the lighter regions around it indicate the current section and its parent.
+        Release <span class="fortouch">or tap the
+          content</span> to stop at a page.  Move out of
         the <em>pagebar</em> or <span class="action notouch">press any
-          key</span><span class="action fortouch">touch anywhere
-          else</span> to <span class="result">return to where you
-          were</span>.</td>
-      <th>
-        <img class="notouch"
-             src="{{bmg}}codex/docs/pagepreview.png"
-             alt="selecting text"/>
-        <img class="fortouch"
-             src="{{bmg}}codex/docs/touch_pagepreview.jpg"
-             alt="selecting text"/>
-      </th>
-    </tr>
+          key</span><span class="action fortouch">touch an edge</span>
+        to <span class="result">return</span>.</td></tr>
   </tbody>
-  <tr class="padding"></tr>
-  <tbody>
-    <tr><th>Glosses</th>
+  <tbody> 
+    <tr><th><div class="glossbarbox">gloss<br/>bars</div></th>
       <td class="text">
-        <span style="color: blue;">Blue</span> <dfn>gloss bars</dfn>
-        in the <em>right margin</em> indicate glosses already applied
-        to the text.  <span class="fortouch">Tap or drag left</span>
-        <span class="notouch">Click</span> them to see what's been
-        added.</td>
-      <th>
-        <img src="{{bmg}}codex/docs/bluebar.png" alt="blue margin bar"/></th>
+        in the <em>right margin</em>
+        indicate glosses applied to the core
+        text.  <span class="fortouch">Tap or drag left</span>
+        <span class="notouch">Click to their left</span> to see
+        more including notes, tags, links, etc.</td>
+      <th></th>
     </tr>
-    <tr><th>
-        <img class="fortouch"
-             src="{{bmg}}codex/docs/touch_selectstart.jpg"
-             alt="selecting text"/>
-        <img class="notouch"
-             src="{{bmg}}codex/docs/selectstart.png"
-             alt="selecting text"/></th>
+    <tr class="padding"></tr>
+    <tr>
+      <th>Add<br/>new<br/>glosses</th>
       <td class="text">
-        Add your own <dfn>glosses</dfn>
         by <span class="fortouch">pressing down</span>
-        <span class="notouch">holding down the pointer</span> on a
-        passage or word.  When the word <span class="result">turns to
-        gold</span>, it is <em>highlighted</em> and you
-        can <span class="fortouch">move your finger</span>
-        <span class="notouch">drag the pointer</span>
-        to <span class="result">expand the highlighted text</span>.
-        Adjust the highlight by dragging the golden ends of the
-        highighted text.<br/>
-        <span class="action">Add notes, tags, or links</span> using
-        the widget which appears at the top of the page.  Keep them
-        for yourself or share them with your friends, followers, or
-        colleagues.</td>
+        <span class="action notouch">holding down the pointer</span> or
+        <span class="action">double <span class="fortouch">tapping</span>
+          <span class="notouch">clicking</span></span>
+        on the text.  <span class="action">
+          Drag <span class="fortouch">your finger</span>
+          <span class="notouch">the pointer</span></span> to highlight
+        an excerpt and
+          <span class="action">add notes, tags, links, or media</span> at the
+          top of the page.</td>
       <th>
         <img src="{{bmg}}codex/browser_top.svgz"
              alt="bottom of browser" class="svg"/>
         <img src="{{bmg}}codex/browser_top32x32.png"
              alt="bottom of browser" class="nosvg"/></th>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr><th>
-        <img src="{{bmg}}codex/browser_top.svgz"
-             alt="top of browser" class="svg"/>
-        <img src="{{bmg}}codex/browser_top32x32.png"
-             alt="top of browser" class="nosvg"/></th>
-      <td>When reading, <span class="fortouch">tapping at</span>
-        <span class="notouch">clicking on</span> the top of the page reveals
-        <dfn>book tools</dfn> in the page's four corners:<br/>
-        <div style="height: 1ex"></div>
-        <span class="rightclearfloat">
-          search semantic tags
-          <img src="{{bmg}}codex/tagsearch.svgz" alt="search icon"
-               class="inline svg"/>
-          <img src="{{bmg}}codex/tagsearch50x50.png"
-               alt="search icon" class="inline nosvg"/></span>
-        <span class="leftclearflot">
-          <img src="{{bmg}}codex/tocicon.svgz" alt="TOC icon"
-               class="inline svg"/>
-          <img src="{{bmg}}codex/tocicon50x50.png"
-               alt="TOC icon" class="inline nosvg"/>
-          table of contents</span>
-        <br/>
-        <span class="rightclearfloat">
-          browse glosses
-          <img src="{{bmg}}codex/allglosses.svgz"
-               alt="allglosses icon" class="inline svg"/>
-          <img src="{{bmg}}codex/allglosses50x50.png"
-               alt="allglosses icon" class="inline nosvg"/>
-        </span>
-        <span class="leftclearfloat">
-          <img src="{{bmg}}codex/help.svgz"
-               alt="help icon" class="inline svg"/>
-          <img src="{{bmg}}codex/help50x50.png"
-               alt="help icon" class="inline nosvg"/>
-          contextual help</span>
-      </td>
-      <th>
-        <img src="{{bmg}}codex/browser_corners.svgz"
-             alt="four browser corners" class="inline svg"/>
-        <img src="{{bmg}}codex/browser_corners32x32.png"
-             alt="four browser corners" class="inline nosvg"/>
-      </th>
     </tr>
   </tbody>
 </table>
