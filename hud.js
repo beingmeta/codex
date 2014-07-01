@@ -195,29 +195,6 @@ Codex.setMode=
                     fdjtLog("Setting up message listener");
                 fdjtDOM.addListener(window,"message",messageHandler);}
             
-            var splashform=fdjtID("CODEXSPLASHFORM");
-            var docinput=fdjtDOM.getInput(splashform,"DOCURI");
-            if (docinput) docinput.value=Codex.docuri;
-            var refinput=fdjtDOM.getInput(splashform,"REFURI");
-            if (refinput) refinput.value=Codex.refuri;
-            var topinput=fdjtDOM.getInput(splashform,"TOPURI");
-            if (topinput) topinput.value=document.location.href;
-            if ((Codex.user)&&(Codex.user.email)) {
-                var nameinput=fdjtDOM.getInput(splashform,"USERNAME");
-                if (nameinput) nameinput.value=Codex.user.email;}
-            var query=document.location.search;
-            var refuri=Codex.refuri;
-            var appuri="https://"+Codex.server+"/flyleaf";
-            if ((query)&&(query.length)) appuri=appuri+"&"; else appuri=appuri+"?";
-            if (query.search(/(^|&)REFURI=/)<0)
-                appuri=appuri+"REFURI="+encodeURIComponent(refuri);
-            if (query.search(/(^|&)TOPURI/)<0)
-                appuri=appuri+"&TOPURI="+
-                encodeURIComponent(document.location.href);
-            if (document.title) {
-                appuri=appuri+"&DOCTITLE="+encodeURIComponent(document.title);}
-            fdjtDOM.setInputs(".codexhiddenappuri",appuri);
-            
             Codex.TapHold.foot=
                 new fdjtUI.TapHold(
                     Codex.DOM.foot,
