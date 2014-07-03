@@ -107,7 +107,7 @@ div.helpbox th.helptext, div.codexhelp th.helptext {
     text-indent: 0px;}
 
 div.helpbox.atfoot {
-    bottom: 0px; max-height: 35%; height: auto;
+    bottom: 0px; max-height: 45%; height: auto;
     border-bottom: 0px;
     border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
     -o-border-bottom-left-radius: 0px; -o-border-bottom-right-radius: 0px; 
@@ -205,7 +205,7 @@ div.helpbox p {
     */
 }
 
-div.helpbox h3 { margin-top: 0px;}
+div.helpbox h3, div.helpbox h2 { margin-top: 0px;}
 div.helpbox .clicktarget { color: lightblue; }
 div.helpbox img.screenshot {
     width: 80%; margin-left: 10%; margin-right: 10%;}
@@ -279,6 +279,25 @@ div.codexhelp div.helphud#HIDETHISHELP {
     position: absolute;
     top: 40px; right: 4px; width: 70px;}
 
+body div.codexhelp h1, body div.codexhelp h2,
+body div.codexhelp h3, body div.helpbox h1,
+body div.helpbox h2, body div.helpbox h3 {
+    text-align: left;
+    margin-left: 5%; margin-right: 1%;}
+div.codexhelp h1 span.codextogglehelp,
+div.codexhelp h2 span.codextogglehelp,
+div.codexhelp h3 span.codextogglehelp,
+div.helpbox h1 span.codextogglehelp,
+div.helpbox h2 span.codextogglehelp,
+div.helpbox h3 span.codextogglehelp {
+    float: right;
+    font-weight: normal; font-style: italic;
+    background-color: orange; color: black;
+    padding-left: 1ex; padding-right: 1ex;
+    border: solid black 2px; border-radius: 1ex;}
+div.codexhelp h1 span.codextogglehelp {
+    font-size: 80%;}
+
 div.codexhelp td {
     color: rgba(0,0,0,0.75);}
 
@@ -300,7 +319,7 @@ div.codexhelp table th, div.codexhelp table td {
 div.codexhelp table th { padding-right: 0.5ex;}
 div.codexhelp table th img {
     background-color: ivory; padding: 0px;
-    height: 2em; width: auto;
+    height: 3em; width: auto;
     vertical-align: top;}
 div.codexhelp table tbody tr:first-child th,
 div.codexhelp table tbody tr:first-child td {
@@ -315,7 +334,7 @@ div.codexhelp table td.textright { text-align: right;}
 div.codexhelp .result span { display: none; }
 
 div.codexhelp img.narrowimage, div.codexhelp img.wideimage {
-    max-width: 100%; height: auto;}
+    clear: both; max-width:90%; margin-left: 5%; height: auto;}
 
 div.codexhelp img.narrowimage { display: none;}
 @media (max-width: 700) {
