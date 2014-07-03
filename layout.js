@@ -1060,7 +1060,7 @@ Codex.Paginate=
 
         function displaySync(){
             if ((Codex.pagecount)&&(Codex.curpage))
-                Codex.GoToPage(Codex.curpage,"displaySync");}
+                Codex.GoToPage(Codex.curpage,"displaySync",false);}
         Codex.displaySync=displaySync;
 
         // We handle this ourselves
