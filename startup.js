@@ -1519,6 +1519,7 @@ Codex.Startup=
                     if ((section)&&(section.nodeType===1)&&
                         (section.scrollHeight>section.offsetHeight))
                         return;}
+                Codex.clearStateDialog();
                 Codex.hideCover();
                 fdjtUI.cancel(evt);
                 return;}
@@ -2468,7 +2469,7 @@ Codex.Startup=
                 Codex.statedialog=fdjtUI.choose(
                     {choices: choices,cancel: true,timeout: 7,
                      nodefault: true,noauto: true,
-                     onclose: function(box){Codex.statedialog=false;},
+                     onclose: function(){Codex.statedialog=false;},
                      spec: "div.fdjtdialog.resolvestate#CODEXRESOLVESTATE"},
                     fdjtDOM("div",msg1));}
         Codex.resolveXState=resolveXState;

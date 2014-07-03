@@ -775,8 +775,9 @@
                 else if ((evt.startX>(vw*0.8))&&(dy<0))
                     // On the right, up, show GLOSSES
                     Codex.setMode("allglosses");
-                else if (dy>0)
-                    Codex.showCover();
+                else if (dy>0) {
+                    Codex.clearStateDialog();
+                    Codex.showCover();}
                 else Codex.setHUD(true);}
             else if (dy<-(Codex.minswipe||10)) Codex.setMode("allglosses");
             else if (dy>(Codex.minswipe||10)) Codex.setMode("search");}
@@ -1157,6 +1158,7 @@
             fdjt.UI.cancel(evt);
             return false;}
         else if (hasClass(document.body,"cxCOVER")) {
+            Codex.clearStateDialog();
             Codex.hideCover();
             fdjt.UI.cancel(evt);
             return false;}
@@ -1241,10 +1243,12 @@
         if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if ((ch===72)||(ch===104)) { // 'H' or 'h'
+            Codex.clearStateDialog();
             Codex.hideCover();
             fdjtDOM.toggleClass(document.body,'codexhelp');
             return false;}
         else if ((ch===67)||(ch===99)) { // 'C' or 'c'
+            Codex.clearStateDialog();
             Codex.toggleCover();
             return false;}
         else modearg=modechars[ch];
@@ -2482,12 +2486,14 @@
                 if (fdjtID("CODEXBOOKCOVERHOLDER"))
                     fdjtID("CODEXCOVER").className="bookcover";
                 else fdjtID("CODEXCOVER").className="titlepage";}}
+        Codex.clearStateDialog();
         Codex.showCover();
         fdjtUI.cancel(evt);}
     function showcover_released(evt){
         evt=evt||event;
         if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
             fdjtID("CODEXCOVER").className="bookcover";
+        Codex.clearStateDialog();
         Codex.showCover();
         fdjtUI.cancel(evt);}
 
@@ -2572,7 +2578,8 @@
          hud: {click: handleXTarget, tap: handleXTarget},
          "#CODEXSTARTPAGE": {click: Codex.UI.dropHUD},
          "#CODEXHEAD": {tap: raiseHUD},
-         "#CODEXSHOWCOVER": {tap: showcover_tapped, release: showcover_released},
+         "#CODEXSHOWCOVER": {
+             tap: showcover_tapped, release: showcover_released},
          "#CODEXHUDHELP": {click: Codex.UI.dropHUD},
          ".helphud": {click: Codex.UI.dropHUD},
          ".codexheart": {tap: flyleaf_tap},
@@ -2715,7 +2722,8 @@
          // "#CODEXFRAME": {touchstart: noDefault,touchmove: noDefault,touchend: noDefault},
          "#CODEXSTARTPAGE": {touchend: Codex.UI.dropHUD},
          "#CODEXHEAD": {tap: raiseHUD},
-         "#CODEXSHOWCOVER": {tap: showcover_tapped, release: showcover_released},
+         "#CODEXSHOWCOVER": {
+             tap: showcover_tapped, release: showcover_released},
          "#CODEXSOURCES": {
              touchstart: cancel,
              touchend: Codex.UI.handlers.sources_ontap},
