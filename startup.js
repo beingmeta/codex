@@ -124,7 +124,7 @@ Codex.Startup=
              hidesplash: false,keyboardhelp: true,
              holdmsecs: 150,wandermsecs: 1500,
              syncinterval: 60,glossupdate: 5*60,
-             locsync: true, cacheglosses: true,
+             locsync: 15, cacheglosses: true,
              soundeffects: false, buzzeffects: false};
         var current_config={};
         var saved_config={};
@@ -344,7 +344,7 @@ Codex.Startup=
             else if ((value)&&(!(Codex.synctock))&&
                      (Codex.sync_interval))
                 Codex.synctock=synctock=
-                setInterval(Codex.syncState,value*1000);
+                setInterval(Codex.syncState,(Codex.sync_interval)*1000);
             else {}
             Codex.locsync=value;});
         
@@ -871,6 +871,9 @@ Codex.Startup=
                     "codex.opened("+Codex.docuri+")",true);
                 if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
                     Codex.hideCover();}
+            if (fdjtDOM.vischange)
+                fdjtDOM.addListener(document,fdjtDOM.vischange,
+                                    Codex.visibilityChange);
             fdjtDOM.addListener(window,"resize",resizeHandler);}
         
         /* Application settings */
@@ -2414,8 +2417,8 @@ Codex.Startup=
                 //  separately)
                 return;}
             var now=fdjtTime.tick();
-            if ((now-state.changed)<(600)) {
-                // If our state changed in the past 10 minutes, don't
+            if ((now-state.changed)<(30)) {
+                // If our state changed in the past 30 seconds, don't
                 // bother changing the current state.
                 return;}
             if (Codex.Trace.state) 
@@ -2463,11 +2466,9 @@ Codex.Startup=
                 fdjtLog("resolveXState choices=%j",choices);
             if (choices.length)
                 Codex.statedialog=fdjtUI.choose(
-                    {choices: choices,cancel: true,timeout: 7,nodefault: true,
-                     onclose: function(){
-                         state=Codex.state; state.changed=fdjtTime.tick();
-                         Codex.saveState(state,true,true);
-                         Codex.statedialog=false;},
+                    {choices: choices,cancel: true,timeout: 7,
+                     nodefault: true,noauto: true,
+                     onclose: function(box){Codex.statedialog=false;},
                      spec: "div.fdjtdialog.resolvestate#CODEXRESOLVESTATE"},
                     fdjtDOM("div",msg1));}
         Codex.resolveXState=resolveXState;
@@ -2477,7 +2478,6 @@ Codex.Startup=
                 fdjt.Dialog.close(Codex.statedialog);
                 Codex.statedialog=false;}}
         Codex.clearStateDialog=clearStateDialog;
-
 
         /* Indexing tags */
         

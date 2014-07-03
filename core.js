@@ -117,7 +117,7 @@ var Codex={
     // Number of milliseconds between gloss updates
     update_interval: 5*60*1000,
     // Number of milliseconds between location sync
-    sync_interval: 5*1000,
+    sync_interval: 15*1000,
     // Various handlers, settings, and status information for the
     // Codex interface
     UI: {
@@ -147,7 +147,7 @@ var Codex={
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
         network: 0,       // How much to trace server interaction
-        state: 0,     // Whether to trace synchronization
+        state: 1,         // Whether to trace state synchronization
         savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
         addgloss: 0,      // Note whenever a gloss post completes
@@ -519,6 +519,68 @@ var Codex={
             (target.codexbaseid)||(target.id);
         else return target.id;};
 
+    /* A Kludge For iOS */
+
+    /* This is a kludge to handle the fact that saving an iOS app
+       to the home screen loses any authentication information
+       (cookies, etc) that the original page might have had.  To
+       avoid forcing the user to login again, we store the current
+       SBOOKS:AUTH- token (the encrypted authentication token that
+       can travel in the clear) in the .search (query string) of the
+       current location.  This IS passed to the homescreen
+       standalone app, so we can use it to get a real authentication
+       token.*/
+    function iosHomeKludge(){
+        if ((!(Codex.user))||(fdjt.device.standalone)||
+            (!(fdjt.device.mobilesafari)))
+            return;
+        var auth=fdjtState.getCookie("SBOOKS:AUTH-");
+        if (!(auth)) return;
+        var eauth=encodeURIComponent(auth);
+        var url=location.href, qmark=url.indexOf('?'), hashmark=url.indexOf('#');
+        var base=((qmark<0)?((hashmark<0)?(url):(url.slice(0,hashmark))):
+                  (url.slice(0,qmark)));
+        var query=((qmark<0)?(""):(hashmark<0)?(url.slice(qmark)):
+                   (url.slice(qmark+1,hashmark)));
+        var hash=((hashmark<0)?(""):(url.slice(hashmark)));
+        var old_query=false, new_query="SBOOKS%3aAUTH-="+eauth;
+        if (query.length<=2) query="?"+new_query;
+        else if (query.search("SBOOKS%3aAUTH-=")>=0) {
+            var auth_start=query.search("SBOOKS%3aAUTH-=");
+            var before=query.slice(0,auth_start);
+            var auth_len=query.slice(auth_start).search('&');
+            var after=((auth_len<0)?(""):(query.slice(auth_start+auth_len)));
+            old_query=((auth_len<0)?(query.slice(auth_start)):
+                       (query.slice(auth_start,auth_start+auth_len)));
+            query=before+new_query+after;}
+        else query=query+"&"+new_query;
+        if ((!(old_query))||(old_query!==new_query))
+            history.replaceState(history.state,window.title,
+                                 base+query+hash);}
+
+    var ios_kludge_timer=false;
+    function updateKludgeTimer(){
+        if (document[fdjtDOM.isHidden]) {
+            if (ios_kludge_timer) {
+                clearInterval(ios_kludge_timer);
+                ios_kludge_timer=false;}}
+        else if (ios_kludge_timer) {}
+        else ios_kludge_timer=
+            setInterval(function(){
+                if ((Codex.user)&&(!(fdjt.device.standalone))&&
+                    (!(document[fdjtDOM.isHidden]))&&
+                    (fdjt.device.mobilesafari))
+                    iosHomeKludge();},
+                        300000);}
+    function setupKludgeTimer(){
+        updateKludgeTimer();
+        if (fdjtDOM.isHidden)
+            fdjtDOM.addListener(document,fdjtDOM.vischange,
+                                updateKludgeTimer);
+        updateKludgeTimer();}
+    if ((!(fdjt.device.standalone))&&(fdjt.device.mobilesafari))
+        fdjt.addInit(setupKludgeTimer,"setupKludgeTimer");
+    
     function getHead(target){
         /* First, find some relevant docinfo */
         var targetid=(target.codexbaseid)||(target.id);
@@ -947,8 +1009,24 @@ var Codex={
 
     /* Managing the reader state */
 
+    /* Three aspects of the reading state are saved:
+
+       * the numeric location within the book (in characters from the
+          beginning)
+       * the most recent target ID
+       * the current page (just for messages, since page numbers aren't
+         stable
+     */
+
+    // We keep track of the current state and the last time that state
+    // was changed by a user action.  Restoring a saved state, for
+    // example, doesn't bump the change date.
+
     var syncing=false;
     
+    // This initializes the reading state, either from local storage
+    //  or the initial hash id from the URL (which was saved in
+    //  Codex.inithash).
     Codex.initState=function initState() {
         var uri=Codex.docuri;
         var state=readLocal("codex.state("+uri+")",true);
@@ -978,10 +1056,10 @@ var Codex={
     //  the time it was last changed.
     // Mechanically, this fills things out and stores the object
     //  in Codex.state as well as in local storage.  If the changed
-    //  date is later than the current.xstate, it also does
+    //  date is later than the current Codex.xstate, it also does
     //  an Ajax call to update the server.
     // Finally, unless skiphist is true, it updates the browser
-    //  history.
+    //  history to get the browser button to be useful.
     function saveState(state,skiphist,force){
         if ((!force)&&(state)&&
             ((Codex.state===state)||
@@ -1069,34 +1147,6 @@ var Codex={
         Codex.xstate=false;
     } Codex.clearState=clearState;
 
-    function iosKludge(){
-        if ((!(Codex.user))||(fdjt.device.standalone)||
-            (!(fdjt.device.mobilesafari)))
-            return;
-        var auth=fdjtState.getCookie("SBOOKS:AUTH-");
-        if (!(auth)) return;
-        var eauth=encodeURIComponent(auth);
-        var url=location.href, qmark=url.indexOf('?'), hashmark=url.indexOf('#');
-        var base=((qmark<0)?((hashmark<0)?(url):(url.slice(0,hashmark))):
-                  (url.slice(0,qmark)));
-        var query=((qmark<0)?(""):(hashmark<0)?(url.slice(qmark)):
-                   (url.slice(qmark+1,hashmark)));
-        var hash=((hashmark<0)?(""):(url.slice(hashmark)));
-        var old_query=false, new_query="SBOOKS%3aAUTH-="+eauth;
-        if (query.length<=2) query="?"+new_query;
-        else if (query.search("SBOOKS%3aAUTH-=")>=0) {
-            var auth_start=query.search("SBOOKS%3aAUTH-=");
-            var before=query.slice(0,auth_start);
-            var auth_len=query.slice(auth_start).search('&');
-            var after=((auth_len<0)?(""):(query.slice(auth_start+auth_len)));
-            old_query=((auth_len<0)?(query.slice(auth_start)):
-                       (query.slice(auth_start,auth_start+auth_len)));
-            query=before+new_query+after;}
-        else query=query+"&"+new_query;
-        if ((!(old_query))||(old_query!==new_query))
-            history.replaceState(history.state,window.title,
-                                 base+query+hash);}
-
     var last_sync=false;
     // Post the current state and update synced state from what's
     // returned
@@ -1107,7 +1157,9 @@ var Codex={
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because it's too soon");
             return;}
-        if ((!(force))&&(Codex.state)&&(document.hidden)) {
+        if ((!(force))&&(Codex.state)&&(last_sync)&&
+            ((!(fdjtDOM.isHidden))||(document[fdjtDOM.isHidden]))&&
+            ((fdjtTime.tick()-last_sync)<(5*Codex.sync_interval))) {
             if (Codex.Trace.state)
                 fdjtLog("Skipping state sync because page is hidden");
             return;}
@@ -1157,14 +1209,13 @@ var Codex={
                 setTimeout(function(){Codex.locsync=true;},15*60*1000);}}
     } Codex.syncState=syncState;
 
+    var freshstart=true;
+
     function freshState(evt){
         var req=fdjtUI.T(req);
         var traced=(Codex.Trace.state)||(Codex.Trace.network);
         if (req.readyState===4) {
             if ((req.status>=200)&&(req.status<300)) {
-                if ((Codex.user)&&(!(fdjt.device.standalone))&&
-                    (fdjt.device.mobilesafari))
-                    iosKludge();
                 var xstate=JSON.parse(req.responseText);
                 if (xstate.changed) {
                     if (traced)
@@ -1178,19 +1229,38 @@ var Codex={
                         // Our state is later, so we make it the xstate
                         Codex.xstate=xstate;
                     else {
-                        var now=fdjtTime.tick();
                         var last_local=Codex.state.changed;
-                        if ((xstate.changed>last_local)&&
-                            ((now-last_local)<(15*60))) {
-                            /* Ignore remote change */ }
-                        else {
+                        if (xstate.changed<last_local)
                             Codex.xstate=xstate;
-                            Codex.resolveXState(xstate);}}}}
+                        else if (document[fdjtDOM.isHidden])
+                            Codex.freshstate=xstate;
+                        else if (freshstart) {
+                            freshstart=false;
+                            Codex.xstate=xstate;
+                            Codex.resolveXState(xstate);}
+                        else Codex.xstate=xstate;}}}
                 else if (traced)
                     fdjtLog("syncState(callback/error) %o %d %s",
                             evt,req.status,req.responseText);
             if (navigator.onLine) setConnected(true);
             syncing=false;}}
+
+    var last_hidden=false;
+    Codex.visibilityChange=function visibilityChange(){
+        if (!(document[fdjtDOM.isHidden])) {
+            if ((last_hidden)&&((fdjtTime.tick()-last_hidden)<300)) {}
+            else if (navigator.onLine) {
+                last_hidden=false;
+                freshstart=true;
+                syncState(true);}
+            else if (Codex.freshstate) {
+                var freshstate=Codex.freshstate;
+                last_hidden=false;
+                Codex.freshstate=false;
+                Codex.xstate=freshstate;
+                Codex.resolveXState(freshstate);}
+            else {}}
+        else last_hidden=fdjtTime.tick();};
 
     function forceSync(){
         if (Codex.connected) Codex.update();
