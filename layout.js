@@ -85,6 +85,60 @@ Codex.Paginate=
             if (typeof pct==="number")
                 fdjt.UI.ProgressBar.setProgress(pb,pct);}
 
+        /* Reporting progress, debugging */
+        function layout_progress(info){
+            var tracelevel=info.tracelevel;
+            var started=info.started;
+            var pagenum=info.pagenum;
+            if (!(pagenum)) return;
+            var now=fdjtTime();
+            var howlong=secs2short((now-started)/1000);
+            var indicator=fdjtID("CODEXLAYOUTINDICATOR");
+            if (info.done) {
+                if (indicator)
+                    indicator.style.width=Math.floor(pct)+"%";
+                fdjtDOM.replace(
+                    "CODEXPAGENOTEXT",
+                    fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
+                            Codex.curpage||"?",
+                            "/",pagenum," (",Math.floor(pct),
+                            "%)"));
+                layoutMessage(fdjtString(
+                    "Finished laying out %d %dx%d pages in %s",
+                    pagenum,
+                    secs2short((info.done-info.started)/1000)),
+                              100);
+                fdjtLog("Finished laying out %d %dx%d pages in %s",
+                        pagenum,info.width,info.height,
+                        secs2short((info.done-info.started)/1000));}
+            else {
+                if ((info.lastid)&&(Codex.docinfo)&&
+                    ((Codex.docinfo[info.lastid]))) {
+                    var docinfo=Codex.docinfo;
+                    var maxloc=docinfo._maxloc;
+                    var lastloc=docinfo[info.lastid].starts_at;
+                    var pct=(100*lastloc)/maxloc, fpct=Math.floor(pct);
+                    if (indicator) indicator.style.width=fpct+"%";
+                    fdjtDOM.replace(
+                        "CODEXPAGENOTEXT",
+                        fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
+                                Codex.curpage||"?",
+                                "/",pagenum," (",fpct,"%)"));
+                    layoutMessage(fdjtString(
+                        "Laid out %d %dx%d pages (%d%%)",
+                        pagenum,info.width,info.height,fpct),
+                                  pct);
+                    if (tracelevel)
+                        fdjtLog("Laid out %d %dx%d pages (%d%%) in %s",
+                                pagenum,info.width,info.height,fpct,howlong);}
+                else {
+                    layoutMessage(fdjtString(
+                        "Laid out %d %dx%d pages in %s",
+                        info.pagenum,info.width,info.height,howlong));
+                    if (tracelevel)
+                        fdjtLog("Laid out %d pages in %s",
+                                info.pagenum,howlong);}}}
+
         function Paginate(why,init){
             if (((Codex.layout)&&(!(Codex.layout.done)))) return;
             if (!(why)) why="because";
@@ -273,64 +327,7 @@ Codex.Paginate=
                                               layout_progress,rootloop);
                         else return rootloop();}}
 
-                /* Reporting progress, debugging */
-                
-                function layout_progress(info){
-                    var tracelevel=info.tracelevel;
-                    var started=info.started;
-                    var pagenum=info.pagenum;
-                    var now=fdjtTime();
-                    if (!(pagenum)) return;
-                    var indicator=fdjtID("CODEXLAYOUTINDICATOR");
-                    if (info.done) {
-                        if (indicator)
-                            indicator.style.width=Math.floor(pct)+"%";
-                        fdjtDOM.replace(
-                            "CODEXPAGENOTEXT",
-                            fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
-                                    Codex.curpage||"?",
-                                    "/",pagenum," (",Math.floor(pct),
-                                    "%)"));
-                        layoutMessage(fdjtString(
-                            "Finished laying out %d %dx%d pages in %s",
-                            pagenum,
-                            secs2short((info.done-info.started)/1000)),
-                                     100);
-                        fdjtLog("Finished laying out %d %dx%d pages in %s",
-                                pagenum,info.width,info.height,
-                                secs2short((info.done-info.started)/1000));}
-                    else {
-                        if ((info.lastid)&&(Codex.docinfo)&&
-                            ((Codex.docinfo[info.lastid]))) {
-                            var docinfo=Codex.docinfo;
-                            var maxloc=docinfo._maxloc;
-                            var lastloc=docinfo[info.lastid].starts_at;
-                            var pct=(100*lastloc)/maxloc;
-                            if (indicator)
-                                indicator.style.width=Math.floor(pct)+"%";
-                            fdjtDOM.replace(
-                                "CODEXPAGENOTEXT",
-                                fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
-                                        Codex.curpage||"?",
-                                        "/",pagenum," (",Math.floor(pct),
-                                        "%)"));
-                            layoutMessage(fdjtString(
-                                "Laid out %d %dx%d pages (%d%%)",
-                                pagenum,info.width,info.height,Math.floor(pct)),
-                                         pct);
-                            if (tracelevel)
-                                fdjtLog("Laid out %d %dx%d pages (%d%%) in %s",
-                                        pagenum,info.width,info.height,Math.floor(pct),
-                                        secs2short((now-started)/1000));}
-                        else {
-                            layoutMessage(fdjtString(
-                                "Laid out %d %dx%d pages in %s",
-                                info.pagenum,info.width,info.height,
-                                secs2short((now-started)/1000)));
-                            if (tracelevel)
-                                fdjtLog("Laid out %d pages in %s",
-                                        info.pagenum,secs2short((now-started)/1000));}}}
-                
+      
                 rootloop();}
             
             if ((Codex.cache_layout_thresh)&&
@@ -539,27 +536,6 @@ Codex.Paginate=
                             var first=getPageTop(child);
                             if (first) return first;}}}
                 return last;}
-            /*
-            function getDupPageTop(node) {
-                var found=false;
-                if (hasClass(node,"codexpage")) {}
-                else if ((node.id)&&(docinfo[node.id])) {
-                    if (hasContent(node,true)) return node;}
-                else {}
-                var children=node.childNodes;
-                if (children) {
-                    var i=0; var lim=children.length;
-                    while (i<lim) {
-                        var child=children[i++];
-                        if (child.nodeType===1) {
-                            found=getDupPageTop(child);
-                            if (found) break;}}}
-                if (found) return found;
-                else if ((node.codexbaseid)&&(docinfo[node.codexbaseid]))
-                    return node;
-                else return false;}
-            */
-
             function getPageLastID(node,id) {
                 if (hasClass(node,"codexpage")) {}
                 else if ((node.id)&&(!(node.codexbaseid))&&
@@ -606,6 +582,8 @@ Codex.Paginate=
                     else return locoff;}
                 return locoff;}
 
+            // We track the sourceid to know when, for example, any
+            //  cached layouts need to be invalidated.
             var saved_sourceid=
                 fdjtState.getLocal("codex.sourceid("+Codex.refuri+")");
             if ((saved_sourceid)&&(sourceid)&&(sourceid!==sourceid)) {
@@ -623,7 +601,8 @@ Codex.Paginate=
                 else fdjtState.dropLocal("fdjtCodex.layouts",kept);}
             
             if (sourceid)
-                fdjtState.setLocal("codex.sourceid("+Codex.refuri+")",sourceid);
+                fdjtState.setLocal("codex.sourceid("+Codex.refuri+")",
+                                   sourceid);
             
             var args={page_height: height,page_width: width,
                       orientation: fdjtDOM.getOrientation(window),
@@ -644,10 +623,12 @@ Codex.Paginate=
             args.avoidbreakinside=[avoidbreakclasses];
             avoidbreakclasses=
                 fdjtDOM.sel(fdjtDOM.getMeta("avoidbreakinside",true));
-            if (avoidbreakclasses) args.avoidbreakinside.push(avoidbreakclasses);
+            if (avoidbreakclasses)
+                args.avoidbreakinside.push(avoidbreakclasses);
             avoidbreakclasses=
                 fdjtDOM.sel(fdjtDOM.getMeta("SBOOKS.avoidbreakinside",true));
-            if (avoidbreakclasses) args.avoidbreakinside.push(avoidbreakclasses);
+            if (avoidbreakclasses)
+                args.avoidbreakinside.push(avoidbreakclasses);
 
             var fbb=fdjtDOM.getMeta("alwaysbreakbefore",true).concat(
                 fdjtDOM.getMeta("SBOOKS.alwaysbreakbefore",true)).concat(
@@ -737,10 +718,13 @@ Codex.Paginate=
             else page.style.left=page.style.right='';}
         
         function scaleLayout(flag){
+            // This adjusts to a resize by just scaling (using CSS
+            // transforms) the current layout.
             var cheaprule=Codex.CSS.resizerule;
             if (typeof flag==="undefined") flag=true;
             if ((flag)&&(hasClass(document.body,"cxSCALEDLAYOUT"))) return;
-            if ((!(flag))&&(!(hasClass(document.body,"cxSCALEDLAYOUT")))) return;
+            if ((!(flag))&&
+                (!(hasClass(document.body,"cxSCALEDLAYOUT")))) return;
             if (cheaprule) {
                 cheaprule.style[fdjtDOM.transform]="";
                 cheaprule.style[fdjtDOM.transformOrigin]="";
@@ -864,11 +848,13 @@ Codex.Paginate=
                 else scan=scan.head;}
             var start_page=getPage(headinfo.frag,headinfo.starts_at);
             if (!(start_page)) return false;
-            else result.start=parseInt((start_page).getAttribute("data-pagenum"),10);
+            else result.start=parseInt(
+                (start_page).getAttribute("data-pagenum"),10);
             if (nextinfo) {
                 var end_page=getPage(nextinfo.frag,nextinfo.starts_at);
                 if (end_page)
-                    result.end=parseInt((end_page).getAttribute("data-pagenum"),10);}
+                    result.end=parseInt(
+                        (end_page).getAttribute("data-pagenum"),10);}
             if (!(result.end)) result.end=Codex.layout.pages.length+1;
             result.width=result.end-result.start;
             return result;}
@@ -930,16 +916,22 @@ Codex.Paginate=
                     if (curpages.length) dropClass(toArray(curpages),"curpage");
                     addClass(page,"curpage");}
                 else {
-                    var curnum=parseInt(curpage.getAttribute("data-pagenum"),10);
+                    var curpagestring=curpage.getAttribute("data-pagenum");
+                    var curnum=parseInt(curpagestring,10);
+                    // This does the page flip animation;
                     dropClass(curpage,/(oldpage|newpage|onleft|onright)/g);
                     dropClass(page,/(oldpage|newpage|onleft|onright)/g);
-                    if (pagenum<curnum) dirclass="onleft"; else dirclass="onright";
+                    if (pagenum<curnum) dirclass="onleft";
+                    else dirclass="onright";
                     if (dirclass) addClass(page,dirclass);
                     addClass(curpage,"oldpage");
                     addClass(page,"newpage");
                     var lastpage=curpage;
                     setTimeout(function(){
-                        var whoops=Codex.pages.getElementsByClassName('curpage');
+                        // This handles left over curpages from race
+                        // conditions, etc.
+                        var whoops=
+                            Codex.pages.getElementsByClassName('curpage');
                         if (whoops.length) dropClass(toArray(whoops),"curpage");
                         dropClass(lastpage,"curpage");
                         addClass(page,"curpage");
