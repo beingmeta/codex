@@ -291,12 +291,11 @@ div.helpbox h1 span.codextogglehelp,
 div.helpbox h2 span.codextogglehelp,
 div.helpbox h3 span.codextogglehelp {
     float: right;
-    font-weight: normal; font-style: italic;
-    background-color: orange; color: black;
+    font-variant: small-caps;
+    font-weight: bold; font-style: italic;
+    background-color: aliceblue; color: black;
     padding-left: 1ex; padding-right: 1ex;
     border: solid black 2px; border-radius: 1ex;}
-div.codexhelp h1 span.codextogglehelp {
-    font-size: 80%;}
 
 div.codexhelp td {
     color: rgba(0,0,0,0.75);}
