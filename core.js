@@ -706,8 +706,8 @@ var Codex={
         var elt=((codex_docinfo)&&(info=codex_docinfo[id])&&
                  (info.elt)&&(info.elt.id===id)&&(info.elt));
         if (elt) return elt;
-        else if (elt=document.getElementById(id)) return elt;
-        else if (elt=document.getElementsByName(id)) {
+        else if ((elt=document.getElementById(id))) return elt;
+        else if ((elt=document.getElementsByName(id))) {
             if (elt.length===1)  return elt[0];
             else if (elt.length>1) return false;}
         else {}
