@@ -218,7 +218,9 @@ body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
 #CODEXABOUTBOOK, #ABOUTSBOOKS {
     background-color: ivory; }
 #CODEXCONSOLE, #CODEXSETTINGS {
-    overflow: auto; background-color: ivory;}
+    background-color: ivory;
+    -webkit-overflow-scrolling: touch;
+    overflow: auto;}
 
 body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
@@ -226,8 +228,8 @@ body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
 #CODEXTITLEPAGE { display: none; }
 #CODEXCOVER #CODEXTITLEPAGE {
-  display: block; padding: 2em; padding-top: 1ex;
-  font-size: 2em;}
+    padding: 2em; padding-top: 1ex;
+    font-size: 2em;}
 
 .codextitlepage { text-align: center;}
 .codextitlepage > .title {
@@ -266,8 +268,11 @@ body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 
 /* Settings */
 
-#CODEXSETTINGS { padding: 1em; padding-bottom: 2em;}
-body.cxTOUCH #CODEXSETTINGS {  font-size: 1.5em; }
+#CODEXSETTINGS { padding: 2%; padding-top: 2em; padding-bottom: 2em;}
+#CODEXSETTINGS form {
+    max-width: 50em; margin-left: auto; margin-right: auto;}
+body.cxTOUCH #CODEXSETTINGS {  font-size: 1.2em; }
+body.cxTOUCH #CODEXSETTINGS table.settings {  font-size: 1.25em; }
 
 #CODEXSETTINGS h1 { margin-top: 0px; text-align: left;}
 #CODEXSETTINGS h1 a.logout {
@@ -310,6 +315,13 @@ body.cxNOUSER #CODEXSETTINGS h1 a.logout {display:none;}
 table.settings .checkspan.ischecked {
     font-weight: normal; color: rgb(0,61,111); font-size: 100%;}
 
+@media (max-width: 600px) {
+    #CODEXSETTINGS table.settings th {
+        white-space: normal; font-size: 80%; max-width: 8ex;}
+    #CODEXSETTINGS .button, #CODEXSETTINGS button {
+        font-size: 85%;}
+    }
+
 #CODEXSETTINGS table.settings .smallbutton {
     cursor: pointer;
     margin-left: 4px; margin-right: 4px; padding: 3px;
@@ -329,15 +341,16 @@ table.settings .checkspan.ischecked {
     -o-border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;}
-#CODEXSETTINGS h1 .button, #CODEXSETTINGS h1 .message {
+#CODEXSETTINGS h1 .button {
     font-size: 50%; float: right;}
+#CODEXSETTINGS h1 .message {
+    font-size: 50%; float: right; padding-top: 0.5ex;}
 @media (pointer: coarse) {
-    #CODEXSETTINGS h1 .button { font-size: 80%;}
-    #CODEXSETTINGS .button, #CODEXSETTINGS button { font-size: 120%;}}
+    #CODEXSETTINGS h1 .button { font-size: 80%;}}
 #CODEXSETTINGS .button.exit {
     color: red; background-color: white;}
 #CODEXSETTINGS h1 #CODEXSETTINGSMESSAGE {
-    float: right;}
+    float: left;}
 #CODEXSETTINGS .codexsettingschanged {
     float: right; color: red; display: none;}
 #CODEXSETTINGS.changed .codexsettingschanged { display: block;}
@@ -353,13 +366,13 @@ table.settings td .checkspan input[TYPE='CHECKBOX'],
 table.settings td .checkspan input[TYPE='RADIO'] {
     margin-right: 0.5ex;}
 
+table.settings tbody.bookinfo td { font-size: 60%; }
+table.settings tbody.bookinfo p {
+    margin-top: 0px; margin-bottom: 0.5ex;
+    margin-left: 2em; text-indent: -2em;}
 table.settings tbody.buttons { border-top: solid black 2px;}
-table.settings tr.buttons td, table.settings tr.buttons th { padding-top: 1ex;}
-
-#CODEXSETTINGS #CODEXBOOKINFO {
-    position: absolute; bottom: 0px; height: 1em; left: 0px; right: 0px;
-    font-family: fixed; font-size: 0.9em;
-    text-align: center;}
+table.settings tr.buttons td, table.settings tr.buttons th {
+    padding-top: 1ex;}
 
 /* The Console */
 

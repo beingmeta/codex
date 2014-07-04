@@ -1428,9 +1428,13 @@ Codex.Startup=
                 codexbookinfo=fdjtDOM("div#CODEXBOOKINFO");
                 fdjtDOM(settings,"\n",codexbookinfo);}
             codexbookinfo.innerHTML=
-                "Doc "+Codex.docref+"; sourceid="+Codex.sourceid+
-                ((Codex.sourcetime)?(" ("+Codex.sourcetime+")"):(""))+
-                "; Codex version "+Codex.version+" built "+Codex.buildstamp+" on "+Codex.buildhost;
+                "<p>"+Codex.docref+"#"+Codex.sourceid+"<br/>"+
+                ((Codex.sourcetime)?(" ("+Codex.sourcetime+")"):(""))+"</p>\n"+
+                "<p>Codex version "+Codex.version+" built on "+
+                Codex.buildhost+", "+Codex.buildtime+"</p>\n"+
+                "<p>Program &amp; Interface are "+
+                "<span style='font-size: 120%;'>©</span>"+
+                " beingmeta, inc 2008-2014</p>\n";
             var help=Codex.DOM.help=fdjtID("CODEXAPPHELP");
             if (!(help)) {
                 help=fdjtDOM("div#CODEXAPPHELP");

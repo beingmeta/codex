@@ -2658,7 +2658,7 @@
          "#CODEXCONSOLEBUTTON": {click: consolefn},
          "#CODEXSAVESETTINGS": {click: saveSettings},
          "#CODEXRESETSETTINGS": {click: resetSettings},
-         "#CODEXSETTINGSTABLE": {click: updateSettings, blur: updateSettings},
+         "#CODEXSETTINGSTABLE": {},
          "#CODEXREFRESHOFFLINE": {click: refreshOffline},
          "#CODEXREFRESHLAYOUT": {click: refreshLayout},
          ".clearoffline": {click: clearOffline},
@@ -2811,7 +2811,6 @@
              touchend: editglossnote,
              click: cancel},
          "#CODEXSETTINGS": {
-             touchstart: cancel,
              touchend: fdjt.UI.CheckSpan.onclick},
          ".codextogglehelp": {
              touchstart: cancel,
@@ -2819,11 +2818,13 @@
         
          "#CODEXCONSOLEBUTTON": {touchstart: cancel, touchend: consolefn},
          "#CODEXSAVESETTINGS": {touchstart: cancel, touchend: saveSettings},
-         "#CODEXRESETSETTINGS": {touchstart: cancel, touchend: resetSettings},
-         "#CODEXSETTINGSTABLE": {
-             touchstart:cancel,
-             touchend: updateSettings,
-             blur: updateSettings},
+         "#CODEXAPPLYSETTINGS": {
+             touchstart: cancel,
+             touchend: updateSettings},
+         "#CODEXRESETSETTINGS": {
+             touchstart: cancel,
+             touchend: resetSettings},
+         "#CODEXSETTINGSTABLE": {},
          "#CODEXREFRESHOFFLINE": {touchstart: cancel, touchend: refreshOffline},
          "#CODEXREFRESHLAYOUT": {touchstart: cancel, touchend: refreshLayout},
          ".clearoffline": {touchstart: cancel, touchend: clearOffline},
