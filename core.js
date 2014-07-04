@@ -703,10 +703,17 @@ var Codex={
         if ((id)&&(typeof id === "string")&&(id[0]==="#"))
             id=id.slice(1);
         if (!(codex_docinfo)) codex_docinfo=Codex.docinfo;
-        return ((codex_docinfo)&&(info=codex_docinfo[id])&&
-                (info.elt)&&(info.elt.id===id)&&(info.elt))||
-            document.getElementById(id)||
-            fdjtDOM.$1("[data-tocid='"+id+"']");}
+        var elt=((codex_docinfo)&&(info=codex_docinfo[id])&&
+                 (info.elt)&&(info.elt.id===id)&&(info.elt));
+        if (elt) return elt;
+        else if (elt=document.getElementById(id)) return elt;
+        else if (elt=document.getElementsByName(id)) {
+            if (elt.length===1)  return elt[0];
+            else if (elt.length>1) return false;}
+        else {}
+        elt=fdjtDOM.$("[data-tocid='"+id+"']");
+        if (elt.length===1) return elt[0];
+        else return false;}
     Codex.ID=cxID;
 
     Codex.getTitle=function(target,tryhard) {
