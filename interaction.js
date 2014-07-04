@@ -2004,7 +2004,8 @@
             Codex.stopPreview("foot_tap");
             cancel(evt);
             return;}
-        if (isClickable(evt)) return;
+        if ((isClickable(evt))||(hasParent(fdjtUI.T(evt),"hudbutton")))
+            return;
         else if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
             fdjtUI.cancel(evt);
             Codex.setMode(false);

@@ -198,7 +198,8 @@ Codex.setMode=
             Codex.TapHold.foot=
                 new fdjtUI.TapHold(
                     Codex.DOM.foot,
-                    {override: true,holdfast: true,taptapthresh: 0});
+                    {override: true,holdfast: true,taptapthresh: 0,
+                     holdthresh: 500});
             Codex.TapHold.head=
                 new fdjtUI.TapHold(Codex.DOM.head,
                                    {override: true,taptapthresh: 0});
