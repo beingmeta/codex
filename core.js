@@ -147,7 +147,7 @@ var Codex={
         toc: false,       // Whether we're debugging TOC tracking
         storage: 0,       // How much to trace offline persistence
         network: 0,       // How much to trace server interaction
-        state: 1,         // Whether to trace state synchronization
+        state: 0,         // Whether to trace state synchronization
         savegloss: 0,     // When glosses are saved to the server
         glosses: 0,       // How much we're tracing gloss processing
         addgloss: 0,      // Note whenever a gloss post completes
