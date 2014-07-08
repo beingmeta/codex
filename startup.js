@@ -2452,7 +2452,7 @@ Codex.Startup=
                          state.changed=fdjtTime.tick();
                          Codex.saveState(state,true,true);
                          Codex.hideCover();}});
-            if (choices.length)
+            if ((choices.length)&&(state.location!==0))
                 choices.push(
                     {label: ("current @"+loc2pct(state.location)),
                      title: "the most recent location on this device",
