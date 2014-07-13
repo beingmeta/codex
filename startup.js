@@ -125,7 +125,8 @@ Codex.Startup=
              holdmsecs: 150,wandermsecs: 1500,
              syncinterval: 60,glossupdate: 5*60,
              locsync: 15, cacheglosses: true,
-             soundeffects: false, buzzeffects: false};
+             soundeffects: false, buzzeffects: false,
+             controlc: false};
         var current_config={};
         var saved_config={};
 
@@ -246,7 +247,7 @@ Codex.Startup=
         Codex.saveConfig=saveConfig;
 
         function initConfig(){
-            var setting, started=fdjtTime(), changed=false;
+            var setting, started=fdjtTime(); // changed=false;
             var config=getLocal("codex.config("+Codex.docuri+")",true)||
                 fdjtState.getSession("codex.config("+Codex.docuri+")",true);
             Codex.postconfig=[];
@@ -254,9 +255,9 @@ Codex.Startup=
                 for (setting in config) {
                     if ((config.hasOwnProperty(setting))&&
                         (!(getQuery(setting)))) {
-                        if ((!(default_config.hasOwnProperty(setting)))||
-                            (config[setting]!==default_config[setting]))
-                            changed=true;
+                        // if ((!(default_config.hasOwnProperty(setting)))||
+                        //    (config[setting]!==default_config[setting]))
+                        //    changed=true;
                         setConfig(setting,config[setting]);}}}
             else config={};
             if (Codex.Trace.config)
@@ -274,8 +275,7 @@ Codex.Startup=
             var i=0; var lim=dopost.length;
             while (i<lim) dopost[i++]();
             
-            if (changed)
-                fdjtDOM.addClass("CODEXSETTINGS","changed");
+            // if (changed) fdjtDOM.addClass("CODEXSETTINGS","changed");
             
             var devicename=current_config.devicename;
             if ((devicename)&&(!(fdjtString.isEmpty(devicename))))
@@ -1558,6 +1558,10 @@ Codex.Startup=
                     nxt.style.display="";},
                            3000);}
             setTimeout(function(){
+                if (Codex.Trace.mode)
+                    fdjtLog("On %o, switching cover mode to %s from %s",
+                            evt,mode,curclass);
+                if (mode==="console") fdjtLog.update();
                 cover.className=mode;
                 Codex.mode=mode;},
                        20);

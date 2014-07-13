@@ -120,6 +120,8 @@
 
     Codex.uiclasses=/\b(codexui|codexglossmark)\b/gi;
 
+    Codex.addConfig("controlc",function(key,val){Codex.controlc=val;});
+
     /* Setup for gesture handling */
 
     function addHandlers(node,type){
@@ -1129,26 +1131,31 @@
     // We use keydown to handle navigation functions and keypress
     //  to handle mode changes
     function onkeydown(evt){
-        evt=evt||event||null;
-        var kc=evt.keyCode;
-        var target=fdjtUI.T(evt);
-        // fdjtLog("sbook_onkeydown %o",evt);
-        if (evt.keyCode===27) { /* Escape works anywhere */
-            if (Codex.previewing) {
-                Codex.stopPreview("escape_key");
-                fdjtUI.TapHold.clear();}
-            if (Codex.mode==="addgloss") Codex.cancelGloss();
-            if (Codex.mode) {
-                Codex.last_mode=Codex.mode;
-                Codex.setMode(false);
-                Codex.setTarget(false);
-                fdjtID("CODEXSEARCHINPUT").blur();}
-            else {}
-            return;}
-        else if ((target.tagName==="TEXTAREA")||
-                 (target.tagName==="INPUT")||
-                 (target.tagName==="BUTTON"))
-            return;
+         evt=evt||event||null;
+         var kc=evt.keyCode;
+         var target=fdjtUI.T(evt);
+         // fdjtLog("sbook_onkeydown %o",evt);
+         if (evt.keyCode===27) { /* Escape works anywhere */
+             if (Codex.previewing) {
+                 Codex.stopPreview("escape_key");
+                 fdjtUI.TapHold.clear();}
+             if (Codex.mode==="addgloss") Codex.cancelGloss();
+             if (Codex.mode) {
+                 Codex.last_mode=Codex.mode;
+                 Codex.setMode(false);
+                 Codex.setTarget(false);
+                 fdjtID("CODEXSEARCHINPUT").blur();}
+             else {}
+             return;}
+         else if ((target.tagName==="TEXTAREA")||
+                  (target.tagName==="INPUT")||
+                  (target.tagName==="BUTTON"))
+             return;
+        else if ((Codex.controlc)&&(evt.ctrlKey)&&((kc===99)||(kc===67))) {
+            if (Codex.previewing) Codex.stopPreview("onkeydown",true);
+            fdjtUI.TapHold.clear();
+            Codex.setMode("console");
+            fdjt.UI.cancel(evt);}
         else if ((evt.altKey)||(evt.ctrlKey)||(evt.metaKey)) return true;
         else if (Codex.previewing) {
             // Any key stops a preview and goes to the target
@@ -2534,6 +2541,8 @@
         evt=evt||event; Codex.consolefn();}
     function saveSettings(evt){
         evt=evt||event; Codex.UI.settingsSave();}
+    function applySettings(evt){
+        evt=evt||event; Codex.UI.settingsOK();}
     function resetSettings(evt){
         evt=evt||event; Codex.UI.settingsReset();}
     function updateSettings(evt){
@@ -2656,8 +2665,12 @@
          // For checkspans
          ".codexglossform, #CODEXSETTINGS": {click: fdjt.UI.CheckSpan.onclick},
          ".codextogglehelp": {click: Codex.toggleHelp},
+         "#CODEXCONSOLETEXTINPUT": {
+             focus: function(){fdjt.DOM.addClass('CODEXCONSOLEINPUT','uptop');},
+             blur: function(){fdjt.DOM.dropClass('CODEXCONSOLEINPUT','uptop');}},
          "#CODEXCONSOLEBUTTON": {click: consolefn},
          "#CODEXSAVESETTINGS": {click: saveSettings},
+         "#CODEXAPPLYSETTINGS": {click: applySettings},
          "#CODEXRESETSETTINGS": {click: resetSettings},
          "#CODEXSETTINGSTABLE": {},
          "#CODEXREFRESHOFFLINE": {click: refreshOffline},
@@ -2817,6 +2830,11 @@
              touchstart: cancel,
              touchend: Codex.toggleHelp},
         
+         "#CODEXCONSOLETEXTINPUT": {
+             touchstart: function(){fdjt.ID('CODEXCONSOLETEXTINPUT').focus();},
+             focus: function(){fdjt.DOM.addClass('CODEXCONSOLEINPUT','ontop');},
+             blur: function(){fdjt.DOM.dropClass('CODEXCONSOLEINPUT','ontop');}},
+
          "#CODEXCONSOLEBUTTON": {touchstart: cancel, touchend: consolefn},
          "#CODEXSAVESETTINGS": {touchstart: cancel, touchend: saveSettings},
          "#CODEXAPPLYSETTINGS": {

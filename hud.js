@@ -420,7 +420,8 @@ Codex.setMode=
             var oldmode=Codex.mode;
             if (typeof mode === 'undefined') return oldmode;
             if (mode==='last') mode=Codex.last_mode;
-            if ((!(mode))&&(Codex.mode)&&(CodexPopModes.test(Codex.mode)))
+            if ((!(mode))&&(Codex.mode)&&
+                (Codex.mode.search(CodexPopModes)>=0))
                 mode=Codex.last_mode;
             if (mode==='none') mode=false;
             if (mode==='heart') mode=Codex.heart_mode||"about";
@@ -433,6 +434,12 @@ Codex.setMode=
                 var fn=Codex.popmode;
                 Codex.popmode=false;
                 fn();}
+            if (hasClass(document.body,"cxCOVER")) {
+                if (!(mode)) hideCover();
+                else if (mode.search(CodexCoverModes)>=0)
+                    hideCover();
+                else {}
+                CodexCoverModes.lastIndex=0;} // Kludge
             if ((Codex.mode==="addgloss")&&(mode!=="addgloss")&&
                 (hasClass("CODEXLIVEGLOSS","modified")))
                 Codex.submitGloss(fdjt.ID("CODEXLIVEGLOSS"));
@@ -452,9 +459,11 @@ Codex.setMode=
                     Codex.last_mode=true;}
                 else if (typeof mode !== 'string') 
                     throw new Error('mode arg not a string');
-                else if (CodexCoverModes.test(mode)) {
+                else if (mode.search(CodexCoverModes)>=0) {
                     fdjtID("CODEXCOVER").className=mode;
+                    if (mode==="console") fdjtLog.update();
                     showCover();
+                    Codex.mode=mode;
                     Codex.modechange=fdjtTime();
                     return;}
                 else {

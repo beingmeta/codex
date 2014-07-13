@@ -164,6 +164,7 @@ body.cxUSER #CODEXCOVER div.userbox {
 #CODEXCOVER.console .control[data-mode='console'],
 #CODEXCOVER.login .control[data-mode='login'] {
     outline-color: transparent;
+    display: inline;
     color: gold;}
 
 .control[data-mode='console'], .control[data-mode='aboutsbooks'],
@@ -279,8 +280,12 @@ body.cxTOUCH #CODEXSETTINGS table.settings {  font-size: 1.25em; }
     float: right; color: red; text-decoration: none;
     font-size: 60%; font-variant: small-caps;}
 #CODEXSETTINGS h1 a.logout:visited {color: red;}
-#CODEXSETTINGS table.settings td span#CODEXSETTINGSMESSAGE {
-    float: right; color: red; font-size: 40%;}
+#CODEXSETTINGS span.message {
+    float: right; clear: right; font-size: 40%;}
+#CODEXSETTINGS .codexsettingschanged {
+    color: red; display: none;}
+#CODEXSETTINGS.changed .codexsettingschanged { display: block;}
+
 body.cxNOUSER #CODEXSETTINGS h1 a.logout {display:none;}
 
 #CODEXSETTINGS div.setting {
@@ -349,11 +354,6 @@ table.settings .checkspan.ischecked {
     #CODEXSETTINGS h1 .button { font-size: 80%;}}
 #CODEXSETTINGS .button.exit {
     color: red; background-color: white;}
-#CODEXSETTINGS h1 #CODEXSETTINGSMESSAGE {
-    float: left;}
-#CODEXSETTINGS .codexsettingschanged {
-    float: right; color: red; display: none;}
-#CODEXSETTINGS.changed .codexsettingschanged { display: block;}
 body.cxNOUSER #CODEXSETTINGS h1 a.logout {display:none;}
 
 #CODEXSETTINGS tr.codexlayoutsettings { display: none; }
@@ -387,9 +387,24 @@ table.settings tr.buttons td, table.settings tr.buttons th {
 #CODEXCONSOLE div.message {
     text-align: center; font-size: 150%;}
 
-#CODEXCONSOLE #CODEXCONSOLEINPUT { margin-left: 4em;}
-#CODEXCONSOLE #CODEXCONSOLEINPUT span.button { float: right;}
+#CODEXCONSOLE #CODEXCONSOLEINPUT {
+    margin-left: 4em; padding-top: 1em;}
+#CODEXCONSOLE #CODEXCONSOLEINPUT span.button {
+    font-weight: bold; font-size: 200%;
+    padding: 0.5ex; border-radius: 0.5ex; padding-top: 0px;
+    margin: 0px; margin-top: 0.25ex; margin-right: 0.25ex;
+    background-color: silver;
+    float: right;}
 #CODEXCONSOLE #CODEXCONSOLEINPUT textarea { width: 90%;}
+body.cxTOUCH #CODEXCONSOLE #CODEXCONSOLEINPUT.uptop {
+    position: absolute;
+    top: 5px; left: 10%; right: 10%; width: 90%;
+    margin-left: 0px; padding-top: 0px;}
+body.cxTOUCH #CODEXCONSOLELOG {
+    /* This make it always scrollable on touch devices,
+       in case interesting content is underneath the
+       soft keyboard. */
+    padding-bottom: 100%;}
 
 /* The cover message */
 
