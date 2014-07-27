@@ -447,8 +447,10 @@
                 fdjtLog("ctouch: follow link %s",href);
             var rel=anchor.rel, classname=anchor.className;
             if ((href[0]==="#")&&
-                (((rel)&&(rel.search(/\b((sbooknote)|(footnote)|(endnote)|(note))\b/)>=0))||
-                 ((classname)&&(classname.search(/\b((sbooknote)|(sbooknoteref))\b/)>=0))||
+                (((rel)&&
+                  (rel.search(/\b((sbooknote)|(footnote)|(endnote)|(note))\b/)>=0))||
+                 ((classname)&&
+                  (classname.search(/\b((sbooknote)|(sbooknoteref))\b/)>=0))||
                  ((Codex.sbooknoterefs)&&(Codex.sbooknoterefs.match(anchor))))) {
                 var note_node=getNoteNode(href.slice(1));
                 var noteid=note_node.id;
