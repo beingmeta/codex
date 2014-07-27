@@ -1212,16 +1212,31 @@ Codex.Startup=
                 i++;}
             // These are all meta class definitions, which is why
             //  they don't have regular schema prefixes
-            if (getMeta("sbookignore")) 
-                Codex.ignore=new fdjtDOM.Selector(getMeta("sbookignore"));
-            if (getMeta("sbooknotoc")) 
-                Codex.notoc=new fdjtDOM.Selector(getMeta("sbooknotoc"));
-            if (getMeta("sbookterminal"))
-                Codex.terminals=new fdjtDOM.Selector(getMeta("sbookterminal"));
-            if ((getMeta("sbookfocus"))) 
-                Codex.focus=new fdjtDOM.Selector(getMeta("sbookfocus"));
-            if (getMeta("sbooknofocus"))
-                Codex.nofocus=new fdjtDOM.Selector(getMeta("sbooknofocus"));}
+            var ignore=((getMeta("sbookignore"))||[]).concat(
+                ((getMeta("SBOOKS.ignore"))||[]));
+            if (ignore.length) Codex.ignore=new fdjtDOM.Selector(ignore);
+            var notoc=
+                ((getMeta("sbooknotoc"))||[]).concat(
+                    ((getMeta("SBOOKS.notoc"))||[])).concat(
+                        ((getMeta("SBOOKS.nothead"))||[])).concat(
+                            ((getMeta("sbooknothead"))||[]));
+            if (notoc.length) Codex.notoc=new fdjtDOM.Selector(notoc);
+            var terminal=((getMeta("sbookterminal"))||[]).concat(
+                ((getMeta("SBOOKS.terminal"))||[]));
+            if (terminal.length) Codex.terminals=new fdjtDOM.Selector(terminal.length);
+            var focus=
+                ((getMeta("sbookfocus"))||[]).concat(
+                    ((getMeta("SBOOKS.focus"))||[])).concat(
+                        ((getMeta("sbooktarget"))||[])).concat(
+                            ((getMeta("SBOOKS.target"))||[])).concat(
+                                ((getMeta("SBOOKS.idify"))||[]));
+            if (focus.length) Codex.focus=new fdjtDOM.Selector(focus);
+            var nofocus=
+                ((getMeta("sbooknofocus"))||[]).concat(
+                    ((getMeta("SBOOKS.nofocus"))||[])).concat(
+                        ((getMeta("sbooknotarget"))||[])).concat(
+                            ((getMeta("SBOOKS.notarget"))||[]));
+            if (nofocus.length) Codex.nofocus=new fdjtDOM.Selector(nofocus);}
 
         function applyMetaClass(name){
             var meta=getMeta(name,true);
