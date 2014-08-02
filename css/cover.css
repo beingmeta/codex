@@ -421,7 +421,7 @@ body.cxTOUCH #CODEXCONSOLELOG {
 
 #CODEXCOVERMESSAGE > div {
     color: silver; display: none;
-    height: 1em; padding-left: 1em; padding-right: 1em;
+    padding-left: 1em; padding-right: 1em;
     padding-top: 0px;
     box-sizing: border-box;
     width: 100%;}

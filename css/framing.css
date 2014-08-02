@@ -65,7 +65,7 @@ body {
    an extra load on some devices (such as iOS). */
 #CODEXFRAME {
     position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
-    width: 100%; height: 100%;
+    width: 100%; height: 100%; line-height: initial;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     box-sizing: border-box;
     pointer-events: none;
