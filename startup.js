@@ -1202,7 +1202,7 @@ Codex.Startup=
                 var rules=getMeta("sbookhead"+i,true).
                     concat(getMeta("sbook"+i+"head",true)).
                     concat(getMeta("sbook"+headlevels[i]+"head",true)).
-                    concat(getMeta("SBOOKS.head"+headlevels[i],true));
+                    concat(getMeta("SBOOKS.head"+i,true));
                 if ((rules)&&(rules.length)) {
                     var j=0; var lim=rules.length; while (j<lim) {
                         var elements=fdjtDOM.getChildren(body,rules[j++]);
