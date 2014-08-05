@@ -167,7 +167,6 @@ body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
     z-index: -50;}
 #CODEXBODY { background-color: #ffffff; color: #444; }
 
-
 /* CODEXCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region
    (whether scrolled or paged), so the width can be controlled by
@@ -193,6 +192,7 @@ body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
    issues. */
 body.hudup.cxDEBUG #CODEXHUD {z-index: 0;}
 
+#CODEXHUD #CODEXHELP.hudpanel { overflow: auto;}
 
 /* Emacs local variables
 ;;;  Local variables: ***
