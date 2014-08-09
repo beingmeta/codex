@@ -567,7 +567,7 @@
     Codex.sizeCloud=sizeCloud;
 
     function searchcloud_select(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtDOM.T(evt);
         var completion=getParent(target,".completion");
         if (hasClass(completion,"cloudroot")) {

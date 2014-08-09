@@ -108,7 +108,7 @@
     Codex.UI.addGlossSource=function(info){addSource(info,true);};
 
     function everyone_ontap(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         var target=fdjtDOM.T(evt);
         // var sources=fdjtDOM.getParent(target,".codexsources");
         // var glosses=fdjtDOM.getParent(target,".sbookglosses");
@@ -128,7 +128,7 @@
     Codex.UI.handlers.everyone_ontap=everyone_ontap;
 
     function sources_ontap(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         // if (!(Codex.user)) return;
         var target=fdjtDOM.T(evt);
         // var sources=fdjtDOM.getParent(target,".codexsources");

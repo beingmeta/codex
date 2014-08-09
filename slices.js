@@ -589,7 +589,7 @@ Codex.Slice=(function () {
         else return false;
         var settings={noslip: true,id: container.id,holdclass: false,
                       touchtoo: function(evt){
-                          evt=evt||event;
+                          evt=evt||window.event;
                           if (Codex.previewing)
                               Codex.stopPreview("touchtoo",true);
                           this.abort(evt,"touchtoo");}};

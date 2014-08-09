@@ -190,7 +190,7 @@
     var gloss_blur_timeout=false;
 
     function glossform_focus(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         gloss_blurred=false;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
@@ -203,7 +203,7 @@
         Codex.freezelayout=true;
         gloss_focus=form;}
     function glossform_blur(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         var div=((form)&&(getParent(form,".codexglossform")));
@@ -217,7 +217,7 @@
         // if ((div)&&(hasClass(div,"modified"))) Codex.submitGloss(div);
         gloss_focus=false;}
     function glossform_touch(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (gloss_blur_timeout) clearTimeout(gloss_blur_timeout);
         var target=fdjtUI.T(evt);
         var closing=getParent(target,".submitclose");
@@ -244,7 +244,7 @@
     /* Adding a gloss button */
     
     function glossbutton_ontap(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
         if ((Codex.mode==="addgloss")&&
@@ -300,7 +300,7 @@
     var clicked=false;
 
     function body_tapped(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var sX=evt.screenX, sY=evt.screenY;
         var cX=evt.clientX, cY=evt.clientY;
@@ -552,7 +552,7 @@
         return elt;}
 
     function jumpToNote(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var noteshud=Codex.DOM.noteshud;
         var jumpto=noteshud.getAttribute("data-note");
         if (jumpto) {
@@ -565,7 +565,7 @@
     var selectors=[];
     var slip_timer=false;
     function body_held(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
         if (Trace.gestures) 
@@ -646,13 +646,13 @@
 
     var body_tapstart=false;
     function body_touchstart(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         if (target.id!=="CODEXBODY") return;
         body_tapstart=fdjtTime();}
 
     function body_touchend(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         if (target.id!=="CODEXBODY") return;
         if ((body_tapstart)&&(true) //((fdjtTime()-body_tapstart)<1000)
@@ -676,7 +676,7 @@
         Codex.select_target=false;}
 
     function body_released(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt), children=false;
         if (Trace.gestures) fdjtLog("body_released %o",evt);
         if (Codex.previewing) {
@@ -797,7 +797,7 @@
 
     // This overrides the default_tap handler
     function body_click(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         // This avoids double-handling of clicks
         if ((clicked)&&((fdjtTime()-clicked)<3000))
@@ -832,7 +832,7 @@
         return false;}
 
    function toc_tapped(evt){
-       evt=evt||event;
+       evt=evt||window.event;
         var tap_target=fdjtUI.T(evt);
         if (Codex.previewing) {
             // Because we're previewing, this slice is invisible, so
@@ -857,7 +857,7 @@
        else if (Trace.gestures) fdjtLog("toc_tapped %o noabout", evt);
        else {}}
     function toc_held(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt), about=getAbout(target);
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
@@ -881,7 +881,7 @@
         else if (Trace.gestures) fdjtLog("toc_held %o noabout", evt);
         else {}}
     function toc_released(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var about=getAbout(fdjtUI.T(evt));
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
@@ -907,7 +907,7 @@
             Codex.stopPreview("toc_released");}
         fdjtUI.cancel(evt);}
     function toc_touchtoo(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
         if (!(Codex.previewing)) return;
@@ -918,7 +918,7 @@
             Codex.stopPreview("toc_touchtoo",true);}
         fdjtUI.cancel(evt);}
     function toc_slipped(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (slip_timer) return;
         slip_timer=setTimeout(function(){
             slip_timer=false;
@@ -987,7 +987,7 @@
             return fdjtUI.cancel(evt);}
         else return;}
     function slice_held(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var slice_target=fdjtUI.T(evt), card=getCard(slice_target);
         if (Trace.gestures)
             fdjtLog("slice_held %o: %o, skimming=%o",
@@ -1038,12 +1038,12 @@
         Codex.startPreview(show_target||passage,"slice_held");
         return fdjtUI.cancel(evt);}
     function slice_released(evt){
-        var card=getCard(fdjtUI.T(evt||event));
+        var card=getCard(fdjtUI.T(evt||window.event));
         if (Trace.gestures) {
             fdjtLog("slice_released %o: %o, skimming=%o",evt,card);}
         Codex.stopPreview("slice_released");}
     function slice_slipped(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var rel=evt.relatedTarget||fdjtUI.T(evt);
         if (!(hasParent(rel,".codexslice"))) {
             if (slip_timer) return;
@@ -1054,7 +1054,7 @@
                 Codex.stopPreview("slice_slipped");},
                                   500);}}
     function slice_touchtoo(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (preview_timer) {
             clearTimeout(preview_timer); preview_timer=false;}
         if (!(Codex.previewing)) return;
@@ -1133,7 +1133,7 @@
     // We use keydown to handle navigation functions and keypress
     //  to handle mode changes
     function onkeydown(evt){
-         evt=evt||event||null;
+         evt=evt||window.event||null;
          var kc=evt.keyCode;
          var target=fdjtUI.T(evt);
          // fdjtLog("sbook_onkeydown %o",evt);
@@ -1221,7 +1221,7 @@
     // At one point, we had the shift key temporarily raise/lower the HUD.
     //  We might do it again, so we keep this definition around
     function onkeyup(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
         else if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)) return true;
         else {}}
@@ -1246,7 +1246,7 @@
     // Handle mode changes
     function onkeypress(evt){
         var modearg=false; 
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         var ch=evt.charCode||evt.keyCode;
         // Codex.trace("sbook_onkeypress",evt);
         if (fdjtDOM.isTextInput(fdjtDOM.T(evt))) return true;
@@ -1277,7 +1277,7 @@
     Codex.UI.handlers.onkeypress=onkeypress;
 
     function goto_keypress(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         var target=fdjtUI.T(evt);
         var ch=evt.charCode||evt.keyCode;
         var max=false; var min=false;
@@ -1349,7 +1349,7 @@
             glossdeleted(uuid,uuid,gloss.frag);}}
     
     function addoutlet_keydown(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var content=target.value;
         var glossdiv=fdjtID("CODEXLIVEGLOSS");
@@ -1394,7 +1394,7 @@
                         100);}
 
     function addtag_keydown(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var content=target.value;
         var glossdiv=fdjtID("CODEXLIVEGLOSS");
@@ -1441,7 +1441,7 @@
 
     var attach_types=/\b(uploading|linking|dropbox|gdrive|usebox)\b/g;
     function changeAttachment(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var form=getParent(target,'form');
         if (target.checked)
@@ -1461,7 +1461,7 @@
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
     function attach_submit(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var form=fdjtUI.T(evt);
         var livegloss=fdjtID("CODEXLIVEGLOSS");
         var liveglossid=fdjtDOM.getInput(livegloss,"UUID");
@@ -1499,7 +1499,7 @@
             var glossdata_url="https://glossdata.sbooks.net/"+glossid+"/"+itemid+"/"+path;
             var commframe=fdjtID("CODEXGLOSSCOMM");
             var listener=function(evt){
-                evt=evt||event;
+                evt=evt||window.event;
                 Codex.addLink2Form(glossform,glossdata_url,title);
                 titleinput.value="";
                 fileinput.value="";
@@ -1521,7 +1521,7 @@
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
     function attach_keydown(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var ch=evt.keyCode||evt.charCode;
         if (ch!==13) return;
         fdjtUI.cancel(evt);
@@ -1538,7 +1538,7 @@
     /* HUD button handling */
 
     function hudmodebutton(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var mode=target.getAttribute("hudmode");
         if (Trace.gestures)
@@ -1617,7 +1617,7 @@
     /* Glossmarks */
     
     function glossmark_tapped(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         if (held) clear_hold("glossmark_tapped");
         if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)||(evt.shiftKey))
             return;
@@ -1671,14 +1671,14 @@
                 glossmark_image=false;}}}
 
     function glossmark_hoverstart(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
         if (!(fdjtDOM.hasClass(passage,"codextarget")))
             animate_glossmark(target,true);}
 
     function glossmark_hoverdone(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
         if (!(fdjtDOM.hasClass(passage,"codextarget")))
@@ -1695,7 +1695,7 @@
     /* Various actions */
 
     function clearOfflineAction(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         fdjtUI.cancel(evt);
         Codex.clearOffline(true);
         // We change this here, so we don't save what's cached in
@@ -1707,7 +1707,7 @@
     Codex.UI.clearOfflineAction=clearOfflineAction;
 
     function forceSyncAction(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         fdjtUI.cancel(evt);
         Codex.forceSync();
         if (!(navigator.onLine))
@@ -1759,7 +1759,7 @@
             Codex.page_turner=false;}}
 
     function pageForward(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (Codex.readsound)
             fdjtDOM.playAudio("CODEXPAGEORWARDAUDIO");
         if ((Trace.gestures)||(Trace.flips))
@@ -1780,7 +1780,7 @@
     Codex.pageForward=pageForward;
 
     function pageBackward(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (Codex.readsound)
             fdjtDOM.playAudio("CODEXPAGEBACKWARDAUDIO");
         if ((Trace.gestures)||(Trace.flips))
@@ -1800,7 +1800,7 @@
     Codex.pageBackward=pageBackward;
 
     function skimForward(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (Codex.uisound)
             fdjtDOM.playAudio("CODEXSKIMFORWARDAUDIO");
         if (hasClass(document.body,"cxSKIMMING")) {}
@@ -1917,7 +1917,7 @@
     Codex.skimBackward=skimBackward;
 
     function skimmer_tapped(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         if (isClickable(target)) return;
         if ((getParent(target,".ellipsis"))&&
@@ -1950,7 +1950,7 @@
     /* Entering page numbers and locations */
 
     function enterPageNum(evt) {
-        evt=evt||event;
+        evt=evt||window.event;
         if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
             fdjtUI.cancel(evt);
             Codex.setMode(false);
@@ -1959,7 +1959,7 @@
         if (Codex.hudup) {Codex.setMode(false); return;}
         Codex.toggleMode("gotopage");}
     function enterLocation(evt) {
-        evt=evt||event;
+        evt=evt||window.event;
         if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
             fdjtUI.cancel(evt);
             Codex.setMode(false);
@@ -1968,7 +1968,7 @@
         if (Codex.hudup) {Codex.setMode(false); return;}
         Codex.toggleMode("gotoloc");}
     function enterPercentage(evt) {
-        evt=evt||event;
+        evt=evt||window.event;
         if ((Codex.hudup)||(Codex.mode)||(Codex.cxthelp)) {
             fdjtUI.cancel(evt);
             Codex.setMode(false);
@@ -1984,7 +1984,7 @@
         else Codex.setMode(false);}
 
     function head_tap(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         if (Trace.gestures) fdjtLog("head_tap %o t=%o",evt,target);
         if (Codex.previewing) {
@@ -2025,7 +2025,7 @@
 
     var previewing_page=false, preview_start_page=false;
     function pagebar_hold(evt,target){
-        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
+        evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("CODEXPAGEBAR");
         if (preview_timer) {
             clearTimeout(preview_timer);
@@ -2059,7 +2059,7 @@
         previewing_page=gopage;
         Codex.startPreview("CODEXPAGE"+previewing_page,"pagebar_span_hold/timeout");}
     function pagebar_tap(evt,target){
-        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
+        evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("CODEXPAGEBAR");
         if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
             fdjtLog("pagebar_tap %o",evt);
@@ -2085,7 +2085,7 @@
         Codex.GoToPage(gopage,"pagebar_tap",true);
         Codex.setMode(false);}
     function pagebar_release(evt,target){
-        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
+        evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("CODEXPAGEBAR");
         if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
             fdjtLog("pagebar_release %o, previewing=%o, ptarget=%o start=%o",
@@ -2104,7 +2104,7 @@
         if (((hasParent(target,pagebar))&&(target.tagName==="SPAN"))) {
             return;}}
     function pagebar_slip(evt,target){
-        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
+        evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         var rel=evt.relatedTarget;
         var pagebar=fdjtID("CODEXPAGEBAR");
         if (preview_timer) {
@@ -2128,7 +2128,7 @@
                                       400);
         previewing_page=false;}
     function pagebar_touchtoo(evt,target){
-        evt=evt||event; if (!(target)) target=fdjtUI.T(evt);
+        evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         if (Codex.previewing) {
             Codex.stopPreview("touchtoo");
             fdjtUI.TapHold.clear();
@@ -2141,7 +2141,7 @@
     /**** Clicking on outlets *****/
     
     function glossform_outlets_tapped(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         if (getParent(target,".checkspan"))
             return fdjt.UI.CheckSpan.onclick(evt);
@@ -2165,7 +2165,7 @@
     var slip_timeout=false;
 
     function glossmode_tap(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var alt=target.alt;
         
@@ -2206,7 +2206,7 @@
         return;}
 
     function glossmode_hold(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var alt=target.alt;
         
@@ -2226,7 +2226,7 @@
             addClass(menu,"held");}}
 
     function glossmode_release(evt) {
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var menu=getParent(target,'.addglossmenu');
         var form=getParent(target,'form');
@@ -2252,7 +2252,7 @@
         dropClass(menu,"held");}
 
     function glossmode_slip(evt) {
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var menu=getParent(target,'.addglossmenu');
         dropClass(target,"held");
@@ -2326,7 +2326,7 @@
     /* Changing gloss networks */
     
     function changeGlossNetwork(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var alternate=fdjtID(
             (fdjtDOM.hasParent(target,".codexglossform"))?
@@ -2336,15 +2336,15 @@
     Codex.UI.changeGlossNetwork=changeGlossNetwork;
 
     function changeGlossPosting(evt){
-        var target=fdjtUI.T(evt=(evt||event));
+        var target=fdjtUI.T(evt=(evt||window.event));
         var glossdiv=getParent(target,".codexglossform");
         if (target.checked) fdjtDOM.addClass(glossdiv,"posted");
         else fdjtDOM.dropClass(glossdiv,"posted");}
     Codex.UI.changeGlossPosting=changeGlossPosting;
 
     function changeGlossPrivacy(evt){
-        evt=evt||event;
-        var target=fdjtUI.T(evt=(evt||event));
+        evt=evt||window.event;
+        var target=fdjtUI.T(evt=(evt||window.event));
         var glossdiv=getParent(target,".codexglossform");
         var postgloss=getChild(glossdiv,".postgloss");
         var postinput=(postgloss)&&(getInput(postgloss,"POSTGLOSS"));
@@ -2358,7 +2358,7 @@
     Codex.UI.changeGlossPrivacy=changeGlossPrivacy;
 
     function exposureClicked(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
         if (form.className==="addoutlet")
@@ -2369,7 +2369,7 @@
     /* Back to the text */
 
     function back_to_reading(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         fdjtUI.cancel(evt);
         if (Codex.mode==="addgloss") 
             Codex.cancelGloss();
@@ -2377,7 +2377,7 @@
         fdjtDOM.dropClass(document.body,"codexhelp");}
 
     function clearMode(evt){
-        evt=evt||event; Codex.setMode(false);}
+        evt=evt||window.event; Codex.setMode(false);}
 
     /* Tracking text input */
 
@@ -2403,7 +2403,7 @@
     Codex.clearFocus=clearFocus;
 
     function codexfocus(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var input=getParent(target,'textarea');
         if (!(input)) input=getParent(target,'input');
@@ -2413,7 +2413,7 @@
         setFocus(input);}
     Codex.UI.focus=codexfocus;
     function codexblur(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=((evt.nodeType)?(evt):(fdjtUI.T(evt)));
         var input=getParent(target,'textarea');
         if (!(input)) input=getParent(target,'input');
@@ -2429,7 +2429,7 @@
     var cancel=fdjtUI.cancel;
     
     function generic_cancel(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         if (fdjtUI.isClickable(target)) return;
         else cancel(evt);}
@@ -2445,7 +2445,7 @@
     Codex.setHelp=setHelp;
     
     function toggleHelp(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         fdjtUI.cancel(evt);
         if (Codex.cxthelp) {
             fdjtDOM.dropClass(document.body,"codexhelp");
@@ -2457,12 +2457,12 @@
     Codex.toggleHelp=toggleHelp;
 
     function editglossnote(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         Codex.setGlossMode("editnote");
         fdjtUI.cancel(evt);}
 
     function handleXTarget(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var anchor=fdjtUI.T(evt);
         if ((anchor.href)&&(anchor.href[0]==='#')&&
             (Codex.xtargets[anchor.href.slice(1)])) {
@@ -2488,7 +2488,7 @@
     Codex.UI.highlightSetting=highlightSetting;
 
     function showcover_tapped(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if ((Codex.touch)&&(!(Codex.hudup))) return;
         if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2)))) {
             var opened=Codex.readLocal("codex.opened("+Codex.docuri+")",true);
@@ -2500,7 +2500,7 @@
         Codex.showCover();
         fdjtUI.cancel(evt);}
     function showcover_released(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (!((evt.shiftKey)||((evt.touches)&&(evt.touches.length>=2))))
             fdjtID("CODEXCOVER").className="bookcover";
         Codex.clearStateDialog();
@@ -2508,7 +2508,7 @@
         fdjtUI.cancel(evt);}
 
     function global_mouseup(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if (Codex.page_turner) {
             clearInterval(Codex.page_turner);
             Codex.page_turner=false;
@@ -2519,36 +2519,36 @@
             Codex.select_target=false;}}
         
     function raiseHUD(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         Codex.setHUD(true);
         fdjt.UI.cancel(evt);
         fdjt.UI.cancel(evt);return false;}
     Codex.raiseHUD=raiseHUD;
     function lowerHUD(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         Codex.setHUD(false);
         fdjt.UI.cancel(evt);
         return false;}
     Codex.lowerHUD=lowerHUD;
 
     function saveGloss(evt){
-        evt=evt||event; Codex.submitGloss();}
+        evt=evt||window.event; Codex.submitGloss();}
     function refreshLayout(evt){
-        evt=evt||event; cancel(evt); Codex.refreshLayout();}
+        evt=evt||window.event; cancel(evt); Codex.refreshLayout();}
     function refreshOffline(evt){
-        evt=evt||event; cancel(evt); Codex.refreshOffline();}
+        evt=evt||window.event; cancel(evt); Codex.refreshOffline();}
     function clearOffline(evt){
-        evt=evt||event; cancel(evt); Codex.clearOffline();}
+        evt=evt||window.event; cancel(evt); Codex.clearOffline();}
     function consolefn(evt){
-        evt=evt||event; Codex.consolefn();}
+        evt=evt||window.event; Codex.consolefn();}
     function saveSettings(evt){
-        evt=evt||event; Codex.UI.settingsSave();}
+        evt=evt||window.event; Codex.UI.settingsSave();}
     function applySettings(evt){
-        evt=evt||event; Codex.UI.settingsOK();}
+        evt=evt||window.event; Codex.UI.settingsOK();}
     function resetSettings(evt){
-        evt=evt||event; Codex.UI.settingsReset();}
+        evt=evt||window.event; Codex.UI.settingsReset();}
     function updateSettings(evt){
-        evt=evt||event; Codex.UI.settingsUpdate();}
+        evt=evt||window.event; Codex.UI.settingsUpdate();}
 
     function glossetc_touch(evt){
         var target=fdjtUI.T(evt);
@@ -2688,7 +2688,7 @@
          ".codexexpandsearch": {click: function(evt){
              Codex.setMode('expandsearch'); fdjt.UI.cancel(evt);}},
          ".codexclearsearch": {click: function(evt){
-             evt=evt||event;
+             evt=evt||window.event;
              Codex.UI.handlers.clearSearch(evt);
              fdjt.UI.cancel(evt);
              return false;}},
@@ -2696,7 +2696,7 @@
              click: Codex.UI.handlers.sources_ontap},
          "#CODEXSOURCES .button.everyone": {
              click: function(evt){
-                 evt=evt||event;
+                 evt=evt||window.event;
                  Codex.UI.handlers.everyone_ontap(evt);
                  fdjt.UI.cancel(event);}}});
 
@@ -2867,14 +2867,14 @@
          ".codexclearsearch": {
              touchstart: cancel,
              touchend: function(evt){
-                 evt=evt||event;
+                 evt=evt||window.event;
                  Codex.UI.handlers.clearSearch(evt);
                  fdjt.UI.cancel(evt);
                  return false;}},
          "#CODEXSOURCES .button.everyone": {
              touchstart: cancel,
              touchend: function(evt){
-                 evt=evt||event;
+                 evt=evt||window.event;
                  Codex.UI.handlers.everyone_ontap(evt);
                  fdjt.UI.cancel(event);}}});
     

@@ -227,7 +227,7 @@
     var Selector=fdjtDOM.Selector;
     
     function searchInput_keyup(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         var ch=evt.charCode||evt.keyCode;
         var target=fdjtDOM.T(evt), completeinfo=false, completions=false;
         // fdjtLog("Input %o on %o",evt,target);
@@ -291,7 +291,7 @@
     Codex.searchUpdate=searchUpdate;
 
     function searchInput_focus(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         var input=fdjtDOM.T(evt);
         Codex.setFocus(input);
         if ((Codex.mode)&&(Codex.mode==='searchresults'))
@@ -300,13 +300,13 @@
     Codex.UI.handlers.search_focus=searchInput_focus;
 
     function searchInput_blur(evt){
-        evt=evt||event||null;
+        evt=evt||window.event||null;
         var input=fdjtDOM.T(evt);
         Codex.clearFocus(input);}
     Codex.UI.handlers.search_blur=searchInput_blur;
 
     function clearSearch(evt){
-        var target=fdjtUI.T(evt||event);
+        var target=fdjtUI.T(evt||window.event);
         var box=fdjtDOM.getParent(target,".searchbox");
         var input=getChild(box,".searchinput");
         fdjtUI.cancel(evt);
@@ -321,7 +321,7 @@
     Codex.UI.handlers.clearSearch=clearSearch;
     
     Codex.toggleSearch=function(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if ((Codex.mode==="refinesearch")||
             (Codex.mode==="searchresults"))
             Codex.setMode(false);
