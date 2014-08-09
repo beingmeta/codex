@@ -1219,7 +1219,7 @@ var Codex={
     var freshstart=true;
 
     function freshState(evt){
-        var req=fdjtUI.T(req);
+        var req=fdjtUI.T(evt);
         var traced=(Codex.Trace.state)||(Codex.Trace.network);
         if (req.readyState===4) {
             if ((req.status>=200)&&(req.status<300)) {
