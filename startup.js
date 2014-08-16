@@ -757,7 +757,7 @@ Codex.Startup=
                     else if (fdjtID("SBOOKAUTOINDEX")) {
                         var elt=fdjtID("SBOOKAUTOINDEX");
                         fdjtDOM.addListener(elt,"load",function(evt){
-                            evt=evt||event;
+                            evt=evt||window.event;
                             handlePublisherIndex(false,indexingDone);
                             Codex._publisher_index=false;
                             window._sbook_autoindex=false;});}
@@ -1262,7 +1262,7 @@ Codex.Startup=
             if (Codex.Trace.gesture>1) fdjtLog("consolebutton_click %o",evt);
             console_eval();}
         function consoleinput_keypress(evt){
-            evt=evt||event;
+            evt=evt||window.event;
             if (evt.keyCode===13) {
                 if (!(evt.ctrlKey)) {
                     fdjtUI.cancel(evt);
@@ -1901,7 +1901,7 @@ Codex.Startup=
         var choosing_resize=false;
         
         function resizeHandler(evt){
-            evt=evt||event;
+            evt=evt||window.event;
             if (resize_wait) clearTimeout(resize_wait);
             if (choosing_resize) {
                 fdjt.Dialog.close(choosing_resize);

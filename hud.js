@@ -665,7 +665,7 @@ Codex.setMode=
 
         Codex.dropHUD=function(){return setMode(false);};
         Codex.toggleHUD=function(evt){
-            evt=evt||event;
+            evt=evt||window.event;
             if ((evt)&&(fdjtUI.isClickable(fdjtUI.T(evt)))) return;
             fdjtLog("toggle HUD %o hudup=%o",evt,Codex.hudup);
             if (Codex.hudup) setHUD(false,false);

@@ -428,7 +428,7 @@
     Codex.UI.selectText=selectText;
 
     function gloss_selecting_ontap(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         if ((Trace.selection)||(Trace.glossing)||(Trace.gestures))
             fdjtLog("gloss_selecting_ontap %o, mode=%o, livegloss=%o",
                     evt,Codex.mode,fdjt.ID("CODEXLIVEGLOSS"));
@@ -1184,7 +1184,7 @@
     Codex.submitGloss=submitGloss;
 
     function cancelGloss_handler(evt){
-        evt=evt||event;
+        evt=evt||window.event;
         var target=fdjtUI.T(evt);
         cancelGloss(target);
         fdjtUI.cancel(evt);}

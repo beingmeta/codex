@@ -116,7 +116,7 @@ Codex.TOC=
                         toc,{id: (prefix||"TOC"),holdclass: false,
                              taptapthresh: 0,
                              touchtoo: function(evt){
-                                 evt=evt||event;
+                                 evt=evt||window.event;
                                  if (Codex.previewing)
                                      Codex.stopPreview("touchtoo",true);
                                  this.abort(evt,"touchtoo");},
