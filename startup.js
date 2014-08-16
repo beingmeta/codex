@@ -526,8 +526,8 @@ Codex.Startup=
             if ((uri)&&(typeof uri === "string")) {
                 var images=fdjtDOM.$("img.codexbookimage");
                 var i=0, lim=images.length;
-                while (i<lim) images[i++].src=uri;}
-
+                while (i<lim) {
+                    if (images[i].src) i++; else images[i++].src=uri;}}
             if (Codex.refuri) {
                 var refuris=document.getElementsByName("REFURI");
                 if (refuris) {
