@@ -1726,7 +1726,6 @@
     var last_motion=false;
 
     function forward(evt){
-        var now=fdjtTime();
         if (!(evt)) evt=event||false;
         if (evt) fdjtUI.cancel(evt);
         if (Trace.nav)
@@ -1736,7 +1735,6 @@
         else pageForward(evt);}
     Codex.Forward=forward;
     function backward(evt){
-        var now=fdjtTime();
         if (!(evt)) evt=event||false;
         if (evt) fdjtUI.cancel(evt);
         if (Trace.nav)
