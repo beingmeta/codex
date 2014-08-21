@@ -1729,8 +1729,6 @@
         var now=fdjtTime();
         if (!(evt)) evt=event||false;
         if (evt) fdjtUI.cancel(evt);
-        if ((last_motion)&&((now-last_motion)<100)) return;
-        else last_motion=now;
         if (Trace.nav)
             fdjtLog("Forward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
@@ -1741,8 +1739,6 @@
         var now=fdjtTime();
         if (!(evt)) evt=event||false;
         if (evt) fdjtUI.cancel(evt);
-        if ((last_motion)&&((now-last_motion)<100)) return;
-        else last_motion=now;
         if (Trace.nav)
             fdjtLog("Backward e=%o h=%o t=%o",evt,Codex.head,Codex.target);
         if (((evt)&&(evt.shiftKey))||(n_touches>1))
@@ -1760,6 +1756,9 @@
 
     function pageForward(evt){
         evt=evt||window.event;
+        var now=fdjtTime();
+        if ((last_motion)&&((now-last_motion)<100)) return;
+        else last_motion=now;
         if (Codex.readsound)
             fdjtDOM.playAudio("CODEXPAGEORWARDAUDIO");
         if ((Trace.gestures)||(Trace.flips))
@@ -1780,6 +1779,9 @@
     Codex.pageForward=pageForward;
 
     function pageBackward(evt){
+        var now=fdjtTime();
+        if ((last_motion)&&((now-last_motion)<100)) return;
+        else last_motion=now;
         evt=evt||window.event;
         if (Codex.readsound)
             fdjtDOM.playAudio("CODEXPAGEBACKWARDAUDIO");
@@ -1800,6 +1802,9 @@
     Codex.pageBackward=pageBackward;
 
     function skimForward(evt){
+        var now=fdjtTime();
+        if ((last_motion)&&((now-last_motion)<100)) return;
+        else last_motion=now;
         evt=evt||window.event;
         if (Codex.uisound)
             fdjtDOM.playAudio("CODEXSKIMFORWARDAUDIO");
@@ -1862,6 +1867,9 @@
     Codex.skimForward=skimForward;
 
     function skimBackward(evt){
+        var now=fdjtTime();
+        if ((last_motion)&&((now-last_motion)<100)) return;
+        else last_motion=now;
         if (Codex.uisound)
             fdjtDOM.playAudio("CODEXSKIMBACKWARDAUDIO");
         if (hasClass(document.body,"cxSKIMMING")) {}
