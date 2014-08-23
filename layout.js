@@ -419,6 +419,7 @@ Codex.Paginate=
         function getLayoutID(width,height,family,size,spacing,justify,source_id){
             var page=fdjtID("CODEXPAGE");
             var left=page.style.left, right=page.style.right;
+            var layout_source=fdjt.CodexLayout.sourcehash;
             page.style.left=""; page.style.right="";
             if (!(width))
                 width=getGeometry(page,false,true).width;
@@ -431,14 +432,15 @@ Codex.Paginate=
             if (!(justify)) justify=Codex.justify;
             if (!(spacing)) justify=Codex.bodyspacing;
             page.style.left=left; page.style.right=right;
-            return fdjtString("%dx%d-%s-%s%s%s(%s)",
+            return fdjtString("%dx%d-%s-%s%s%s(%s)%s",
                               width,height,family,size,
                               ((spacing)?("-"+spacing):("")),
                               ((justify)?("-j"):("")),
                               // Layout depends on the actual file ID,
                               // if we've got one, rather than just
                               // the REFURI
-                              source_id);}
+                              source_id,
+                              ((layout_source)?("["+layout_source+"]"):("")));}
         Codex.getLayoutID=getLayoutID;
 
         function layoutCached(layout_id){
@@ -474,13 +476,15 @@ Codex.Paginate=
             var bodysize=Codex.bodysize||"normal";
             var sourceid=Codex.sourceid||fdjtHash.hex_md5(Codex.docuri);
             var justify=Codex.justify;
+            var sourcehash=fdjt.CodexLayout.sourcehash;
             var layout_id=fdjtString(
-                "%dx%d-%s-%s%s(%s)",
+                "%dx%d-%s-%s%s(%s)%s",
                 width,height,bodyfamily,bodysize,
                 ((justify)?("-j"):("")),
                 // Layout depends on the actual file ID, if we've got
                 // one, rather than just the REFURI
-                sourceid||Codex.refuri);
+                sourceid||Codex.refuri,
+                ((sourcehash)?("["+sourcehash+"]"):("")));
 
             var docinfo=Codex.docinfo;
             var goneto=false;
