@@ -69,7 +69,7 @@ body {
     font-family: Arial,Verdana,Helvetica,sans-serif;
     box-sizing: border-box;
     pointer-events: none;
-    z-index: -20;}
+    z-index: 1;}
 #CODEXFRAME > div, #CODEXFRAME > div > div, #CODEXFRAME > div > a {
     box-sizing: border-box;}
 body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
