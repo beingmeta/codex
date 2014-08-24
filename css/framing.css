@@ -163,8 +163,7 @@ body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
    pages or not. */
 #CODEXBODY {
     position: fixed; overflow: visible;
-    left: 0px; right: 0px; top: 0px; bottom: 0px;
-    z-index: -50;}
+    left: 0px; right: 0px; top: 0px; bottom: 0px;} /* z-index: -50; */
 #CODEXBODY { background-color: #ffffff; color: #444; }
 
 /* CODEXCONTENT is where linear content lives for scrolling layout.
