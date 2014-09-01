@@ -277,10 +277,6 @@ Codex.Paginate=
                 // Now reset the width
                 Codex.content.style.width=saved_width;
                 
-                /* Lay out the coverpage */
-                var coverpage=Codex.getCover();
-                if (coverpage) layout.addContent(coverpage);
-
                 var i=0; var lim=nodes.length;
                 function rootloop(){
                     if (i>=lim) {
