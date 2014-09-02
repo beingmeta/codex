@@ -683,7 +683,9 @@ Codex.Startup=
             ([  // Scan the DOM for metadata.  This is surprisingly
                 //  fast, so we don't currently try to timeslice it or
                 //  cache it, though we could.
-                function(){metadata=scanDOM();},
+                function(){
+                    applyTOCRules();
+                    metadata=scanDOM();},
                 // Now you're ready to lay out the book, which is
                 //  timesliced and runs on its own.  We wait to do
                 //  this until we've scanned the DOM because we may
@@ -778,6 +780,39 @@ Codex.Startup=
              100,25);}
         Codex.Startup=CodexStartup;
         
+        function addTOCLevel(nodes,level){
+            var i=0, lim=nodes.length; while (i<lim) {
+                nodes[i++].setAttribute("data-toclevel",level);}}
+        function applyTOCRules(){
+            var h1=getMeta("SBOOKS.h1",true,true)
+                .concat(getMeta("SBOOKS.head1",true,true))
+                .concat(getMeta("sbook1head",true));
+            if (h1.length) addTOCLevel(h1,"1");
+            var h2=getMeta("SBOOKS.h2",true,true)
+                .concat(getMeta("SBOOKS.head2",true,true))
+                .concat(getMeta("sbook2head",true));
+            if (h2.length) addTOCLevel(h2,"2");
+            var h3=getMeta("SBOOKS.h3",true,true)
+                .concat(getMeta("SBOOKS.head3",true,true))
+                .concat(getMeta("sbook3head",true));
+            if (h3.length) addTOCLevel(h3,"3");
+            var h4=getMeta("SBOOKS.h4",true,true)
+                .concat(getMeta("SBOOKS.head4",true,true))
+                .concat(getMeta("sbook4head",true));
+            if (h4.length) addTOCLevel(h4,"4");
+            var h5=getMeta("SBOOKS.h5",true,true)
+                .concat(getMeta("SBOOKS.head5",true,true))
+                .concat(getMeta("sbook5head",true));
+            if (h5.length) addTOCLevel(h5,"5");
+            var h6=getMeta("SBOOKS.h6",true,true)
+                .concat(getMeta("SBOOKS.head6",true,true))
+                .concat(getMeta("sbook6head",true));
+            if (h6.length) addTOCLevel(h6,"6");
+            var h7=getMeta("SBOOKS.h7",true,true)
+                .concat(getMeta("SBOOKS.head7",true,true))
+                .concat(getMeta("sbook7head",true));
+            if (h7.length) addTOCLevel(h7,"7");}
+
         function handlePublisherIndex(pubindex,whendone){
             if (!(pubindex))
                 pubindex=Codex._publisher_index||window._sbook_autoindex;
