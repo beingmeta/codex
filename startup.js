@@ -780,9 +780,11 @@ Codex.Startup=
              100,25);}
         Codex.Startup=CodexStartup;
         
-        function addTOCLevel(nodes,level){
-            var i=0, lim=nodes.length; while (i<lim) {
-                nodes[i++].setAttribute("data-toclevel",level);}}
+        function addTOCLevel(specs,level){
+            var j=0, nspecs=specs.length; while (j<nspecs) {
+                var nodes=fdjtDOM.$(specs[j++]);
+                var i=0, lim=nodes.length; while (i<lim) {
+                nodes[i++].setAttribute("data-toclevel",level);}}}
         function applyTOCRules(){
             var h1=getMeta("SBOOKS.h1",true,true)
                 .concat(getMeta("SBOOKS.head1",true,true))
