@@ -109,7 +109,9 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 
 body.cxNOUSER #CODEXCOVER div.loginbox,
 body.cxUSER #CODEXCOVER div.userbox {
-    display: block; vertical-align: top; color: gold;}
+    display: block; height: initial;
+    vertical-align: top;
+    color: gold;}
 
 #CODEXCOVER div.loginbox {
     margin: 0px; padding: 0px;

@@ -204,6 +204,9 @@ span.note.ellipsis span.elision, span.note.ellipsis span.delision {
     /* Some documents may define style rules for TR which we want to override */
     background-color: transparent;
     border: 0px transparent;}
+#CODEXFRAME input[TYPE="TEXT"] {
+    box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+    padding-left: 0.3ex;}
 
 /* Fuzzy selections */
 
@@ -324,7 +327,7 @@ div.locbar hr {
     border-right: solid rgba(0,0,255,0.70) 4px;
     width: 0px; overflow: visible;
     width: 54px; height: 50px;
-    box-sizing: border-box;
+    box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     z-index: 50;}
 #CODEXPAGE .codexglossmark {margin-right: -50px;}
 body.cxNARROW div.fdjtselecting .codexglossmark {
@@ -676,15 +679,13 @@ div.codexglossform form table td textarea { width: 100%;}
 
 div.codexpage {
     position: absolute;
-    box-sizing: border-box; -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+    box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     display: none;}
 div.codexpage {
     padding: 2px;
     border: solid transparent 4px;
     margin: 0px;}
 
-div.codexpage img { max-width: 90%; max-height: 80%;}
 div.codexpage img.nomax { max-width: inherit; max-height: inherit;}
 
 div.codexpage.curpage {display: block;}

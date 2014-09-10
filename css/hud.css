@@ -650,6 +650,13 @@ body.cxMOUSE #CODEXHEAD:hover #CODEXSHOWCOVER {
 body.cxMOUSE #CODEXSHOWCOVER:hover {
     border: solid blue 2px;}
 
+#CODEXSHOWCOVER img {
+    height: 1.2em; width: auto;
+    float: left;}
+#CODEXSHOWCOVER span.text {
+  vertical-align: middle;
+  font-weight: bold;}
+
 body.cxNOUSER a.logout {
     display: none !important;}
 
@@ -1029,7 +1036,10 @@ body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
 #CODEXHUD #CODEXSTARTPAGE.hudpanel {
     position: absolute; text-align: left; padding: 1em;
     background-color: silver; color: black; opacity: 1.0;
-    top: 75px; bottom: 75px; left: 75px; right: 75px; height: auto; width: auto;
+    top: 75px; bottom: 75px; left: 75px; right: 75px;
+    height: auto; width: auto;}
+
+#CODEXHUD #CODEXSTARTPAGE.hudpanel {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     -webkit-opacity: 1;
@@ -1205,12 +1215,33 @@ body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {
     display: block;}
 
 body.cxFULLHEIGHT #CODEXSHOWCOVER {
-    padding: 0px; }
+    padding: 0px;}
 body.cxFULLHEIGHT.hudup #CODEXFOOT {
     padding-top: 2px;
     border-radius: 0px;}
 body.cxFULLHEIGHT #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     left: auto; right: auto; width: 100%;}
+
+@media (max-device-width: 500px) {
+    .hudup #CODEXHUD img.hudbutton {
+        width: 50px; height: 50px;}
+    .hudup #CODEXHUD #CODEXSHOWCOVER img {
+        width: 50px; height: 50px;}
+    body #CODEXFRAME > #CODEXHUD > #CODEXHEAD {
+        height: 55px; max-height: 55px;
+        background-color: rgba(255,255,240,0.9);
+        border-bottom: solid black 1px;}
+    #CODEXSHOWCOVER {
+        width: 50px; margin-top: 0px; border: 0px;
+        background-color: transparent;}
+    #CODEXSHOWCOVER span.text { display: none;}
+
+    #CODEXHUD #CODEXHEAD.tapholding img.hudbutton,
+    .cxTOUCH #CODEXHUD #CODEXFOOT.tapholding img.hudbutton.tapholdtarget,
+    .cxTOUCH #CODEXHUD #CODEXHEAD.tapholding img.hudbutton.tapholdtarget {
+        width: 50px; height: 50px;}
+
+}
 
 /* Emacs local variables
 ;;;  Local variables: ***

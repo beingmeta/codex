@@ -384,6 +384,11 @@ div.codextoc a.brick {
 #CODEXHUD #CODEXTOC a.brick.codexlivehead { }
 #CODEXHUD #CODEXTOC a:hover { text-decoration: none;}
 
+@media (max-device-width: 500px) {
+    #CODEXHUD div.codextoc {
+        padding-left:0.5ex; padding-right: 2px;}
+    }
+
 /* Emacs local variables
 ;;;  Local variables: ***
 ;;;  compile-command: "cd ../..; make" ***

@@ -1581,24 +1581,6 @@ var Codex={
     function getCover(){
         if (Codex.cover) return Codex.cover;
         var cover=fdjtID("SBOOKCOVERPAGE")||fdjtID("COVERPAGE");
-        if (cover) {}
-        else if (Codex.coverpage) {
-            cover=fdjtDOM.Image(
-                Codex.coverpage,"img.codexfullpage.codexcoverpage.sbookpage#CODEXCOVERPAGE");
-            fdjtDOM.prepend(Codex.content,cover);}
-        // This should generate a textual cover page
-        else if ((!(fdjt.ID("CODEXTITLEPAGE")))&&
-                 (!(fdjt.ID("SBOOKTITLEPAGE")))) {
-            cover=fdjtDOM(
-                "div.codexcoverpage.codexfullpage#SBOOKTITLEPAGE","\n",
-                ((Codex.booktitle)?
-                 (fdjtDOM("h1.title",Codex.booktitle)):
-                 null),
-                "\n",
-                ((Codex.bookauthor)?
-                 (fdjtDOM("h1.author",Codex.bookauthor)):
-                 null));
-            fdjtDOM.prepend(Codex.content,cover);}
         if (cover) Codex.cover=cover;
         return cover;}
     Codex.getCover=getCover;
