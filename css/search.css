@@ -93,7 +93,7 @@ div.resultinfo.noresults span { display: none;}
 #CODEXHUD.searchresults #CODEXSEARCHINFO {
     display: block;}
 #CODEXSEARCHINFO .qtags {
-    box-sizing: border-box; height: 100%;
+    box-sizing: border-box;
     padding-top: 7px; padding-right: 7px;
     margin-left: 10px; margin-bottom: 0px;
     display: inline-block;
@@ -103,11 +103,16 @@ div.resultinfo.noresults span { display: none;}
 .qtags span.elided { display: inline; }
 .qtags span.elision { display: none; }
 
-body.cxANIMAGE .qtags {
+body.cxANIMATE .qtags {
     transition-property: font-size; transition-duration: 0.5s;
     -webkit-transition-property: font-size; -webkit-transition-duration: 0.5s;
     -moz-transition-property: font-size; -moz-transition-duration: 0.5s;
     -o-transition-property: font-size; -o-transition-duration: 0.5s;}
+
+@media (max-device-width: 500px) {
+    #CODEXSEARCHINFO .qtags {
+        clear: both; width: 100%;}
+}
 
 /* Emacs local variables
 ;;;  Local variables: ***

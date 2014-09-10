@@ -162,7 +162,7 @@
                 if (info.scrollHeight<=info.clientHeight)
                     return 0;
                 else return 1;},
-            newtags,{maxpct: 120,minpct: 30},[5,1]);
+            newtags,{maxpct: 120,minpct: 60},[5,1]);
         // Update the search cloud
         var n_refiners=((query.cotags)&&(query.cotags.length))||0;
         var completions=Codex.queryCloud(query);

@@ -1241,6 +1241,20 @@ body.cxFULLHEIGHT #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     .cxTOUCH #CODEXHUD #CODEXHEAD.tapholding img.hudbutton.tapholdtarget {
         width: 50px; height: 50px;}
 
+    #CODEXHUD.refinesearch #CODEXHEART,
+    #CODEXHUD.expandsearch #CODEXHEART,
+    #CODEXHUD.searchresults #CODEXHEART,
+    #CODEXHUD.glossaddtag #CODEXHEART,
+    #CODEXHUD.glossaddoutlet #CODEXHEART {
+        top: 62px;}
+
+    #CODEXHUD.refinesearch #CODEXRIBBON,
+    #CODEXHUD.expandsearch #CODEXRIBBON,
+    #CODEXHUD.searchresults #CODEXRIBBON,
+    #CODEXHUD.glossaddtag #CODEXRIBBON,
+    #CODEXHUD.glossaddoutlet #CODEXRIBBON {
+        height: 60px;}
+
 }
 
 /* Emacs local variables
