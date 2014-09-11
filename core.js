@@ -1580,7 +1580,9 @@ var Codex={
     
     function getCover(){
         if (Codex.cover) return Codex.cover;
-        var cover=fdjtID("SBOOKCOVERPAGE")||fdjtID("COVERPAGE");
+        var cover=fdjtID("CODEXCOVERPAGE")||
+            fdjtID("SBOOKCOVERPAGE")||
+            fdjtID("COVERPAGE");
         if (cover) Codex.cover=cover;
         return cover;}
     Codex.getCover=getCover;

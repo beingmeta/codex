@@ -522,12 +522,34 @@ Codex.Startup=
             // This initializes the book tools (the HUD/Heads Up Display)
             Codex.initHUD();
 
-            var uri=Codex.bookimage||Codex.bookcover||Codex.coverpage;
-            if ((uri)&&(typeof uri === "string")) {
-                var images=fdjtDOM.$("img.codexbookimage");
-                var i=0, lim=images.length;
+            var i, lim;
+            var uri=
+                ((typeof Codex.coverimage === "string")&&(Codex.coverimage))||
+                ((typeof Codex.bookimage === "string")&&(Codex.bookimage))||
+                ((typeof Codex.bookcover === "string")&&(Codex.bookcover))||
+                ((typeof Codex.coverpage === "string")&&(Codex.coverpage));
+            if (uri) {
+                var bookimages=fdjtDOM.$("img.codexbookimage");
+                i=0; lim=bookimages.length;
                 while (i<lim) {
-                    if (images[i].src) i++; else images[i++].src=uri;}}
+                    if (bookimages[i].src) i++;
+                    else bookimages[i++].src=uri;}}
+            var thumb_uri=
+                ((typeof Codex.thumbnail === "string")&&(Codex.thumbnail));
+            if (thumb_uri) {
+                var thumbimages=fdjtDOM.$("img.codexbookthumb");
+                i=0; lim=thumbimages.length;
+                while (i<lim) {
+                    if (thumbimages[i].src) i++;
+                    else thumbimages[i++].src=thumb_uri;}}
+            var icon_uri=
+                ((typeof Codex.icon === "string")&&(Codex.icon));
+            if (icon_uri) {
+                var iconimages=fdjtDOM.$("img.codexbookicon");
+                i=0; lim=iconimages.length;
+                while (i<lim) {
+                    if (iconimages[i].src) i++;
+                    else iconimages[i++].src=icon_uri;}}
             if (Codex.refuri) {
                 var refuris=document.getElementsByName("REFURI");
                 if (refuris) {
@@ -963,6 +985,15 @@ Codex.Startup=
             var coverpage=getLink("SBOOKS.coverpage",false,true)||
                 getLink("coverpage",false,true);
             if (coverpage) Codex.coverpage=coverpage;
+            var coverimage=getLink("SBOOKS.coverimage",false,true)||
+                getLink("coverimage",false,true);
+            if (coverimage) Codex.coverimage=coverimage;
+            var thumbnail=getLink("SBOOKS.thumbnail",false,true)||
+                getLink("thumbnail",false,true);
+            if (thumbnail) Codex.thumbnail=thumbnail;
+            var icon=getLink("SBOOKS.icon",false,true)||
+                getLink("icon",false,true);
+            if (icon) Codex.icon=icon;
             
             var baseid=getMeta("SBOOKS.id")||
                 getMeta("SBOOKS.prefix")||getMeta("SBOOKS.baseid");
