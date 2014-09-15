@@ -157,12 +157,17 @@
             resultcount.innerHTML="no results";
             addClass([box,info],"noresults");}
         // Tweak font size for qtags
-        fdjt.UI.adjustFont.tweakUntil(
+        newtags.setAttribute("data-maxfont","120%");
+        newtags.setAttribute("data-min","60%");
+        fdjt.DOM.tweakFont(newtags);
+        /*
+            fdjt.UI.adjustFont.tweakUntil(
             function(){
                 if (info.scrollHeight<=info.clientHeight)
                     return 0;
                 else return 1;},
             newtags,{maxpct: 120,minpct: 60},[5,1]);
+        */
         // Update the search cloud
         var n_refiners=((query.cotags)&&(query.cotags.length))||0;
         var completions=Codex.queryCloud(query);

@@ -257,7 +257,7 @@ Codex.setMode=
         function resizeHUD(){
             var view_height=fdjtDOM.viewHeight();
             fdjtID("CODEXHEART").style.maxHeight=(view_height-100)+'px';
-            fdjt.DOM.adjustFonts(Codex.HUD);}
+            fdjt.DOM.tweakFonts(Codex.HUD);}
         Codex.resizeHUD=resizeHUD;
 
         /* Various UI methods */

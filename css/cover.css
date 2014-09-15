@@ -206,8 +206,26 @@ body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
 /* The book cover */
 
 #CODEXBOOKCOVER img {
-    max-width: 95%; max-height: 95%;
-    width: auto; height: auto;}
+    max-width: 95%; height: 95%; width: auto;}
+
+#CODEXTITLEPAGE.sbooktitlepage { }
+#CODEXTITLEPAGE.sbooktitlepage .title {
+   position: absolute; box-sizing: border-box;
+   top: 0px; height: 40%;
+   margin: 0px; padding-top: 1ex;
+   width: 100%; left: 0px; right: 0px;}
+#CODEXTITLEPAGE.sbooktitlepage .credits {
+   position: absolute;  box-sizing: border-box;
+   top: 50%; height: 30%;
+   margin: 0px; padding-bottom: 1em;
+   width: 100%; left: 0px; right: 0px;}
+#CODEXTITLEPAGE.sbooktitlepage .publisher,
+.codexfullpage.sbooktitlepage .publisher {
+   position: absolute; box-sizing: border-box;
+   bottom: 0px; max-height: 10%; 
+   width: 100%; left: 0px; right: 0px;}
+.codexfullpage.sbooktitlepage .title { height: 40%; }
+.codexfullpage.sbooktitlepage .credits { height: 30%; }
 
 /* Help */
 

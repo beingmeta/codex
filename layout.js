@@ -272,7 +272,7 @@ Codex.Paginate=
                 
                 // Do the adjust font bit.  We rely on Codex.content
                 //  having the same width as Codex.page
-                fdjt.DOM.adjustFonts(content);
+                fdjt.DOM.tweakFonts(content);
                 
                 // Now reset the width
                 Codex.content.style.width=saved_width;
@@ -344,7 +344,7 @@ Codex.Paginate=
 
         CodexLayout.prototype.onresize=function(){
             if (Codex.bypage) Codex.Paginate("resize");
-            else fdjt.DOM.adjustFonts(Codex.content);};
+            else fdjt.DOM.tweakFonts(Codex.content);};
         
         Codex.addConfig(
             "layout",
@@ -381,7 +381,7 @@ Codex.Paginate=
                         Codex.layout=false;}
                     dropClass(document.body,"cxBYPAGE");
                     addClass(document.body,"cxSCROLL");
-                    fdjt.DOM.adjustFonts(Codex.content);}});
+                    fdjt.DOM.tweakFonts(Codex.content);}});
 
         function updateLayoutProperty(name,val){
             // This updates layout properties
@@ -1062,9 +1062,6 @@ Codex.Paginate=
             if ((Codex.pagecount)&&(Codex.curpage))
                 Codex.GoToPage(Codex.curpage,"displaySync",false);}
         Codex.displaySync=displaySync;
-
-        // We handle this ourselves
-        fdjt.UI.adjustFont.onresize=false;
 
         return Paginate;})();
 

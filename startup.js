@@ -1576,8 +1576,6 @@ Codex.Startup=
 
             Codex.showCover();
 
-            // Handle any adjustfont regions
-            fdjtUI.adjustFont.setup(cover);
             fdjtDOM.tweakFonts(cover);
 
             // Make the cover hidden by default
