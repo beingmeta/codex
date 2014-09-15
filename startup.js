@@ -1011,6 +1011,10 @@ Codex.Startup=
                 Codex.targetids=new RegExp("^"+prefix);
             else Codex.targetids=false;
             
+            var autofonts=fdjtDOM.getMeta("SBOOKS.adjustfont",true);
+            if (autofonts.length)
+                fdjt.DOM.autofont=fdjt.DOM.autofont+","+autofonts.join(",");
+
             if (getMeta("CODEX.forcelayout"))
                 default_config.forcelayout=true;
 
