@@ -1129,11 +1129,9 @@ var Codex={
         if (state.location)
             Codex.GoTo(state.location,reason||"restoreState",
                        ((state.target)&&(cxID(state.target))),
-                       // Don't save the state since we've already got one
                        false,(!(savehist)));
         else if ((state.page)&&(Codex.layout)) {
             Codex.GoToPage(state.page,reason||"restoreState",
-                           // Don't save the state since we've already got one
                            false,(!(savehist)));
             if ((state.target)&&(cxID(state.target)))
                 setTarget(cxID(state.target));}
@@ -1183,6 +1181,8 @@ var Codex={
             Codex.last_sync=last_sync=fdjtTime.tick(); syncing=state;
             if (Codex.user) sync_uri=sync_uri+
                 "&SYNCUSER="+encodeURIComponent(Codex.user._id);
+            if (Codex.mycopyid) sync_uri=sync_uri+
+                "&MYCOPYID="+encodeURIComponent(Codex.mycopyid);
             if (Codex.deviceName) sync_uri=sync_uri+
                 "&DEVICE="+encodeURIComponent(Codex.deviceName);
             if (Codex.ends_at) sync_uri=sync_uri+
@@ -1216,7 +1216,7 @@ var Codex={
                 setTimeout(function(){Codex.locsync=true;},15*60*1000);}}
     } Codex.syncState=syncState;
 
-    var freshstart=true;
+    var prompted=false;
 
     function freshState(evt){
         var req=fdjtUI.T(evt);
@@ -1226,26 +1226,24 @@ var Codex={
                 var xstate=JSON.parse(req.responseText);
                 if (xstate.changed) {
                     if (traced)
-                        fdjtLog("freshState %o %j\n\t%j",
-                                evt,xstate,Codex.state);
+                        fdjtLog("freshState %o %j\n\t%j",evt,xstate,Codex.state);
                     if (!(Codex.state)) {
                         Codex.xstate=xstate;
                         restoreState(xstate);}
-                    else if ((Codex.state.changed>xstate.changed)&&
-                             (Codex.state.maxloc>xstate.maxloc))
+                    else if (Codex.state.changed>xstate.changed)
                         // Our state is later, so we make it the xstate
                         Codex.xstate=xstate;
+                    else if ((prompted)&&(prompted>xstate.changed)) {
+                        // We've already bothered the user since this
+                        //  change was recorded, so we don't bother them
+                        // again
+                        }
+                    else if (document[fdjtDOM.isHidden])
+                        Codex.freshstate=xstate;
                     else {
-                        var last_local=Codex.state.changed;
-                        if (xstate.changed<last_local)
-                            Codex.xstate=xstate;
-                        else if (document[fdjtDOM.isHidden])
-                            Codex.freshstate=xstate;
-                        else if (freshstart) {
-                            freshstart=false;
-                            Codex.xstate=xstate;
-                            Codex.resolveXState(xstate);}
-                        else Codex.xstate=xstate;}}}
+                        Codex.xstate=xstate;
+                        prompted=fdjtTime.tick();
+                        Codex.resolveXState(xstate);}}}
                 else if (traced)
                     fdjtLog("syncState(callback/error) %o %d %s",
                             evt,req.status,req.responseText);
@@ -1258,13 +1256,14 @@ var Codex={
             if ((last_hidden)&&((fdjtTime.tick()-last_hidden)<300)) {}
             else if (navigator.onLine) {
                 last_hidden=false;
-                freshstart=true;
                 syncState(true);}
             else if (Codex.freshstate) {
+                // Something changed while we were hidden
                 var freshstate=Codex.freshstate;
                 last_hidden=false;
                 Codex.freshstate=false;
                 Codex.xstate=freshstate;
+                prompted=fdjtTime.tick();
                 Codex.resolveXState(freshstate);}
             else {}}
         else last_hidden=fdjtTime.tick();};
