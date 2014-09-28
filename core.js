@@ -1224,10 +1224,15 @@ var Codex={
         if (req.readyState===4) {
             if ((req.status>=200)&&(req.status<300)) {
                 var xstate=JSON.parse(req.responseText);
+                var tick=fdjtTime.tick();
                 if (xstate.changed) {
                     if (traced)
                         fdjtLog("freshState %o %j\n\t%j",evt,xstate,Codex.state);
-                    if (!(Codex.state)) {
+                    if (xstate.changed>(tick+300))
+                        fdjtLog.warn(
+                            "Beware of oracles (future state date): %j ",
+                            xstate);
+                    else if (!(Codex.state)) {
                         Codex.xstate=xstate;
                         restoreState(xstate);}
                     else if (Codex.state.changed>xstate.changed)
