@@ -145,8 +145,8 @@ metaBook.Paginate=
             if (((mB.layout)&&(!(mB.layout.done)))) return;
             if (!(why)) why="because";
             layoutMessage("Preparing your book",0);
-            dropClass(document.body,"cxSCROLL");
-            addClass(document.body,"cxLAYOUT");
+            dropClass(document.body,"_SCROLL");
+            addClass(document.body,"_LAYOUT");
             scaleLayout(false);
             var forced=((init)&&(init.forced));
             var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
@@ -168,7 +168,7 @@ metaBook.Paginate=
                     ((!(spacing))||(spacing===current.bodyspacing))&&
                     (((justify)&&(current.justify))||
                      ((!justify)&&(!current.justify)))) {
-                    dropClass(document.body,"cxLAYOUT");
+                    dropClass(document.body,"_LAYOUT");
                     fdjtLog("Skipping redundant pagination for %s",
                             current.layout_id);
                     return;}
@@ -191,13 +191,13 @@ metaBook.Paginate=
                 fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("METABOOKCONTENT").style.display='none';
                 layoutMessage("Using cached layout",0);
-                dropClass(document.body,"cxSCROLL");
-                addClass(document.body,"cxBYPAGE");
+                dropClass(document.body,"_SCROLL");
+                addClass(document.body,"_BYPAGE");
                 layout.restoreLayout(content,finish_layout);}
             function finish_layout(layout) {
                 fdjtID("METABOOKPAGE").style.visibility='';
                 fdjtID("METABOOKCONTENT").style.visibility='';
-                dropClass(document.body,"cxLAYOUT");
+                dropClass(document.body,"_LAYOUT");
                 mB.layout=layout;
                 mB.pagecount=layout.pages.length;
                 if (mB.Trace.startup)
@@ -252,8 +252,8 @@ metaBook.Paginate=
             function new_layout(){
 
                 // Prepare to do the layout
-                dropClass(document.body,"cxSCROLL");
-                addClass(document.body,"cxBYPAGE");
+                dropClass(document.body,"_SCROLL");
+                addClass(document.body,"_BYPAGE");
                 // This keeps the page content hidden during layout
                 // fdjtID("METABOOKPAGE").style.visibility='hidden';
                 fdjtID("METABOOKCONTENT").style.visibility='hidden';
@@ -292,7 +292,7 @@ metaBook.Paginate=
                                     recordLayout(l.layout_id,mB.sourceid);});}}
                         fdjtID("METABOOKPAGE").style.visibility='';
                         fdjtID("METABOOKCONTENT").style.visibility='';
-                        dropClass(document.body,"cxLAYOUT");
+                        dropClass(document.body,"_LAYOUT");
                         mB.layout=layout;
                         mB.pagecount=layout.pages.length;
                         setupPagebar();
@@ -381,8 +381,8 @@ metaBook.Paginate=
                     if (mB.layout) {
                         mB.layout.Revert();
                         mB.layout=false;}
-                    dropClass(document.body,"cxBYPAGE");
-                    addClass(document.body,"cxSCROLL");
+                    dropClass(document.body,"_BYPAGE");
+                    addClass(document.body,"_SCROLL");
                     fdjt.DOM.tweakFonts(mB.content);}});
 
         function updateLayoutProperty(name,val){
@@ -724,16 +724,16 @@ metaBook.Paginate=
             // transforms) the current layout.
             var cheaprule=mB.CSS.resizerule;
             if (typeof flag==="undefined") flag=true;
-            if ((flag)&&(hasClass(document.body,"cxSCALEDLAYOUT"))) return;
+            if ((flag)&&(hasClass(document.body,"_SCALEDLAYOUT"))) return;
             if ((!(flag))&&
-                (!(hasClass(document.body,"cxSCALEDLAYOUT")))) return;
+                (!(hasClass(document.body,"_SCALEDLAYOUT")))) return;
             if (cheaprule) {
                 cheaprule.style[fdjtDOM.transform]="";
                 cheaprule.style[fdjtDOM.transformOrigin]="";
                 cheaprule.style.left="";
                 cheaprule.style.top="";}
             if (!(flag)) {
-                dropClass(document.body,"cxSCALEDLAYOUT");
+                dropClass(document.body,"_SCALEDLAYOUT");
                 sizeCodexPage();
                 return;}
             else sizeCodexPage();
@@ -746,7 +746,7 @@ metaBook.Paginate=
             if (!(cheaprule)) {
                 var s="#METABOOKPAGE div.codexpage";
                 mB.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
-                    s+", body.cxANIMATE.cxPREVIEW "+s,"");}
+                    s+", body._ANIMATE._PREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transformOrigin]="left top";
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
             var nwidth=lwidth*scale, nheight=lheight*scale;
@@ -763,7 +763,7 @@ metaBook.Paginate=
                 mB.CSS.pagespanrule.style.width=spanwidth+"px";
             else mB.CSS.pagespanrule=fdjtDOM.addCSSRule(
                 "div.codexpagespans > span","width: "+spanwidth+"px;");
-            addClass(document.body,"cxSCALEDLAYOUT");}
+            addClass(document.body,"_SCALEDLAYOUT");}
         metaBook.scaleLayout=scaleLayout;
         
         /* Updating the page display */
@@ -901,7 +901,7 @@ metaBook.Paginate=
         function GoToPage(spec,caller,savestate,skiphist){
             if (typeof savestate === 'undefined') savestate=true;
             if (mB.previewing) mB.stopPreview("GoToPage",false);
-            dropClass(document.body,"codexhelp");
+            dropClass(document.body,"mbhelp");
             if (mB.clearGlossmark) mB.clearGlossmark();
             if (mB.mode==="addgloss") mB.setMode(false,false);
             var page=(mB.layout)&&
@@ -989,7 +989,7 @@ metaBook.Paginate=
             if (curpage) addClass(curpage,"hidepage");
             addClass(page,"previewpage");
             mB.previewing=previewing=page;
-            addClass(document.body,"cxPREVIEW");
+            addClass(document.body,"_PREVIEW");
             updatePageDisplay(pagenum,pageloc,"preview");}
         metaBook.startPagePreview=startPagePreview;
         function stopPagePreview(caller,target){
@@ -1017,7 +1017,7 @@ metaBook.Paginate=
             dropClass(getChildren(mB.pages,".previewpage"),
                       "previewpage");
             mB.previewing=previewing=false;
-            dropClass(document.body,"cxPREVIEW");
+            dropClass(document.body,"_PREVIEW");
             if (newpage) {
                 var newnum=parseInt(newpage.getAttribute("data-pagenum"),10);
                 var newloc=mB.getLocInfo(target);

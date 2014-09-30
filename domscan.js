@@ -278,7 +278,7 @@ metaBook.DOMScan=(function(){
             if ((rootns)&&(child.namespaceURI!==rootns)) return;
             if ((classname)&&
                 ((typeof classname !== "string")||
-                 (classname.search(/\b(sbookignore|codexignore)\b/)>=0)))
+                 (classname.search(/\b(sbookignore)\b/)>=0)))
                 return;
             if ((child.metabookui)||((id)&&(id.search("METABOOK")===0))) return;
 

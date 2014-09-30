@@ -40,7 +40,7 @@
         margin-bottom: 2px; margin-top: 2px;
         left: 5px; right: 5px;
         font-size: 75%;}
-    #METABOOKHUD div.codexhelp.hudpanel {
+    #METABOOKHUD div.mbhelp.hudpanel {
         left: 5px; right: 5px; top: 60px; bottom: 60px;}
   #METABOOKHUD div.helphud.rightmiddle,
   #METABOOKHUD div.helphud.leftmiddle {
@@ -57,7 +57,7 @@
         left: 50px; right: 50px;}
 
     #METABOOKPAGE { left: 1.5em; right: 1.5em;}
-    body.cxBYPAGE .codexglossmark {margin-right: 0em;}
+    body._BYPAGE .codexglossmark {margin-right: 0em;}
 
     div.searchbox div.query { font-size: 12px; }
     div.searchbox div.query .codexclearsearch {
@@ -105,7 +105,7 @@
         margin-left: 0px; margin-right: 0px;}
 }
 
-body.cxTOUCH .checkspan input[TYPE="CHECKBOX"], body.cxTOUCH .checkspan input[TYPE="RADIO"] {
+body._TOUCH .checkspan input[TYPE="CHECKBOX"], body._TOUCH .checkspan input[TYPE="RADIO"] {
      height: 1em; width: 1em;}}
 
 

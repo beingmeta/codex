@@ -330,8 +330,8 @@
             cancel(evt);
             return;}
 
-        if (hasClass(document.body,"codexhelp")) {
-            dropClass(document.body,"codexhelp");
+        if (hasClass(document.body,"mbhelp")) {
+            dropClass(document.body,"mbhelp");
             cancel(evt);
             return;}
 
@@ -738,7 +738,7 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (dx<-(mB.minswipe||10)) {
-                if (hasClass(document.body,"cxSKIMMING"))
+                if (hasClass(document.body,"_SKIMMING"))
                     mB.skimForward(evt);
                 else if (evt.ntouches>1) {
                     if (!(headinfo)) mB.Forward(evt);
@@ -751,7 +751,7 @@
                     else mB.Forward(evt);}
                 else mB.Forward(evt);}
             else if (dx>(mB.minswipe||10)) {
-                if (hasClass(document.body,"cxSKIMMING"))
+                if (hasClass(document.body,"_SKIMMING"))
                     mB.skimBackward(evt);
                 else if (evt.ntouches>1) {
                     if (!(headinfo)) mB.Forward(evt);
@@ -1168,7 +1168,7 @@
             mB.setHUD(false);
             fdjt.UI.cancel(evt);
             return false;}
-        else if (hasClass(document.body,"cxCOVER")) {
+        else if (hasClass(document.body,"_COVER")) {
             mB.clearStateDialog();
             mB.hideCover();
             fdjt.UI.cancel(evt);
@@ -1256,7 +1256,7 @@
         else if ((ch===72)||(ch===104)) { // 'H' or 'h'
             mB.clearStateDialog();
             mB.hideCover();
-            fdjtDOM.toggleClass(document.body,'codexhelp');
+            fdjtDOM.toggleClass(document.body,"_SHOWHELP");
             return false;}
         else if ((ch===67)||(ch===99)) { // 'C' or 'c'
             mB.clearStateDialog();
@@ -1554,7 +1554,7 @@
         if ((evt.type==='click')||
             (evt.type==='tap')||
             (evt.type==='release')) {
-            dropClass(document.body,"cxHOLDING");
+            dropClass(document.body,"_HOLDING");
             if ((mB.skimming)&&(!(mB.hudup))) {
                 if ((mode==="refinesearch")||(mode==="searchresults")) {
                     mB.setMode("searchresults"); return;}
@@ -1569,8 +1569,8 @@
         else if (evt.type==="tap")
             mB.setHUD(true);
         else if (evt.type==="hold") 
-            addClass(document.body,"cxHOLDING");
-        else dropClass(document.body,"cxHOLDING");}
+            addClass(document.body,"_HOLDING");
+        else dropClass(document.body,"_HOLDING");}
     metaBook.UI.hudmodebutton=hudmodebutton;
 
     metaBook.UI.dropHUD=function(evt){
@@ -1808,7 +1808,7 @@
         evt=evt||window.event;
         if (mB.uisound)
             fdjtDOM.playAudio("METABOOKSKIMFORWARDAUDIO");
-        if (hasClass(document.body,"cxSKIMMING")) {}
+        if (hasClass(document.body,"_SKIMMING")) {}
         else if (mB.mode==="openglossmark") {
             var ids=mB.docinfo._ids;
             var id=((mB.target)&&(mB.target.id));
@@ -1872,7 +1872,7 @@
         else last_motion=now;
         if (mB.uisound)
             fdjtDOM.playAudio("METABOOKSKIMBACKWARDAUDIO");
-        if (hasClass(document.body,"cxSKIMMING")) {}
+        if (hasClass(document.body,"_SKIMMING")) {}
         else if (mB.mode==="openglossmark") {
             var ids=mB.docinfo._ids;
             var id=((mB.target)&&(mB.target.id));
@@ -2006,9 +2006,9 @@
         else if (mB.mode) {
             fdjtUI.cancel(evt);
             mB.setMode(false);}
-        else if (fdjtDOM.hasClass(document.body,"codexhelp")) {
+        else if (fdjtDOM.hasClass(document.body,"mbhelp")) {
             fdjtUI.cancel(evt);
-            fdjtDOM.dropClass(document.body,"codexhelp");}
+            fdjtDOM.dropClass(document.body,"mbhelp");}
         else if (mB.hudup) {
             fdjtUI.cancel(evt);
             mB.setMode(false);}
@@ -2382,7 +2382,7 @@
         if (mB.mode==="addgloss") 
             mB.cancelGloss();
         mB.setMode(false);
-        fdjtDOM.dropClass(document.body,"codexhelp");}
+        fdjtDOM.dropClass(document.body,"mbhelp");}
 
     function clearMode(evt){
         evt=evt||window.event; mB.setMode(false);}
@@ -2444,10 +2444,10 @@
 
     function setHelp(flag){
         if (flag) {
-            fdjtDOM.addClass(document.body,"codexhelp");
+            fdjtDOM.addClass(document.body,"mbhelp");
             mB.cxthelp=true;}
         else {
-            fdjtDOM.dropClass(document.body,"codexhelp");
+            fdjtDOM.dropClass(document.body,"mbhelp");
             mB.cxthelp=false;}
         return false;}
     metaBook.setHelp=setHelp;
@@ -2456,10 +2456,10 @@
         evt=evt||window.event;
         fdjtUI.cancel(evt);
         if (mB.cxthelp) {
-            fdjtDOM.dropClass(document.body,"codexhelp");
+            fdjtDOM.dropClass(document.body,"mbhelp");
             mB.cxthelp=false;}
         else {
-            fdjtDOM.addClass(document.body,"codexhelp");
+            fdjtDOM.addClass(document.body,"mbhelp");
             mB.cxthelp=true;}
         return false;}
     metaBook.toggleHelp=toggleHelp;

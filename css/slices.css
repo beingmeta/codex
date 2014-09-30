@@ -180,7 +180,7 @@ div.bookslice div.mbcard.slicenewpassage div.idhead { display: block; }
 #METABOOKSKIMMER div.mbcard div.idhead {
     border-bottom: 0px;}
 
-#METABOOKFRAME.cxANIMATE body.cxISCROLL div.bookslice {
+#METABOOKFRAME._ANIMATE body._ISCROLL div.bookslice {
     transition-property: transform;
     -webkit-transition-property: -webkit-transform;
     -moz-transition-property: -moz-transform;

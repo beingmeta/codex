@@ -33,15 +33,15 @@
 
 /* Major wrappers and rules */
 
-body.cxFULLWIDTH #METABOOKPAGE { max-width: inherit;}
-body.cxSCROLL #METABOOKPAGE, img.codexpagebutton { display: none;}
+body._FULLWIDTH #METABOOKPAGE { max-width: inherit;}
+body._SCROLL #METABOOKPAGE, img.codexpagebutton { display: none;}
 
-body.cxBYPAGE { overflow: hidden; }
-body.cxBYPAGE #METABOOKCONTENT { display: none;}
-body.cxLAYOUT #METABOOKCONTENT { display: none;}
+body._BYPAGE { overflow: hidden; }
+body._BYPAGE #METABOOKCONTENT { display: none;}
+body._LAYOUT #METABOOKCONTENT { display: none;}
 
 /* The page content gets a little transparent when the HUD comes up*/
-body.cxANIMATE.hudup #METABOOKPAGE {
+body._ANIMATE.hudup #METABOOKPAGE {
     transition-property: opacity;
     -webkit-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -58,11 +58,11 @@ body.cxANIMATE.hudup #METABOOKPAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 /* When the page is shrunk, the border is visible */
-body.cxPREVIEW #METABOOKPAGE, body.cxSHRINK #METABOOKPAGE  {
+body._PREVIEW #METABOOKPAGE, body._SHRINK #METABOOKPAGE  {
     border-color: rgba(48, 60, 97, 0.54);}
 
 /* This is for page shrinking when appropriate */
-body.cxANIMATE #METABOOKPAGE {
+body._ANIMATE #METABOOKPAGE {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
@@ -72,22 +72,22 @@ body.cxANIMATE #METABOOKPAGE {
 body #METABOOKPAGE {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
-body.cxNOSHRINK #METABOOKPAGE {
+body._NOSHRINK #METABOOKPAGE {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body.cxSHRINK #METABOOKPAGE, body.cxPREVIEW #METABOOKPAGE,
-body.cxSKIMMING #METABOOKPAGE {
+body._SHRINK #METABOOKPAGE, body._PREVIEW #METABOOKPAGE,
+body._SKIMMING #METABOOKPAGE {
     transform-origin: center top;
     -webkit-transform-origin: center top;
     -moz-transform-origin: center top;
     -o-transform: center top;}
 
-body.cxANIMATE.cxNOSHRINK #METABOOKPAGE .codexpage {
+body._ANIMATE._NOSHRINK #METABOOKPAGE .codexpage {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body.cxSHRINK #METABOOKPAGE .codexpage,
-body.cxPREVIEW #METABOOKPAGE .codexpage,
-body.cxSKIMMING #METABOOKPAGE .codexpage {
+body._SHRINK #METABOOKPAGE .codexpage,
+body._PREVIEW #METABOOKPAGE .codexpage,
+body._SKIMMING #METABOOKPAGE .codexpage {
     transform: scale(0.98,0.98); -webkit-transform:scale(0.98,0.98);
     -moz-transform: scale(0.98,0.98); -o-transform:scale(0.98,0.98);}
 
@@ -105,11 +105,11 @@ body.cxSKIMMING #METABOOKPAGE .codexpage {
     -moz-opacity: 0.35;
     -o-opacity: 0.35;}
 
-body.cxBYPAGE {
+body._BYPAGE {
     margin-top: 0px; margin-bottom: 0px;
     margin-left: 0px; margin-right: 0px;}
 
-body.cxSCROLL #METABOOKCONTENT {
+body._SCROLL #METABOOKCONTENT {
     padding-left: 3em; padding-right: 3em;}
 
 #METABOOKCONTENT > * {
@@ -121,7 +121,7 @@ body.cxSCROLL #METABOOKCONTENT {
     -moz-user-select: auto;
     -webkit-user-select: auto;}
 
-body.cxSTARTUP #METABOOKCONTENT {
+body._STARTUP #METABOOKCONTENT {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -137,7 +137,7 @@ body.cxSTARTUP #METABOOKCONTENT {
     padding-left: 32px; padding-right: 32px;
     margin-right: 0px;}
 
-body.cxBYPAGE #METABOOKPAGE #METABOOKCONTENT .codexpagebreak {
+body._BYPAGE #METABOOKPAGE #METABOOKCONTENT .codexpagebreak {
     column-break-before: always;
     break-before: always;
     -o-column-break-before: always;
@@ -176,7 +176,7 @@ body.cxBYPAGE #METABOOKPAGE #METABOOKCONTENT .codexpagebreak {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-body.cxANIMATE body.codexfixed div.codexpage {
+body._ANIMATE body.codexfixed div.codexpage {
     transition-property: opacity; transition-duration: 0.5s;
     -o-transition-property: opacity; -o-transition-duration: 0.5s;
     -moz-transition-property: opacity; -moz-transition-duration: 0.5s;
@@ -210,7 +210,7 @@ span.note.ellipsis span.elision, span.note.ellipsis span.delision {
 
 /* Fuzzy selections */
 
-body.cxTOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
+body._TOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
 
 .fdjtselected {
     box-shadow: 0px 0px 0.5ex 0.5ex rgba(255, 255, 0, 0.33);}
@@ -224,7 +224,7 @@ body.cxTOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
 #METABOOKPAGEBAR .tapholdtarget { border-color: none;}
 
 /*
-body.cxANIMATE .fdjtselectwrap > span {
+body._ANIMATE .fdjtselectwrap > span {
     transition-property: background-color;
     transition-duration: 1s;
     -o-transition-property: background-color;
@@ -259,7 +259,7 @@ body div.mBmargin#METABOOKPAGEFOOT {
   text-align: center;}
 body div.mBmargin#METABOOKPAGEHEAD { top: 0px; }
 body div.mBmargin#METABOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
-body.cxSCROLL #METABOOKPAGEFOOT, body.cxSCROLL #METABOOKPAGEHEAD { display: none;}
+body._SCROLL #METABOOKPAGEFOOT, body._SCROLL #METABOOKPAGEHEAD { display: none;}
 
 #METABOOKPAGES.pageswitch {
     opacity: 0.0001;
@@ -285,25 +285,25 @@ div.sbookabout div.publisher { font-style: italic;}
 div.logindoc { display: none;}
 
 .fortouch { display: none;}
-body.cxTOUCH .notouch { display: none;}
-body.cxTOUCH div.fortouch,
-body.cxTOUCH p.fortouch {
+body._TOUCH .notouch { display: none;}
+body._TOUCH div.fortouch,
+body._TOUCH p.fortouch {
     display: block;}
-body.cxTOUCH .fortouch {display: inline;}
-body.cxTOUCH li.fortouch {display: list-item;}
-body.cxTOUCH span.fortouch { display: inline;}
-body.cxTOUCH div.fortouch { display: block;}
-body.cxTOUCH p.fortouch { display: block;}
-body.cxTOUCH li.fortouch { display: list-item;}
+body._TOUCH .fortouch {display: inline;}
+body._TOUCH li.fortouch {display: list-item;}
+body._TOUCH span.fortouch { display: inline;}
+body._TOUCH div.fortouch { display: block;}
+body._TOUCH p.fortouch { display: block;}
+body._TOUCH li.fortouch { display: list-item;}
 
-body.cxMOUSE.USESVG img.fortouch.svg,
-body.cxTOUCH.USESVG img.notouch.svg {
+body._MOUSE.USESVG img.fortouch.svg,
+body._TOUCH.USESVG img.notouch.svg {
     display: none !important;}
 
 body img.touchicon { display: none;}
 body img.mouseicon { display: inline;}
-body.cxTOUCH img.touchicon { display: inline;}
-body.cxTOUCH img.mouseicon { display: none;}
+body._TOUCH img.touchicon { display: inline;}
+body._TOUCH img.mouseicon { display: none;}
 
 div.locbar {
     background-color: ivory;
@@ -330,7 +330,7 @@ div.locbar hr {
     box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     z-index: 50;}
 #METABOOKPAGE .codexglossmark {margin-right: -50px;}
-body.cxNARROW div.fdjtselecting .codexglossmark {
+body._NARROW div.fdjtselecting .codexglossmark {
     width: 10px; z-index: -20; }
 div.fdjtselecting .codexglossmark > img {
     visibility: hidden;}
@@ -408,7 +408,7 @@ body.hudup .mBtarget.codexglosstarget .codexglossbutton {
 
 /* Displaying the sbook target */
 
-body.cxANIMATE .mBtarget, body.cxSHRINK .mBtarget {
+body._ANIMATE .mBtarget, body._SHRINK .mBtarget {
     transition-property: color,background-color;
     transition-duration: 6s;
     -o-transition-property: color,background-color;
@@ -417,7 +417,7 @@ body.cxANIMATE .mBtarget, body.cxSHRINK .mBtarget {
     -moz-transition-duration: 6s;
     -webkit-transition-property: color,background-color;
     -webkit-transition-duration: 6s;}
-body.hudup .mBtarget, body.cxSHRINK .mBtarget {
+body.hudup .mBtarget, body._SHRINK .mBtarget {
     cursor: pointer;}
 
 body.hudup .mBtarget.mBnewtarget {
@@ -435,9 +435,9 @@ div.sbooksection.mBnewtarget > *:first-child {
    */
 body.mBtarget { color: inherit;}
 
-/* body.cxSKIMMING .mBtarget {outline: dotted steelblue 2px;} */
+/* body._SKIMMING .mBtarget {outline: dotted steelblue 2px;} */
 
-body.cxANIMATE .codexglossmark > img {
+body._ANIMATE .codexglossmark > img {
     transition-property: opacity;
     transition-duration: 0.5s;
     -o-transition-property: opacity;
@@ -459,61 +459,61 @@ body.hudup .mBtarget .codexglossmark.hover > img {
 
 /* Not logged in conditionalization */
 
-body.cxNOUSER a.logout {display: none;}
-body.cxNOUSER #SBOOKLOGOUT { display: none;}
-body.cxNOUSER #METABOOKHUD div.hud#METABOOKSOURCES img.button.login {
+body._NOUSER a.logout {display: none;}
+body._NOUSER #SBOOKLOGOUT { display: none;}
+body._NOUSER #METABOOKHUD div.hud#METABOOKSOURCES img.button.login {
   display: block;}
 
 .cxwithuser, .cxdisconn, .cxwithconn, .cxneedlogin { display: none;}
-body.cxUSER .cxnouser { display: none;}
+body._USER .cxnouser { display: none;}
 
-body.cxNOUSER span.cxnouser, body.cxNOUSER a.cxnouser,
-body.cxNOUSER em.cxnouser, body.cxNOUSER strong.cxnouser {
+body._NOUSER span.cxnouser, body._NOUSER a.cxnouser,
+body._NOUSER em.cxnouser, body._NOUSER strong.cxnouser {
     display: inline; }
 
-body.cxNOUSER p.cxnouser, body.cxNOUSER div.cxnouser,
-body.cxNOUSER blockquote.cxnouser { display: block; }
+body._NOUSER p.cxnouser, body._NOUSER div.cxnouser,
+body._NOUSER blockquote.cxnouser { display: block; }
 
-body.cxNOUSER tr.cxnouser { display: table-row; }
-body.cxNOUSER tbody.cxnouser { display: table-row-group; }
+body._NOUSER tr.cxnouser { display: table-row; }
+body._NOUSER tbody.cxnouser { display: table-row-group; }
 
-body.cxUSER span.cxwithuser, body.cxUSER a.cxwithuser,
-body.cxUSER em.cxwithuser, body.cxUSER strong.cxwithuser {
+body._USER span.cxwithuser, body._USER a.cxwithuser,
+body._USER em.cxwithuser, body._USER strong.cxwithuser {
     display: inline; }
 
-body.cxDISCONN span.cxdisconn, body.cxDISCONN a.cxdisconn,
-body.cxDISCONN em.cxdisconn, body.cxDISCONN strong.cxdisconn {
+body._DISCONN span.cxdisconn, body._DISCONN a.cxdisconn,
+body._DISCONN em.cxdisconn, body._DISCONN strong.cxdisconn {
     display: inline; }
 
-body.cxDISCONN p.cxdisconn, body.cxDISCONN div.cxdisconn,
-body.cxDISCONN blockquote.cxdisconn { display: block; }
+body._DISCONN p.cxdisconn, body._DISCONN div.cxdisconn,
+body._DISCONN blockquote.cxdisconn { display: block; }
 
-body.cxDISCONN tr.cxdisconn { display: table-row; }
-body.cxDISCONN tbody.cxdisconn { display: table-row-group; }
+body._DISCONN tr.cxdisconn { display: table-row; }
+body._DISCONN tbody.cxdisconn { display: table-row-group; }
 
-body.cxNOUSER tbody.cxneedlogin, body.cxDISCONN tbody.cxneedlogin {
+body._NOUSER tbody.cxneedlogin, body._DISCONN tbody.cxneedlogin {
     display: table-row-group; }
-body.cxNOUSER tr.cxneedlogin, body.cxDISCONN tr.cxneedlogin {
+body._NOUSER tr.cxneedlogin, body._DISCONN tr.cxneedlogin {
     display: table-row; }
-body.cxNOUSER p.cxneedlogin, body.cxDISCONN p.cxneedlogin,
-body.cxNOUSER div.cxneedlogin, body.cxDISCONN div.cxneedlogin {
+body._NOUSER p.cxneedlogin, body._DISCONN p.cxneedlogin,
+body._NOUSER div.cxneedlogin, body._DISCONN div.cxneedlogin {
     display: block; }
 
-body.cxUSER p.cxwithuser, body.cxUSER div.cxwithuser,
-body.cxUSER blockquote.cxwithuser { display: block; }
+body._USER p.cxwithuser, body._USER div.cxwithuser,
+body._USER blockquote.cxwithuser { display: block; }
 
-body.cxUSER tr.cxwithuser { display: table-row; }
-body.cxUSER tbody.cxwithuser { display: table-row-group; }
+body._USER tr.cxwithuser { display: table-row; }
+body._USER tbody.cxwithuser { display: table-row-group; }
 
-body.cxCONN span.cxwithconn, body.cxCONN a.cxwithconn,
-body.cxCONN em.cxwithconn, body.cxCONN strong.cxwithconn {
+body._CONN span.cxwithconn, body._CONN a.cxwithconn,
+body._CONN em.cxwithconn, body._CONN strong.cxwithconn {
     display: inline; }
 
-body.cxCONN p.cxwithconn, body.cxCONN div.cxwithconn,
-body.cxCONN blockquote.cxwithconn { display: block; }
+body._CONN p.cxwithconn, body._CONN div.cxwithconn,
+body._CONN blockquote.cxwithconn { display: block; }
 
-body.cxCONN tr.cxwithconn { display: table-row; }
-body.cxCONN tbody.cxwithconn { display: table-row-group; }
+body._CONN tr.cxwithconn { display: table-row; }
+body._CONN tbody.cxwithconn { display: table-row-group; }
 
 /* Pagination stuff */
 
@@ -696,19 +696,19 @@ div.codexpage.previewpage { display: block; }
 div.codexpage.curpage.hidepage {display: none;}
 div.codexpage.curpage.hidepage.previewpage {display: block;}
 
-body.cxANIMATE.cxPREVIEW div.codexpage {
+body._ANIMATE._PREVIEW div.codexpage {
     transition-property: none !important;
     -o-transition-property: none !important;
     -moz-transition-property: none !important;
     -webkit-transition-property: none !important;}
 
-body.cxANIMATE #METABOOKPAGE div.codexpage {
+body._ANIMATE #METABOOKPAGE div.codexpage {
     transition-duration: 0.15s;
     -o-transition-duration: 0.15s;
     -moz-transition-duration: 0.15s;
     -webkit-transition-duration: 0.15s;}
 
-body.cxANIMATE div.codexpage {
+body._ANIMATE div.codexpage {
     transition-property: opacity,transform;
     -o-transition-property: -o-opacity,-o-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
@@ -742,15 +742,15 @@ body.CXANIMATE div.codexpage.previewpage {
 
 div.codexpage.newpage { z-index: 100; }
 
-body.cxANIMATE div.codexpage.newpage.onright {
+body._ANIMATE div.codexpage.newpage.onright {
     transform: translate(100%,0%);
     -webkit-transform: translate(100%,0%);}
-body.cxANIMATE div.codexpage.newpage.onleft {
+body._ANIMATE div.codexpage.newpage.onleft {
     transform: translate(-100%,0%);
     -webkit-transform: translate(-100%,0%);
     -moz-transform: translate(-100%,0%);
     -o-transform: translate(-100%,0%);}
-body.cxANIMATE div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onleft.curpage {
+body._ANIMATE div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onleft.curpage {
     transform: translate(0%,0%);
     -webkit-transform: translate(0%,0%);
     -moz-transform: translate(0%,0%);
@@ -758,7 +758,7 @@ body.cxANIMATE div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onle
 
 /* Rules for indicating UI states */
 
-/* body.cxHOLDING #METABOOKBODY { opacity: 0.5; } */
+/* body._HOLDING #METABOOKBODY { opacity: 0.5; } */
 
 /* Special rules for overriding properties on split (dup) passages */
 
@@ -791,16 +791,16 @@ img.codexcoverpage {
 
 /* Highlighting */
 
-body.cxSKIMMING .codexhighlightexcerpt,
-body.cxPREVIEW .codexhighlightexcerpt,
+body._SKIMMING .codexhighlightexcerpt,
+body._PREVIEW .codexhighlightexcerpt,
 body.openhud .codexhighlightexcerpt {
     background-color: yellow;}
-body.cxSKIMMING .codexhighlightpassage,
-body.cxPREVIEW .codexhighlightpassage,
+body._SKIMMING .codexhighlightpassage,
+body._PREVIEW .codexhighlightpassage,
 body.openhud .codexhighlightpassage {
     background-color: rgba(255, 255, 0, 0.21);}
-body.cxSKIMMING .codexhighlightsearch,
-body.cxPREVIEW .codexhighlightsearch {
+body._SKIMMING .codexhighlightsearch,
+body._PREVIEW .codexhighlightsearch {
     background-color: gold;}
 .mBpreviewtarget {
     color: rgb(122,34,95);
@@ -832,7 +832,7 @@ section.mBpreviewtarget h7, div.html5section.mBpreviewtarget h7 {
     -moz-opacity: 0;
     -o-opacity: 0;
     display: none;}
-body.cxANIMATE #METABOOKSTARTUPMESSAGES {
+body._ANIMATE #METABOOKSTARTUPMESSAGES {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
@@ -840,7 +840,7 @@ body.cxANIMATE #METABOOKSTARTUPMESSAGES {
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
     -moz-transition-duration: 1s;}
-body.cxSTARTUP #METABOOKSTARTUPMESSAGES { display: block;}
+body._STARTUP #METABOOKSTARTUPMESSAGES { display: block;}
 div.startupmessage { display: none;}
 div.startupmessage {
     text-align: center; font-size: 20px; font-weight: bold;

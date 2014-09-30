@@ -1015,7 +1015,7 @@ var metaBook={
         if (((val)&&(!(mB.connected)))||
             ((!(val))&&(mB.connected)))
             fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
-                              ((val)?("cxCONN"):("cxDISCONN")));
+                              ((val)?("_CONN"):("_DISCONN")));
         mB.connected=val;
     } metaBook.setConnected=setConnected;
 
@@ -1316,13 +1316,13 @@ var metaBook={
     } metaBook.resolveLocation=resolveLocation;
 
     // This moves within the document in a persistent way
-    function codexGoTo(arg,caller,istarget,savestate,skiphist){
+    function metaBookGoTo(arg,caller,istarget,savestate,skiphist){
         if (typeof istarget === 'undefined') istarget=true;
         if (typeof savestate === 'undefined') savestate=true;
         var target, location, locinfo;
         if (savestate) mB.clearStateDialog();
         if (!(arg)) {
-            fdjtLog.warn("falsy arg (%s) to codexGoTo from %s",arg,caller);
+            fdjtLog.warn("falsy arg (%s) to metaBookGoTo from %s",arg,caller);
             return;}
         if (typeof arg === 'string') {
             target=mbID(arg);
@@ -1338,7 +1338,7 @@ var metaBook={
             locinfo=getLocInfo(arg);
             location=locinfo.start;}
         else {
-            fdjtLog.warn("Bad codexGoTo %o",arg);
+            fdjtLog.warn("Bad metaBookGoTo %o",arg);
             return;}
         if ((istarget)&&(istarget.nodeType)) target=istarget;
         else if ((typeof istarget === "string")&&(mbID(istarget)))
@@ -1406,7 +1406,7 @@ var metaBook={
         if (mB.clearGlossmark) mB.clearGlossmark();
         if (mB.mode==="addgloss") mB.setMode(false,false);
         mB.location=location;
-    } metaBook.GoTo=codexGoTo;
+    } metaBook.GoTo=metaBookGoTo;
 
     function anchorFn(evt){
         var target=fdjtUI.T(evt);
@@ -1454,7 +1454,7 @@ var metaBook={
             var headinfo=mB.docinfo[target]||mB.docinfo[target.id];
             if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0))) {
                 mB.setMode("statictoc"); mB.setHUD(false,false);
-                addClass(document.body,"cxSKIMMING");}}
+                addClass(document.body,"_SKIMMING");}}
         mB.GoTo(target,"MetaBookSkimTo");}
     metaBook.Skimto=metaBookSkimTo;
 
@@ -1511,8 +1511,9 @@ var metaBook={
             scrollPreview(target,caller);
             addClass(target,"mBpreviewtarget");}
         mB.previewing=target;
-        addClass(document.body,"cxPREVIEW");
-        if (hasClass(target,"codexpage")) addClass(document.body,"cxPAGEPREVIEW");
+        addClass(document.body,"_PREVIEW");
+        if (hasClass(target,"codexpage"))
+            addClass(document.body,"_PAGEPREVIEW");
         return target;}
     metaBook.startPreview=startPreview;
     function stopPreview(caller,jumpto){
@@ -1530,11 +1531,11 @@ var metaBook={
             oldscroll=false; scrollPreview(false,caller);}
         else scrollPreview(false,caller);
         mB.previewing=false; mB.previewTarget=false;
-        dropClass(document.body,"cxPREVIEW");
-        dropClass(document.body,"cxPAGEPREVIEW");
+        dropClass(document.body,"_PREVIEW");
+        dropClass(document.body,"_PAGEPREVIEW");
         if (jumpto) {
             if (mB.hudup) mB.setHUD(false);
-            codexGoTo(jumpto);}
+            metaBookGoTo(jumpto);}
         return false;}
     metaBook.stopPreview=stopPreview;
 

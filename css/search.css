@@ -103,7 +103,7 @@ div.resultinfo.noresults span { display: none;}
 .qtags span.elided { display: inline; }
 .qtags span.elision { display: none; }
 
-body.cxANIMATE .qtags {
+body._ANIMATE .qtags {
     transition-property: font-size; transition-duration: 0.5s;
     -webkit-transition-property: font-size; -webkit-transition-duration: 0.5s;
     -moz-transition-property: font-size; -moz-transition-duration: 0.5s;

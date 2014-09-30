@@ -165,7 +165,7 @@ div.codexglossform.glossreply form .showmode.add {
 div.codexglossform form textarea[name='NOTE'] {
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/remark.svgz);}
-body.cxNOSVG div.codexglossform form textarea[name='NOTE'] {
+body._NOSVG div.codexglossform form textarea[name='NOTE'] {
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/remark24x24.png);}
 div.codexglossform div.textbox input[name='TAG'] {
@@ -363,7 +363,7 @@ div.codexglossform form.sharing div.glossetc span .button[alt='sharing'],
 div.codexglossform form.attach div.glossetc span .button[alt='attach'] {
     height: 40px; width: 40px; background-color: silver;
     border: darkblue solid 2px;}
-#METABOOKFRAME.cxANIMATE div.codexglossform form div.glossetc span .button {
+#METABOOKFRAME._ANIMATE div.codexglossform form div.glossetc span .button {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
@@ -430,7 +430,7 @@ div.codexglossform.submitting td.button img {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
-#METABOOKFRAME.cxANIMATE div.codexglossform div.textbox {
+#METABOOKFRAME._ANIMATE div.codexglossform div.textbox {
     transition-property: height; transition-duration: 2s;
     -o-transition-property: height; -o-transition-duration: 2s;
     -moz-transition-property: height; -moz-transition-duration: 2s;
@@ -464,7 +464,7 @@ div.completions#METABOOKSHARECLOUD #METABOOKSHARECLOUD {
     margin-left: 50px; margin-right: 50px;}
 div.completions#METABOOKGLOSSCLOUD > div {
     margin-left: 50px; margin-right: 50px;}
-#METABOOKFRAME.cxANIMATE div.completions#METABOOKSHARECLOUD {
+#METABOOKFRAME._ANIMATE div.completions#METABOOKSHARECLOUD {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
@@ -559,9 +559,9 @@ div.codexglossform form div.addglossmenu > img.held {
         width: 80px; height: 80px; margin-left: -20px;}
     div.codexglossform form div.addglossmenu > img.held.menutop {
         width: 40px; height: 40px; margin-left: 0px;}}
-body.cxTOUCH div.codexglossform form div.addglossmenu > img.held {
+body._TOUCH div.codexglossform form div.addglossmenu > img.held {
     width: 80px; height: 80px; margin-left: -20px;}
-body.cxTOUCH div.codexglossform form div.addglossmenu > img.held.menutop {
+body._TOUCH div.codexglossform form div.addglossmenu > img.held.menutop {
     width: 40px; height: 40px; margin-left: 0px;}
 div.codexglossform form div.addglossmenu > img.menutop[alt="downmenu"],
 div.codexglossform form div.addglossmenu.expanded > img.menutop[alt="upmenu"],
@@ -629,7 +629,7 @@ div.codexglossform.submitdone div.messageoverlay > div.saved {
 
 div.codexglossform.submitclose form > div {
     opacity: 0.1;}
-#METABOOKFRAME.cxANIMATE div.codexglossform.submitclose form > div {
+#METABOOKFRAME._ANIMATE div.codexglossform.submitclose form > div {
     transition-property: opacity; transition-duration: 3s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 3s;
     -moz-transition-property: opacity; -moz-transition-duration: 3s;

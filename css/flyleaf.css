@@ -20,7 +20,7 @@
     width: 100%; border: 0px; margin: 0px; padding: 0px;}
 #METABOOKHUD #METABOOKHEART .tabcontent section { clear: both;}
 
-body.cxNOUSER a.logout {display: none;}
+body._NOUSER a.logout {display: none;}
 
 /* METABOOKHEART content rules */
 

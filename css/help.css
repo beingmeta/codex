@@ -32,7 +32,7 @@
 @charset "UTF-8";
 
 /* Help is displayed in fixed position boxes and selectively displayed
-    based on the body class body.codexhelp and the individual state
+    based on the body class body._SHOWHELP and the individual state
     CSS classes maintained in the DOM tree.  */
 
 /* The help HUD */
@@ -60,12 +60,12 @@ div.helpbox img.inline { background-color: gray; }
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;
     display: none;}
-body.cxSTARTUP #METABOOKSTARTPAGE #METABOOKSTARTUPMSG {
+body._STARTUP #METABOOKSTARTPAGE #METABOOKSTARTUPMSG {
     display: inline;}
-body.cxSTARTUP #METABOOKSTARTPAGE #METABOOKHELPTITLE {
+body._STARTUP #METABOOKSTARTPAGE #METABOOKHELPTITLE {
     display: none;}
 
-body.codexhelp #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
+body._SHOWHELP #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     background-color: silver; border-color: black;
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -75,7 +75,7 @@ body.codexhelp #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-body.hudup.codexhelp #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
+body.hudup._SHOWHELP #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     background-color: silver; border-color: black;}
 
 div.helpbox {
@@ -95,7 +95,7 @@ div.helpbox {
     overflow: auto;
     display: none;}
 
-div.helpbox img.closebutton, div.codexhelp img.closebutton {
+div.helpbox img.closebutton, div.mbhelp img.closebutton {
     position: absolute; width: 24px; height: 24px;
     top: 6px; right: 6px; padding: 2px;
     border: solid red 2px; 
@@ -103,7 +103,7 @@ div.helpbox img.closebutton, div.codexhelp img.closebutton {
     -moz-border-radius: 6px; -o-border-radius: 6px;
     color: red;}
 
-div.helpbox th.helptext, div.codexhelp th.helptext {
+div.helpbox th.helptext, div.mbhelp th.helptext {
     text-indent: 0px;}
 
 div.helpbox.atfoot {
@@ -120,42 +120,42 @@ div.helpbox.atfoot {
 
 #METABOOKHUD div.helpbox {
     border-color: black; z-index: 250;}
-body.codexhelp #METABOOKHUD .helphud,
-body.codexhelp #METABOOKHUD > div.codexhelp {display: block;}
-body.codexhelp #METABOOKHUD .hudbutton {
+body._SHOWHELP #METABOOKHUD .helphud,
+body._SHOWHELP #METABOOKHUD > div.mbhelp {display: block;}
+body._SHOWHELP #METABOOKHUD .hudbutton {
     opacity: 0.5;}
-body.codexhelp.hudup #METABOOKHUD div.codexhelp, 
-body.codexhelp.cxSHRINK #METABOOKHUD div.codexhelp,
-body.codexhelp.cxPREVIEW #METABOOKHUD div.codexhelp,
-body.codexhelp.hudup #METABOOKHUD .helphud,
-body.codexhelp.cxSKIMMING #METABOOKHUD div.codexhelp,
-body.codexhelp.cxSKIMMING #METABOOKHUD .helphud,
-body.codexhelp #METABOOKHUD.addgloss .helphud,
-body.codexhelp #METABOOKHUD.overtoc .helphud,
-body.codexhelp #METABOOKHUD.statictoc .helphud,
-body.codexhelp.cxSHRINK #METABOOKHUD .helphud,
-body.codexhelp.cxPREVIEW #METABOOKHUD .helphud {
+body._SHOWHELP.hudup #METABOOKHUD div.mbhelp, 
+body._SHOWHELP._SHRINK #METABOOKHUD div.mbhelp,
+body._SHOWHELP._PREVIEW #METABOOKHUD div.mbhelp,
+body._SHOWHELP.hudup #METABOOKHUD .helphud,
+body._SHOWHELP._SKIMMING #METABOOKHUD div.mbhelp,
+body._SHOWHELP._SKIMMING #METABOOKHUD .helphud,
+body._SHOWHELP #METABOOKHUD.addgloss .helphud,
+body._SHOWHELP #METABOOKHUD.overtoc .helphud,
+body._SHOWHELP #METABOOKHUD.statictoc .helphud,
+body._SHOWHELP._SHRINK #METABOOKHUD .helphud,
+body._SHOWHELP._PREVIEW #METABOOKHUD .helphud {
     display: none;}
-body.codexhelp.hudup #METABOOKHUD.splash div.codexhelp {
+body._SHOWHELP.hudup #METABOOKHUD.splash div.mbhelp {
     display: block;}
 #METABOOKHUDHELP { z-index: 500; display: none;}
-body.codexhelp #METABOOKHUDHELP { display: block; }
-body.hudup.codexhelp #METABOOKHUDHELP { display: block; }
+body._SHOWHELP #METABOOKHUDHELP { display: block; }
+body.hudup._SHOWHELP #METABOOKHUDHELP { display: block; }
 
-body.codexhelp #METABOOKHUD.addgloss #METABOOKHUDHELP { display: block; }
-body.codexhelp #METABOOKHUD.addgloss #METABOOKSTARTPAGE,
-body.codexhelp.cxSHRINK #METABOOKHUD.addgloss #METABOOKSTARTPAGE {
+body._SHOWHELP #METABOOKHUD.addgloss #METABOOKHUDHELP { display: block; }
+body._SHOWHELP #METABOOKHUD.addgloss #METABOOKSTARTPAGE,
+body._SHOWHELP._SHRINK #METABOOKHUD.addgloss #METABOOKSTARTPAGE {
     display: none; }
 
-body.codexhelp.hudup #METABOOKHUD.overtoc #METABOOKTOCHELP.helpbox,
-body.codexhelp #METABOOKHUD.addgloss #METABOOKADDGLOSSHELP.helpbox,
-body.codexhelp.cxSKIMMING #METABOOKHUD.allglosses #METABOOKSKIMMINGHELP.helpbox,
-body.codexhelp.cxSKIMMING #METABOOKHUD.searchresults #METABOOKSKIMMINGHELP.helpbox,
-body.codexhelp #METABOOKHUD.refinesearch #METABOOKSEARCHINPUTHELP.helpbox,
-body.codexhelp #METABOOKHUD.expandsearch #METABOOKSEARCHINPUTHELP.helpbox,
-body.codexhelp #METABOOKHUD.searchresults #METABOOKSEARCHRESULTSHELP.helpbox,
-body.codexhelp #METABOOKHUD.allglosses #METABOOKALLGLOSSESHELP.helpbox,
-body.codexhelp #METABOOKHUD.statictoc #METABOOKSTATICTOCHELP.helpbox {
+body._SHOWHELP.hudup #METABOOKHUD.overtoc #METABOOKTOCHELP.helpbox,
+body._SHOWHELP #METABOOKHUD.addgloss #METABOOKADDGLOSSHELP.helpbox,
+body._SHOWHELP._SKIMMING #METABOOKHUD.allglosses #METABOOKSKIMMINGHELP.helpbox,
+body._SHOWHELP._SKIMMING #METABOOKHUD.searchresults #METABOOKSKIMMINGHELP.helpbox,
+body._SHOWHELP #METABOOKHUD.refinesearch #METABOOKSEARCHINPUTHELP.helpbox,
+body._SHOWHELP #METABOOKHUD.expandsearch #METABOOKSEARCHINPUTHELP.helpbox,
+body._SHOWHELP #METABOOKHUD.searchresults #METABOOKSEARCHRESULTSHELP.helpbox,
+body._SHOWHELP #METABOOKHUD.allglosses #METABOOKALLGLOSSESHELP.helpbox,
+body._SHOWHELP #METABOOKHUD.statictoc #METABOOKSTATICTOCHELP.helpbox {
     border-color: black; z-index: 260; display: block; opacity: 0.9; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -165,9 +165,9 @@ body.codexhelp #METABOOKHUD.statictoc #METABOOKSTATICTOCHELP.helpbox {
     -o-opacity: 0.90;
     display: block;}
 
-body.codexhelp.cxSKIMMING #METABOOKHUD.searchresults
+body._SHOWHELP._SKIMMING #METABOOKHUD.searchresults
   #METABOOKSEARCHRESULTSHELP.helpbox,
-body.codexhelp.cxSKIMMING #METABOOKHUD.allglosses
+body._SHOWHELP._SKIMMING #METABOOKHUD.allglosses
   #METABOOKALLGLOSSESHELP.helpbox {
     display: none;}
 
@@ -185,7 +185,7 @@ body.codexhelp.cxSKIMMING #METABOOKHUD.allglosses
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-body.codexhelp.cxPREVIEW #METABOOKHUD #METABOOKHUDHELP {
+body._SHOWHELP._PREVIEW #METABOOKHUD #METABOOKHUDHELP {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -194,7 +194,7 @@ body.codexhelp.cxPREVIEW #METABOOKHUD #METABOOKHUDHELP {
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
 
-body.codexhelp #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES {
+body._SHOWHELP #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES {
     opacity: 0;}
 
 div.helpbox p {
@@ -226,7 +226,7 @@ div.helpbox blockquote p {
     max-width: 40em; margin-left: auto; margin-right: auto;
     text-align: center;
     color: red;}
-#METABOOKSTARTPAGE div.codexhelp p.checkspan { text-align: center; }
+#METABOOKSTARTPAGE div.mbhelp p.checkspan { text-align: center; }
 
 /* Help HUD */
 
@@ -275,18 +275,18 @@ div.helpbox blockquote p {
 .helphud.botleft span.arrow { float: left;}
 .helphud.botright span.arrow { float: right;}
 
-div.codexhelp div.helphud#HIDETHISHELP {
+div.mbhelp div.helphud#HIDETHISHELP {
     position: absolute;
     top: 40px; right: 4px; width: 70px;}
 
-body div.codexhelp h1, body div.codexhelp h2,
-body div.codexhelp h3, body div.helpbox h1,
+body div.mbhelp h1, body div.mbhelp h2,
+body div.mbhelp h3, body div.helpbox h1,
 body div.helpbox h2, body div.helpbox h3 {
     text-align: left;
     margin-left: 5%; margin-right: 1%;}
-div.codexhelp h1 span.codextogglehelp,
-div.codexhelp h2 span.codextogglehelp,
-div.codexhelp h3 span.codextogglehelp,
+div.mbhelp h1 span.codextogglehelp,
+div.mbhelp h2 span.codextogglehelp,
+div.mbhelp h3 span.codextogglehelp,
 div.helpbox h1 span.codextogglehelp,
 div.helpbox h2 span.codextogglehelp,
 div.helpbox h3 span.codextogglehelp {
@@ -297,55 +297,55 @@ div.helpbox h3 span.codextogglehelp {
     padding-left: 1ex; padding-right: 1ex;
     border: solid black 2px; border-radius: 1ex;}
 
-div.codexhelp td {
+div.mbhelp td {
     color: rgba(0,0,0,0.75);}
 
-div.codexhelp h1 {
+div.mbhelp h1 {
     margin-left: 5%; margin-right: 5%;
     margin-top: 3px; padding-top: 0px;}
 
-div.codexhelp .action {
+div.mbhelp .action {
     color: darkblue;}
-div.codexhelp .result {
+div.mbhelp .result {
     font-style: italic; color: rgba(0,0,0,1);}
-div.codexhelp td dfn {
+div.mbhelp td dfn {
     color: rgba(0,0,0,1);}
-div.codexhelp > table, div.codexhelp > div > table {
+div.mbhelp > table, div.mbhelp > div > table {
     margin-left: 2%; margin-right: 2%; width: 96%;
     margin-top: 1em;}
-div.codexhelp table th, div.codexhelp table td {
+div.mbhelp table th, div.mbhelp table td {
     padding-bottom: 0px; padding-top: 0px;}
-div.codexhelp table th { padding-right: 0.5ex;}
-div.codexhelp table th img {
+div.mbhelp table th { padding-right: 0.5ex;}
+div.mbhelp table th img {
     background-color: ivory; padding: 0px;
     height: 3em; width: auto;
     vertical-align: top;}
-div.codexhelp table tbody tr:first-child th,
-div.codexhelp table tbody tr:first-child td {
+div.mbhelp table tbody tr:first-child th,
+div.mbhelp table tbody tr:first-child td {
     padding-top: 1ex; }
-div.codexhelp table table {
+div.mbhelp table table {
     margin-left: 2%; margin-right: 2%;}
-div.codexhelp table td.icon { width: 32px;}
-div.codexhelp table td.icon img { width: 32px;}
-div.codexhelp table td.textleft { text-align: left;}
-div.codexhelp table td.textright { text-align: right;}
+div.mbhelp table td.icon { width: 32px;}
+div.mbhelp table td.icon img { width: 32px;}
+div.mbhelp table td.textleft { text-align: left;}
+div.mbhelp table td.textright { text-align: right;}
 
-div.codexhelp .result span { display: none; }
+div.mbhelp .result span { display: none; }
 
-div.codexhelp img.narrowimage, div.codexhelp img.wideimage {
+div.mbhelp img.narrowimage, div.mbhelp img.wideimage {
     clear: both; max-width:90%; margin-left: 5%; height: auto;}
 
-div.codexhelp img.narrowimage { display: none;}
+div.mbhelp img.narrowimage { display: none;}
 @media (max-width: 700) {
-    div.codexhelp img.narrowimage { display: inline;}
-    div.codexhelp img.wideimage { display: none;}}
+    div.mbhelp img.narrowimage { display: inline;}
+    div.mbhelp img.wideimage { display: none;}}
 
 div#METABOOKHELP table.textual { font-size: 120%;}
-div.codexhelp table.textual td {padding-left: 3px;}
-div.codexhelp div.glossbarbox {
+div.mbhelp table.textual td {padding-left: 3px;}
+div.mbhelp div.glossbarbox {
     font-weight: normal; padding-right: 2px; border-right: solid blue 3px;}
 
-#METABOOKHUD div.codexhelp.hudpanel {
+#METABOOKHUD div.mbhelp.hudpanel {
     position: absolute; text-align: center;
     top: 100px; bottom: 100px; left: 80px; right: 80px; 
     height: auto; width: auto; padding-bottom: 1em;

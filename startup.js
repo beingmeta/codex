@@ -530,7 +530,7 @@ metaBook.Startup=
                 ((typeof mB.bookcover === "string")&&(mB.bookcover))||
                 ((typeof mB.coverpage === "string")&&(mB.coverpage));
             if (uri) {
-                var bookimages=fdjtDOM.$("img.codexbookimage");
+                var bookimages=fdjtDOM.$("img.bookimage");
                 i=0; lim=bookimages.length;
                 while (i<lim) {
                     if (bookimages[i].src) i++;
@@ -538,7 +538,7 @@ metaBook.Startup=
             var thumb_uri=
                 ((typeof mB.thumbnail === "string")&&(mB.thumbnail));
             if (thumb_uri) {
-                var thumbimages=fdjtDOM.$("img.codexbookthumb");
+                var thumbimages=fdjtDOM.$("img.bookthumb");
                 i=0; lim=thumbimages.length;
                 while (i<lim) {
                     if (thumbimages[i].src) i++;
@@ -546,7 +546,7 @@ metaBook.Startup=
             var icon_uri=
                 ((typeof mB.icon === "string")&&(mB.icon));
             if (icon_uri) {
-                var iconimages=fdjtDOM.$("img.codexbookicon");
+                var iconimages=fdjtDOM.$("img.bookicon");
                 i=0; lim=iconimages.length;
                 while (i<lim) {
                     if (iconimages[i].src) i++;
@@ -698,7 +698,7 @@ metaBook.Startup=
                     mB.glosshash=hash;
                 else mB.inithash=location.hash;}
             mB._starting=fdjtTime();
-            addClass(document.body,"cxSTARTUP");
+            addClass(document.body,"_STARTUP");
             // This is all of the startup that we need to do synchronously
             syncStartup();
             // The rest of the stuff we timeslice
@@ -716,7 +716,7 @@ metaBook.Startup=
                 //  heading information).
                 function(){
                     if (mB.bypage) mB.Paginate("initial");
-                    else addClass(document.body,"cxSCROLL");},
+                    else addClass(document.body,"_SCROLL");},
                 // Build the display TOC, both the dynamic (top of
                 // display) and the static (inside the hudheart)
                 function(){
@@ -883,7 +883,7 @@ metaBook.Startup=
                 if (evt.state) mB.restoreState(evt.state,"popstate");};
             fdjtLog("Startup done");
             mB.displaySync();
-            fdjtDOM.dropClass(document.body,"cxSTARTUP");
+            fdjtDOM.dropClass(document.body,"_STARTUP");
             if (fdjtID("METABOOKREADYMESSAGE"))
                 fdjtID("METABOOKREADYMESSAGE").innerHTML="Open";
             if (mode) {}
@@ -1047,7 +1047,7 @@ metaBook.Startup=
             fdjt.TapHold.default_opts.bubble=false;
             
             if (device.touch) {
-                fdjtDOM.addClass(body,"cxTOUCH");
+                fdjtDOM.addClass(body,"_TOUCH");
                 fdjt.TapHold.default_opts.fortouch=true;
                 mB.ui="touch";
                 mB.touch=true;
@@ -1073,15 +1073,15 @@ metaBook.Startup=
                 // Have fdjtLog do it's own format conversion for the log
                 fdjtLog.doformat=true;}
             else if (device.touch) {
-                fdjtDOM.addClass(body,"cxTOUCH");
+                fdjtDOM.addClass(body,"_TOUCH");
                 mB.ui="touch";}
             else if (!(mB.ui)) {
                 // Assume desktop or laptop
-                fdjtDOM.addClass(body,"cxMOUSE");
+                fdjtDOM.addClass(body,"_MOUSE");
                 mB.ui="mouse";}
             else {}
             if (mB.iscroll) {
-                fdjtDOM.addClass(body,"cxISCROLL");
+                fdjtDOM.addClass(body,"_ISCROLL");
                 device.iscroll=true;}
             device.string=device.string+" "+
                 ((mB.iscroll)?("iScroll"):("nativescroll"));
@@ -1514,11 +1514,11 @@ metaBook.Startup=
                 cover.appendChild(settings);}
             settings.innerHTML=fixStaticRefs(mB.HTML.settings);
             mB.DOM.settings=settings;
-            var codexbookinfo=fdjt.ID("METABOOKBOOKINFO");
-            if (!(codexbookinfo)) {
-                codexbookinfo=fdjtDOM("div#METABOOKBOOKINFO");
-                fdjtDOM(settings,"\n",codexbookinfo);}
-            codexbookinfo.innerHTML=
+            var bookinfo=fdjt.ID("METABOOKBOOKINFO");
+            if (!(bookinfo)) {
+                bookinfo=fdjtDOM("div#METABOOKBOOKINFO");
+                fdjtDOM(settings,"\n",bookinfo);}
+            bookinfo.innerHTML=
                 "<p>"+mB.docref+"#"+mB.sourceid+"<br/>"+
                 ((mB.sourcetime)?(" ("+mB.sourcetime+")"):(""))+"</p>\n"+
                 "<p>metaBook version "+mB.version+" built on "+
@@ -1532,7 +1532,7 @@ metaBook.Startup=
                 cover.appendChild(help);}
             var cover_help=fdjtID("METABOOKCOVERHELP");
             if (!(cover_help)) {
-                cover_help=fdjtDOM("div#METABOOKCOVERHELP.codexhelp");
+                cover_help=fdjtDOM("div#METABOOKCOVERHELP.mbhelp");
                 help.appendChild(cover_help);}
             cover_help.innerHTML=fixStaticRefs(mB.HTML.help);
             
@@ -1657,8 +1657,8 @@ metaBook.Startup=
             fdjt.UI.cancel(evt);}
 
         mB.addConfig("showconsole",function(name,value){
-            if (value) addClass(document.body,"cxSHOWCONSOLE");
-            else dropClass(document.body,"cxSHOWCONSOLE");});
+            if (value) addClass(document.body,"_SHOWCONSOLE");
+            else dropClass(document.body,"_SHOWCONSOLE");});
         
         mB.addConfig("uisound",function(name,value){
             mB.uisound=(value)&&(true);});
@@ -1848,14 +1848,14 @@ metaBook.Startup=
             mB.body=fdjtID("METABOOKBODY");
             if (!(mB.body)) {
                 var cxbody=mB.body=
-                    fdjtDOM("div#METABOOKBODY.codexbody",content,page);
+                    fdjtDOM("div#METABOOKBODY.mBbody",content,page);
                 if (mB.justify) addClass(cxbody,"codexjustify");
                 if (mB.bodysize)
-                    addClass(cxbody,"codexbodysize"+mB.bodysize);
+                    addClass(cxbody,"mBbodysize"+mB.bodysize);
                 if (mB.bodyfamily)
-                    addClass(cxbody,"codexbodyfamily"+mB.bodyfamily);
+                    addClass(cxbody,"mBbodyfamily"+mB.bodyfamily);
                 if (mB.bodyspacing)
-                    addClass(cxbody,"codexbodyspacing"+mB.bodyspacing);
+                    addClass(cxbody,"mBbodyspacing"+mB.bodyspacing);
                 body.appendChild(cxbody);}
             else mB.body.appendChild(page);
             // Initialize the margins
@@ -1887,10 +1887,10 @@ metaBook.Startup=
             if ((geom.left<10)||((view_width-(geom.width+geom.left))<25))
                 mB.fullwidth=true;
             else mB.fullwidth=false;
-            if (mB.fullwidth) addClass(document.body,"cxFULLWIDTH");
-            else dropClass(document.body,"cxFULLWIDTH");
-            if (mB.fullheight) addClass(document.body,"cxFULLHEIGHT");
-            else dropClass(document.body,"cxFULLHEIGHT");
+            if (mB.fullwidth) addClass(document.body,"_FULLWIDTH");
+            else dropClass(document.body,"_FULLWIDTH");
+            if (mB.fullheight) addClass(document.body,"_FULLHEIGHT");
+            else dropClass(document.body,"_FULLHEIGHT");
             geom=getGeometry(page,page.offsetParent,true);
             var fakepage=fdjtDOM("DIV.codexpage");
             page.appendChild(fakepage);
@@ -1923,7 +1923,7 @@ metaBook.Startup=
             var shrinkrule=mB.CSS.shrinkrule;
             if (!(shrinkrule)) {
                 shrinkrule=fdjtDOM.addCSSRule(
-                    "body.cxSHRINK #METABOOKPAGE,body.cxPREVIEW #METABOOKPAGE, body.cxSKIMMING #METABOOKPAGE", "");
+                    "body._SHRINK #METABOOKPAGE,body._PREVIEW #METABOOKPAGE, body._SKIMMING #METABOOKPAGE", "");
                 mB.CSS.shrinkrule=shrinkrule;}
             var ph=geom.height, sh=ph-25, vs=(sh/ph);
             shrinkrule.style[fdjtDOM.transform]="scale("+vs+","+vs+")";
@@ -2074,7 +2074,7 @@ metaBook.Startup=
                         mB.glossdb.load(
                             getLocal("metabook.queued("+mB.refuri+")",true));
                     fdjtID("METABOOKCOVER").className="bookcover";
-                    addClass(document.body,"cxNOUSER");}
+                    addClass(document.body,"_NOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
             else if (info.wronguser) {
                 clearOffline();
@@ -2262,8 +2262,8 @@ metaBook.Startup=
             fdjtLog("Setting up user %s (%s)",userinfo._id,
                     userinfo.name||userinfo.email);
             if (userinfo) {
-                fdjtDOM.dropClass(document.body,"cxNOUSER");
-                fdjtDOM.addClass(document.body,"cxUSER");}
+                fdjtDOM.dropClass(document.body,"_NOUSER");
+                fdjtDOM.addClass(document.body,"_USER");}
             if (mB.user) {
                 if (userinfo._id===mB.user._id) {}
                 else throw { error: "Can't change user"};}
@@ -2310,9 +2310,9 @@ metaBook.Startup=
             var startui=fdjtTime();
             if (mB._user_ui_setup) return;
             if (!(mB.user)) {
-                fdjtDOM.addClass(document.body,"cxNOUSER");
+                fdjtDOM.addClass(document.body,"_NOUSER");
                 return;}
-            fdjtDOM.dropClass(document.body,"cxNOUSER");
+            fdjtDOM.dropClass(document.body,"_NOUSER");
             var username=mB.user.name||mB.user.handle||mB.user.email;
             if (username) {
                 if (fdjtID("METABOOKUSERNAME"))
@@ -2600,7 +2600,7 @@ metaBook.Startup=
             if (tracelevel)
                 fdjtLog("Setting up initial tag clouds for %d tags",
                         searchtags.length);
-            addClass(document.body,"cxINDEXING");
+            addClass(document.body,"_INDEXING");
             fdjtDOM(empty_cloud.dom,
                     fdjtDOM("div.cloudprogress","Cloud Shaping in Progress"));
             addClass(empty_cloud.dom,"working");
@@ -2627,7 +2627,7 @@ metaBook.Startup=
             if (mB.Trace.startup>1)
                 fdjtLog("Done populating clouds with %d tags",
                         searchtags.length);
-            dropClass(document.body,"cxINDEXING");
+            dropClass(document.body,"_INDEXING");
             eq.cloud=empty_cloud;
             if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
                 fdjtDOM.prepend(empty_cloud.dom,
@@ -2733,13 +2733,13 @@ metaBook.Startup=
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
                 addTags(occurrences,knode||taghead);}
-            addClass(document.body,"cxINDEXING");
+            addClass(document.body,"_INDEXING");
             fdjtTime.slowmap(
                 handleIndexEntry,alltags,
                 ((alltags.length>100)&&(tracelevel>1)&&(indexProgress)),
                 function(state){
                     fdjtLog("Book index links %d keys to %d refs",ntags,nitems);
-                    dropClass(document.body,"cxINDEXING");
+                    dropClass(document.body,"_INDEXING");
                     mB.tagmaxweight=maxweight;
                     mB.tagminweight=minweight;
                     if (whendone) return whendone();
@@ -2879,7 +2879,7 @@ metaBook.Startup=
             if (!(outlet instanceof Ref)) return;
             var completion=fdjtDOM("span.completion.cue.source",outlet._id);
             function init(){
-                completion.id="cxOUTLET"+outlet.humid;
+                completion.id="_OUTLET"+outlet.humid;
                 completion.setAttribute("data-value",outlet._id);
                 completion.setAttribute("data-key",outlet.name);
                 completion.innerHTML=outlet.name;

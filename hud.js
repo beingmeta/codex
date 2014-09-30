@@ -351,14 +351,14 @@ metaBook.setMode=
                         metaBookHUD.className);
             if (flag) {
                 mB.hudup=true;
-                dropClass(document.body,"cxSKIMMING");
+                dropClass(document.body,"_SKIMMING");
                 addClass(document.body,"hudup");}
             else {
                 mB.hudup=false;
                 mB.scrolling=false;
                 if (mB.previewing)
                     mB.stopPreview("setHUD");
-                dropClass(document.body,"cxSHRINK");
+                dropClass(document.body,"_SHRINK");
                 if (clearmode) {
                     if (mB.popmode) {
                         var fn=mB.popmode;
@@ -368,9 +368,9 @@ metaBook.setMode=
                     dropClass(metaBookHUD,"openhead");
                     dropClass(metaBookHUD,"full");
                     dropClass(metaBookHUD,metaBookModes);
-                    dropClass(document.body,"cxSKIMMING");
-                    dropClass(document.body,"cxSKIMSTART");
-                    dropClass(document.body,"cxSKIMEND");
+                    dropClass(document.body,"_SKIMMING");
+                    dropClass(document.body,"_SKIMSTART");
+                    dropClass(document.body,"_SKIMEND");
                     mB.mode=false;}
                 dropClass(document.body,"hudup");
                 dropClass(document.body,"openhud");
@@ -382,16 +382,16 @@ metaBook.setMode=
         function showCover(){
             if (mB._setup)
                 fdjtState.dropLocal("metabook.opened("+mB.docuri+")");
-            addClass(document.body,"cxCOVER");}
+            addClass(document.body,"_COVER");}
         metaBook.showCover=showCover;
         function hideCover(){
             if (mB._setup)
                 fdjtState.setLocal(
                     "metabook.opened("+mB.docuri+")",fdjtTime());
-            dropClass(document.body,"cxCOVER");}
+            dropClass(document.body,"_COVER");}
         metaBook.hideCover=hideCover;
         function toggleCover(){
-            if (hasClass(document.body,"cxCOVER")) hideCover();
+            if (hasClass(document.body,"_COVER")) hideCover();
             else showCover();}
         metaBook.toggleCover=toggleCover;
         
@@ -437,7 +437,7 @@ metaBook.setMode=
                 var fn=mB.popmode;
                 mB.popmode=false;
                 fn();}
-            if (hasClass(document.body,"cxCOVER")) {
+            if (hasClass(document.body,"_COVER")) {
                 if (!(mode)) hideCover();
                 else if (mode.search(metaBookCoverModes)>=0)
                     hideCover();
@@ -449,7 +449,7 @@ metaBook.setMode=
             if (mode) {
                 if (mode==="search") mode=mB.search_mode||"refinesearch";
                 if (mode==="addgloss") {}
-                else dropClass(document.body,"cxSHRINK");
+                else dropClass(document.body,"_SHRINK");
                 if (mode===mB.mode) {}
                 else if (mode===true) {
                     /* True just puts up the HUD with no mode info */
@@ -543,9 +543,9 @@ metaBook.setMode=
                 dropClass(metaBookHUD,"openheart");
                 dropClass(metaBookHUD,"openhead");
                 dropClass(document.body,"dimmed");
-                dropClass(document.body,"codexhelp");
-                dropClass(document.body,"cxPREVIEW");
-                dropClass(document.body,"cxSHRINK");
+                dropClass(document.body,"mbhelp");
+                dropClass(document.body,"_PREVIEW");
+                dropClass(document.body,"_SHRINK");
                 dropClass(metaBookHUD,metaBookModes);
                 mB.cxthelp=false;
                 if (display_sync) mB.displaySync();
@@ -716,7 +716,7 @@ metaBook.setMode=
             var pelt=mB.skimming;
             var i=0, lim=0;
             if (typeof dir !== "number") dir=0;
-            addClass(document.body,"cxSKIMMING"); setHUD(false,false);
+            addClass(document.body,"_SKIMMING"); setHUD(false,false);
             if (true) // (mB.Trace.mode)
                 fdjtLog("metaBookSkim() %o (src=%o) mode=%o scn=%o/%o dir=%o",
                         elt,src,mB.mode,mB.skimming,mB.target,
@@ -749,10 +749,10 @@ metaBook.setMode=
                                0);}
                 // This all makes sure that the >| and |< buttons
                 // appear appropriately
-                if (next) dropClass(document.body,"cxSKIMEND");
-                else addClass(document.body,"cxSKIMEND");
-                if (prev) dropClass(document.body,"cxSKIMSTART");
-                else addClass(document.body,"cxSKIMSTART");
+                if (next) dropClass(document.body,"_SKIMEND");
+                else addClass(document.body,"_SKIMEND");
+                if (prev) dropClass(document.body,"_SKIMSTART");
+                else addClass(document.body,"_SKIMSTART");
                 while (slice) {before++; slice=prevSlice(slice);}
                 slice=next; while (slice) {
                     after++; slice=nextSlice(slice);}
@@ -828,7 +828,7 @@ metaBook.setMode=
             // Tapping the tochead returns to results/glosses/etc
             var skimming=mB.skimming;
             if (!(skimming)) return;
-            dropClass(document.body,"cxSKIMMING");
+            dropClass(document.body,"_SKIMMING");
             if (getParent(skimming,fdjtID("METABOOKALLGLOSSES"))) 
                 mB.setMode("allglosses");
             else if (getParent(skimming,fdjtID("METABOOKSEARCHRESULTS"))) 
@@ -841,12 +841,12 @@ metaBook.setMode=
                 mB.Frame,/codexuifont\w+/,"codexuifont"+value);});
         mB.addConfig("animatecontent",function(name,value){
             if (mB.dontanimate) {}
-            else if (value) addClass(document.body,"cxANIMATE");
-            else dropClass(mB.page,"cxANIMATE");});
+            else if (value) addClass(document.body,"_ANIMATE");
+            else dropClass(mB.page,"_ANIMATE");});
         mB.addConfig("animatehud",function(name,value){
             if (mB.dontanimate) {}
-            else if (value) addClass("METABOOKFRAME","cxANIMATE");
-            else dropClass("METABOOKFRAME","cxANIMATE");});
+            else if (value) addClass("METABOOKFRAME","_ANIMATE");
+            else dropClass("METABOOKFRAME","_ANIMATE");});
 
         /* Settings apply/save handlers */
 
@@ -988,9 +988,9 @@ metaBook.setMode=
 
         /* Setting/clearing help mode */
         metaBook.hideHelp=function(){
-            fdjtDOM.dropClass(document.body,"codexhelp");};
+            fdjtDOM.dropClass(document.body,"mbhelp");};
         metaBook.showHelp=function(){
-            fdjtDOM.addClass(document.body,"codexhelp");};
+            fdjtDOM.addClass(document.body,"mbhelp");};
 
         return setMode;})();
 
