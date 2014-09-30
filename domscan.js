@@ -280,7 +280,7 @@ metaBook.DOMScan=(function(){
                 ((typeof classname !== "string")||
                  (classname.search(/\b(sbookignore|codexignore)\b/)>=0)))
                 return;
-            if ((child.codexui)||((id)&&(id.search("CODEX")===0))) return;
+            if ((child.codexui)||((id)&&(id.search("METABOOK")===0))) return;
 
             if (mB.Trace.domscan>3)
                 fdjtLog("Scanning %o level=%o, loc=%o, head=%o: %j",

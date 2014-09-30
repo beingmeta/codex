@@ -592,14 +592,14 @@
         else if (fdjtDOM.inherits(target,".resultcounts")) {
             mB.showSearchResults(mB.query);
             mB.setMode("searchresults");
-            fdjtID("CODEXSEARCHINPUT").blur();
-            fdjtID("CODEXSEARCHRESULTS").focus();
+            fdjtID("METABOOKSEARCHINPUT").blur();
+            fdjtID("METABOOKSEARCHRESULTS").focus();
             fdjtUI.cancel(evt);}
         else if (fdjtDOM.inherits(target,".refinercounts")) {
             fdjtDOM.toggleClass(completions,"showall");
             fdjtDOM.cancel(evt);}
         else if (fdjtDOM.inherits(target,".maxcompletemsg")) {
-            fdjtID("CODEXSEARCHINPUT").focus();
+            fdjtID("METABOOKSEARCHINPUT").focus();
             fdjtDOM.toggleClass(completions,"showall");
             fdjtDOM.cancel(evt);}
         else {}}
@@ -609,8 +609,8 @@
         mB.setQuery(mB.extendQuery(mB.query,value));}
 
     mB.UI.searchCloudToggle=function(){
-        fdjtDOM.toggleClass(fdjtID('CODEXSEARCHCLOUD'),'showall');
-        mB.UI.updateScroller(fdjtID('CODEXSEARCHCLOUD'));};
+        fdjtDOM.toggleClass(fdjtID('METABOOKSEARCHCLOUD'),'showall');
+        mB.UI.updateScroller(fdjtID('METABOOKSEARCHCLOUD'));};
 
     function setCloudCues(cloud,tags){
         // Clear any current tagcues from the last gloss

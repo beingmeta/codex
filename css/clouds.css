@@ -20,9 +20,9 @@ div.completions .cloudtoggle {
 div.completions.noinput .cloudtoggle {
     display: block;}
 
-#CODEXHUD div.completions {
+#METABOOKHUD div.completions {
     text-align: center; display: none;}
-#CODEXHUD div.completions div.doc {
+#METABOOKHUD div.completions div.doc {
     background-color: ivory; text-align: left;
     font-size: 80%; line-height: 100%;
     font-style: italic; color: black;
@@ -54,7 +54,7 @@ div.completions.noinput .cloudtoggle {
   color: purple; vertical-align: middle;}
 .completion.cloudroot {
     cursor: default; opacity: 0.25;}
-#CODEXHUD .cloud .sectname, #CODEXHUD .qtags .sectname {
+#METABOOKHUD .cloud .sectname, #METABOOKHUD .qtags .sectname {
   white-space: nowrap;
   font-weight: normal; font-style: italic;
   background-color: ivory; color: purple;
@@ -65,7 +65,7 @@ div.completions.noinput .cloudtoggle {
   -moz-border-radius: 6px; 
   border-radius: 6px;}
 .cloud .sectname .name,
-#CODEXHUD .qtags span.sectname .name {
+#METABOOKHUD .qtags span.sectname .name {
   font-size: 80%;}
 
 .cloud.showall.noinput span.completion.rawterm.cue,
@@ -74,9 +74,9 @@ div.completions.noinput .cloudtoggle {
 .cloud.showall.noinput span.completion.doubleton.cue,
 .cloud.showall.noinput span.completion.singleton.prime {
     display: inline;}
-#CODEXHUD #CODEXALLTAGS.completions.noinput span.completion.sectname.cue {
+#METABOOKHUD #METABOOKALLTAGS.completions.noinput span.completion.sectname.cue {
       display: none;}
-#CODEXHUD #CODEXALLTAGS.completions.noinput.showall span.completion.sectname.cue {
+#METABOOKHUD #METABOOKALLTAGS.completions.noinput.showall span.completion.sectname.cue {
       display: inline;}
 
 .cloud.showall.noinput span.completion.singleton.dterm,
@@ -110,11 +110,11 @@ div.completions.noinput .cloudtoggle {
 /* Special rules */
 
 /*
-#CODEXALLTAGS.showall.noinput span.completion.sectname,
-#CODEXALLTAGS.showall.noinput span.completion.rawterm,
-#CODEXALLTAGS.showall.noinput span.completion.rootform,
-#CODEXALLTAGS.showall.noinput span.completion.singleton,
-#CODEXALLTAGS.showall.noinput span.completion.doubleton {
+#METABOOKALLTAGS.showall.noinput span.completion.sectname,
+#METABOOKALLTAGS.showall.noinput span.completion.rawterm,
+#METABOOKALLTAGS.showall.noinput span.completion.rootform,
+#METABOOKALLTAGS.showall.noinput span.completion.singleton,
+#METABOOKALLTAGS.showall.noinput span.completion.doubleton {
     display: none;}
 
 .searchcloud.showall.noinput span.completion.sectname,
@@ -201,7 +201,7 @@ div.completions.noinput .cloudtoggle {
    display: inline-block; line-height: 100%;
    margin: 2px; margin-left: 0.5ex;}
 
-#CODEXHUD #CODEXALLTAGS.completions.cloud.noinput.showall
+#METABOOKHUD #METABOOKALLTAGS.completions.cloud.noinput.showall
   span.completion.sectname.cue { 
    display: inline-block; line-height: 100%;
    margin: 2px; margin-left: 0.5ex;}

@@ -8,18 +8,18 @@
 
 div.codexglossformbody { position: relative; }
 
-#CODEXADDGLOSS div.codexglossform {
+#METABOOKADDGLOSS div.codexglossform {
     box-sizing: border-box;
     border: solid green 2px; border-top: 0px;
     min-height: 55px;}
-#CODEXADDGLOSS div.codexglossform.private {
+#METABOOKADDGLOSS div.codexglossform.private {
     border-color: red;}
-#CODEXADDGLOSS div.codexglossform.modified {
+#METABOOKADDGLOSS div.codexglossform.modified {
     border-style: dotted;}
-body.hudup #CODEXADDGLOSS div.codexglossform {
+body.hudup #METABOOKADDGLOSS div.codexglossform {
     border-color: transparent;}
 
-#CODEXADDGLOSS div.codexglossform.focused {
+#METABOOKADDGLOSS div.codexglossform.focused {
     max-height: inherit;
     background-color: ivory;}
 
@@ -42,7 +42,7 @@ div.codexglossform.focused form div.textbox textarea,
 div.codexglossform.focused form div.textbox input[type="TEXT"] {
     max-height: inherit;}
 
-#CODEXADDGLOSS div.codexglossform {
+#METABOOKADDGLOSS div.codexglossform {
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;
     border-top-width: 0px;
@@ -54,13 +54,13 @@ div.codexglossform.focused form div.textbox input[type="TEXT"] {
     -webkit-border-top-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
-#CODEXADDGLOSS div.codexglossform {
+#METABOOKADDGLOSS div.codexglossform {
     background-color: ivory;
     padding-bottom: 1ex;}
 
 div.codexglossform { display: none;}
-div.codexglossform#CODEXADDGLOSSPROTOTYPE { display: none;}
-div.codexglossform#CODEXLIVEGLOSS {
+div.codexglossform#METABOOKADDGLOSSPROTOTYPE { display: none;}
+div.codexglossform#METABOOKLIVEGLOSS {
     display: block;}
 div.codexglossform div.editgloss {
  margin-left: 0.5em; text-align: left; color: black;}
@@ -204,14 +204,14 @@ div.codexglossform form .glossexposure, div.codexglossform form .excerpt {
 body.hudup div.codexglossform form .glossexposure {
   display: inline-block; }
 
-#CODEXHUD .codexglossform .checkspan.private {
+#METABOOKHUD .codexglossform .checkspan.private {
     color: white; font-weight: bold; background-color: green;
     width: 7em; text-align: center;}
-#CODEXHUD .codexglossform .checkspan.private.ischecked { font-size: 100%;}
-#CODEXHUD .codexglossform .checkspan.private input { display: none; }
-#CODEXHUD .codexglossform .checkspan.private.ischecked {
+#METABOOKHUD .codexglossform .checkspan.private.ischecked { font-size: 100%;}
+#METABOOKHUD .codexglossform .checkspan.private input { display: none; }
+#METABOOKHUD .codexglossform .checkspan.private.ischecked {
     background-color: red; color: white;}
-#CODEXHUD .codexglossform .checkspan.private span {
+#METABOOKHUD .codexglossform .checkspan.private span {
     padding-left: 1ex; padding-right: 1ex;
     vertical-align: top;}
 
@@ -311,8 +311,8 @@ div.codexglossform div.glossetc .networks {
     color: black; font-weight: normal; float: right; text-align: right;}
 div.codexglossform div.glossetc .networks .checkspan {
     float: left;}
-#CODEXHUD .networks .checkspan input[type='checkbox'] { display: none;}
-#CODEXHUD .networks .checkspan img {
+#METABOOKHUD .networks .checkspan input[type='checkbox'] { display: none;}
+#METABOOKHUD .networks .checkspan img {
     height: 20px; width: auto;}
 
 span.facebook_share, span.twitter_share { display: none;}
@@ -363,7 +363,7 @@ div.codexglossform form.sharing div.glossetc span .button[alt='sharing'],
 div.codexglossform form.attach div.glossetc span .button[alt='attach'] {
     height: 40px; width: 40px; background-color: silver;
     border: darkblue solid 2px;}
-#CODEXFRAME.cxANIMATE div.codexglossform form div.glossetc span .button {
+#METABOOKFRAME.cxANIMATE div.codexglossform form div.glossetc span .button {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
@@ -430,7 +430,7 @@ div.codexglossform.submitting td.button img {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
-#CODEXFRAME.cxANIMATE div.codexglossform div.textbox {
+#METABOOKFRAME.cxANIMATE div.codexglossform div.textbox {
     transition-property: height; transition-duration: 2s;
     -o-transition-property: height; -o-transition-duration: 2s;
     -moz-transition-property: height; -moz-transition-duration: 2s;
@@ -448,85 +448,85 @@ div.glossetc, div.glossetc img, div.glossetc span, div.glossetc input {
 
 /* The add gloss panel */
 
-body.hudup #CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {}
+body.hudup #METABOOKHUD.addgloss div.hudpanel#METABOOKADDGLOSS {}
 
-#CODEXHUD #CODEXGLOSSTAGINPUT { display: none;}
-#CODEXHUD.addgloss.glossaddtag #CODEXGLOSSTAGINPUT {
+#METABOOKHUD #METABOOKGLOSSTAGINPUT { display: none;}
+#METABOOKHUD.addgloss.glossaddtag #METABOOKGLOSSTAGINPUT {
     display: block;}
-#CODEXHUD #CODEXGLOSSOUTLETINPUT { display: none;}
-#CODEXHUD.addgloss.glossaddoutlet #CODEXGLOSSOUTLETINPUT {
+#METABOOKHUD #METABOOKGLOSSOUTLETINPUT { display: none;}
+#METABOOKHUD.addgloss.glossaddoutlet #METABOOKGLOSSOUTLETINPUT {
     display: block;}
 
-#CODEXHUD #CODEXGLOSSEDITDETAIL textarea {
+#METABOOKHUD #METABOOKGLOSSEDITDETAIL textarea {
   width: 90%; max-height: 90%; min-height: 250px;}
 
-div.completions#CODEXSHARECLOUD #CODEXSHARECLOUD {
+div.completions#METABOOKSHARECLOUD #METABOOKSHARECLOUD {
     margin-left: 50px; margin-right: 50px;}
-div.completions#CODEXGLOSSCLOUD > div {
+div.completions#METABOOKGLOSSCLOUD > div {
     margin-left: 50px; margin-right: 50px;}
-#CODEXFRAME.cxANIMATE div.completions#CODEXSHARECLOUD {
+#METABOOKFRAME.cxANIMATE div.completions#METABOOKSHARECLOUD {
     transition-property: height;
     -webkit-transition-property: height;
     -moz-transition-property: height;
     -o-transition-property: height;
     transition-duration: 3s; -webkit-transition-duration: 3s;
     -moz-duration: 3s; -o-transition-duration: 3s;}
-body.hudup #CODEXHUD.addgloss.glossaddoutlet div.completions#CODEXSHARECLOUD {
+body.hudup #METABOOKHUD.addgloss.glossaddoutlet div.completions#METABOOKSHARECLOUD {
     display: block;}
-body.hudup #CODEXHUD.addgloss.glossattach #CODEXGLOSSATTACH {
+body.hudup #METABOOKHUD.addgloss.glossattach #METABOOKGLOSSATTACH {
     display: block;}
 
-#CODEXGLOSSATTACH table { color: black; }
-#CODEXGLOSSATTACH table tr th:first-child {
+#METABOOKGLOSSATTACH table { color: black; }
+#METABOOKGLOSSATTACH table tr th:first-child {
     width: 4em; padding-right: 0.5ex;}
-#CODEXGLOSSATTACH th.headcell {
+#METABOOKGLOSSATTACH th.headcell {
     width: 4em; color: #4682b4;}
-#CODEXGLOSSATTACH th.button { width: 5em;}
-#CODEXGLOSSATTACH th.headcell img { height: 0.75em; width: auto;}
+#METABOOKGLOSSATTACH th.button { width: 5em;}
+#METABOOKGLOSSATTACH th.headcell img { height: 0.75em; width: auto;}
 
-#CODEXGLOSSATTACH .attachtype td .checkspan.ischecked { font-size: 100%;}
-#CODEXGLOSSATTACH .attachtype td .checkspan {
+#METABOOKGLOSSATTACH .attachtype td .checkspan.ischecked { font-size: 100%;}
+#METABOOKGLOSSATTACH .attachtype td .checkspan {
     display: inline-block; width: 4em; }
-#CODEXGLOSSATTACH .attachtype td { vertical-align: middle; }
+#METABOOKGLOSSATTACH .attachtype td { vertical-align: middle; }
 
-#CODEXGLOSSATTACH tbody.upload { display:  none;}
-#CODEXGLOSSATTACH form.uploading tbody.upload {
+#METABOOKGLOSSATTACH tbody.upload { display:  none;}
+#METABOOKGLOSSATTACH form.uploading tbody.upload {
     display:  table-row-group;}
-#CODEXGLOSSATTACH form.uploading tr.url { display: none; }                                                              
-#CODEXGLOSSATTACH tr.detail { display: none;}
-#CODEXGLOSSATTACH tr.spacing td { height: 1ex;}
+#METABOOKGLOSSATTACH form.uploading tr.url { display: none; }                                                              
+#METABOOKGLOSSATTACH tr.detail { display: none;}
+#METABOOKGLOSSATTACH tr.spacing td { height: 1ex;}
 
-#CODEXGLOSSATTACH tr.fileokay {
+#METABOOKGLOSSATTACH tr.fileokay {
     color: black; font-size: 0.9em; font-style: italic; color: red;}
-#CODEXGLOSSATTACH tr.fileokay span.sbooksname { color: black; }
-#CODEXGLOSSATTACH tr.fileokay span.sbooksname em { color: blue; }
-#CODEXGLOSSATTACH tr.fileokay a { color: blue; text-decoration: underline;}
-#CODEXGLOSSATTACH tr.fileokay.ischecked {
+#METABOOKGLOSSATTACH tr.fileokay span.sbooksname { color: black; }
+#METABOOKGLOSSATTACH tr.fileokay span.sbooksname em { color: blue; }
+#METABOOKGLOSSATTACH tr.fileokay a { color: blue; text-decoration: underline;}
+#METABOOKGLOSSATTACH tr.fileokay.ischecked {
     color: green; font-weight: normal;}
-#CODEXGLOSSATTACH table.fdjtform td input[type="TEXT"],
-#CODEXGLOSSATTACH table.fdjtform td input[type="URL"] {
+#METABOOKGLOSSATTACH table.fdjtform td input[type="TEXT"],
+#METABOOKGLOSSATTACH table.fdjtform td input[type="URL"] {
     box-sizing: border-box; width: 100%;}
-#CODEXGLOSSATTACH th button { width: 5em; }
+#METABOOKGLOSSATTACH th button { width: 5em; }
 
-#CODEXNETWORKBUTTONS { text-align: center;}
-#CODEXNETWORKBUTTONS span.completion {}
-#CODEXNETWORKBUTTONS span.checkspan input[TYPE="CHECKBOX"],
-#CODEXNETWORKBUTTONS span.checkspan.ischecked .unchecked,
-#CODEXNETWORKBUTTONS span.checkspan .checked {
+#METABOOKNETWORKBUTTONS { text-align: center;}
+#METABOOKNETWORKBUTTONS span.completion {}
+#METABOOKNETWORKBUTTONS span.checkspan input[TYPE="CHECKBOX"],
+#METABOOKNETWORKBUTTONS span.checkspan.ischecked .unchecked,
+#METABOOKNETWORKBUTTONS span.checkspan .checked {
     display: none;}
-#CODEXNETWORKBUTTONS span.checkspan.ischecked span.checked,
-#CODEXNETWORKBUTTONS span.checkspan.ischecked img.checked {
+#METABOOKNETWORKBUTTONS span.checkspan.ischecked span.checked,
+#METABOOKNETWORKBUTTONS span.checkspan.ischecked img.checked {
     display: inline;}
-#CODEXSHARECLOUD #CODEXNETWORKBUTTONS img {
+#METABOOKSHARECLOUD #METABOOKNETWORKBUTTONS img {
     height: 40px; width: auto;}
 
-#CODEXRIBBON > div.inputbox {
+#METABOOKRIBBON > div.inputbox {
     text-align: center; margin-bottom: 1ex;}
-#CODEXRIBBON > div.inputbox img.label {
+#METABOOKRIBBON > div.inputbox img.label {
     float: right; height: 2em; width: auto;}
-#CODEXRIBBON > div.inputbox span.head {
+#METABOOKRIBBON > div.inputbox span.head {
     color: black; font-weight: bold;}
-#CODEXRIBBON div.inputbox input[type="TEXT"] {
+#METABOOKRIBBON div.inputbox input[type="TEXT"] {
     background-position: right top;
     background-position-x: right; background-position-y: top;
     background-size: 1.2em 1.2em;
@@ -534,10 +534,10 @@ body.hudup #CODEXHUD.addgloss.glossattach #CODEXGLOSSATTACH {
     height: 1.2em; padding-bottom: 1px; padding-top: 1px;
     font-size: 20px;
     width: 90%;}
-#CODEXRIBBON div.inputbox#CODEXGLOSSTAGINPUT input[TYPE="TEXT"] {
+#METABOOKRIBBON div.inputbox#METABOOKGLOSSTAGINPUT input[TYPE="TEXT"] {
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/tagicon64x64.png);}
-#CODEXRIBBON div.inputbox#CODEXGLOSSOUTLETINPUT input[TYPE="TEXT"] {
+#METABOOKRIBBON div.inputbox#METABOOKGLOSSOUTLETINPUT input[TYPE="TEXT"] {
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/sbookspeople64x64.png);}
 
@@ -629,7 +629,7 @@ div.codexglossform.submitdone div.messageoverlay > div.saved {
 
 div.codexglossform.submitclose form > div {
     opacity: 0.1;}
-#CODEXFRAME.cxANIMATE div.codexglossform.submitclose form > div {
+#METABOOKFRAME.cxANIMATE div.codexglossform.submitclose form > div {
     transition-property: opacity; transition-duration: 3s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 3s;
     -moz-transition-property: opacity; -moz-transition-duration: 3s;

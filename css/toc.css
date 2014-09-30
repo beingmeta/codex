@@ -21,7 +21,7 @@ div.codextoc > div.spanbar {
 
 div.codextoc div.head { min-height: 24px;}
 @media (pointer: coarse) {
-    #CODEXSTATICTOC div.codextoc div.head { min-height: 30px;}
+    #METABOOKSTATICTOC div.codextoc div.head { min-height: 30px;}
     }
 
 div.codextoc div.head .progressbar, div.codextoc div.head .sizebar { 
@@ -93,35 +93,35 @@ div.codextoc div.sub {
 div.codextoc.codexcurhead div.head { }
 div.codextoc.codexcurhead div.sub { display: block;}
 
-#CODEXHEART #CODEXSTATICTOC {
+#METABOOKHEART #METABOOKSTATICTOC {
     margin-left: 0.1em; margin-right: 0.1em;
     font-size: 2em;}
-#CODEXHEART #CODEXSTATICTOC div.codextoc {
+#METABOOKHEART #METABOOKSTATICTOC div.codextoc {
     display: block; font-size: 90%; text-align: left;}
-#CODEXHEART #CODEXSTATICTOC div.codextoc img { display: none;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.codextoc div.head {
+#METABOOKHEART #METABOOKSTATICTOC div.codextoc img { display: none;}
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.codextoc div.head {
     margin-left: 0px; margin-right: 0px;
     padding-left: 0px; padding-right: 0px;
     display: block; font-weight: bold;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.codextocleaf > div.head {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.codextocleaf > div.head {
     display: block; font-weight: normal;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.progressbox { display: none;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.codexlivehead > div.head {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.progressbox { display: none;}
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.codexlivehead > div.head {
     color: blue;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC
   div.codexlivehead > div.spanbar div.progressbox {
       display: block;}
-#CODEXHEART #CODEXSTATICTOC div.codextoc a.brick {
+#METABOOKHEART #METABOOKSTATICTOC div.codextoc a.brick {
     border: solid black 1px;}
 
-#CODEXSTATICTOC div.codextoc.codexcurhead div.sub { display: none;}
+#METABOOKSTATICTOC div.codextoc.codexcurhead div.sub { display: none;}
 
-#CODEXSTATICTOC > div.codextoc { margin-left: 0.5ex; margin-right: 0.5ex;}
-#CODEXSTATICTOC div.spanbar { display: none; }
+#METABOOKSTATICTOC > div.codextoc { margin-left: 0.5ex; margin-right: 0.5ex;}
+#METABOOKSTATICTOC div.spanbar { display: none; }
 
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.spanbar div.spans {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.spanbar div.spans {
     left: 0px;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.head.codexlivehead {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.head.codexlivehead {
     border-bottom: solid red 1px;}
 
 div.codextoc .sectname.cohi {
@@ -136,25 +136,25 @@ div.codextoc a.codextitle.cohi {
 div.codextoc div.spans:hover a.codextitle.cohi {
     background-color: transparent; opacity: 1;}
 
-#CODEXHUD div.codextoc div.head { display: none;}
-#CODEXHUD div.codextoc div.head { display: none;}
-#CODEXHUD div.codextoc div.spanbar { display: none;}
-#CODEXHUD div.codextoc img { display: none;}
+#METABOOKHUD div.codextoc div.head { display: none;}
+#METABOOKHUD div.codextoc div.head { display: none;}
+#METABOOKHUD div.codextoc div.spanbar { display: none;}
+#METABOOKHUD div.codextoc img { display: none;}
 
-#CODEXHUD.overtoc div.codextoc div.head { display: block;}
-#CODEXHUD.overtoc div.codextoc div.spanbar {
+#METABOOKHUD.overtoc div.codextoc div.head { display: block;}
+#METABOOKHUD.overtoc div.codextoc div.spanbar {
     display: block;
     border-left: solid darkgray 2px;
     border-right: solid darkgray 2px;}
-#CODEXHUD.overtoc div.codextoc img { display: inherit;}
-#CODEXHUD.overtoc div.codextoc.codexcurhead div.sub { display: block;}
-#CODEXHUD #CODEXTOC.hover div.codextoc.codexcurhead div.sub {
+#METABOOKHUD.overtoc div.codextoc img { display: inherit;}
+#METABOOKHUD.overtoc div.codextoc.codexcurhead div.sub { display: block;}
+#METABOOKHUD #METABOOKTOC.hover div.codextoc.codexcurhead div.sub {
     display: none;}
 
-#CODEXHUD.overtoc #CODEXTOC div.spanbar div.progressbox {
+#METABOOKHUD.overtoc #METABOOKTOC div.spanbar div.progressbox {
     border-top: 0px; top: 0px; border-bottom: 4px; height: 100%;}
 
-#CODEXTOC div.spanbar, #CODEXSTATICTOC div.spanbar {
+#METABOOKTOC div.spanbar, #METABOOKSTATICTOC div.spanbar {
   position: relative;
   text-align: center; clear: both;
   margin: 0px; padding: 0px; border: 0px;
@@ -164,27 +164,27 @@ div.codextoc div.spans:hover a.codextitle.cohi {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;}
-#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexlivehead {
+#METABOOKTOC div.codextoc div.spanbar div.codexhudspan.codexlivehead {
     z-index: 0;}
 
-#CODEXTOC div.spanbar { height: 48px;}
-#CODEXTOC div.spanbar > div.spans {
+#METABOOKTOC div.spanbar { height: 48px;}
+#METABOOKTOC div.spanbar > div.spans {
     border-top: solid rgba(0,0,255,0.3) 4px;
     border-bottom: solid rgba(0,0,255,0.3) 4px;
     height: 40px;}
-#CODEXTOC div.spanbar div.codexhudspan {
+#METABOOKTOC div.spanbar div.codexhudspan {
     height: 100%; z-index: 50;}
-#CODEXTOC div.codextoc div.spanbar div.codexhudspan a.brick {
+#METABOOKTOC div.codextoc div.spanbar div.codexhudspan a.brick {
     height: 100%;}
-#CODEXTOC div.spanbar div.progressbox {
+#METABOOKTOC div.spanbar div.progressbox {
     vertical-align: top; height: auto; top: 4px; bottom: 4px;}
-#CODEXTOC div.toc0 > div.spanbar div.progressbox {
+#METABOOKTOC div.toc0 > div.spanbar div.progressbox {
     vertical-align: top; top: 0px;}
-#CODEXTOC div.spanbar div.spans { font-size: 30px;}
-#CODEXTOC div.spanbar div.spans a.codextitle {
+#METABOOKTOC div.spanbar div.spans { font-size: 30px;}
+#METABOOKTOC div.spanbar div.spans a.codextitle {
     white-space: nowrap; height: 36px;}
 /*
-#CODEXTOC div.spanbar div.spans a.codextitle:before {
+#METABOOKTOC div.spanbar div.spans a.codextitle:before {
     content: "·"; color: red;}
 */
 
@@ -193,12 +193,12 @@ div.spanbar div.progressbox {
     width: 0.25em; background-color: rgba(255,0,0,0.7);
     position: absolute; z-index: 100; }
 
-#CODEXTOC div.codextoc.codexcurhead > div.spanbar { }
-body.cxPREVIEW #CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
+#METABOOKTOC div.codextoc.codexcurhead > div.spanbar { }
+body.cxPREVIEW #METABOOKTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
     height: 18px;}
-#CODEXTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
+#METABOOKTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
     display: none;}
-#CODEXTOC div.codextoc.codexcurhead div.spanbar
+#METABOOKTOC div.codextoc.codexcurhead div.spanbar
 div.codexhudspan a.brick.cohi {
     background-color: gold;
     opacity: 0.5;
@@ -208,7 +208,7 @@ div.codexhudspan a.brick.cohi {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-#CODEXTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
+#METABOOKTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
     background-color: gold;
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -219,7 +219,7 @@ div.codexhudspan a.brick.cohi {
     -o-opacity: 0.50;}
 
 /*
-#CODEXTOC div.codextoc {
+#METABOOKTOC div.codextoc {
     border-bottom-left-radius: 6px;
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;
@@ -230,7 +230,7 @@ div.codexhudspan a.brick.cohi {
     -o-border-radius-bottomright: 6px;}
 */
 
-#CODEXTOC div.codextoc div.codextoc {
+#METABOOKTOC div.codextoc div.codextoc {
     border-bottom-left-radius: 0px;
     -webkit-border-bottom-left-radius: 0px; 
     -moz-border-radius-bottomleft: 0px;
@@ -240,7 +240,7 @@ div.codexhudspan a.brick.cohi {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
-#CODEXHUD #CODEXSTATICTOC div.spans a.codextitle { display: none;}
+#METABOOKHUD #METABOOKSTATICTOC div.spans a.codextitle { display: none;}
 
 div.spanbar div.spans { 
   position: relative; width: 100%; /* background-color: black; */
@@ -264,7 +264,7 @@ div.spanbar div.codexhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
   border-right: none; border-left: none;}
-#CODEXSTATICTOC div.spanbar div.codexhudspan { z-index: 75;}
+#METABOOKSTATICTOC div.spanbar div.codexhudspan { z-index: 75;}
 div.spanbar div.codexhudspan a.brick {
   display: block; text-decoration: none;
   border: 0px; padding: 0px;
@@ -274,14 +274,14 @@ div.spanbar div.codexhudspan[odd] {}
 div.spanbar div.codexhudspan[even] {}
 div.spanbar div.codexhudspan.current {
     color: yellow; background-color: transparent;}
-#CODEXHUD div.codextoc { 
+#METABOOKHUD div.codextoc { 
   padding-left: 1em; padding-right: 1em;}
-#CODEXHUD #CODEXTOC div.codextoc { 
+#METABOOKHUD #METABOOKTOC div.codextoc { 
   padding-left: 0.5em; padding-right: 0.5em;}
-#CODEXHUD #CODEXTOC div.codextoc.toc0 { 
+#METABOOKHUD #METABOOKTOC div.codextoc.toc0 { 
   padding-left: 0px; padding-right: 0px;
   border-right: 0px; border-left: 0px;}
-#CODEXHUD div.codextoc.toc0 {
+#METABOOKHUD div.codextoc.toc0 {
   padding-left: 0px; padding-right: 0px;}
 
 div.spanbar { padding: 0px; margin: 0px;}
@@ -290,9 +290,9 @@ div.spanbar div.spans {
 
 /* Handling preview mode */
 
-body.cxPREVIEW #CODEXHUD #CODEXTOC a.codextitle {
+body.cxPREVIEW #METABOOKHUD #METABOOKTOC a.codextitle {
     visibility: hidden;}
-body.cxPREVIEW #CODEXHUD div.spanbar {
+body.cxPREVIEW #METABOOKHUD div.spanbar {
     opacity: 0.03;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=03)";
     filter: alpha(opacity=03);
@@ -300,7 +300,7 @@ body.cxPREVIEW #CODEXHUD div.spanbar {
     -khtml-opacity: 0.03;
     -moz-opacity: 0.03;
     -o-opacity: 0.03;}
-body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible {
+body.cxPREVIEW #METABOOKHUD div.spanbar.codexvisible {
     visibility: visible;
     opacity: 0.25;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
@@ -309,7 +309,7 @@ body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible {
     -khtml-opacity: 0.25;
     -moz-opacity: 0.25;
     -o-opacity: 0.25;}
-body.cxPREVIEW #CODEXHUD div.codextoc > div.head {
+body.cxPREVIEW #METABOOKHUD div.codextoc > div.head {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=05)";
     filter: alpha(opacity=05);
@@ -317,7 +317,7 @@ body.cxPREVIEW #CODEXHUD div.codextoc > div.head {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
+body.cxPREVIEW #METABOOKHUD div.codextoc.codexcurhead div.sub {
     opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -325,7 +325,7 @@ body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
+body.cxPREVIEW #METABOOKHUD div.codextoc.codexlivehead > div.head {
     opacity: 0.10;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
@@ -333,7 +333,7 @@ body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
     -khtml-opacity: 0.10;
     -moz-opacity: 0.10;
     -o-opacity: 0.10;}
-body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
+body.cxPREVIEW #METABOOKHUD div.codextoc.codexlivehead.codexcurhead > div.head {
     opacity: 0.40;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);
@@ -345,47 +345,47 @@ body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
 /* The first one is special, doesn't need a top border to indicate
    hierarchy */
 
-#CODEXTOC div.codextoc.toc0 > div.spanbar { height: 44px;}
-#CODEXTOC div.codextoc.toc0 > div.spanbar > div.spans {
+#METABOOKTOC div.codextoc.toc0 > div.spanbar { height: 44px;}
+#METABOOKTOC div.codextoc.toc0 > div.spanbar > div.spans {
     border-top-width: 0px;}
-#CODEXTOC div.codextoc.toc0 >
+#METABOOKTOC div.codextoc.toc0 >
    div.spanbar div.codexhudspan a.brick.codexlivehead {
     border-top-color: darkblue;}
 
 /* Static TOC */
 
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.head { color: black; } 
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC a {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.head { color: black; } 
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC a {
     color: inherit; font-weight: inherit;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC a.cohi {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC a.cohi {
     font-weight: bold; background-color: gold;}
-#CODEXHUD #CODEXHEART #CODEXSTATICTOC div.head.cohi {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.head.cohi {
     background-color: rgba(255,215,0,0.5);}
 
-#CODEXSTATICTOC div.head.tapholdtarget { outline: solid blue 2px; }
-#CODEXSTATICTOC div.head.tapholding { outline: solid blue 2px; }
+#METABOOKSTATICTOC div.head.tapholdtarget { outline: solid blue 2px; }
+#METABOOKSTATICTOC div.head.tapholding { outline: solid blue 2px; }
 
-/* No confusing underlines in the CODEXTOC */
+/* No confusing underlines in the METABOOKTOC */
 
-#CODEXHUD #CODEXTOC a.codextitle,
-#CODEXHUD #CODEXTOC a.codextitle:visited,
-#CODEXHUD #CODEXTOC a.codextitle:hover {
+#METABOOKHUD #METABOOKTOC a.codextitle,
+#METABOOKHUD #METABOOKTOC a.codextitle:visited,
+#METABOOKHUD #METABOOKTOC a.codextitle:hover {
     z-index: 100; color: blue;}
-#CODEXHUD #CODEXTOC a.codexpreviewtitle,
-#CODEXHUD #CODEXTOC a.codexpreviewtitle:visited,
-#CODEXHUD #CODEXTOC a.codexpreviewtitle:hover {
+#METABOOKHUD #METABOOKTOC a.codexpreviewtitle,
+#METABOOKHUD #METABOOKTOC a.codexpreviewtitle:visited,
+#METABOOKHUD #METABOOKTOC a.codexpreviewtitle:hover {
     z-index: 100; color: black;}
 
 div.codextoc a.brick {
     color: transparent; font-weight: bold;
     background-color: rgba(0,0,0,0.1);}
-#CODEXHUD #CODEXTOC a.brick:visited, #CODEXHUD #CODEXTOC a.brick:hover {
+#METABOOKHUD #METABOOKTOC a.brick:visited, #METABOOKHUD #METABOOKTOC a.brick:hover {
     color: transparent;}
-#CODEXHUD #CODEXTOC a.brick.codexlivehead { }
-#CODEXHUD #CODEXTOC a:hover { text-decoration: none;}
+#METABOOKHUD #METABOOKTOC a.brick.codexlivehead { }
+#METABOOKHUD #METABOOKTOC a:hover { text-decoration: none;}
 
 @media (max-device-width: 500px) {
-    #CODEXHUD div.codextoc {
+    #METABOOKHUD div.codextoc {
         padding-left:0.5ex; padding-right: 2px;}
     }
 

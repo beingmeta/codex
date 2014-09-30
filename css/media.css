@@ -7,56 +7,56 @@
 @charset "UTF-8";
 
 @media screen and (max-width: 640px) {
-    #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+    #METABOOKHUD #METABOOKFOOT #METABOOKSHOWTEXT {
         left: auto; right: auto; width: 100%;}
-    #CODEXHUD.openhead #CODEXTOP {
+    #METABOOKHUD.openhead #METABOOKTOP {
         left: 5px; right: 5px;}
-    #CODEXSKIMMER {
+    #METABOOKSKIMMER {
         border-width: 2px;
         border-bottom-left-radius: 1ex;
         border-bottom-right-radius: 1ex;
         padding-bottom: 0px;
         left: 5px; right: 5px; }
-    img.codexclosehud#CODEXSTOPSKIM {
+    img.codexclosehud#METABOOKSTOPSKIM {
         bottom: 50px; top: auto;}
 
-    #CODEXHUD.addgloss img.hudbutton[alt="toc"],
-    #CODEXHUD.addgloss img.hudbutton[alt="search"] {
+    #METABOOKHUD.addgloss img.hudbutton[alt="toc"],
+    #METABOOKHUD.addgloss img.hudbutton[alt="search"] {
         display: none;}
 
-    #CODEXHUD.openhead img.hudbutton[alt="toc"],
-    #CODEXHUD.openhead img.hudbutton[alt="search"],
-    #CODEXHUD.openhead img.hudbutton[alt="searchresults"] {
+    #METABOOKHUD.openhead img.hudbutton[alt="toc"],
+    #METABOOKHUD.openhead img.hudbutton[alt="search"],
+    #METABOOKHUD.openhead img.hudbutton[alt="searchresults"] {
         display: none;}
 
-    #CODEXHUD.openheart #CODEXHEARTFRAME {
+    #METABOOKHUD.openheart #METABOOKHEARTFRAME {
         top: 60px; bottom: 60px;}
 
-    #CODEXHEARTFRAME {
+    #METABOOKHEARTFRAME {
         border-radius: 1ex;
         left: 5px; right: 5px;}
-    #CODEXHEART {
+    #METABOOKHEART {
         border-radius: 1ex; padding-bottom: 0px;
         margin-bottom: 2px; margin-top: 2px;
         left: 5px; right: 5px;
         font-size: 75%;}
-    #CODEXHUD div.codexhelp.hudpanel {
+    #METABOOKHUD div.codexhelp.hudpanel {
         left: 5px; right: 5px; top: 60px; bottom: 60px;}
-  #CODEXHUD div.helphud.rightmiddle,
-  #CODEXHUD div.helphud.leftmiddle {
+  #METABOOKHUD div.helphud.rightmiddle,
+  #METABOOKHUD div.helphud.leftmiddle {
         display: none;}
     div.helpbox blockquote {
         margin-left: 2px; margin-right: 2px;}
     div.helpbox blockquote p {
         margin-right: 0px; margin-left: 1ex; text-indent: -1ex;}
 
-    #CODEXHEART #CODEXSTATICTOC {
+    #METABOOKHEART #METABOOKSTATICTOC {
         margin-left: 0.2em; margin-right: 0.2em;}
 
-    div.fdjtprogress#CODEXLAYOUTMESSAGE {
+    div.fdjtprogress#METABOOKLAYOUTMESSAGE {
         left: 50px; right: 50px;}
 
-    #CODEXPAGE { left: 1.5em; right: 1.5em;}
+    #METABOOKPAGE { left: 1.5em; right: 1.5em;}
     body.cxBYPAGE .codexglossmark {margin-right: 0em;}
 
     div.searchbox div.query { font-size: 12px; }
@@ -66,42 +66,42 @@
         width: auto; margin-right: 10%;}
 
     div.helpbox.atfoot { left: 55px; right: 55px;}
-    #CODEXHUD #CODEXSTARTPAGE.hudpanel { left: 55px; right: 55px;}
+    #METABOOKHUD #METABOOKSTARTPAGE.hudpanel { left: 55px; right: 55px;}
 }
 
 /* Handheld media rules */
 
 @media (max-device-width: 500px) {
-    #CODEXFOOT #CODEXPAGEBAR {
+    #METABOOKFOOT #METABOOKPAGEBAR {
         left: 0px; right: 0px;}
 
-    #CODEXHEART #CODEXSTATICTOC {
+    #METABOOKHEART #METABOOKSTATICTOC {
         margin-left: 2px; margin-right: 2px;}
 
-    #CODEXCOVERMESSAGE > div {
+    #METABOOKCOVERMESSAGE > div {
         font-size: 0.7em;}
-    #CODEXCOVERMESSAGE > div#CODEXREADYMESSAGE {
+    #METABOOKCOVERMESSAGE > div#METABOOKREADYMESSAGE {
         font-size: 1.0em;}
 
-    #CODEXHEAD img.hudbutton[hudmode="allglosses"],
-    #CODEXHEAD img.hudbutton[hudmode="help"] {
+    #METABOOKHEAD img.hudbutton[hudmode="allglosses"],
+    #METABOOKHEAD img.hudbutton[hudmode="help"] {
         display: inline-block;}
-    #CODEXFOOT img.hudbutton[hudmode="allglosses"],
-    #CODEXFOOT img.hudbutton[hudmode="help"] {
+    #METABOOKFOOT img.hudbutton[hudmode="allglosses"],
+    #METABOOKFOOT img.hudbutton[hudmode="help"] {
         display: none;}
     
-   #CODEXHUD #CODEXPOINTGLOSSES.hudpanel {
+   #METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel {
      max-width: 90%; min-width: inherit; left: 5px; right: 10px; }
 
-    #CODEXPAGE {
+    #METABOOKPAGE {
         top: 0px; bottom: 0px;
         left: 5px; right: 5px;}
 }
 
 @media handheld and (orientation: landscape) {
-    #CODEXPAGE {
+    #METABOOKPAGE {
         height: 98%; top: 1%; bottom: 1%;}
-    #CODEXFOOT #CODEXPAGEBAR {
+    #METABOOKFOOT #METABOOKPAGEBAR {
         margin-left: 0px; margin-right: 0px;}
 }
 

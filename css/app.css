@@ -33,15 +33,15 @@
 
 /* Major wrappers and rules */
 
-body.cxFULLWIDTH #CODEXPAGE { max-width: inherit;}
-body.cxSCROLL #CODEXPAGE, img.codexpagebutton { display: none;}
+body.cxFULLWIDTH #METABOOKPAGE { max-width: inherit;}
+body.cxSCROLL #METABOOKPAGE, img.codexpagebutton { display: none;}
 
 body.cxBYPAGE { overflow: hidden; }
-body.cxBYPAGE #CODEXCONTENT { display: none;}
-body.cxLAYOUT #CODEXCONTENT { display: none;}
+body.cxBYPAGE #METABOOKCONTENT { display: none;}
+body.cxLAYOUT #METABOOKCONTENT { display: none;}
 
 /* The page content gets a little transparent when the HUD comes up*/
-body.cxANIMATE.hudup #CODEXPAGE {
+body.cxANIMATE.hudup #METABOOKPAGE {
     transition-property: opacity;
     -webkit-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -58,45 +58,45 @@ body.cxANIMATE.hudup #CODEXPAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 /* When the page is shrunk, the border is visible */
-body.cxPREVIEW #CODEXPAGE, body.cxSHRINK #CODEXPAGE  {
+body.cxPREVIEW #METABOOKPAGE, body.cxSHRINK #METABOOKPAGE  {
     border-color: rgba(48, 60, 97, 0.54);}
 
 /* This is for page shrinking when appropriate */
-body.cxANIMATE #CODEXPAGE {
+body.cxANIMATE #METABOOKPAGE {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
     -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 0.25s; -webkit-transition-duration: 0.25s;
     -moz-duration: 0.25s; -o-transition-duration: 0.25s;}
-body #CODEXPAGE {
+body #METABOOKPAGE {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
-body.cxNOSHRINK #CODEXPAGE {
+body.cxNOSHRINK #METABOOKPAGE {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body.cxSHRINK #CODEXPAGE, body.cxPREVIEW #CODEXPAGE,
-body.cxSKIMMING #CODEXPAGE {
+body.cxSHRINK #METABOOKPAGE, body.cxPREVIEW #METABOOKPAGE,
+body.cxSKIMMING #METABOOKPAGE {
     transform-origin: center top;
     -webkit-transform-origin: center top;
     -moz-transform-origin: center top;
     -o-transform: center top;}
 
-body.cxANIMATE.cxNOSHRINK #CODEXPAGE .codexpage {
+body.cxANIMATE.cxNOSHRINK #METABOOKPAGE .codexpage {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body.cxSHRINK #CODEXPAGE .codexpage,
-body.cxPREVIEW #CODEXPAGE .codexpage,
-body.cxSKIMMING #CODEXPAGE .codexpage {
+body.cxSHRINK #METABOOKPAGE .codexpage,
+body.cxPREVIEW #METABOOKPAGE .codexpage,
+body.cxSKIMMING #METABOOKPAGE .codexpage {
     transform: scale(0.98,0.98); -webkit-transform:scale(0.98,0.98);
     -moz-transform: scale(0.98,0.98); -o-transform:scale(0.98,0.98);}
 
-#CODEXPAGE #CODEXPAGES {
+#METABOOKPAGE #METABOOKPAGES {
     position: absolute;
     top: 0px; bottom:0px; left: 0px; right: 0px;
     padding: 0px; margin: 0px; border: 0px;
     overflow: visible;}
-#CODEXPAGE #CODEXPAGE.codexpaginating #CODEXPAGES {
+#METABOOKPAGE #METABOOKPAGE.codexpaginating #METABOOKPAGES {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -109,19 +109,19 @@ body.cxBYPAGE {
     margin-top: 0px; margin-bottom: 0px;
     margin-left: 0px; margin-right: 0px;}
 
-body.cxSCROLL #CODEXCONTENT {
+body.cxSCROLL #METABOOKCONTENT {
     padding-left: 3em; padding-right: 3em;}
 
-#CODEXCONTENT > * {
+#METABOOKCONTENT > * {
     max-width: inherit;}
 
-#CODEXCONTENT, #CODEXCONTENT p, #CODEXCONTENT div {
+#METABOOKCONTENT, #METABOOKCONTENT p, #METABOOKCONTENT div {
     user-select: auto;
     -o-user-select: auto;
     -moz-user-select: auto;
     -webkit-user-select: auto;}
 
-body.cxSTARTUP #CODEXCONTENT {
+body.cxSTARTUP #METABOOKCONTENT {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -130,30 +130,30 @@ body.cxSTARTUP #CODEXCONTENT {
     -moz-opacity: 0.35;
     -o-opacity: 0.35;}
 
-#CODEXPAGE #CODEXPAGES #CODEXCONTENT {
+#METABOOKPAGE #METABOOKPAGES #METABOOKCONTENT {
     text-align: left;
     padding: 0px; margin: 0px; border: 0px;
     /* This should make space for glossmarks and buttons */
     padding-left: 32px; padding-right: 32px;
     margin-right: 0px;}
 
-body.cxBYPAGE #CODEXPAGE #CODEXCONTENT .codexpagebreak {
+body.cxBYPAGE #METABOOKPAGE #METABOOKCONTENT .codexpagebreak {
     column-break-before: always;
     break-before: always;
     -o-column-break-before: always;
     -webkit-column-break-before: always;
     -moz-column-break-before: always;}
 
-#CODEXASIDE {
+#METABOOKASIDE {
     position: absolute; z-index: -100;
     top: 60px; left: 60px; right: 60px; bottom: 60px;
     display: none;}
-#CODEXREF {
+#METABOOKREF {
     position: absolute; z-index: -100;
     top: 60px; left: 60px; right: 60px;
     display: none;}
 
-#CODEXPAGINATING {
+#METABOOKPAGINATING {
     position: absolute;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     font-size: 200%; font-weight: bold;
@@ -167,7 +167,7 @@ body.cxBYPAGE #CODEXPAGE #CODEXCONTENT .codexpagebreak {
     -webkit-border-radius: 18px;
     display: none;}
 
-.codexpaginating #CODEXPAGINATING {
+.codexpaginating #METABOOKPAGINATING {
     display: block; opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
     filter: alpha(opacity=98);
@@ -200,11 +200,11 @@ span.note.ellipsis span.elision, span.note.ellipsis span.delision {
 
 /* Define some rules inside of the HUD */
 
-#CODEXFRAME table tr {
+#METABOOKFRAME table tr {
     /* Some documents may define style rules for TR which we want to override */
     background-color: transparent;
     border: 0px transparent;}
-#CODEXFRAME input[TYPE="TEXT"] {
+#METABOOKFRAME input[TYPE="TEXT"] {
     box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     padding-left: 0.3ex;}
 
@@ -221,7 +221,7 @@ body.cxTOUCH .fdjtselecting .fdjtselectloupe { display: inline-block; }
 
 .tapholdtarget { border-color: blue;}
 .fdjtselecting .tapholdtarget { border-color: none;}
-#CODEXPAGEBAR .tapholdtarget { border-color: none;}
+#METABOOKPAGEBAR .tapholdtarget { border-color: none;}
 
 /*
 body.cxANIMATE .fdjtselectwrap > span {
@@ -253,15 +253,15 @@ body div.codexmargin {
 
 body.sbooknopage div.codexmargin  { display: none;}
 
-body div.codexmargin#CODEXPAGEHEAD,
-body div.codexmargin#CODEXPAGEFOOT {
+body div.codexmargin#METABOOKPAGEHEAD,
+body div.codexmargin#METABOOKPAGEFOOT {
   left: 0px; right: 0px; width: 100%; height: 20px; z-index: 75;
   text-align: center;}
-body div.codexmargin#CODEXPAGEHEAD { top: 0px; }
-body div.codexmargin#CODEXPAGEFOOT { bottom: 0px; vertical-align: bottom;}
-body.cxSCROLL #CODEXPAGEFOOT, body.cxSCROLL #CODEXPAGEHEAD { display: none;}
+body div.codexmargin#METABOOKPAGEHEAD { top: 0px; }
+body div.codexmargin#METABOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
+body.cxSCROLL #METABOOKPAGEFOOT, body.cxSCROLL #METABOOKPAGEHEAD { display: none;}
 
-#CODEXPAGES.pageswitch {
+#METABOOKPAGES.pageswitch {
     opacity: 0.0001;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -329,14 +329,14 @@ div.locbar hr {
     width: 54px; height: 50px;
     box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     z-index: 50;}
-#CODEXPAGE .codexglossmark {margin-right: -50px;}
+#METABOOKPAGE .codexglossmark {margin-right: -50px;}
 body.cxNARROW div.fdjtselecting .codexglossmark {
     width: 10px; z-index: -20; }
 div.fdjtselecting .codexglossmark > img {
     visibility: hidden;}
 div.fdjtselecting .codexglossmark:hover > img {
     visibility: visible;}
-/* #CODEXCONTENT .codexglossmark { right: 5px;} */
+/* #METABOOKCONTENT .codexglossmark { right: 5px;} */
 
 body .codexglossmark > img {
     opacity: 0.01;
@@ -358,9 +358,9 @@ body .codexglossmark:hover > img, body .codexglossmark.hover > img {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
-body .codexglossmark#CODEXOPENGLOSSMARK > img,
-body .codexglossmark#CODEXOPENGLOSSMARK:hover > img,
-body .codexglossmark#CODEXOPENGLOSSMARK.hover > img {
+body .codexglossmark#METABOOKOPENGLOSSMARK > img,
+body .codexglossmark#METABOOKOPENGLOSSMARK:hover > img,
+body .codexglossmark#METABOOKOPENGLOSSMARK.hover > img {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -404,7 +404,7 @@ body.hudup .codextarget .codexglossbutton { display: block;}
 body.hudup .codextarget.codexglosstarget .codexglossbutton {
     background-color: lightblue;}
 
-#CODEXBODY div.fdjtselecting { background-color: lightyellow; }
+#METABOOKBODY div.fdjtselecting { background-color: lightyellow; }
 
 /* Displaying the sbook target */
 
@@ -461,7 +461,7 @@ body.hudup .codextarget .codexglossmark.hover > img {
 
 body.cxNOUSER a.logout {display: none;}
 body.cxNOUSER #SBOOKLOGOUT { display: none;}
-body.cxNOUSER #CODEXHUD div.hud#CODEXSOURCES img.button.login {
+body.cxNOUSER #METABOOKHUD div.hud#METABOOKSOURCES img.button.login {
   display: block;}
 
 .cxwithuser, .cxdisconn, .cxwithconn, .cxneedlogin { display: none;}
@@ -620,51 +620,51 @@ details, .html5details {
     display: block;}
 details > summary , .html5details > summary {
     display: block;}
-#CODEXBODY details, #CODEXBODY .html5details {
+#METABOOKBODY details, #METABOOKBODY .html5details {
     display: inline;}
-#CODEXBODY details > *, #CODEXBODY .html5details > * {
+#METABOOKBODY details > *, #METABOOKBODY .html5details > * {
     display: none;}
-#CODEXBODY details > summary, #CODEXBODY details > .html5summary,
-#CODEXBODY .html5details > summary, #CODEXBODY .html5details > .html5summary {
+#METABOOKBODY details > summary, #METABOOKBODY details > .html5summary,
+#METABOOKBODY .html5details > summary, #METABOOKBODY .html5details > .html5summary {
     color: blue; text-decoration: underline;
     display: inline; font-size: 80%;}
 
-#CODEXBODY aside > *,
-#CODEXBODY .html5aside > * { display: none;}
-#CODEXBODY aside > hgroup:first-child,
-#CODEXBODY aside > h1:first-child,
-#CODEXBODY aside > h2:first-child,
-#CODEXBODY aside > h3:first-child {
+#METABOOKBODY aside > *,
+#METABOOKBODY .html5aside > * { display: none;}
+#METABOOKBODY aside > hgroup:first-child,
+#METABOOKBODY aside > h1:first-child,
+#METABOOKBODY aside > h2:first-child,
+#METABOOKBODY aside > h3:first-child {
     margin-left: 2em; margin-right: 2em; padding: 1em;
     border: solid black 2px;
     display: block;}
 
-#CODEXBODY .sbooknote {display: none;}
+#METABOOKBODY .sbooknote {display: none;}
 
-#CODEXBODY a[rel='sbooknote'],
-#CODEXBODY a[rel='footnote'],
-#CODEXBODY a[rel='endnote'] {
+#METABOOKBODY a[rel='sbooknote'],
+#METABOOKBODY a[rel='footnote'],
+#METABOOKBODY a[rel='endnote'] {
     font-size: 80%; vertical-align: super; margin-left: 0.5ex;
     color: darkblue; text-decoration: overline; font-variant: small-caps;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -khtml-border-radius: 1ex; -moz-border-radius: 1ex;
     -o-border-radius: 1ex;}
-#CODEXBODY a[rel='sbooknote']:hover,
-#CODEXBODY a[rel='footnote']:hover,
-#CODEXBODY a[rel='endnote']:hover {
+#METABOOKBODY a[rel='sbooknote']:hover,
+#METABOOKBODY a[rel='footnote']:hover,
+#METABOOKBODY a[rel='endnote']:hover {
     text-decoration: overline;}
 
 /* Block elements */
 
-#CODEXBODY #SBOOKDETAILS,
-#CODEXBODY #SBOOKASIDES,
-#CODEXBODY #SBOOKNOTES {
+#METABOOKBODY #SBOOKDETAILS,
+#METABOOKBODY #SBOOKASIDES,
+#METABOOKBODY #SBOOKNOTES {
     page-break-before: always;}
 
-#CODEXBODY #SBOOKDETAILS detail,
-#CODEXBODY #SBOOKDETAILS .sbookdetail,
-#CODEXBODY #SBOOKDETAILS aside,
-#CODEXBODY #SBOOKDETAILS .sbookaside {
+#METABOOKBODY #SBOOKDETAILS detail,
+#METABOOKBODY #SBOOKDETAILS .sbookdetail,
+#METABOOKBODY #SBOOKDETAILS aside,
+#METABOOKBODY #SBOOKDETAILS .sbookaside {
     page-break-before: always;}
 
 div.codexglossform form table {
@@ -702,7 +702,7 @@ body.cxANIMATE.cxPREVIEW div.codexpage {
     -moz-transition-property: none !important;
     -webkit-transition-property: none !important;}
 
-body.cxANIMATE #CODEXPAGE div.codexpage {
+body.cxANIMATE #METABOOKPAGE div.codexpage {
     transition-duration: 0.15s;
     -o-transition-duration: 0.15s;
     -moz-transition-duration: 0.15s;
@@ -758,30 +758,30 @@ body.cxANIMATE div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onle
 
 /* Rules for indicating UI states */
 
-/* body.cxHOLDING #CODEXBODY { opacity: 0.5; } */
+/* body.cxHOLDING #METABOOKBODY { opacity: 0.5; } */
 
 /* Special rules for overriding properties on split (dup) passages */
 
-body #CODEXBODY #CODEXPAGE .codexpage .codexdupstart {
+body #METABOOKBODY #METABOOKPAGE .codexpage .codexdupstart {
     padding-bottom: 0px;
     border-bottom-width: 0px;
     margin-bottom: 0px;}
-body #CODEXBODY #CODEXPAGE .codexpage .codexdup {
+body #METABOOKBODY #METABOOKPAGE .codexpage .codexdup {
     padding-top: 0px;
     border-top-width: 0px;
     margin-top: 0px;
     padding-bottom: 0px;
     border-bottom-width: 0px;
     margin-bottom: 0px;}
-body #CODEXBODY #CODEXPAGE .codexpage p.codexdup,
-body #CODEXBODY #CODEXPAGE .codexpage p.codexdupend {
+body #METABOOKBODY #METABOOKPAGE .codexpage p.codexdup,
+body #METABOOKBODY #METABOOKPAGE .codexpage p.codexdupend {
   text-indent: 0px;}
-body #CODEXBODY #CODEXPAGE .codexpage .codexdupend {
+body #METABOOKBODY #METABOOKPAGE .codexpage .codexdupend {
     padding-top: 0px;
     border-top-width: 0px;
     margin-top: 0px;}
 
-#CODEXPAGE.codexpaginating div.codexpage { visibility: hidden;}
+#METABOOKPAGE.codexpaginating div.codexpage { visibility: hidden;}
 
 img.codexcoverpage {
     display: block;
@@ -821,7 +821,7 @@ section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
 
 /* Startup messages */
 
-#CODEXSTARTUPMESSAGES {
+#METABOOKSTARTUPMESSAGES {
     position: absolute; z-index: -50;
     top: 0px; left: 100px; right: 100px; height: 50px;
     opacity: 0.0;
@@ -832,7 +832,7 @@ section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
     -moz-opacity: 0;
     -o-opacity: 0;
     display: none;}
-body.cxANIMATE #CODEXSTARTUPMESSAGES {
+body.cxANIMATE #METABOOKSTARTUPMESSAGES {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
@@ -840,7 +840,7 @@ body.cxANIMATE #CODEXSTARTUPMESSAGES {
     -o-transition-duration: 1s;
     -moz-transition-property: opacity;
     -moz-transition-duration: 1s;}
-body.cxSTARTUP #CODEXSTARTUPMESSAGES { display: block;}
+body.cxSTARTUP #METABOOKSTARTUPMESSAGES { display: block;}
 div.startupmessage { display: none;}
 div.startupmessage {
     text-align: center; font-size: 20px; font-weight: bold;
@@ -886,16 +886,16 @@ div.fdjtdialog .closebutton {
 /* Media rules */
 
 @media screen and (min-width: 500px) and (max-width: 700px) {
-    #CODEXPAGE {left: 25px; right: 25px;}}
+    #METABOOKPAGE {left: 25px; right: 25px;}}
 @media screen and (min-width: 350px) and (max-width: 500px) {
-    #CODEXPAGE {left: 10px; right: 10px;}}
+    #METABOOKPAGE {left: 10px; right: 10px;}}
 @media screen and (max-width: 300px) {
-    #CODEXPAGE {left: 5px; right: 5px;}}
+    #METABOOKPAGE {left: 5px; right: 5px;}}
 
 @media screen and (min-height: 300px) and (max-height: 500px) {
-    #CODEXPAGE {top: 10px; bottom: 20px;}}
+    #METABOOKPAGE {top: 10px; bottom: 20px;}}
 @media screen and (max-height: 300px) {
-    #CODEXPAGE {top: 5px; bottom: 15px;}}
+    #METABOOKPAGE {top: 5px; bottom: 15px;}}
 
 /* Emacs local variables
 ;;;  Local variables: ***

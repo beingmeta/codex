@@ -4,49 +4,49 @@
     <a class="button exit clearoffline"
          href="https://auth.sbooks.net/admin/logout"
          title="Logout of sBooks and erase any local data">Logout</a> -->
-    <span class="button" id="CODEXSAVESETTINGS">Save</span>
-    <span class="button" id="CODEXAPPLYSETTINGS">Apply</span>
-    <!--<span class="button" id="CODEXRESETSETTINGS">Reset</span>-->
+    <span class="button" id="METABOOKSAVESETTINGS">Save</span>
+    <span class="button" id="METABOOKAPPLYSETTINGS">Apply</span>
+    <!--<span class="button" id="METABOOKRESETSETTINGS">Reset</span>-->
     Settings
     <span class="message codexsettingschanged">
       Your changes have been applied but not saved</span>
-    <span class="message" ID="CODEXSETTINGSMESSAGE"></span></h1>
-  <table class="settings" id="CODEXSETTINGSTABLE">
-    <tbody id="CODEXSYNCSETTINGS">
+    <span class="message" ID="METABOOKSETTINGSMESSAGE"></span></h1>
+  <table class="settings" id="METABOOKSETTINGSTABLE">
+    <tbody id="METABOOKSYNCSETTINGS">
       <tr class="checkspan ischecked">
-        <th><input TYPE="CHECKBOX" NAME="CODEXCACHEGLOSSES"
+        <th><input TYPE="CHECKBOX" NAME="METABOOKCACHEGLOSSES"
                    VALUE="true" CHECKED/></th>
         <td>Save copies of this book's glosses on this device</td>
         <th class="buttons">
-          <button id="CODEXREFRESHOFFLINE"
+          <button id="METABOOKREFRESHOFFLINE"
                   title="Update glosses and other information for this book from the sBooks cloud.">
             <img src="{{bmg}}codex/refresh50x50.png"
                  svg="{{bmg}}codex/refresh.svgz" alt="Refresh"/>
             Glosses</button></th>
       </tr>
       <tr class="checkspan">
-        <th><input TYPE="CHECKBOX" NAME="CODEXLOCSYNC" VALUE="true"/></th>
+        <th><input TYPE="CHECKBOX" NAME="METABOOKLOCSYNC" VALUE="true"/></th>
         <td>Sync your reading location with other devices</td>
         <th></th>
       </tr>
     </tbody>
     <tr class="padding"></tr>
-    <tbody id="CODEXFONTSETTINGS">
+    <tbody id="METABOOKFONTSETTINGS">
       <tr><th rowspan="2">Body font</th>
         <td>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="xlarge"/>x-large</span>
+            <input TYPE="RADIO" NAME="METABOOKBODYSIZE" VALUE="xlarge"/>x-large</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="large"/>large</span>
+            <input TYPE="RADIO" NAME="METABOOKBODYSIZE" VALUE="large"/>large</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="normal"/>normal</span>
+            <input TYPE="RADIO" NAME="METABOOKBODYSIZE" VALUE="normal"/>normal</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="small"/>small</span>
+            <input TYPE="RADIO" NAME="METABOOKBODYSIZE" VALUE="small"/>small</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXBODYSIZE" VALUE="tiny"/>tiny</span>
+            <input TYPE="RADIO" NAME="METABOOKBODYSIZE" VALUE="tiny"/>tiny</span>
       </td>
         <th class="buttons">
-          <button id="CODEXREFRESHLAYOUT"
+          <button id="METABOOKREFRESHLAYOUT"
                   title="Update the page layout for this book.">
             <img src="{{bmg}}codex/refresh50x50.png"
                  svg="{{bmg}}codex/refresh.svgz" alt="Refresh"/>
@@ -56,14 +56,14 @@
       <tr>
         <td>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="sans"/>sans-serif</span>
+            <input TYPE="RADIO" NAME="METABOOKBODYFAMILY" VALUE="sans"/>sans-serif</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXBODYFAMILY" VALUE="serif"/>serif</span></td></tr>
+            <input TYPE="RADIO" NAME="METABOOKBODYFAMILY" VALUE="serif"/>serif</span></td></tr>
       <tr>
         <th>Body text</th>
         <td>
           <span class="checkspan">
-            <input TYPE="CHECKBOX" NAME="CODEXJUSTIFY" VALUE="true"/>justify</span>
+            <input TYPE="CHECKBOX" NAME="METABOOKJUSTIFY" VALUE="true"/>justify</span>
           <!--
           <span class="checkspan">
             <input TYPE="RADIO" NAME="linespacing" VALUE="single"/>single</span>
@@ -76,60 +76,60 @@
       <tr><th>Interface font</th>
         <td colspan="2">
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="large"/>large</span>
+            <input TYPE="RADIO" NAME="METABOOKUISIZE" VALUE="large"/>large</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="normal"/>normal</span>
+            <input TYPE="RADIO" NAME="METABOOKUISIZE" VALUE="normal"/>normal</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXUISIZE" VALUE="small"/>small</span></td></tr>
+            <input TYPE="RADIO" NAME="METABOOKUISIZE" VALUE="small"/>small</span></td></tr>
     </tbody>
     <tr class="padding"></tr>
-    <tbody id="CODEXINTERACTIONSETTINGS">
+    <tbody id="METABOOKINTERACTIONSETTINGS">
       <tr class="codexlayoutsettings">
         <th>Layout</th>
         <td colspan="2">
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="bypage"/>by pages</span>
+            <input TYPE="RADIO" NAME="METABOOKLAYOUT" VALUE="bypage"/>by pages</span>
           <span class="checkspan">
-            <input TYPE="RADIO" NAME="CODEXLAYOUT" VALUE="scrolling"/>just scroll</span>
+            <input TYPE="RADIO" NAME="METABOOKLAYOUT" VALUE="scrolling"/>just scroll</span>
         </td>
       </tr>
       <tr><th>Animation</th>
         <td colspan="2">
           <span class="checkspan">
-            <input TYPE="CHECKBOX" NAME="CODEXANIMATECONTENT" VALUE="true"/>content (page flips, etc)</span>
+            <input TYPE="CHECKBOX" NAME="METABOOKANIMATECONTENT" VALUE="true"/>content (page flips, etc)</span>
           <span class="checkspan">
-            <input TYPE="CHECKBOX" NAME="CODEXANIMATEHUD" VALUE="true"/>interface (HUD, etc)</span></td></tr>
+            <input TYPE="CHECKBOX" NAME="METABOOKANIMATEHUD" VALUE="true"/>interface (HUD, etc)</span></td></tr>
     </tbody>
     <tr class="padding"></tr>
     <!--
-    <tbody id="CODEXHELPSETTINGS" >
-      <tr class="checkspan" id="CODEXHIDESPLASHSETTING">
-        <th><input TYPE="CHECKBOX" NAME="CODEXHIDESPLASH" VALUE="true"
-                   id="CODEXHIDESPLASHSETTING"
+    <tbody id="METABOOKHELPSETTINGS" >
+      <tr class="checkspan" id="METABOOKHIDESPLASHSETTING">
+        <th><input TYPE="CHECKBOX" NAME="METABOOKHIDESPLASH" VALUE="true"
+                   id="METABOOKHIDESPLASHSETTING"
                    CHECKED/></th>
         <td colspan="2">
           Hide the application splash page after startup</td></tr>
       <tr class="checkspan">
-        <th><input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="true"
-                   id="CODEXKEYBOARDHELPSETTING"
+        <th><input TYPE="CHECKBOX" NAME="METABOOKKEYBOARDHELP" VALUE="true"
+                   id="METABOOKKEYBOARDHELPSETTING"
                    CHECKED/></th>
         <td colspan="2">
           Show keyboard help for metaBook</td></tr>
       <tr class="padding"></tr>
     </tbody>
     -->
-    <tbody id="CODEXHACKERSETTINGS">
+    <tbody id="METABOOKHACKERSETTINGS">
       <tr title="A name to display for this device when recording changes">
         <th>Device name</th>
         <td colspan="2">
-          <input TYPE="TEXT" NAME="CODEXDEVICENAME" value=""
+          <input TYPE="TEXT" NAME="METABOOKDEVICENAME" value=""
                  PLACEHOLDER="a name for this device (browser)"
                  onfocus="metaBook.UI.focus(event);"
                  onblur="metaBook.UI.blur(event);"/></td>
       </tr>
       <tr class="padding"></tr>
       <tr class="checkspan">
-        <th><input TYPE="CHECKBOX" NAME="CODEXSHOWCONSOLE" VALUE="true"/></th>
+        <th><input TYPE="CHECKBOX" NAME="METABOOKSHOWCONSOLE" VALUE="true"/></th>
         <td colspan="2">Show the metaBook console</td></tr>
     </tbody>
     <tr class="padding"></tr>
@@ -142,7 +142,7 @@
     </tbody>
     <tbody class="bookinfo">
       <tr><th>Info</th>
-        <td id="CODEXBOOKINFO" colspan="2"></tr>
+        <td id="METABOOKBOOKINFO" colspan="2"></tr>
     </tbody>
   </table>
 </form>

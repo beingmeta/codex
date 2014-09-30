@@ -82,7 +82,7 @@ metaBook.Paginate=
         var mbID=mB.ID;
 
         function layoutMessage(string,pct){
-            var pb=fdjtID("CODEXLAYOUTMESSAGE");
+            var pb=fdjtID("METABOOKLAYOUTMESSAGE");
             fdjt.UI.ProgressBar.setMessage(pb,string);
             if (typeof pct==="number")
                 fdjt.UI.ProgressBar.setProgress(pb,pct);}
@@ -95,13 +95,13 @@ metaBook.Paginate=
             if (!(pagenum)) return;
             var now=fdjtTime();
             var howlong=secs2short((now-started)/1000);
-            var indicator=fdjtID("CODEXLAYOUTINDICATOR");
+            var indicator=fdjtID("METABOOKLAYOUTINDICATOR");
             if (info.done) {
                 if (indicator)
                     indicator.style.width=Math.floor(pct)+"%";
                 fdjtDOM.replace(
-                    "CODEXPAGENOTEXT",
-                    fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
+                    "METABOOKPAGENOTEXT",
+                    fdjtDOM("div.codexpageno#METABOOKPAGENOTEXT",
                             mB.curpage||"?",
                             "/",pagenum," (",Math.floor(pct),
                             "%)"));
@@ -122,8 +122,8 @@ metaBook.Paginate=
                     var pct=(100*lastloc)/maxloc, fpct=Math.floor(pct);
                     if (indicator) indicator.style.width=fpct+"%";
                     fdjtDOM.replace(
-                        "CODEXPAGENOTEXT",
-                        fdjtDOM("div.codexpageno#CODEXPAGENOTEXT",
+                        "METABOOKPAGENOTEXT",
+                        fdjtDOM("div.codexpageno#METABOOKPAGENOTEXT",
                                 mB.curpage||"?",
                                 "/",pagenum," (",fpct,"%)"));
                     layoutMessage(fdjtString(
@@ -149,7 +149,7 @@ metaBook.Paginate=
             addClass(document.body,"cxLAYOUT");
             scaleLayout(false);
             var forced=((init)&&(init.forced));
-            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
+            var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
             var height=geom.inner_height, width=geom.width;
             var justify=mB.justify;
             var spacing=mB.bodyspacing;
@@ -189,14 +189,14 @@ metaBook.Paginate=
 
             function restore_layout(content,layout_id){
                 fdjtLog("Using saved layout %s",layout_id);
-                fdjtID("CODEXCONTENT").style.display='none';
+                fdjtID("METABOOKCONTENT").style.display='none';
                 layoutMessage("Using cached layout",0);
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
                 layout.restoreLayout(content,finish_layout);}
             function finish_layout(layout) {
-                fdjtID("CODEXPAGE").style.visibility='';
-                fdjtID("CODEXCONTENT").style.visibility='';
+                fdjtID("METABOOKPAGE").style.visibility='';
+                fdjtID("METABOOKCONTENT").style.visibility='';
                 dropClass(document.body,"cxLAYOUT");
                 mB.layout=layout;
                 mB.pagecount=layout.pages.length;
@@ -255,8 +255,8 @@ metaBook.Paginate=
                 dropClass(document.body,"cxSCROLL");
                 addClass(document.body,"cxBYPAGE");
                 // This keeps the page content hidden during layout
-                // fdjtID("CODEXPAGE").style.visibility='hidden';
-                fdjtID("CODEXCONTENT").style.visibility='hidden';
+                // fdjtID("METABOOKPAGE").style.visibility='hidden';
+                fdjtID("METABOOKCONTENT").style.visibility='hidden';
                 
                 // Now make the content (temporarily) the same width as
                 // the page
@@ -290,8 +290,8 @@ metaBook.Paginate=
                                 (elapsed>mB.cache_layout_thresh):(elapsed>5000)) {
                                 layout.saveLayout(function(l){
                                     recordLayout(l.layout_id,mB.sourceid);});}}
-                        fdjtID("CODEXPAGE").style.visibility='';
-                        fdjtID("CODEXCONTENT").style.visibility='';
+                        fdjtID("METABOOKPAGE").style.visibility='';
+                        fdjtID("METABOOKCONTENT").style.visibility='';
                         dropClass(document.body,"cxLAYOUT");
                         mB.layout=layout;
                         mB.pagecount=layout.pages.length;
@@ -415,14 +415,14 @@ metaBook.Paginate=
         mB.addConfig("justify",updateLayoutProperty);
         
         function getLayoutID(width,height,family,size,spacing,justify,source_id){
-            var page=fdjtID("CODEXPAGE");
+            var page=fdjtID("METABOOKPAGE");
             var left=page.style.left, right=page.style.right;
             var layout_source=fdjt.CodexLayout.sourcehash;
             page.style.left=""; page.style.right="";
             if (!(width))
                 width=getGeometry(page,false,true).width;
             if (!(height))
-                height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
+                height=getGeometry(fdjtID("METABOOKPAGE"),false,true).inner_height;
             if (!(family)) family=mB.bodyfamily||"serif";
             if (!(size)) size=mB.bodysize||"normal";
             if (!(source_id))
@@ -466,10 +466,10 @@ metaBook.Paginate=
         mB.clearLayouts=clearLayouts;
 
         function getLayoutArgs(){
-            var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
-            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
-            var origin=fdjtDOM("div#CODEXCONTENT");
-            var container=fdjtDOM("div.codexpages#CODEXPAGES");
+            var width=getGeometry(fdjtID("METABOOKPAGE"),false,true).width;
+            var height=getGeometry(fdjtID("METABOOKPAGE"),false,true).inner_height;
+            var origin=fdjtDOM("div#METABOOKCONTENT");
+            var container=fdjtDOM("div.codexpages#METABOOKPAGES");
             var bodyfamily=mB.bodyfamily||"serif";
             var bodysize=mB.bodysize||"normal";
             var sourceid=mB.sourceid||fdjtHash.hex_md5(mB.docuri);
@@ -617,7 +617,7 @@ metaBook.Paginate=
                       layout_id: layout_id,
                       pagefn: setPageInfo,
                       logfn: fdjtLog};
-            fdjtDOM.replace("CODEXPAGES",container);
+            fdjtDOM.replace("METABOOKPAGES",container);
             mB.pages=container;
             
             var avoidbreakclasses=
@@ -738,13 +738,13 @@ metaBook.Paginate=
                 return;}
             else sizeCodexPage();
             var layout=mB.layout;
-            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
+            var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
             var width=geom.width, height=geom.inner_height;
             var lwidth=layout.width, lheight=layout.height;
             var hscale=height/lheight, vscale=width/lwidth;
             var scale=((hscale<vscale)?(hscale):(vscale));
             if (!(cheaprule)) {
-                var s="#CODEXPAGE div.codexpage";
+                var s="#METABOOKPAGE div.codexpage";
                 mB.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
                     s+", body.cxANIMATE.cxPREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transformOrigin]="left top";
@@ -757,7 +757,7 @@ metaBook.Paginate=
                 cheaprule.style.left=((width-nwidth)/2)+"px";
             if (nheight<height) cheaprule.style.top="0px";
             var n=mB.pagecount;
-            var spanwidth=(fdjtID("CODEXPAGEBAR").offsetWidth)/n;
+            var spanwidth=(fdjtID("METABOOKPAGEBAR").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;
             if (mB.CSS.pagespanrule)
                 mB.CSS.pagespanrule.style.width=spanwidth+"px";
@@ -772,8 +772,8 @@ metaBook.Paginate=
             var update_progress=(!(classname));
             if (!(classname)) classname="current";
             var npages=mB.pagecount;
-            var page_elt=fdjt.ID("CODEXPAGESPAN"+pagenum);
-            var cur=getChildren("CODEXPAGEBAR","."+classname);
+            var page_elt=fdjt.ID("METABOOKPAGESPAN"+pagenum);
+            var cur=getChildren("METABOOKPAGEBAR","."+classname);
             if (cur[0]!==page_elt) {
                 dropClass(cur,classname);
                 addClass(page_elt,classname);}
@@ -786,25 +786,25 @@ metaBook.Paginate=
                 var prec=Math.round(Math.log(max_loc/40)/Math.log(10))-2;
                 if (prec<0) prec=0;
                 locoff=fdjtDOM(
-                    "span.locoff#CODEXLOCPCT",
+                    "span.locoff#METABOOKLOCPCT",
                     fdjtString.precString(pct,prec)+"%");
                 locoff.title=location+"/"+max_loc;}
-            else locoff=fdjtDOM("span.locoff#CODEXLOCPCT");
+            else locoff=fdjtDOM("span.locoff#METABOOKLOCPCT");
             var pageno_text=fdjtDOM(
-                "span#CODEXPAGENOTEXT.codexpageno",pagenum,"/",npages);
-            fdjtDOM.replace("CODEXPAGENOTEXT",pageno_text);
-            fdjtDOM.replace("CODEXLOCPCT",locoff);
+                "span#METABOOKPAGENOTEXT.codexpageno",pagenum,"/",npages);
+            fdjtDOM.replace("METABOOKPAGENOTEXT",pageno_text);
+            fdjtDOM.replace("METABOOKLOCPCT",locoff);
             locoff.title=
                 ((locoff.title)||"")+
                 ((locoff.title)?("; "):(""))+
                 "click to jump to a percentage location in the book";
             if (update_progress) {
-                var page_progress=fdjtID("CODEXPAGEPROGRESS");
+                var page_progress=fdjtID("METABOOKPAGEPROGRESS");
                 if (page_progress) page_progress.style.width=
                     (((pagenum-1)*100)/npages)+"%";}
             if (update_progress) {
                 /* Update section markers */
-                var page=fdjtID("CODEXPAGE"+pagenum);
+                var page=fdjtID("METABOOKPAGE"+pagenum);
                 var topid=(page)&&page.getAttribute("data-topid");
                 var info=(topid)&&mB.docinfo[topid];
                 if (info) {
@@ -819,9 +819,9 @@ metaBook.Paginate=
                         if (!(nextspan)) break;
                         head1=head2; head2=head3; head3=head2.head;
                         span1=span2; span2=span3; span3=nextspan;}
-                    var marker1=fdjtID("CODEXSECTMARKER1");
-                    var marker2=fdjtID("CODEXSECTMARKER2");
-                    var marker3=fdjtID("CODEXSECTMARKER3");
+                    var marker1=fdjtID("METABOOKSECTMARKER1");
+                    var marker2=fdjtID("METABOOKSECTMARKER2");
+                    var marker3=fdjtID("METABOOKSECTMARKER3");
                     if ((span1)&&(span1.width)) {
                         marker1.style.left=(100*((span1.start-1)/npages))+"%";
                         marker1.style.width=(100*(span1.width/npages))+"%";
@@ -838,9 +838,9 @@ metaBook.Paginate=
                         marker3.style.display='block';                    }
                     else marker3.style.display='none';}}
             fdjtDOM.addListeners(
-                locoff,mB.UI.handlers[mB.ui]["#CODEXLOCPCT"]);
+                locoff,mB.UI.handlers[mB.ui]["#METABOOKLOCPCT"]);
             fdjtDOM.addListeners(
-                pageno_text,mB.UI.handlers[mB.ui]["#CODEXPAGENOTEXT"]);}
+                pageno_text,mB.UI.handlers[mB.ui]["#METABOOKPAGENOTEXT"]);}
         mB.updatePageDisplay=updatePageDisplay;
         
         function getPageSpan(headinfo) {
@@ -865,10 +865,10 @@ metaBook.Paginate=
         
         function setupPagebar(){
             var i=0, n=mB.pagecount; var html=[];
-            var pagemax=fdjt.ID("CODEXGOTOPAGEMAX");
+            var pagemax=fdjt.ID("METABOOKGOTOPAGEMAX");
             if (pagemax) pagemax.innerHTML=""+n;
             var spanwidth=
-                (fdjtID("CODEXPAGEBAR").offsetWidth)/n;
+                (fdjtID("METABOOKPAGEBAR").offsetWidth)/n;
             if (spanwidth<1) spanwidth=1;
             if (mB.CSS.pagespanrule)
                 mB.CSS.pagespanrule.style.width=spanwidth+"px";
@@ -880,13 +880,13 @@ metaBook.Paginate=
                 var topinfo=(topid)&&(mB.docinfo[topid]);
                 var zstyle=(((topinfo)&&(topinfo.level))?
                             ("; z-index: 50;"):(""));
-                html.push("<span id='CODEXPAGESPAN"+(i+1)+"' "+
+                html.push("<span id='METABOOKPAGESPAN"+(i+1)+"' "+
                           "class='codexpagespan' "+
                           "title='p"+(i+1)+". Hold to glimpse, tap to jump' "+
                           "style='left: "+(100*(i/n))+"%"+zstyle+"'"+
                           ">"+(i+1)+"</span>");
                 i++;}
-            var spans=fdjtID("CODEXPAGESPANS");
+            var spans=fdjtID("METABOOKPAGESPANS");
             spans.innerHTML=html.join("");
             var outer_width=getGeometry(spans);
             var inner_width=fdjt.DOM.getInsideBounds(spans);
@@ -1053,7 +1053,7 @@ metaBook.Paginate=
         mB.refreshLayout=refreshLayout;
         
         function syncLayout(){
-            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
+            var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
             var height=geom.inner_height, width=geom.width;
             if ((mB.layout.height===height)&&
                 (mB.layout.width===width))

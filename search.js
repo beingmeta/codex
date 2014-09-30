@@ -73,8 +73,8 @@
     /* Query functions */
 
     /* Set on main search input */
-    // id="CODEXSEARCHINPUT" 
-    // completions="CODEXSEARCHCLOUD"
+    // id="METABOOKSEARCHINPUT" 
+    // completions="METABOOKSEARCHCLOUD"
 
     mB.getQuery=function(){return mB.query;};
     
@@ -91,14 +91,14 @@
             else {
                 var cloud=mB.queryCloud(query);
                 dropClass(mB.HUD,"emptysearch");
-                fdjtDOM.replace("CODEXSEARCHCLOUD",cloud.dom);
+                fdjtDOM.replace("METABOOKSEARCHCLOUD",cloud.dom);
                 mB.search_cloud=cloud;}
-            useQuery(query,fdjtID("CODEXSEARCH"));}
+            useQuery(query,fdjtID("METABOOKSEARCH"));}
         if (mB.mode==="refinesearch") {
             if (query.results.length===0) {}
             else if (query.results.length<7)
                 showSearchResults();
-            else {fdjtID("CODEXSEARCHINPUT").focus();}}}
+            else {fdjtID("METABOOKSEARCHINPUT").focus();}}}
 
     mB.setQuery=setQuery;
 
@@ -108,7 +108,7 @@
         var qstring=query.getString();
         if ((box_arg)&&(typeof box_arg === 'string'))
             box_arg=document.getElementById(box_arg);
-        var box=box_arg||query._box||fdjtID("CODEXSEARCH");
+        var box=box_arg||query._box||fdjtID("METABOOKSEARCH");
         if ((query.dom)&&(box)&&(box!==query.dom))
             fdjtDOM.replace(box_arg,query.dom);
         box.setAttribute("qstring",qstring);
@@ -127,7 +127,7 @@
         var input=getChild(box,".searchinput");
         var cloudid=input.getAttribute("completions");
         var infoid=input.getAttribute("info");
-        var qtags=getChild(box,".qtags")||fdjtID("CODEXSEARCHTAGS");
+        var qtags=getChild(box,".qtags")||fdjtID("METABOOKSEARCHTAGS");
         var cloud=((cloudid)&&(fdjtID(cloudid)));
         /* These should possibly be used in initializing the .listing
          * field of the query */
@@ -179,7 +179,7 @@
         fdjtDOM.dropClass(box,"norefiners");
         if (query.tags.length===0) {
             fdjtDOM.replace(
-                "CODEXSEARCHCLOUD",fdjtDOM("div#CODEXSEARCHCLOUD"));
+                "METABOOKSEARCHCLOUD",fdjtDOM("div#METABOOKSEARCHCLOUD"));
             mB.empty_cloud.dom.style.fontSize="";
             mB.empty_cloud.complete("");}
         else {
@@ -216,11 +216,11 @@
     function showSearchResults(){
         var results=mB.query.showResults();
         addClass(results,"hudpanel");
-        fdjtDOM.replace("CODEXSEARCHRESULTS",results);
+        fdjtDOM.replace("METABOOKSEARCHRESULTS",results);
         mB.setMode("searchresults");
-        fdjtID("CODEXSEARCHINPUT").blur();
-        fdjtID("CODEXSEARCHRESULTS").focus();
-        mB.UI.updateScroller(fdjtID("CODEXSEARCHRESULTS"));}
+        fdjtID("METABOOKSEARCHINPUT").blur();
+        fdjtID("METABOOKSEARCHRESULTS").focus();
+        mB.UI.updateScroller(fdjtID("METABOOKSEARCHRESULTS"));}
     mB.showSearchResults=showSearchResults;
 
     /* Call this to search */
@@ -279,7 +279,7 @@
                 target.value=completions.prefix;
                 fdjtDOM.cancel(evt);
                 setTimeout(function(){
-                    mB.UI.updateScroller("CODEXSEARCHCLOUD");},
+                    mB.UI.updateScroller("METABOOKSEARCHCLOUD");},
                            100);
                 return;}
             else if (evt.shiftKey) completeinfo.selectPrevious();
@@ -288,12 +288,12 @@
             completeinfo=mB.queryCloud(mB.query);
             completeinfo.docomplete(target);
             setTimeout(function(){
-                mB.UI.updateScroller("CODEXSEARCHCLOUD");},
+                mB.UI.updateScroller("METABOOKSEARCHCLOUD");},
                        100);}}
     mB.UI.handlers.search_keyup=searchInput_keyup;
 
     function searchUpdate(input,cloud){
-        if (!(input)) input=fdjtID("CODEXSEARCHINPUT");
+        if (!(input)) input=fdjtID("METABOOKSEARCHINPUT");
         if (!(cloud)) cloud=mB.queryCloud(mB.query);
         cloud.complete(input.value);}
     mB.searchUpdate=searchUpdate;
@@ -335,7 +335,7 @@
             mB.setMode(false);
         else {
             mB.setMode("refinesearch");
-            fdjtID("CODEXSEARCHINPUT").focus();}
+            fdjtID("METABOOKSEARCHINPUT").focus();}
         fdjtUI.cancel(evt);};
     
     /* Search result listings */

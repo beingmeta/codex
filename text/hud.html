@@ -1,17 +1,17 @@
-<div id="CODEXHEAD">
+<div id="METABOOKHEAD">
   <img svg="{{bmg}}codex/tocicon.svgz"
        src="{{bmg}}codex/tocicon50x50.png"
        alt="toc" title="navigate sections"
        class="hudbutton hudmodebutton topleft"
-       id="CODEXTOCBUTTON"
+       id="METABOOKTOCBUTTON"
        hudmode="statictoc"/>
   <img svg="{{bmg}}codex/help.svgz"
        src="{{bmg}}codex/help50x50.png"
        alt="help" title="show contextual help"
        class="hudbutton hudmodebutton"
-       id="CODEXHELPBUTTON"
+       id="METABOOKHELPBUTTON"
        hudmode="help"/>
-  <span class="hudbutton" id="CODEXSHOWCOVER">
+  <span class="hudbutton" id="METABOOKSHOWCOVER">
     <img svg="{{bmg}}codex/book.svgz"
          src="{{bmg}}codex/book50x50.png" alt="cover">
     <span class="text">Cover</span></span>
@@ -26,56 +26,56 @@
        class="hudbutton hudmodebutton topright"
        hudmode="search"/>
 </div>
-<div id="CODEXTOP">
-  <div id="CODEXTOC" class="hudpanel"></div>
-  <div id="CODEXSEARCH" class="searchbox hudpanel notags">
+<div id="METABOOKTOP">
+  <div id="METABOOKTOC" class="hudpanel"></div>
+  <div id="METABOOKSEARCH" class="searchbox hudpanel notags">
     <!-- This content comes from searchbox.html -->
   </div>
-  <div id="CODEXNOTETEXT" class="hudpanel"
+  <div id="METABOOKNOTETEXT" class="hudpanel"
        title="tap/click to jump to the note">
     <!-- This displays the text for a "note" -->
   </div>
-  <div id="CODEXGLOSS" class="hudpanel">
+  <div id="METABOOKGLOSS" class="hudpanel">
     <div class="editbar">
       <span class="deletebutton">Delete</span>
       <span class="deletebutton">Edit</span>
       <span class="deletebutton">Reply</span>
     </div>
-    <div id="CODEXTARGETGLOSS">
+    <div id="METABOOKTARGETGLOSS">
       <!-- This is generated on demand -->
     </div>
   </div>
-  <div id="CODEXSOURCES" class="hudpanel codexsources">
+  <div id="METABOOKSOURCES" class="hudpanel codexsources">
     <img svg="{{bmg}}codex/sbookspeople.svgz"
          src="{{bmg}}codex/sbookspeople50x50.png"
          class="button everyone selected"
          alt="show all" title="show all glosses"/>
   </div>
-  <div id="CODEXADDGLOSS" class="codexaddgloss hudpanel">
-    <div id="CODEXGLOSSFORMS">
-      <div class="codexglossform" id="CODEXADDGLOSSPROTOTYPE">
+  <div id="METABOOKADDGLOSS" class="codexaddgloss hudpanel">
+    <div id="METABOOKGLOSSFORMS">
+      <div class="codexglossform" id="METABOOKADDGLOSSPROTOTYPE">
         <!-- This content comes from addgloss.html -->
       </div>
       <!-- This is populated with copies of the prototype DIV -->
     </div>
   </div>
 </div>
-<div id="CODEXSKIMMER">
-  <span class="codexskiminfo" id="CODEXSKIMINFO">
+<div id="METABOOKSKIMMER">
+  <span class="codexskiminfo" id="METABOOKSKIMINFO">
     skim info</span>
-  <div id="CODEXSKIM"></div>
+  <div id="METABOOKSKIM"></div>
 </div>
-<div id="CODEXSLICEHELP" class="hudpanel">
+<div id="METABOOKSLICEHELP" class="hudpanel">
   Press to see the context, tap to start skimming
 </div>
-<div id="CODEXSEETHRUHELP" class="codexhelp helpbox">
+<div id="METABOOKSEETHRUHELP" class="codexhelp helpbox">
   <p><dfn>See Thru:</dfn>  <span class="action">Release</span> to
     <span class="result">return to the overview</span>.
     <span class="notouch action">Hit a key</span>
     <span class="fortouch action">Tap anywhere else</span>
     to <span class="result">settle</span> here.</p>
 </div>
-<div id="CODEXPAGEBARHELP" class="codexhelp helpbox">
+<div id="METABOOKPAGEBARHELP" class="codexhelp helpbox">
   <p><span class="action">Release</span> <span class="fortouch
     action">or tap the text</span>
     to <span class="result">settle</span> here.  <span class="action
@@ -85,7 +85,7 @@
     to <span class="result">return</span> to where you
     were.</p>
 </div>
-<div id="CODEXPREVIEWHELP" class="helpbox">
+<div id="METABOOKPREVIEWHELP" class="helpbox">
   <p>You're <em>previewing</em> a reference. <strong>Let go</strong>
       to <em>go back</em> to the
       reference, <strong class="fortouch">tap anywhere
@@ -93,21 +93,21 @@
       to <em>settle here</em>.</p>
 </div>
 </div>
-<div id="CODEXHEARTFRAME">
-  <div id="CODEXRIBBON">
-    <div class="inputbox" ID="CODEXGLOSSTAGINPUT">
+<div id="METABOOKHEARTFRAME">
+  <div id="METABOOKRIBBON">
+    <div class="inputbox" ID="METABOOKGLOSSTAGINPUT">
       <input TYPE="TEXT" NAME="TAG" VALUE=""
              placeholder="Type or define a tag, with completion"
              autocomplete="off"
-             ID="CODEXTAGINPUT"/>
+             ID="METABOOKTAGINPUT"/>
     </div>
-    <div class="inputbox" ID="CODEXGLOSSOUTLETINPUT">
+    <div class="inputbox" ID="METABOOKGLOSSOUTLETINPUT">
       <input TYPE="TEXT" NAME="OUTLET" VALUE=""
              placeholder="Type a group or individual name"
              autocomplete="off"
-             ID="CODEXOUTLETINPUT"/>
+             ID="METABOOKOUTLETINPUT"/>
     </div>
-    <div class="resultinfo notags noresults" id="CODEXSEARCHINFO">
+    <div class="resultinfo notags noresults" id="METABOOKSEARCHINFO">
       <span class="noresults">No results</span>
       <span class="noquery">Add tags to see or refine results</span>
       <span class="stats">
@@ -118,27 +118,27 @@
         <span class="sep vbar">|</span>
         <span class="showalltags codexexpandsearch">
           all tags</span></span>
-      <div id="CODEXSEARCHTAGS" class="qtags"></div>
+      <div id="METABOOKSEARCHTAGS" class="qtags"></div>
     </div>
   </div>
-  <div id="CODEXHEART"></div>
+  <div id="METABOOKHEART"></div>
 </div>
-<div id="CODEXPOINTGLOSSES" class="hudpanel">
+<div id="METABOOKPOINTGLOSSES" class="hudpanel">
   <!-- This is populated when a glosspoint is tapped.
        It contains the glosses for a particular passage. -->
 </div>
-<div id="CODEXHELP" class="hudpanel codexhelp">
+<div id="METABOOKHELP" class="hudpanel codexhelp">
   <!-- This is the help text for reading the book as a whole (it get's
        displayed for help when there isn't an active reader mode) -->
-  <div id="CODEXAPPHELP"></div>
+  <div id="METABOOKAPPHELP"></div>
 </div>
-<div id="CODEXHUDHELP"></div>
-<div id="CODEXKEYBOARDHELPBOX" class="closed">
+<div id="METABOOKHUDHELP"></div>
+<div id="METABOOKKEYBOARDHELPBOX" class="closed">
   <span class="keep" onclick="metaBook.keyboardHelp(true);">keep</span>
   <span class="close" onclick="metaBook.keyboardHelp(false);">close</span>
-  <div id="CODEXKEYBOARDHELP"></div>
+  <div id="METABOOKKEYBOARDHELP"></div>
   <div class="checkspan">
-    <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
+    <input TYPE="CHECKBOX" NAME="METABOOKKEYBOARDHELP" VALUE="yes"
            CHECKED>
     Show keyboard help
   </div>
@@ -160,8 +160,8 @@
 <div class="helphud rightmiddle">
   next page
 </div>
-<div id="CODEXFOOT" data-touchable="span.codexpagespan,span.codexpageno,span.locoff,img.hudbutton">
-  <div id="CODEXSHOWTEXT">
+<div id="METABOOKFOOT" data-touchable="span.codexpagespan,span.codexpageno,span.locoff,img.hudbutton">
+  <div id="METABOOKSHOWTEXT">
     <span class="adjustfont" data-maxfont="110%">
       <span>
         <span class="justreading">back to book</span>
@@ -179,37 +179,37 @@
     or <span style="white-space: nowrap;"><span class="fortouch">tap</span>
       <span class="notouch">click</span> numbers to change them</span>
   </div>
-  <div id="CODEXPAGEBAR">
+  <div id="METABOOKPAGEBAR">
     <div class="textfoot">
-      <div id="CODEXLAYOUTADJUST">Updating layout</div>
-      <hr class="codexlayoutindicator" id="CODEXLAYOUTINDICATOR"/>
-      <span id="CODEXPAGENOTEXT">p/n</span>
-      <span class="locoff" id="CODEXLOCPCT">??.??%</span>
-      <div id="CODEXGOTOLOC" class="codexgoto">
+      <div id="METABOOKLAYOUTADJUST">Updating layout</div>
+      <hr class="codexlayoutindicator" id="METABOOKLAYOUTINDICATOR"/>
+      <span id="METABOOKPAGENOTEXT">p/n</span>
+      <span class="locoff" id="METABOOKLOCPCT">??.??%</span>
+      <div id="METABOOKGOTOLOC" class="codexgoto">
         <input type="text" name="GOTOLOC" value="" placeholder="loc"
                title="Enter a percent (<= 100) or an immediate location (> 100)"
-               id="CODEXLOCINPUT"
+               id="METABOOKLOCINPUT"
                onkeypress="metaBook.UI.goto_keypress(event);"/>%
       </div>
-      <div id="CODEXGOTOPAGE" class="codexgoto">
+      <div id="METABOOKGOTOPAGE" class="codexgoto">
         <input type="text" name="GOTOPAGE" value=""
-               id="CODEXPAGEINPUT" placeholder="page"
+               id="METABOOKPAGEINPUT" placeholder="page"
                onkeypress="metaBook.UI.goto_keypress(event);"/>/
-        <span id="CODEXGOTOPAGEMAX"></span>
+        <span id="METABOOKGOTOPAGEMAX"></span>
       </div>
     </div>
-    <div class="codexpageprogress" id="CODEXPAGEPROGRESS"></div>
-    <div class="codexsectmarker" id="CODEXSECTMARKER1"></div>
-    <div class="codexsectmarker" id="CODEXSECTMARKER2"></div>
-    <div class="codexsectmarker" id="CODEXSECTMARKER3"></div>
-    <div class="codexpagespans" id="CODEXPAGESPANS">
+    <div class="codexpageprogress" id="METABOOKPAGEPROGRESS"></div>
+    <div class="codexsectmarker" id="METABOOKSECTMARKER1"></div>
+    <div class="codexsectmarker" id="METABOOKSECTMARKER2"></div>
+    <div class="codexsectmarker" id="METABOOKSECTMARKER3"></div>
+    <div class="codexpagespans" id="METABOOKPAGESPANS">
     </div>
   </div>
   <img svg="{{bmg}}codex/allglosses.svgz"
        src="{{bmg}}codex/allglosses50x50.png"
        alt="allglosses" title="show all glosses"
        class="hudbutton hudmodebutton botright"
-       id="CODEXALLGLOSSESBUTTON"
+       id="METABOOKALLGLOSSESBUTTON"
        hudmode="allglosses"/>
   <img svg="{{bmg}}codex/tagsearch.svgz"
        src="{{bmg}}codex/tagsearch50x50.png"
@@ -224,7 +224,7 @@
        src="{{bmg}}codex/help50x50.png"
        alt="help" title="show contextual help"
        class="hudbutton hudmodebutton botleft"
-       id="CODEXHELPBUTTON"
+       id="METABOOKHELPBUTTON"
        hudmode="help"/>
   <div class="helphud botright" data-hudmode="toc">
     <span class="nobreak">browse</span><br/>
@@ -233,39 +233,39 @@
     <span class="nobreak">toggle</span><br/>
     <span class="nobreak"><span class="arrow">&#x2190;</span>help</span></div>
 </div>
-<audio id="CODEXPAGEFORWARDAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKPAGEFORWARDAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/pageforward.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/pageforward.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXPAGEBACKWARDAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKPAGEBACKWARDAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/pagebackward.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/pagebackward.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXSKIMFORWARDAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKSKIMFORWARDAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/skimforward.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/skimforward.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXSKIMBACKWARDAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKSKIMBACKWARDAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/skimbackward.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/skimbackward.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXSKIMSTOPAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKSKIMSTOPAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/skimstop.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/skimstop.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXTEXTSELECTAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKTEXTSELECTAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/selecting.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/selecting.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXRAISEHUDAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKRAISEHUDAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/raisehud.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/raisehud.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXDROPHUDAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKDROPHUDAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/drophud.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/drophud.ogg" type="audio/ogg"/>
 </audio>
-<audio id="CODEXGLOSSEDAUDIO" volume="0.5" preload="auto">
+<audio id="METABOOKGLOSSEDAUDIO" volume="0.5" preload="auto">
   <source src="{{bmg}}codex/glossed.wav" type="audio/wave"/>
   <source src="{{bmg}}codex/glossed.ogg" type="audio/ogg"/>
 </audio>

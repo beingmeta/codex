@@ -1,24 +1,24 @@
-<div id="CODEXALLGLOSSES" class="codexslice hudpanel">
+<div id="METABOOKALLGLOSSES" class="codexslice hudpanel">
   <!-- This is filled in on startup -->
 </div>
-<div id="CODEXGLOSSDETAIL" class="hudpanel">
+<div id="METABOOKGLOSSDETAIL" class="hudpanel">
   <!-- This displays detail text for a gloss -->
 </div>
-<div id="CODEXASIDE" class="hudpanel">
+<div id="METABOOKASIDE" class="hudpanel">
   <!-- This displays the text for an aside -->
 </div>
-<div id="CODEXGLOSSEDITDETAIL" class="hudpanel">
+<div id="METABOOKGLOSSEDITDETAIL" class="hudpanel">
   <!-- This is for editing the detail text for a gloss -->
-  <textarea NAME="CODEXDETAILTEXT" ID="CODEXDETAILTEXT" class="markdowninput"></textarea>
+  <textarea NAME="METABOOKDETAILTEXT" ID="METABOOKDETAILTEXT" class="markdowninput"></textarea>
 </div>
-<div id="CODEXGLOSSATTACH" class="hudpanel">
-  <form id="CODEXATTACHFORM" target="CODEXGLOSSCOMM"
+<div id="METABOOKGLOSSATTACH" class="hudpanel">
+  <form id="METABOOKATTACHFORM" target="METABOOKGLOSSCOMM"
 	method="POST" enctype="multipart/form-data" accept-charset="utf-8"
         action="https://glosses.sbooks.net/1/attach"
         class="linking">
     <table class="fdjtform">
-      <input TYPE="HIDDEN" NAME="GLOSSID" VALUE="" id="CODEXUPLOADGLOSSID"/>
-      <input TYPE="HIDDEN" NAME="ITEMID" VALUE="" id="CODEXUPLOADITEMID"/>
+      <input TYPE="HIDDEN" NAME="GLOSSID" VALUE="" id="METABOOKUPLOADGLOSSID"/>
+      <input TYPE="HIDDEN" NAME="ITEMID" VALUE="" id="METABOOKUPLOADITEMID"/>
       <tr class="attachtype">
         <th class="headcell"><img src="{{bmg}}codex/gloss_attach.svgz"/>Attach</th>
         <td>
@@ -36,27 +36,27 @@
       </tr>
       <tr class="title">
         <th>Label</th>
-        <td><INPUT TYPE="TEXT" NAME="TITLE" VALUE="" ID="CODEXATTACHTITLE"
+        <td><INPUT TYPE="TEXT" NAME="TITLE" VALUE="" ID="METABOOKATTACHTITLE"
                    placeholder="a descriptive label"/>
           <th class="button">
-            <button id="CODEXATTACHCANCEL">Cancel</button></th></tr>
+            <button id="METABOOKATTACHCANCEL">Cancel</button></th></tr>
       <tr class="spacing"><td> </td></tr>
       <tr class="url">
         <th>URL</th>
         <td><input TYPE="TEXT" NAME="URL" VALUE=""
-                   ID="CODEXATTACHURL" class="fdjturlinput"
+                   ID="METABOOKATTACHURL" class="fdjturlinput"
                    placeholder="a URL to attach"/>
         </td>
         <th class="button">
-          <button id="CODEXATTACHOK" NAME="ATTACH" "LINK">
+          <button id="METABOOKATTACHOK" NAME="ATTACH" "LINK">
             Link</button></th>
       </tr>
       <tbody class="upload">
         <tr>
           <th>File</th>
-          <td><input TYPE="FILE" NAME="UPLOAD" ID="CODEXATTACHFILE"/></td>
+          <td><input TYPE="FILE" NAME="UPLOAD" ID="METABOOKATTACHFILE"/></td>
           <th class="button">
-            <button id="CODEXUPLOADOK" NAME="ATTACH" "UPLOAD">
+            <button id="METABOOKUPLOADOK" NAME="ATTACH" "UPLOAD">
               Upload</button></th></tr>
         <tr class="checkspan fileokay">
           <th><input TYPE="CHECKBOX" NAME="FILEOKAY" VALUE="yes"/></th>
@@ -69,23 +69,23 @@
       <tr class="detail">
         <th>Detail</th>
         <td>
-          <textarea NAME="ATTACH.DETAIL" ID="CODEXATTACHDETAIL"></textarea>
+          <textarea NAME="ATTACH.DETAIL" ID="METABOOKATTACHDETAIL"></textarea>
         </td>
         <td></td></tr>
     </table>
   </form>
 </div>
-<div id="CODEXSEARCHCLOUD" class="completions searchcloud"></div>
-<div id="CODEXALLTAGS" class="completions searchcloud cloud noinput">
+<div id="METABOOKSEARCHCLOUD" class="completions searchcloud"></div>
+<div id="METABOOKALLTAGS" class="completions searchcloud cloud noinput">
 </div>
-<div id="CODEXSEARCHRESULTS" class="codexslice hudpanel"></div>
-<div id="CODEXSHARECLOUD" class="hudpanel completions showall"></div>
-<div id="CODEXOUTLETS"></div>
-<div id="CODEXGLOSSCLOUD" class="hudpanel completions showall">
+<div id="METABOOKSEARCHRESULTS" class="codexslice hudpanel"></div>
+<div id="METABOOKSHARECLOUD" class="hudpanel completions showall"></div>
+<div id="METABOOKOUTLETS"></div>
+<div id="METABOOKGLOSSCLOUD" class="hudpanel completions showall">
   <div class="nomatchmsg">(no matches)</div>
 </div>
-<div class="tabcontent flyleaftab hudpanel" id="CODEXSTATICTOC"></div>
-<iframe name="CODEXGLOSSCOMM" id="CODEXGLOSSCOMM"
+<div class="tabcontent flyleaftab hudpanel" id="METABOOKSTATICTOC"></div>
+<iframe name="METABOOKGLOSSCOMM" id="METABOOKGLOSSCOMM"
         frameborder="0" scrolling="auto"
         class="hudpanel tabcontent"></iframe>
 <!--

@@ -56,16 +56,16 @@ div.helpbox p img.left {
 div.helpbox kbd { font-weight: bold; }
 div.helpbox img.inline { background-color: gray; }
 
-#CODEXSTARTPAGE #CODEXSTARTUPMSG {
+#METABOOKSTARTPAGE #METABOOKSTARTUPMSG {
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;
     display: none;}
-body.cxSTARTUP #CODEXSTARTPAGE #CODEXSTARTUPMSG {
+body.cxSTARTUP #METABOOKSTARTPAGE #METABOOKSTARTUPMSG {
     display: inline;}
-body.cxSTARTUP #CODEXSTARTPAGE #CODEXHELPTITLE {
+body.cxSTARTUP #METABOOKSTARTPAGE #METABOOKHELPTITLE {
     display: none;}
 
-body.codexhelp #CODEXHUD img.hudbutton#CODEXHELPBUTTON {
+body.codexhelp #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     background-color: silver; border-color: black;
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -75,7 +75,7 @@ body.codexhelp #CODEXHUD img.hudbutton#CODEXHELPBUTTON {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-body.hudup.codexhelp #CODEXHUD img.hudbutton#CODEXHELPBUTTON {
+body.hudup.codexhelp #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     background-color: silver; border-color: black;}
 
 div.helpbox {
@@ -118,44 +118,44 @@ div.helpbox.atfoot {
     left: 75px; right: 75px; width: auto;
     padding-bottom: 50px;}
 
-#CODEXHUD div.helpbox {
+#METABOOKHUD div.helpbox {
     border-color: black; z-index: 250;}
-body.codexhelp #CODEXHUD .helphud,
-body.codexhelp #CODEXHUD > div.codexhelp {display: block;}
-body.codexhelp #CODEXHUD .hudbutton {
+body.codexhelp #METABOOKHUD .helphud,
+body.codexhelp #METABOOKHUD > div.codexhelp {display: block;}
+body.codexhelp #METABOOKHUD .hudbutton {
     opacity: 0.5;}
-body.codexhelp.hudup #CODEXHUD div.codexhelp, 
-body.codexhelp.cxSHRINK #CODEXHUD div.codexhelp,
-body.codexhelp.cxPREVIEW #CODEXHUD div.codexhelp,
-body.codexhelp.hudup #CODEXHUD .helphud,
-body.codexhelp.cxSKIMMING #CODEXHUD div.codexhelp,
-body.codexhelp.cxSKIMMING #CODEXHUD .helphud,
-body.codexhelp #CODEXHUD.addgloss .helphud,
-body.codexhelp #CODEXHUD.overtoc .helphud,
-body.codexhelp #CODEXHUD.statictoc .helphud,
-body.codexhelp.cxSHRINK #CODEXHUD .helphud,
-body.codexhelp.cxPREVIEW #CODEXHUD .helphud {
+body.codexhelp.hudup #METABOOKHUD div.codexhelp, 
+body.codexhelp.cxSHRINK #METABOOKHUD div.codexhelp,
+body.codexhelp.cxPREVIEW #METABOOKHUD div.codexhelp,
+body.codexhelp.hudup #METABOOKHUD .helphud,
+body.codexhelp.cxSKIMMING #METABOOKHUD div.codexhelp,
+body.codexhelp.cxSKIMMING #METABOOKHUD .helphud,
+body.codexhelp #METABOOKHUD.addgloss .helphud,
+body.codexhelp #METABOOKHUD.overtoc .helphud,
+body.codexhelp #METABOOKHUD.statictoc .helphud,
+body.codexhelp.cxSHRINK #METABOOKHUD .helphud,
+body.codexhelp.cxPREVIEW #METABOOKHUD .helphud {
     display: none;}
-body.codexhelp.hudup #CODEXHUD.splash div.codexhelp {
+body.codexhelp.hudup #METABOOKHUD.splash div.codexhelp {
     display: block;}
-#CODEXHUDHELP { z-index: 500; display: none;}
-body.codexhelp #CODEXHUDHELP { display: block; }
-body.hudup.codexhelp #CODEXHUDHELP { display: block; }
+#METABOOKHUDHELP { z-index: 500; display: none;}
+body.codexhelp #METABOOKHUDHELP { display: block; }
+body.hudup.codexhelp #METABOOKHUDHELP { display: block; }
 
-body.codexhelp #CODEXHUD.addgloss #CODEXHUDHELP { display: block; }
-body.codexhelp #CODEXHUD.addgloss #CODEXSTARTPAGE,
-body.codexhelp.cxSHRINK #CODEXHUD.addgloss #CODEXSTARTPAGE {
+body.codexhelp #METABOOKHUD.addgloss #METABOOKHUDHELP { display: block; }
+body.codexhelp #METABOOKHUD.addgloss #METABOOKSTARTPAGE,
+body.codexhelp.cxSHRINK #METABOOKHUD.addgloss #METABOOKSTARTPAGE {
     display: none; }
 
-body.codexhelp.hudup #CODEXHUD.overtoc #CODEXTOCHELP.helpbox,
-body.codexhelp #CODEXHUD.addgloss #CODEXADDGLOSSHELP.helpbox,
-body.codexhelp.cxSKIMMING #CODEXHUD.allglosses #CODEXSKIMMINGHELP.helpbox,
-body.codexhelp.cxSKIMMING #CODEXHUD.searchresults #CODEXSKIMMINGHELP.helpbox,
-body.codexhelp #CODEXHUD.refinesearch #CODEXSEARCHINPUTHELP.helpbox,
-body.codexhelp #CODEXHUD.expandsearch #CODEXSEARCHINPUTHELP.helpbox,
-body.codexhelp #CODEXHUD.searchresults #CODEXSEARCHRESULTSHELP.helpbox,
-body.codexhelp #CODEXHUD.allglosses #CODEXALLGLOSSESHELP.helpbox,
-body.codexhelp #CODEXHUD.statictoc #CODEXSTATICTOCHELP.helpbox {
+body.codexhelp.hudup #METABOOKHUD.overtoc #METABOOKTOCHELP.helpbox,
+body.codexhelp #METABOOKHUD.addgloss #METABOOKADDGLOSSHELP.helpbox,
+body.codexhelp.cxSKIMMING #METABOOKHUD.allglosses #METABOOKSKIMMINGHELP.helpbox,
+body.codexhelp.cxSKIMMING #METABOOKHUD.searchresults #METABOOKSKIMMINGHELP.helpbox,
+body.codexhelp #METABOOKHUD.refinesearch #METABOOKSEARCHINPUTHELP.helpbox,
+body.codexhelp #METABOOKHUD.expandsearch #METABOOKSEARCHINPUTHELP.helpbox,
+body.codexhelp #METABOOKHUD.searchresults #METABOOKSEARCHRESULTSHELP.helpbox,
+body.codexhelp #METABOOKHUD.allglosses #METABOOKALLGLOSSESHELP.helpbox,
+body.codexhelp #METABOOKHUD.statictoc #METABOOKSTATICTOCHELP.helpbox {
     border-color: black; z-index: 260; display: block; opacity: 0.9; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -165,18 +165,18 @@ body.codexhelp #CODEXHUD.statictoc #CODEXSTATICTOCHELP.helpbox {
     -o-opacity: 0.90;
     display: block;}
 
-body.codexhelp.cxSKIMMING #CODEXHUD.searchresults
-  #CODEXSEARCHRESULTSHELP.helpbox,
-body.codexhelp.cxSKIMMING #CODEXHUD.allglosses
-  #CODEXALLGLOSSESHELP.helpbox {
+body.codexhelp.cxSKIMMING #METABOOKHUD.searchresults
+  #METABOOKSEARCHRESULTSHELP.helpbox,
+body.codexhelp.cxSKIMMING #METABOOKHUD.allglosses
+  #METABOOKALLGLOSSESHELP.helpbox {
     display: none;}
 
 /* Goto page and goto loc always display their help. */
-#CODEXHUD.gotopage #CODEXHUDHELP,
-#CODEXHUD.gotoloc #CODEXHUDHELP {
+#METABOOKHUD.gotopage #METABOOKHUDHELP,
+#METABOOKHUD.gotoloc #METABOOKHUDHELP {
     text-align: center; display: block;}
-#CODEXHUD.gotopage #CODEXGOTOPAGEHELP.helpbox,
-#CODEXHUD.gotoloc #CODEXGOTOLOCHELP.helpbox {
+#METABOOKHUD.gotopage #METABOOKGOTOPAGEHELP.helpbox,
+#METABOOKHUD.gotoloc #METABOOKGOTOLOCHELP.helpbox {
     border-color: black; z-index: 260; opacity: 0.9; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -185,7 +185,7 @@ body.codexhelp.cxSKIMMING #CODEXHUD.allglosses
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-body.codexhelp.cxPREVIEW #CODEXHUD #CODEXHUDHELP {
+body.codexhelp.cxPREVIEW #METABOOKHUD #METABOOKHUDHELP {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -194,7 +194,7 @@ body.codexhelp.cxPREVIEW #CODEXHUD #CODEXHUDHELP {
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
 
-body.codexhelp #CODEXHUD.openglossmark #CODEXPOINTGLOSSES {
+body.codexhelp #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES {
     opacity: 0;}
 
 div.helpbox p {
@@ -226,34 +226,34 @@ div.helpbox blockquote p {
     max-width: 40em; margin-left: auto; margin-right: auto;
     text-align: center;
     color: red;}
-#CODEXSTARTPAGE div.codexhelp p.checkspan { text-align: center; }
+#METABOOKSTARTPAGE div.codexhelp p.checkspan { text-align: center; }
 
 /* Help HUD */
 
-#CODEXHUD .helphud {
+#METABOOKHUD .helphud {
     position: absolute; background-color: ivory; z-index: 100;
     border: solid black 1px; padding: 3px; border-radius: 6px;
     font-family: sans,sans-serif;
     border-radius: 6px; -o-border-radius: 6px; 
     -moz-border-radius: 6px; -webkit-border-radius: 6px; 
     display: none;}
-#CODEXHUD .helphud.topleft {top: 3px; left: 60px; text-align: right;}
-#CODEXHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
-#CODEXHUD .helphud.botleft {bottom: 25px; left: 60px; text-align: right;}
-#CODEXHUD .helphud.botright {bottom: 25px; right: 60px; text-align: left;}
-#CODEXHUD .helphud.topcenter {
+#METABOOKHUD .helphud.topleft {top: 3px; left: 60px; text-align: right;}
+#METABOOKHUD .helphud.topright {top: 3px; right: 60px; text-align: left;}
+#METABOOKHUD .helphud.botleft {bottom: 25px; left: 60px; text-align: right;}
+#METABOOKHUD .helphud.botright {bottom: 25px; right: 60px; text-align: left;}
+#METABOOKHUD .helphud.topcenter {
     top: 0px; width: 50%; left: 25%; right: 25%; text-align: center;
     border-top-left-radius: 0px; border-top-right-radius: 0px;
     -o-border-top-left-radius: 0px; -o-border-top-right-radius: 0px; 
     -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px; 
     -o-border-radius-topleft: 0px; -oborder-radius-topright: 0px;}
 
-#CODEXHUD .helphud.botcenter {
+#METABOOKHUD .helphud.botcenter {
     bottom: 25px;
     width: 50%; left: 25%; right: 25%;
     text-align: center;}
 
-#CODEXHUD div.helphud.leftmiddle {
+#METABOOKHUD div.helphud.leftmiddle {
     position: absolute; max-width: 50px; padding-left: 3px;
     top: 40%; left: 0px; text-align: left; padding-right: 2px;
     border-top-left-radius: 0px; border-bottom-left-radius: 0px;
@@ -261,7 +261,7 @@ div.helpbox blockquote p {
     -webkit-border-top-left-radius: 0px; -webkit-border-bottom-left-radius: 0px; 
     -moz-border-radius-topleft: 0px; -moz-border-radius-bottomleft: 0px;}
 
-#CODEXHUD div.helphud.rightmiddle {
+#METABOOKHUD div.helphud.rightmiddle {
     position: absolute; max-width: 50px; padding-right: 3px;
     top: 40%; right: 0px; text-align: right; padding-left: 2px;
     border-top-right-radius: 0px; border-bottom-right-radius: 0px;
@@ -340,12 +340,12 @@ div.codexhelp img.narrowimage { display: none;}
     div.codexhelp img.narrowimage { display: inline;}
     div.codexhelp img.wideimage { display: none;}}
 
-div#CODEXHELP table.textual { font-size: 120%;}
+div#METABOOKHELP table.textual { font-size: 120%;}
 div.codexhelp table.textual td {padding-left: 3px;}
 div.codexhelp div.glossbarbox {
     font-weight: normal; padding-right: 2px; border-right: solid blue 3px;}
 
-#CODEXHUD div.codexhelp.hudpanel {
+#METABOOKHUD div.codexhelp.hudpanel {
     position: absolute; text-align: center;
     top: 100px; bottom: 100px; left: 80px; right: 80px; 
     height: auto; width: auto; padding-bottom: 1em;
@@ -362,7 +362,7 @@ div.codexhelp div.glossbarbox {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;} 
 
-#CODEXHUD #CODEXKEYBOARDHELPBOX.hudpanel {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX.hudpanel {
     position: absolute; text-align: center;
     top: 150px; left: 75px; right: 75px;
     font-size: 120%; font-family: helvetica,sans,sans-serif;
@@ -378,20 +378,20 @@ div.codexhelp div.glossbarbox {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;} 
 
-#CODEXHUD #CODEXKEYBOARDHELPBOX #CODEXKEYBOARDHELP {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX #METABOOKKEYBOARDHELP {
     margin: 2em;}
 
-#CODEXHUD #CODEXKEYBOARDHELPBOX span.keep {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX span.keep {
     color: green; float: left; margin-left: 1em; font-weight: bold;
     cursor: pointer;}
-#CODEXHUD #CODEXKEYBOARDHELPBOX span.keep:hover,
-#CODEXHUD #CODEXKEYBOARDHELPBOX span.close:hover {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX span.keep:hover,
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX span.close:hover {
     text-decoration: underline; }
-#CODEXHUD #CODEXKEYBOARDHELPBOX span.close {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX span.close {
     color: red; float: right; margin-right: 1em; font-weight: bold;
     cursor: pointer;}
 
-#CODEXHUD #CODEXKEYBOARDHELPBOX.closing {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX.closing {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -399,7 +399,7 @@ div.codexhelp div.glossbarbox {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-#CODEXHUD #CODEXKEYBOARDHELPBOX.closed {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX.closed {
     opacity: 1.0; display: none;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
@@ -408,8 +408,8 @@ div.codexhelp div.glossbarbox {
     -moz-opacity: 1.00;
     -o-opacity: 1.00;}
 
-#CODEXHUD #CODEXKEYBOARDHELPBOX.closing
-#CODEXKEYBOARDHELP {
+#METABOOKHUD #METABOOKKEYBOARDHELPBOX.closing
+#METABOOKKEYBOARDHELP {
     opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -418,12 +418,12 @@ div.codexhelp div.glossbarbox {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-#CODEXHUD #CODEXKEYBOARDHELP kbd {
+#METABOOKHUD #METABOOKKEYBOARDHELP kbd {
     font-family: verdana,helvetica,sans,sans-serif;
     font-size: 120%; font-weight: bold;}
 
 @media screen and (max-width: 800px) {
-    #CODEXHUD .helphud { font-size: 0.7em; }
+    #METABOOKHUD .helphud { font-size: 0.7em; }
     }
 
 /* Emacs local variables

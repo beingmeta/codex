@@ -90,9 +90,9 @@
 
     // The gloss mode is stored in two places:
     //  * the class of the gloss FORM element
-    //  * as the class gloss+mode on CODEXHUD (e.g. glossaddtag)
+    //  * as the class gloss+mode on METABOOKHUD (e.g. glossaddtag)
     function getGlossMode(arg){
-        if (!(arg)) arg=fdjtID("CODEXLIVEGLOSS");
+        if (!(arg)) arg=fdjtID("METABOOKLIVEGLOSS");
         if (typeof arg === 'string') arg=fdjtID(arg);
         if ((!(arg))||(!(arg.nodeType))) return false;
         if (arg.tagName!=="FORM") arg=getChild(arg,"FORM");
@@ -104,7 +104,7 @@
     mB.getGlossMode=getGlossMode;
 
     function setGlossMode(mode,arg,toggle){
-        if (!(arg)) arg=fdjtID("CODEXLIVEGLOSS");
+        if (!(arg)) arg=fdjtID("METABOOKLIVEGLOSS");
         if (typeof arg === 'string') arg=fdjtID(arg);
         if ((!(arg))||(!(arg.nodeType))) return;
         var form=((arg.tagName==="FORM")?(arg):
@@ -124,34 +124,34 @@
         if ((toggle)&&(mode===form.className)) mode=false;
         if (mode) addClass(div,"focused");
         if (form.className==="editdetail") {
-            detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;}
+            detail_elt.value=fdjt.ID("METABOOKDETAILTEXT").value;}
         if (!(mode)) {
             dropClass(form,glossmodes);
-            dropClass("CODEXHUD",/\bgloss\w+\b/);
-            dropClass("CODEXHUD","openheart");
+            dropClass("METABOOKHUD",/\bgloss\w+\b/);
+            dropClass("METABOOKHUD","openheart");
             return;}
-        if (mode==="addtag") input=fdjtID("CODEXTAGINPUT");
+        if (mode==="addtag") input=fdjtID("METABOOKTAGINPUT");
         else if (mode==="attach") {
-            var upload_glossid=fdjtID("CODEXUPLOADGLOSSID");
+            var upload_glossid=fdjtID("METABOOKUPLOADGLOSSID");
             upload_glossid.value=uuid.value;
-            var upload_itemid=fdjtID("CODEXUPLOADITEMID");
+            var upload_itemid=fdjtID("METABOOKUPLOADITEMID");
             upload_itemid.value=fdjtState.getUUID();
-            input=fdjtID("CODEXATTACHURL");}
-        else if (mode==="addoutlet") input=fdjtID("CODEXOUTLETINPUT");
+            input=fdjtID("METABOOKATTACHURL");}
+        else if (mode==="addoutlet") input=fdjtID("METABOOKOUTLETINPUT");
         else if (mode==="editdetail") {
-            input=fdjtID("CODEXDETAILTEXT");
-            fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
+            input=fdjtID("METABOOKDETAILTEXT");
+            fdjt.ID("METABOOKDETAILTEXT").value=detail_elt.value;}
         else {
             dropClass(form,glossmodes);
-            dropClass("CODEXHUD",/\bgloss\w+\b/);
+            dropClass("METABOOKHUD",/\bgloss\w+\b/);
             return;}
         if ((Trace.mode)||(Trace.glossing))
             fdjtLog("setGlossMode gm=%s input=%o",mode,input);
         form.className=mode;
-        swapClass("CODEXHUD",/\bgloss\w+\b/,"gloss"+mode);
+        swapClass("METABOOKHUD",/\bgloss\w+\b/,"gloss"+mode);
         mB.setHUD(true);
         if ((mode)&&(/(editdetail|addtag|addoutlet)/.exec(mode)))
-            addClass("CODEXHUD","openheart");
+            addClass("METABOOKHUD","openheart");
         if (input) mB.setFocus(input);}
     mB.setGlossMode=setGlossMode;
 
@@ -169,15 +169,15 @@
         var passageid=((passage.codexbaseid)||(passage.id));
         var formid=((gloss)?
                     ((response)?
-                     ("CODEXRESPONDGLOSS_"+gloss._id):
-                     ("CODEXEDITGLOSS_"+gloss._id)):
-                    ("CODEXADDGLOSS_"+passageid));
+                     ("METABOOKRESPONDGLOSS_"+gloss._id):
+                     ("METABOOKEDITGLOSS_"+gloss._id)):
+                    ("METABOOKADDGLOSS_"+passageid));
         var form=fdjtID(formid);
         var div=((form)&&(form.parentNode));
-        var proto=fdjtID("CODEXADDGLOSSPROTOTYPE");
+        var proto=fdjtID("METABOOKADDGLOSSPROTOTYPE");
         if (!(div)) {
             div=proto.cloneNode(true); div.id="";
-            fdjtDOM(fdjtID("CODEXGLOSSFORMS"),div);
+            fdjtDOM(fdjtID("METABOOKGLOSSFORMS"),div);
             form=getChildren(div,"form")[0];
             form.id=formid;
             form=setupGlossForm(form,passage,gloss,response||false);
@@ -319,10 +319,10 @@
                     target,form,selecting);
         if (mB.glosstarget) {
             dropClass(mB.glosstarget,"codexglosstarget");}
-        dropClass("CODEXHUD",/\bgloss\w+\b/);
-        dropClass("CODEXHUD","editgloss");
+        dropClass("METABOOKHUD",/\bgloss\w+\b/);
+        dropClass("METABOOKHUD","editgloss");
         if (!(target)) {
-            var cur=fdjtID("CODEXLIVEGLOSS");
+            var cur=fdjtID("METABOOKLIVEGLOSS");
             if (cur) cur.id="";
             mB.glosstarget=false;
             mB.glossform=false;
@@ -433,7 +433,7 @@
         evt=evt||window.event;
         if ((Trace.selection)||(Trace.glossing)||(Trace.gestures))
             fdjtLog("gloss_selecting_ontap %o, mode=%o, livegloss=%o",
-                    evt,mB.mode,fdjt.ID("CODEXLIVEGLOSS"));
+                    evt,mB.mode,fdjt.ID("METABOOKLIVEGLOSS"));
         if (mB.mode!=="addgloss") 
             mB.setMode("addgloss",false);
         else if ((mB.modechange)&&
@@ -443,21 +443,21 @@
         return;}
 
     function setGlossForm(form){
-        var cur=fdjtID("CODEXLIVEGLOSS");
+        var cur=fdjtID("METABOOKLIVEGLOSS");
         if (cur) cur.id="";
         if (Trace.glossing)
             fdjtLog("setGlossForm %o <== %o",form,mB.glossform);
         if (!(form)) {
             mB.glossform=false;
             return;}
-        form.id="CODEXLIVEGLOSS";
+        form.id="METABOOKLIVEGLOSS";
         if ((mB.glossform)&&
             (mB.glossform.className==="editdetail")) {
             var oldform=mB.glossform;
             var detail_elt=getInput(oldform,"DETAIL");
-            detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;
+            detail_elt.value=fdjt.ID("METABOOKDETAILTEXT").value;
             detail_elt=getInput(form,"DETAIL");
-            fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
+            fdjt.ID("METABOOKDETAILTEXT").value=detail_elt.value;}
         mB.glossform=form;
         var syncelt=getInput(form,"SYNC");
         syncelt.value=(mB.syncstamp+1);
@@ -838,7 +838,7 @@
                         text.slice(0,replace_start)+cloud.prefix+
                         text.slice(replace_end);
                     setTimeout(function(){
-                        mB.UI.updateScroller("CODEXGLOSSCLOUD");},
+                        mB.UI.updateScroller("METABOOKGLOSSCLOUD");},
                                100);
                     return;}
                 else if (evt.shiftKey) cloud.selectPrevious();
@@ -847,7 +847,7 @@
             else if (cloud.selection) {
                 mB.addTag2Form(form,cloud.selection);
                 target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
-                dropClass("CODEXHUD",/gloss(tagging|tagoutlet)/g);
+                dropClass("METABOOKHUD",/gloss(tagging|tagoutlet)/g);
                 setTimeout(function(){cloud.complete("");},10);
                 cloud.clearSelection();
                 fdjtUI.cancel(evt);}
@@ -867,16 +867,16 @@
             var isoutlet=(taginfo.prefix==="@");
             if (isoutlet)
                 swapClass(
-                    "CODEXHUD",/gloss(tagging|tagoutlet)/g,"glosstagoutlet");
+                    "METABOOKHUD",/gloss(tagging|tagoutlet)/g,"glosstagoutlet");
             else swapClass(
-                "CODEXHUD",/gloss(tagging|tagoutlet)/g,"glosstagging");
+                "METABOOKHUD",/gloss(tagging|tagoutlet)/g,"glosstagging");
             if (isoutlet)
                 completions=mB.share_cloud.complete(taginfo.content);
             else completions=mB.gloss_cloud.complete(taginfo.content);
             if (Trace.glossing)
                 fdjtLog("Got %d completions for %s",
                         completions.length,taginfo.content);}
-        else dropClass("CODEXHUD",/gloss(tagging|addoutlet)/g);}
+        else dropClass("METABOOKHUD",/gloss(tagging|addoutlet)/g);}
 
     function glosstag_done(input_elt,tagtext,personal,isoutlet){
         var form=getParent(input_elt,"FORM"), tag=false;
@@ -900,7 +900,7 @@
                 if (tag) addTag(form,tag);
                 else addTag(form,tagtext);}
             else addTag(form,tag);}
-        dropClass("CODEXHUD",/gloss(tagging|addoutlet)/);}
+        dropClass("METABOOKHUD",/gloss(tagging|addoutlet)/);}
     
     function getTagString(span,content){
         var tagval=span.getAttribute("data-tagval");
@@ -1030,10 +1030,10 @@
         var target=fdjtUI.T(evt);
         var completion=getParent(target,'.completion');
         if (completion) {
-            var live=fdjtID("CODEXLIVEGLOSS");
+            var live=fdjtID("METABOOKLIVEGLOSS");
             var form=((live)&&(getChild(live,"form")));
             var span=addTag(form,completion);
-            if (!(hasClass("CODEXHUD","glossaddtag"))) {
+            if (!(hasClass("METABOOKHUD","glossaddtag"))) {
                 // This means we have a bracketed reference
                 var tagstring=getTagString(
                     span,mB.gloss_cloud.getKey(completion));
@@ -1048,7 +1048,7 @@
         var target=fdjtUI.T(evt);
         var completion=getParent(target,'.completion');
         if (completion) {
-            var live=fdjtID("CODEXLIVEGLOSS");
+            var live=fdjtID("METABOOKLIVEGLOSS");
             var form=((live)&&(getChild(live,"form")));
             var value=completion.getAttribute("data-value");
             if (hasClass(completion,"source")) {
@@ -1069,7 +1069,7 @@
     function submitGloss(arg,keep){
         var div=false, form=false;
         if (typeof arg === "undefined") {
-            div=fdjtID("CODEXLIVEGLOSS");
+            div=fdjtID("METABOOKLIVEGLOSS");
             if (!(div)) return;
             form=getChild(div,"FORM");}
         else {
@@ -1085,13 +1085,13 @@
             var detail_elt=getInput(form,"DETAIL");
             if (detail_elt) {
                 detail_elt.value=
-                    fdjt.ID("CODEXDETAILTEXT").value;
-                fdjt.ID("CODEXDETAILTEXT").value="";}}
+                    fdjt.ID("METABOOKDETAILTEXT").value;
+                fdjt.ID("METABOOKDETAILTEXT").value="";}}
         addClass(div,"submitting");
         if (!((hasParent(form,".glossedit"))||
               (hasParent(form,".glossreply"))))
             // Only save defaults if adding a new gloss
-            saveGlossDefaults(form,getChild("CODEXADDGLOSSPROTOTYPE","FORM"));
+            saveGlossDefaults(form,getChild("METABOOKADDGLOSSPROTOTYPE","FORM"));
         var uuidelt=getInput(form,"UUID");
         if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
             fdjtLog.warn('missing UUID');
@@ -1193,7 +1193,7 @@
 
     function cancelGloss(arg){
         var evt=arg||event||null;
-        var target=((!arg)?(fdjtID("CODEXLIVEGLOSS")):
+        var target=((!arg)?(fdjtID("METABOOKLIVEGLOSS")):
                     (arg.nodeType)?(arg):(fdjtUI.T(arg)));
         var glossform=(target)&&
             (fdjtDOM.getParent(target,".codexglossform"));
@@ -1308,7 +1308,7 @@
     // Saves queued glosses
     function writeQueuedGlosses(){
         if (mB.queued.length) {
-            var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
+            var ajax_uri=getChild(fdjtID("METABOOKADDGLOSSPROTOTYPE"),"form").
                 getAttribute("ajaxaction");
             var queued=mB.queued; var glossid=queued[0];
             var post_data=((mB.nocache)?((queued_data[glossid])):

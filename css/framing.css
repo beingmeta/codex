@@ -33,14 +33,14 @@
 
 /* General DOM layout:
    body
-     #CODEXFRAME
-       #CODEXHUD
-       #CODEXCOVER
-       #CODEXMEDIA
-     #CODEXBODY
-       #CODEXCONTENT
-       #CODEXPAGE
-         #CODEXPAGES
+     #METABOOKFRAME
+       #METABOOKHUD
+       #METABOOKCOVER
+       #METABOOKMEDIA
+     #METABOOKBODY
+       #METABOOKCONTENT
+       #METABOOKPAGE
+         #METABOOKPAGES
            .codexpage 
            ....
 */
@@ -63,49 +63,49 @@ body {
 
 /* We reduce the number of fixed position containers because that puts
    an extra load on some devices (such as iOS). */
-#CODEXFRAME {
+#METABOOKFRAME {
     position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px;
     width: 100%; height: 100%; line-height: initial;
     font-family: Arial,Verdana,Helvetica,sans-serif;
     box-sizing: border-box;
     pointer-events: none;
     z-index: 1;}
-#CODEXFRAME > div, #CODEXFRAME > div > div, #CODEXFRAME > div > a {
+#METABOOKFRAME > div, #METABOOKFRAME > div > div, #METABOOKFRAME > div > a {
     box-sizing: border-box;}
-body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
-body.cxSKIMMING #CODEXFRAME, body.openhud #CODEXFRAME,
-body.cxMEDIA #CODEXFRAME {
+body.hudup #METABOOKFRAME, body.cxCOVER #METABOOKFRAME,
+body.cxSKIMMING #METABOOKFRAME, body.openhud #METABOOKFRAME,
+body.cxMEDIA #METABOOKFRAME {
     display: block;}
-body.hudup #CODEXHUD, body.cxSKIMMING #CODEXHUD,
-body.openhud #CODEXHUD, body.cxCOVER #CODEXCOVER,
-body.cxMEDIA #CODEXMEDIA, body.cxMEDIA #CODEXCLOSEMEDIA {
+body.hudup #METABOOKHUD, body.cxSKIMMING #METABOOKHUD,
+body.openhud #METABOOKHUD, body.cxCOVER #METABOOKCOVER,
+body.cxMEDIA #METABOOKMEDIA, body.cxMEDIA #METABOOKCLOSEMEDIA {
     top: 0px; bottom: 0px; left: 0px; right: 0px;
     height: 100%; width: 100%;
     display: block;}
 
-body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
-body.openhud #CODEXFRAME, body.cxSKIMMING #CODEXFRAME,
-body.codexhelp #CODEXFRAME, body.cxMEDIA #CODEXFRAME {
+body.hudup #METABOOKFRAME, body.cxCOVER #METABOOKFRAME,
+body.openhud #METABOOKFRAME, body.cxSKIMMING #METABOOKFRAME,
+body.codexhelp #METABOOKFRAME, body.cxMEDIA #METABOOKFRAME {
     z-index: 50;}
 
 /* The HUD is where all of the active interface elements for reading
    appear.  */
-#CODEXHUD {
+#METABOOKHUD {
     position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;
     width: 100%; height: 100%;
     pointer-events: none;}
-#CODEXFRAME > #CODEXHUD > div {
+#METABOOKFRAME > #METABOOKHUD > div {
     pointer-events: all;}
-body.cxTOUCH #CODEXFRAME > #CODEXHUD > div {
+body.cxTOUCH #METABOOKFRAME > #METABOOKHUD > div {
     pointer-events: none;}
-body.cxTOUCH.hudup #CODEXFRAME > #CODEXHUD > div,
-body.cxTOUCH #CODEXFRAME > #CODEXHUD.addgloss > div,
-body.cxTOUCH.cxSKIMMING #CODEXFRAME > #CODEXHUD > #CODEXSKIMMER {
+body.cxTOUCH.hudup #METABOOKFRAME > #METABOOKHUD > div,
+body.cxTOUCH #METABOOKFRAME > #METABOOKHUD.addgloss > div,
+body.cxTOUCH.cxSKIMMING #METABOOKFRAME > #METABOOKHUD > #METABOOKSKIMMER {
     background-color: transparent;
     pointer-events: all;}
 
-body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXHEAD,
-body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXFOOT {
+body.cxTOUCH #METABOOKFRAME > #METABOOKHUD > #METABOOKHEAD,
+body.cxTOUCH #METABOOKFRAME > #METABOOKHUD > #METABOOKFOOT {
     pointer-events: all;}
 
 
@@ -113,7 +113,7 @@ body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXFOOT {
    (coverpage, title, blurbs, etc) and also contains elements which
    aren't part of physical books: settings, layer management, and
    a small metaBook tutorial. */
-#CODEXCOVER {
+#METABOOKCOVER {
     position: absolute; width: 100%; height: 100%;
     top: 0px; bottom: 0px; left: 0px; right: 0px;
     margin: 0px; border: 0px; padding: 0px;
@@ -121,60 +121,60 @@ body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXFOOT {
     text-align: center;
     font-size: 1.5em;
     z-index: 100;}
-body.cxCOVER #CODEXFRAME > #CODEXCOVER { pointer-events: all; }
+body.cxCOVER #METABOOKFRAME > #METABOOKCOVER { pointer-events: all; }
 
-#CODEXFRAME.codexuifontlarge #CODEXCOVER { font-size: 2em; }
-#CODEXFRAME.codexuifontnormal #CODEXCOVER { font-size: 1.5em; }
-#CODEXFRAME.codexuifontsmall #CODEXCOVER { font-size: 1em; }
+#METABOOKFRAME.codexuifontlarge #METABOOKCOVER { font-size: 2em; }
+#METABOOKFRAME.codexuifontnormal #METABOOKCOVER { font-size: 1.5em; }
+#METABOOKFRAME.codexuifontsmall #METABOOKCOVER { font-size: 1em; }
 
-#CODEXFRAME.codexuifontlarge #CODEXCOVER > #CODEXCOVERCONTROLS {
+#METABOOKFRAME.codexuifontlarge #METABOOKCOVER > #METABOOKCOVERCONTROLS {
     font-size: 0.8em; }
 
-body.cxCOVER #CODEXCOVER {
+body.cxCOVER #METABOOKCOVER {
     opacity: 1.0; z-index: 100; pointer-events: all;}
-body.cxCOVER #CODEXBODY {
+body.cxCOVER #METABOOKBODY {
     visibility: hidden; pointer-events: none;}
-body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
+body.cxCOVER #METABOOKHUD, body.hudup.cxCOVER #METABOOKHUD {
     visibility: hidden; z-index: -50; pointer-events: none;}
 
-#CODEXFRAME > #CODEXMEDIA {
+#METABOOKFRAME > #METABOOKMEDIA {
   top: 0px; left: 0px; height: 0px; width: 0px;}
 
-#CODEXFRAME #CODEXCLOSEMEDIA {
+#METABOOKFRAME #METABOOKCLOSEMEDIA {
   z-index: 100; opacity: 0.5; display: none;
   background-image:
    url(https://s3.amazonaws.com/beingmeta/static/g/codex/redx.svgz);
   top: 0px;  right: 0px;}
 
-#CODEXMEDIA > img, #CODEXMEDIA > video, #CODEXMEDIA > audio { }
+#METABOOKMEDIA > img, #METABOOKMEDIA > video, #METABOOKMEDIA > audio { }
 
 @media (orientation: landscape) {
-  #CODEXFRAME > #CODEXCLOSEMEDIA { width: 15%; height: auto; }
-  #CODEXMEDIA > img, #CODEXMEDIA > video, #CODEXMEDIA > audio {
+  #METABOOKFRAME > #METABOOKCLOSEMEDIA { width: 15%; height: auto; }
+  #METABOOKMEDIA > img, #METABOOKMEDIA > video, #METABOOKMEDIA > audio {
     min-height: 100%; width: auto;}
 }
 @media (orientation: portrait) {
-  #CODEXFRAME > #CODEXCLOSEMEDIA { height: 10%; width: auto; }
-  #CODEXMEDIA > img, #CODEXMEDIA > video, #CODEXMEDIA > audio {
+  #METABOOKFRAME > #METABOOKCLOSEMEDIA { height: 10%; width: auto; }
+  #METABOOKMEDIA > img, #METABOOKMEDIA > video, #METABOOKMEDIA > audio {
     min-width: 100%; height: auto;}
 }
 
-/* CODEXBODY is where all of the content lives, whether broken into
+/* METABOOKBODY is where all of the content lives, whether broken into
    pages or not. */
-#CODEXBODY {
+#METABOOKBODY {
     position: fixed; overflow: visible;
     left: 0px; right: 0px; top: 0px; bottom: 0px;} /* z-index: -50; */
-#CODEXBODY { background-color: #ffffff; color: #444; }
+#METABOOKBODY { background-color: #ffffff; color: #444; }
 
-/* CODEXCONTENT is where linear content lives for scrolling layout.
+/* METABOOKCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region
    (whether scrolled or paged), so the width can be controlled by
-   putting constraints on #CODEXCONTENT */
-#CODEXCONTENT {}
+   putting constraints on #METABOOKCONTENT */
+#METABOOKCONTENT {}
 
-/* CODEXPAGE is the fixed position wrapper for paged layout.
+/* METABOOKPAGE is the fixed position wrapper for paged layout.
    It's left and right styles are set based on the content width. */
-#CODEXPAGE {
+#METABOOKPAGE {
     position: absolute; overflow: visible;
     padding: 0px; margin: 0px;
     left: 50px; right: 50px;
@@ -189,9 +189,9 @@ body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
    content elements, even though it's pointer-events: none; this goes
    away, if we move the z-index down, though it might/can cause display
    issues. */
-body.hudup.cxDEBUG #CODEXHUD {z-index: 0;}
+body.hudup.cxDEBUG #METABOOKHUD {z-index: 0;}
 
-#CODEXHUD #CODEXHELP.hudpanel { overflow: auto;}
+#METABOOKHUD #METABOOKHELP.hudpanel { overflow: auto;}
 
 /* Emacs local variables
 ;;;  Local variables: ***

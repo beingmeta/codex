@@ -1,6 +1,7 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-/* ###################### codex/core.js ###################### */
+/* ###################### codex
+/core.js ###################### */
 
 /* Copyright (C) 2009-2014 beingmeta, inc.
    This file implements a Javascript/DHTML web application for reading
@@ -668,7 +669,7 @@ var metaBook={
             else if ((scan===mB.docroot)||(scan===document.body))
                 return target;
             else if ((id=(scan.codexbaseid||scan.id))&&(mB.docinfo[id])) {
-                if ((!(scan.codexbaseid))&&(id.search("CODEXTMP")===0)) {}
+                if ((!(scan.codexbaseid))&&(id.search("METABOOKTMP")===0)) {}
                 else if ((target)&&(id.search("WSN_")===0)) {}
                 else if (id.search("WSN_")===0) wsn_target=scan;
                 else if ((targetids)&&(id.search(targetids)!==0)) {}
@@ -805,8 +806,8 @@ var metaBook={
             fdjtLog("Setting location to %o",location);
         var info=mB.Info(mB.head);
         while (info) {
-            var tocelt=document.getElementById("CODEXTOC4"+info.frag);
-            var statictocelt=document.getElementById("CODEXSTATICTOC4"+info.frag);
+            var tocelt=document.getElementById("METABOOKTOC4"+info.frag);
+            var statictocelt=document.getElementById("METABOOKSTATICTOC4"+info.frag);
             var hinfo=info.head, hhlen=((hinfo)&&(hinfo.ends_at-hinfo.starts_at));
             var start=info.starts_at; var end=info.ends_at;
             var progress=((location-start)*100)/hhlen;
@@ -1420,7 +1421,7 @@ var metaBook={
     mB.JumpTo=CodexJumpTo;
 
     function getTOCHead(id){
-        var elts=fdjtDOM.$("#CODEXSTATICTOC div.head[NAME='SBR"+id+"']");
+        var elts=fdjtDOM.$("#METABOOKSTATICTOC div.head[NAME='SBR"+id+"']");
         return ((elts)&&(elts.length===1)&&(elts[0]));}
 
     // This jumps and disables the HUD at the same time
@@ -1586,7 +1587,7 @@ var metaBook={
     
     function getCover(){
         if (mB.cover) return mB.cover;
-        var cover=fdjtID("CODEXCOVERPAGE")||
+        var cover=fdjtID("METABOOKCOVERPAGE")||
             fdjtID("SBOOKCOVERPAGE")||
             fdjtID("COVERPAGE");
         if (cover) mB.cover=cover;

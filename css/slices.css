@@ -85,7 +85,7 @@ div.codexslice div.codexcard.codexskimpoint .codexcardbody {
 div.codexslice div.codexcard.codexskimpoint .fdjtclearfloats {
     margin-bottom: 0px;}
 
-/* CODEXSOURCES */
+/* METABOOKSOURCES */
 
 div.codexsources {}
 div.codexsources img.button {
@@ -107,7 +107,7 @@ div.codexsources div.button.source {
 
 /* Heads of various sorts */
 
-#CODEXHUD div.codexthread > div.locrule {
+#METABOOKHUD div.codexthread > div.locrule {
     position: relative; left: 0px; bottom: 0px; z-index: 50;
     width: 100%; min-height: 10px;}
 
@@ -173,14 +173,14 @@ div.codexslice div.codexcard div.idhead { display: none; }
 div.codexslice div.codexcard.slicenewhead div.tochead { display: block; }
 div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
 
-#CODEXPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage
+#METABOOKPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage
   div.codexcardbody,
-#CODEXSKIMMER div.codexcard div.codexcardbody {
+#METABOOKSKIMMER div.codexcard div.codexcardbody {
     border-top: 0px; padding-left: 1em; padding-top: 0.25ex;}
-#CODEXSKIMMER div.codexcard div.idhead {
+#METABOOKSKIMMER div.codexcard div.idhead {
     border-bottom: 0px;}
 
-#CODEXFRAME.cxANIMATE body.cxISCROLL div.codexslice {
+#METABOOKFRAME.cxANIMATE body.cxISCROLL div.codexslice {
     transition-property: transform;
     -webkit-transition-property: -webkit-transform;
     -moz-transition-property: -moz-transform;

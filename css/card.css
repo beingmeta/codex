@@ -18,8 +18,8 @@ div.codexcard > div.idhead, div.codexcard > div.tochead {
 div.codexcard > div.idhead { margin-left: -10px;}
 div.codexcard > div.tochead { margin-left: -20px; }
 
-#CODEXHUD.openglossmark div.codexcard > div.idhead { display: none;}
-#CODEXHUD.openglossmark div.codexcard > div.tochead { display: none;}
+#METABOOKHUD.openglossmark div.codexcard > div.idhead { display: none;}
+#METABOOKHUD.openglossmark div.codexcard > div.tochead { display: none;}
 
 /* Sbook notes */
 
@@ -69,7 +69,7 @@ div.codexcard > hr {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
-#CODEXHUD .codexcard span.oldterm {color: blue; }
+#METABOOKHUD .codexcard span.oldterm {color: blue; }
 .codexcard span.user { 
   color: green; font-size: 125%; font-style: italic;}
 .codexcard span.outlet { color: green;}

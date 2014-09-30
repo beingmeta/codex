@@ -106,7 +106,7 @@ metaBook.TOC=
                 sizebar.style.left=((100*(headinfo.starts_at-hstart))/hlen)+"%";
                 progressbar.style.left=((100*(headinfo.starts_at-hstart))/hlen)+"%";}
             fdjtDOM.addClass(toc,"toc"+depth);
-            toc.id=(prefix||"CODEXTOC4")+headinfo.frag;
+            toc.id=(prefix||"METABOOKTOC4")+headinfo.frag;
             if ((!(sub))||(!(sub.length))) {
                 fdjtDOM.addClass(toc,"codextocleaf");
                 return toc;}
@@ -123,7 +123,7 @@ metaBook.TOC=
                                  if (mB.previewing)
                                      mB.stopPreview("touchtoo",true);
                                  this.abort(evt,"touchtoo");},
-                             noslip: (prefix==="CODEXSTATICTOC4")});
+                             noslip: (prefix==="METABOOKSTATICTOC4")});
                 else fdjtUI.TapHold(toc,{holdfast: true});
                 mB.UI.addHandlers(toc,'toc');}
             return toc;}

@@ -104,7 +104,7 @@
                     ((info.about)?(info.about):"");
                 icon.title=title; icon.oid=info._id;
                 icon.id="SBOOKSOURCEICON"+humid;
-                fdjtDOM(fdjtID("CODEXSOURCES")," ",icon);}}
+                fdjtDOM(fdjtID("METABOOKSOURCES")," ",icon);}}
         return info;}
     mB.UI.addSource=addSource;
     mB.UI.addGlossSource=function(info){addSource(info,true);};
@@ -114,8 +114,8 @@
         var target=fdjtDOM.T(evt);
         // var sources=fdjtDOM.getParent(target,".codexsources");
         // var glosses=fdjtDOM.getParent(target,".sbookglosses");
-        var sources=fdjtID("CODEXSOURCES");
-        var glosses=fdjtID("CODEXALLGLOSSES");
+        var sources=fdjtID("METABOOKSOURCES");
+        var glosses=fdjtID("METABOOKALLGLOSSES");
         if ((!(sources))||(!(glosses)))
             return; /* Warning? */
         if (fdjtDOM.hasClass(target,"selected")) {
@@ -135,8 +135,8 @@
         var target=fdjtDOM.T(evt);
         // var sources=fdjtDOM.getParent(target,".codexsources");
         // var glosses=fdjtDOM.getParent(target,".sbookglosses");
-        var sources=fdjtID("CODEXSOURCES");
-        var glosses=fdjtID("CODEXALLGLOSSES");
+        var sources=fdjtID("METABOOKSOURCES");
+        var glosses=fdjtID("METABOOKALLGLOSSES");
         var new_sources=[];
         if ((!(sources))||(!(glosses))||(!(target.oid)))
             return; /* Warning? */
@@ -217,7 +217,7 @@
         mB.UI.addHandlers(glossmark,"glossmark");
         fdjtDOM.addClass(passage,"glossed");
         fdjtDOM.prepend(passage,glossmark);
-        glossmark.name="CODEX_GLOSSMARK_"+id;
+        glossmark.name="METABOOK_GLOSSMARK_"+id;
         return glossmark;};
     
     var CodexSlice=mB.Slice;
@@ -244,11 +244,11 @@
                     if (!(hasClass(starts,"codexhighlightexcerpt"))) {
                         fdjtUI.Highlight(range,"codexhighlightexcerpt");}}}}
         var slice=new CodexSlice(slicediv,glosses);
-        var hudwrapper=fdjtDOM("div.hudpanel#CODEXPOINTGLOSSES",slicediv);
+        var hudwrapper=fdjtDOM("div.hudpanel#METABOOKPOINTGLOSSES",slicediv);
         if (point) {
             hudwrapper.style.display='block';
             hudwrapper.style.opacity=0.0;
-            fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
+            fdjtDOM.replace("METABOOKPOINTGLOSSES",hudwrapper);
             var geom=fdjtDOM.getGeometry(slicediv);
             var wgeom=fdjtDOM.getGeometry(hudwrapper);
             var pgeom=fdjtDOM.getGeometry(point);
@@ -311,14 +311,14 @@
                 hudwrapper.style.minWidth=((fdjtDOM.viewWidth())-10)+"px";
             hudwrapper.style.display='';
             hudwrapper.style.opacity='';}
-        else fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);
+        else fdjtDOM.replace("METABOOKPOINTGLOSSES",hudwrapper);
         if (point) {
-            var cur=fdjtID("CODEXOPENGLOSSMARK");
+            var cur=fdjtID("METABOOKOPENGLOSSMARK");
             if (cur) {
                 if (mB.target)
                     mB.clearHighlights(mB.target);
                 cur.id="";}
-            point.id="CODEXOPENGLOSSMARK";}
+            point.id="METABOOKOPENGLOSSMARK";}
         mB.setTarget(target);
         slice.update();
         mB.setMode("openglossmark");}
@@ -327,8 +327,8 @@
     function clearGlossmark() {
         if (mB.mode==="openglossmark") mB.setMode(false,true);
         var slicediv=fdjtDOM("div.codexglosses.codexslice");
-        var hudwrapper=fdjtDOM("div.hudpanel#CODEXPOINTGLOSSES",slicediv);
-        fdjtDOM.replace("CODEXPOINTGLOSSES",hudwrapper);}
+        var hudwrapper=fdjtDOM("div.hudpanel#METABOOKPOINTGLOSSES",slicediv);
+        fdjtDOM.replace("METABOOKPOINTGLOSSES",hudwrapper);}
     mB.clearGlossmark=clearGlossmark;
 
 })();

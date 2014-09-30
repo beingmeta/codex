@@ -6,14 +6,14 @@
 
 /* The SEARCHBOX */
 
-#CODEXHUD.emptysearch div.searchbox div.tags { display: none;}
+#METABOOKHUD.emptysearch div.searchbox div.tags { display: none;}
 div.searchbox { text-align: center;}
 
 div.searchbox div.query {
     margin-left: 2em; text-align: left; margin-top: 2px;
     box-sizing: border-box;
     font-size: 16px;}
-#CODEXHUD.emptysearch  #CODEXSEARCHLABEL {
+#METABOOKHUD.emptysearch  #METABOOKSEARCHLABEL {
     display: none;}
 
 div.searchbox .codexclearsearch {
@@ -64,35 +64,35 @@ div.resultinfo .noresults, div.resultinfo .noquery, div.resultinfo .stats {
 
 div.resultinfo .noresults { display: none;}
 div.resultinfo.noresults .noresults { display: block;}
-#CODEXHUD.emptysearch .resultinfo.noresults .noresults {
+#METABOOKHUD.emptysearch .resultinfo.noresults .noresults {
     display: none;}
 
 div.resultinfo .noquery { display: none;}
-#CODEXHUD.emptysearch div.resultinfo .noquery { display: block;}
+#METABOOKHUD.emptysearch div.resultinfo .noquery { display: block;}
 
 div.resultinfo.noresults span { display: none;}
-#CODEXHUD.emptysearch div.resultinfo span { display: none;}
+#METABOOKHUD.emptysearch div.resultinfo span { display: none;}
 
-#CODEXHUD div.resultinfo {
+#METABOOKHUD div.resultinfo {
     text-align: left; font-size: 120%;
     min-height: 1ex; max-height: 100%;
     margin-bottom: 1ex; padding-right: 1em;}
-#CODEXHUD div.resultinfo span.resultcount,
-#CODEXHUD div.resultinfo span.refinecount,
-#CODEXHUD div.resultinfo span.showalltags {
+#METABOOKHUD div.resultinfo span.resultcount,
+#METABOOKHUD div.resultinfo span.refinecount,
+#METABOOKHUD div.resultinfo span.showalltags {
     cursor: pointer; text-decoration: underline;}
-#CODEXHUD.refinesearch div.resultinfo span.refinecount, 
-#CODEXHUD.expandsearch div.resultinfo span.showalltags,
-#CODEXHUD.searchresults div.resultinfo span.resultcount {
+#METABOOKHUD.refinesearch div.resultinfo span.refinecount, 
+#METABOOKHUD.expandsearch div.resultinfo span.showalltags,
+#METABOOKHUD.searchresults div.resultinfo span.resultcount {
     font-weight: bold; text-decoration: none; cursor: default;}
 
-#CODEXHUD #CODEXSEARCHINFO {
+#METABOOKHUD #METABOOKSEARCHINFO {
     height: 100%; display: none;}
-#CODEXHUD.refinesearch #CODEXSEARCHINFO,
-#CODEXHUD.expandsearch #CODEXSEARCHINFO,
-#CODEXHUD.searchresults #CODEXSEARCHINFO {
+#METABOOKHUD.refinesearch #METABOOKSEARCHINFO,
+#METABOOKHUD.expandsearch #METABOOKSEARCHINFO,
+#METABOOKHUD.searchresults #METABOOKSEARCHINFO {
     display: block;}
-#CODEXSEARCHINFO .qtags {
+#METABOOKSEARCHINFO .qtags {
     box-sizing: border-box;
     padding-top: 7px; padding-right: 7px;
     margin-left: 10px; margin-bottom: 0px;
@@ -110,7 +110,7 @@ body.cxANIMATE .qtags {
     -o-transition-property: font-size; -o-transition-duration: 0.5s;}
 
 @media (max-device-width: 500px) {
-    #CODEXSEARCHINFO .qtags {
+    #METABOOKSEARCHINFO .qtags {
         clear: both; width: 100%;}
 }
 

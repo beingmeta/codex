@@ -4,74 +4,74 @@
 
 @charset "UTF-8";
 
-#CODEXHUD a { text-decoration: none;}
-#CODEXHUD a img { border: transparent;}
-.cxMOUSE #CODEXHUD a:hover img { border: inherit;}
-.cxMOUSE #CODEXHUD a:hover { text-decoration: underline;}
-.cxMOUSE #CODEXHUD a.brick:hover { text-decoration: none;}
+#METABOOKHUD a { text-decoration: none;}
+#METABOOKHUD a img { border: transparent;}
+.cxMOUSE #METABOOKHUD a:hover img { border: inherit;}
+.cxMOUSE #METABOOKHUD a:hover { text-decoration: underline;}
+.cxMOUSE #METABOOKHUD a.brick:hover { text-decoration: none;}
 
 /* Size rules */
 
-#CODEXHUD { font-size: 2em; }
-#CODEXFRAME.codexuifontlarge #CODEXHUD { font-size: 2.5em; }
-#CODEXFRAME.codexuifontnormal #CODEXHUD { font-size: 2em; }
-#CODEXFRAME.codexuifontsmall #CODEXHUD { font-size: 1em; }
+#METABOOKHUD { font-size: 2em; }
+#METABOOKFRAME.codexuifontlarge #METABOOKHUD { font-size: 2.5em; }
+#METABOOKFRAME.codexuifontnormal #METABOOKHUD { font-size: 2em; }
+#METABOOKFRAME.codexuifontsmall #METABOOKHUD { font-size: 1em; }
 
-#CODEXHUD .codexhelp, #CODEXHUD .helpbox { font-size: 80%;}
-#CODEXHUD #CODEXRIBBON, #CODEXHUD #CODEXTOP, #CODEXHUD #CODEXFOOT {
+#METABOOKHUD .codexhelp, #METABOOKHUD .helpbox { font-size: 80%;}
+#METABOOKHUD #METABOOKRIBBON, #METABOOKHUD #METABOOKTOP, #METABOOKHUD #METABOOKFOOT {
     font-size: 80%;}
-#CODEXHUD .codexslice { font-size: 90%;}
-#CODEXHUD .codexslice .tochead, #CODEXHUD .codexslice .idhead {
+#METABOOKHUD .codexslice { font-size: 90%;}
+#METABOOKHUD .codexslice .tochead, #METABOOKHUD .codexslice .idhead {
     font-size: 80%;}
 
 /* Major HUD components, head and heart */
 
-#CODEXTOP {
+#METABOOKTOP {
     position: absolute; left: 60px; right: 60px; z-index: 80;
     max-height: 60px; border: solid transparent 0px;
     padding: 0px;}
-#CODEXHEAD, #CODEXFOOT {
+#METABOOKHEAD, #METABOOKFOOT {
     position: absolute; left: 0px; right: 0px; height: 50px; z-index: 100;
     text-align: center; padding: 0px; max-height: 50px;}
-#CODEXHEAD { top: 0px; }
-#CODEXFOOT { bottom: 0px; }
-#CODEXSKIMMER {
+#METABOOKHEAD { top: 0px; }
+#METABOOKFOOT { bottom: 0px; }
+#METABOOKSKIMMER {
     position: absolute; left: 60px; right: 60px; z-index: 100;
     background-color: white;
     border: solid steelblue 4px; padding: 0px;
     max-height: 75px;}
-.cxANIMATE #CODEXSKIMMER {
+.cxANIMATE #METABOOKSKIMMER {
     transition-property: height; transition-duration: 0.5x;
     -webkit-transition-property: height; -webkit-transition-duration: 0.5x;
     -moz-transition-property: height; -moz-transition-duration: 0.5x;
     -o-transition-property: height; -o-transition-duration: 0.5x;}
 
-#CODEXSKIMMER.flash { background-color: silver;}
-#CODEXSKIMMER.expanded { max-height: inherit; }
-#CODEXSKIMMER .tochead {
+#METABOOKSKIMMER.flash { background-color: silver;}
+#METABOOKSKIMMER.expanded { max-height: inherit; }
+#METABOOKSKIMMER .tochead {
     background-color: steelblue; color: white;
     font-weight: bold; font-size: 100%; max-height: 4ex;}
-#CODEXSKIMMER.expanded .tochead {
+#METABOOKSKIMMER.expanded .tochead {
     font-size: 120%; max-height: inherit;}
-#CODEXSKIMMER .tochead a { color: white;}
-#CODEXSKIMMER .tochead hr {
+#METABOOKSKIMMER .tochead a { color: white;}
+#METABOOKSKIMMER .tochead hr {
     color: rgb(33, 106, 129); background-color: rgb(33, 106, 129);}
-#CODEXTOP {background-color: transparent;}
-body.hudup #CODEXTOP {
+#METABOOKTOP {background-color: transparent;}
+body.hudup #METABOOKTOP {
     min-height: 40px;
     padding-bottom: 0.5ex;
     border-width: 4px;}
-body.cxFULLHEIGHT.hudup #CODEXTOP {
+body.cxFULLHEIGHT.hudup #METABOOKTOP {
     background-color: transparent;}
-body.hudup #CODEXTOP .hudpanel {
+body.hudup #METABOOKTOP .hudpanel {
     background-color: rgba(255,255,240,0.6);}
 
-#CODEXTOP, #CODEXSKIMMER {top: 0px; border-top: 0px;}
-#CODEXFOOT {bottom: 0px; border-bottom: 0px;}
+#METABOOKTOP, #METABOOKSKIMMER {top: 0px; border-top: 0px;}
+#METABOOKFOOT {bottom: 0px; border-bottom: 0px;}
 
-#CODEXHUD #CODEXTOP,
-#CODEXHUD.openfoot #CODEXFOOT,
-#CODEXHUD.openhead.openheart #CODEXTOP {
+#METABOOKHUD #METABOOKTOP,
+#METABOOKHUD.openfoot #METABOOKFOOT,
+#METABOOKHUD.openhead.openheart #METABOOKTOP {
     opacity: 0.99;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
     filter: alpha(opacity=99);
@@ -79,7 +79,7 @@ body.hudup #CODEXTOP .hudpanel {
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-#CODEXHUD.openheart #CODEXTOP {
+#METABOOKHUD.openheart #METABOOKTOP {
     opacity: 0.33;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
     filter: alpha(opacity=33);
@@ -87,7 +87,7 @@ body.hudup #CODEXTOP .hudpanel {
     -khtml-opacity: 0.33;
     -moz-opacity: 0.33;
     -o-opacity: 0.33;}
-#CODEXHUD.openfoot #CODEXFOOT {
+#METABOOKHUD.openfoot #METABOOKFOOT {
     opacity: 0.99;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
     filter: alpha(opacity=99);
@@ -96,10 +96,10 @@ body.hudup #CODEXTOP .hudpanel {
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
 
-#CODEXSKIMMER { display: none; }
+#METABOOKSKIMMER { display: none; }
 
-#CODEXTOP, #CODEXTOP .hudpanel, #CODEXSKIMMER,
-#CODEXSKIMMER .codexcard, #CODEXSKIMMER .codexcardbody {
+#METABOOKTOP, #METABOOKTOP .hudpanel, #METABOOKSKIMMER,
+#METABOOKSKIMMER .codexcard, #METABOOKSKIMMER .codexcardbody {
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;
     border-top-width: 0px;
@@ -111,7 +111,7 @@ body.hudup #CODEXTOP .hudpanel {
     -webkit-border-top-right-radius: 0px; 
     -moz-border-radius-topright: 0px;
     -o-border-radius-topright: 0px;}
-#CODEXFOOT, #CODEXFOOT .hudpanel {
+#METABOOKFOOT, #METABOOKFOOT .hudpanel {
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;
     border-bottom-width: 0px;
@@ -124,55 +124,55 @@ body.hudup #CODEXTOP .hudpanel {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
-body.cxANIMATE #CODEXSKIMMER.transanimate {
+body.cxANIMATE #METABOOKSKIMMER.transanimate {
     transition-property: transform; transition-duration: 0.5s;
     -webkit-property: -webkit-transform; -webkit-transition-duration: 0.5s;
     -moz-property: -moz-transform; -moz-transition-duration: 0.5s;
     -o-property: -o-transform; -o-transition-duration: 0.5s;}
 
-#CODEXFRAME.cxANIMATE #CODEXTOP {
+#METABOOKFRAME.cxANIMATE #METABOOKTOP {
     transition-property: opacity; transition-duration: 2s;
     -webkit-property: opacity; -webkit-transition-duration: 2s;
     -moz-property: opacity; -moz-transition-duration: 2s;
     -o-property: opacity; -o-transition-duration: 2s;}
-#CODEXTOP {
+#METABOOKTOP {
     opacity: 0.0; max-height: 0px;
     display: block;}
-#CODEXHUD.openhead #CODEXTOP {
+#METABOOKHUD.openhead #METABOOKTOP {
     max-height: inherit; opacity: 1.0;
     left: 60px; right: 60px; width: auto;}
-body.hudup #CODEXTOP {display: block;}
-#CODEXHUD.openhead #CODEXTOP {
+body.hudup #METABOOKTOP {display: block;}
+#METABOOKHUD.openhead #METABOOKTOP {
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -webkit-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -moz-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     border-color: transparent;
     height: auto;}
-body.hudup #CODEXHUD.openhead #CODEXTOP {
+body.hudup #METABOOKHUD.openhead #METABOOKTOP {
     border-color: rgba(0, 0, 255, 0.52);
     background-color: rgba(255, 255, 240, 0.52);}
-body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
+body.hudup #METABOOKHUD.openhead.overtoc #METABOOKTOP {
     background-color: rgba(255,255,255,0.75);
     border-color: transparent;
     box-shadow: none; -webkit-box-shadow: none;
     -moz-box-shadow: none; -o-box-shadow: none;}
     
-#CODEXFRAME > #CODEXHUD.openhead > #CODEXHEAD {
+#METABOOKFRAME > #METABOOKHUD.openhead > #METABOOKHEAD {
     z-index: -20; opacity: 0.7;}
 
-body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
+body.hudup #METABOOKHUD.openhead #METABOOKTOP .hudpanel {
     position: static;}
-#CODEXHUD.openglossmark #CODEXSKIMMER,
-body.cxSKIMMING #CODEXHUD #CODEXSKIMMER,
-#CODEXHUD.allglosses #CODEXSKIMMER {
+#METABOOKHUD.openglossmark #METABOOKSKIMMER,
+body.cxSKIMMING #METABOOKHUD #METABOOKSKIMMER,
+#METABOOKHUD.allglosses #METABOOKSKIMMER {
     overflow: hidden;}
-#CODEXHUD.addgloss #CODEXTOP {
+#METABOOKHUD.addgloss #METABOOKTOP {
     overflow: visible;
     z-index: 500;}
 
-body.hudup #CODEXHUD #CODEXFOOT { height: 50px;}
-#CODEXHUD.openfoot #CODEXFOOT
+body.hudup #METABOOKHUD #METABOOKFOOT { height: 50px;}
+#METABOOKHUD.openfoot #METABOOKFOOT
 {
     background-color: ivory; border-color: darkblue;
     box-shadow: 0.5em 0.5em 0.5em #cccccc;
@@ -181,13 +181,13 @@ body.hudup #CODEXHUD #CODEXFOOT { height: 50px;}
     -o-box-shadow: 0.5em 0.5em 0.5em #cccccc;
     height: 50px;}
 
-#CODEXHUD.openhead #CODEXTOP {max-height: 50%;}
-#CODEXHUD.openglossmark #CODEXSKIMMER.expanded,
-body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded,
-body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
+#METABOOKHUD.openhead #METABOOKTOP {max-height: 50%;}
+#METABOOKHUD.openglossmark #METABOOKSKIMMER.expanded,
+body.cxSKIMMING #METABOOKHUD #METABOOKSKIMMER.expanded,
+body.cxSKIMMING #METABOOKHUD #METABOOKSKIMMER.expanded {
     height: auto; max-height: 50%; overflow: visible;}
 
-#CODEXHEARTFRAME {
+#METABOOKHEARTFRAME {
     position: absolute;
     top: 50%; bottom: 50%; height: auto;
     left: 50px; right: 50px;
@@ -201,13 +201,13 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
     border-radius: 1ex; -o-border-radius: 1ex;
     -moz-border-radius: 1ex; -webkit-border-radius: 1ex;
     display: none;}
-#CODEXHEARTFRAME {
+#METABOOKHEARTFRAME {
     /* background-color: steelblue; */
     background-color: ivory;
     border-color: rgba(70, 130, 180, 0.54);}
-#CODEXHUD.openheart #CODEXHEARTFRAME {
+#METABOOKHUD.openheart #METABOOKHEARTFRAME {
     top: 75px; bottom: 50px;}
-body.hudup #CODEXHEARTFRAME {
+body.hudup #METABOOKHEARTFRAME {
     display: block; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
@@ -216,42 +216,42 @@ body.hudup #CODEXHEARTFRAME {
     -moz-opacity: 1;
     -o-opacity: 1;}
 
-#CODEXHEARTFRAME #CODEXRIBBON {
+#METABOOKHEARTFRAME #METABOOKRIBBON {
     border-radius: 0px; -o-border-radius: 0px;
     -moz-border-radius: 0px; -webkit-border-radius: 0px;
     border-top-left-radius: 1ex; -o-border-top-left-radius: 1ex;
     -moz-border-radius-top-left: 1em; -webkit-border-top-left-radius: 1ex;
     border-top-right-radius: 1ex; -o-border-top-right-radius: 1ex;
     -moz-border-radius-top-right: 1em; -webkit-border-top-right-radius: 1ex;}
-#CODEXHEARTFRAME #CODEXHEART {}
+#METABOOKHEARTFRAME #METABOOKHEART {}
 
-#CODEXHUD #CODEXRIBBON {
+#METABOOKHUD #METABOOKRIBBON {
     position: absolute; top: 0px; left: 0px; right: 0px; height: 0px;
     background-color: ivory;}
-#CODEXHUD #CODEXHEART {
+#METABOOKHUD #METABOOKHEART {
     position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;
     background-color: ivory;}
-#CODEXHUD #CODEXHEART div.hudpanel {
+#METABOOKHUD #METABOOKHEART div.hudpanel {
     background-color: transparent;
     padding-bottom: 20px;}
 
-#CODEXHUD #CODEXHEART {
+#METABOOKHUD #METABOOKHEART {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     background-color: ivory; z-index: 0;
     border-radius: 1ex;}
-#CODEXHUD #CODEXHEART > div, #CODEXHUD #CODEXHEART > iframe {
+#METABOOKHUD #METABOOKHEART > div, #METABOOKHUD #METABOOKHEART > iframe {
     overflow: visible;}
-#CODEXHUD #CODEXHEART div.hudpanel h1 {
+#METABOOKHUD #METABOOKHEART div.hudpanel h1 {
     margin-top: 3px; margin-bottom: 1ex;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
+body.hudup #METABOOKHUD.openheart #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glossaddtag #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glosseditdetail #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glosstagging #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glosstagoutlet #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glossaddoutlet #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glossattach #METABOOKHEARTFRAME {
     border: solid rgba(0,0,255,0.52) 3px;
     z-index: 200; opacity: 1.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -262,97 +262,97 @@ body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME,
     -o-opacity: 1;
     display: block;}
 
-#CODEXHUD.refinesearch #CODEXRIBBON,
-#CODEXHUD.expandsearch #CODEXRIBBON,
-#CODEXHUD.searchresults #CODEXRIBBON,
-#CODEXHUD.glossaddtag #CODEXRIBBON,
-#CODEXHUD.glossaddoutlet #CODEXRIBBON {
+#METABOOKHUD.refinesearch #METABOOKRIBBON,
+#METABOOKHUD.expandsearch #METABOOKRIBBON,
+#METABOOKHUD.searchresults #METABOOKRIBBON,
+#METABOOKHUD.glossaddtag #METABOOKRIBBON,
+#METABOOKHUD.glossaddoutlet #METABOOKRIBBON {
     border-bottom: solid blue 2px;
     height: 35px;}
-#CODEXHUD.refinesearch #CODEXHEART,
-#CODEXHUD.expandsearch #CODEXHEART,
-#CODEXHUD.searchresults #CODEXHEART,
-#CODEXHUD.glossaddtag #CODEXHEART,
-#CODEXHUD.glossaddoutlet #CODEXHEART {
+#METABOOKHUD.refinesearch #METABOOKHEART,
+#METABOOKHUD.expandsearch #METABOOKHEART,
+#METABOOKHUD.searchresults #METABOOKHEART,
+#METABOOKHUD.glossaddtag #METABOOKHEART,
+#METABOOKHUD.glossaddoutlet #METABOOKHEART {
     top: 37px; margin-top: 0px;
     border-radius: 0px;}
 
-#CODEXHUD.addgloss.glossaddtag #CODEXHEART,
-#CODEXHUD.addgloss.glosstagging #CODEXHEART,
-#CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
-#CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
-#CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
-#CODEXHUD.addgloss.glossattach #CODEXHEART {
+#METABOOKHUD.addgloss.glossaddtag #METABOOKHEART,
+#METABOOKHUD.addgloss.glosstagging #METABOOKHEART,
+#METABOOKHUD.addgloss.glosstagoutlet #METABOOKHEART,
+#METABOOKHUD.addgloss.glosseditdetail #METABOOKHEART,
+#METABOOKHUD.addgloss.glossaddoutlet #METABOOKHEART,
+#METABOOKHUD.addgloss.glossattach #METABOOKHEART {
     margin-bottom: 1.5ex; margin-top: 1.5ex; 
     padding-bottom: 1em; padding-top: 1ex;
     margin-right: 1px;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEART div.hudpanel,
-#CODEXHUD.addgloss.glossaddtag #CODEXHEART div.hudpanel,
-#CODEXHUD.addgloss.glosstagging #CODEXHEART div.hudpanel,
-#CODEXHUD.addgloss.glosstagoutlet #CODEXHEART div.hudpanel,
-#CODEXHUD.addgloss.glossaddoutlet #CODEXHEART div.hudpanel,
-#CODEXHUD.addgloss.glosseditdetail #CODEXHEART div.hudpanel,
-#CODEXHUD.addgloss.glossattach #CODEXHEART div.hudpanel {
+body.hudup #METABOOKHUD.openheart #METABOOKHEART div.hudpanel,
+#METABOOKHUD.addgloss.glossaddtag #METABOOKHEART div.hudpanel,
+#METABOOKHUD.addgloss.glosstagging #METABOOKHEART div.hudpanel,
+#METABOOKHUD.addgloss.glosstagoutlet #METABOOKHEART div.hudpanel,
+#METABOOKHUD.addgloss.glossaddoutlet #METABOOKHEART div.hudpanel,
+#METABOOKHUD.addgloss.glosseditdetail #METABOOKHEART div.hudpanel,
+#METABOOKHUD.addgloss.glossattach #METABOOKHEART div.hudpanel {
     margin-top: 0px; margin-bottom: 0px;}
-body.hudup #CODEXHUD.allglosses.openheart #CODEXHEART,
-body.hudup #CODEXHUD.searchresults.openheart #CODEXHEART {
+body.hudup #METABOOKHUD.allglosses.openheart #METABOOKHEART,
+body.hudup #METABOOKHUD.searchresults.openheart #METABOOKHEART {
     padding-top: 0px;}
 
-body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss.glosseditdetail #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART,
-body.cxISCROLL #CODEXHUD.addgloss.glossattach #CODEXHEART {
+body.hudup.cxISCROLL #METABOOKHUD.openheart #METABOOKHEART,
+body.cxISCROLL #METABOOKHUD.addgloss.glossaddtag #METABOOKHEART,
+body.cxISCROLL #METABOOKHUD.addgloss.glosstagging #METABOOKHEART,
+body.cxISCROLL #METABOOKHUD.addgloss.glosstagoutlet #METABOOKHEART,
+body.cxISCROLL #METABOOKHUD.addgloss.glosseditdetail #METABOOKHEART,
+body.cxISCROLL #METABOOKHUD.addgloss.glossaddoutlet #METABOOKHEART,
+body.cxISCROLL #METABOOKHUD.addgloss.glossattach #METABOOKHEART {
     padding-top: 0px; padding-bottom: 0px;}
-body.hudup.cxISCROLL #CODEXHUD.openheart #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss.glosstagoutlet #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss.glossaddoutlet #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss.glosseditdetail #CODEXHEART #CODEXHEARTCONTENT,
-body.cxISCROLL #CODEXHUD.addgloss.glossattach #CODEXHEART #CODEXHEARTCONTENT {
+body.hudup.cxISCROLL #METABOOKHUD.openheart #METABOOKHEART #METABOOKHEARTCONTENT,
+body.cxISCROLL #METABOOKHUD.addgloss.glossaddtag #METABOOKHEART #METABOOKHEARTCONTENT,
+body.cxISCROLL #METABOOKHUD.addgloss.glosstagging #METABOOKHEART #METABOOKHEARTCONTENT,
+body.cxISCROLL #METABOOKHUD.addgloss.glosstagoutlet #METABOOKHEART #METABOOKHEARTCONTENT,
+body.cxISCROLL #METABOOKHUD.addgloss.glossaddoutlet #METABOOKHEART #METABOOKHEARTCONTENT,
+body.cxISCROLL #METABOOKHUD.addgloss.glosseditdetail #METABOOKHEART #METABOOKHEARTCONTENT,
+body.cxISCROLL #METABOOKHUD.addgloss.glossattach #METABOOKHEART #METABOOKHEARTCONTENT {
     padding-top: 1em; padding-bottom: 1em;}
 
-#CODEXHEART div.hudpanel > h1:first-child { margin-top: 0px;}
+#METABOOKHEART div.hudpanel > h1:first-child { margin-top: 0px;}
 
-body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME {
+body.hudup #METABOOKHUD.openheart #METABOOKHEARTFRAME {
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;}
-#CODEXHUD.addgloss.glossaddtag #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glosstagging #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glosstagoutlet #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glossaddoutlet #CODEXHEARTFRAME,
-#CODEXHUD.addgloss.glosseditdetail #CODEXHEARTFRAME {
+#METABOOKHUD.addgloss.glossaddtag #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glosstagging #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glosstagoutlet #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glossaddoutlet #METABOOKHEARTFRAME,
+#METABOOKHUD.addgloss.glosseditdetail #METABOOKHEARTFRAME {
     top: 70px; bottom: 50px; height: auto;}
-#CODEXHUD.addgloss.glossattach #CODEXHEARTFRAME {
+#METABOOKHUD.addgloss.glossattach #METABOOKHEARTFRAME {
     top: 150px; height: auto; min-height: 10em;}
-#CODEXHUD.addgloss.glossattach #CODEXHEART {
+#METABOOKHUD.addgloss.glossattach #METABOOKHEART {
     height: auto; min-height: 8em; padding-top: 0px;
     overflow: visible;}
 
-#CODEXHUD #CODEXFOOT {
+#METABOOKHUD #METABOOKFOOT {
     position: absolute; bottom: 0px; z-index: 300;}
 
-body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {display: block;}
+body.cxSKIMMING #METABOOKHUD #METABOOKSKIMMER {display: block;}
 
 /* HUD panels */
 
-#CODEXHUD div.hudpanel {
+#METABOOKHUD div.hudpanel {
     color: #4682b4; background-color: rgba(255,255,240,0.7);
     z-index: 100; border: 0px;}
-#CODEXHUD.overtoc div.hudpanel {
+#METABOOKHUD.overtoc div.hudpanel {
     }
 /* Being on top */
-#CODEXHUD .hudpanel {
+#METABOOKHUD .hudpanel {
     position: absolute; left: 0px; right: 0px;
     text-align: center; overflow: visible;}
 /* Being invisible */
-#CODEXHUD .hudpanel {
+#METABOOKHUD .hudpanel {
     display: none; opacity: 0.001; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -361,7 +361,7 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {display: block;}
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
 /* Being visible when the HUD is up */
-body.hudup #CODEXHUD div.hudpanel {
+body.hudup #METABOOKHUD div.hudpanel {
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -370,7 +370,7 @@ body.hudup #CODEXHUD div.hudpanel {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 /* When animating, transition opacity and height */
-#CODEXFRAME.cxANIMATE #CODEXHUD div.hudpanel {
+#METABOOKFRAME.cxANIMATE #METABOOKHUD div.hudpanel {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -381,13 +381,13 @@ body.hudup #CODEXHUD div.hudpanel {
 /* Mode display rules */
 
 /* Head rules */
-#CODEXHUD.overtoc #CODEXTOC,
-#CODEXHUD.allglosses #CODEXSOURCES,
-#CODEXHUD.addgloss #CODEXADDGLOSS,
-#CODEXHUD.shownote #CODEXNOTETEXT,
-#CODEXHUD.refinesearch #CODEXSEARCH,
-#CODEXHUD.expandsearch #CODEXSEARCH,
-#CODEXHUD.searchresults #CODEXSEARCH {
+#METABOOKHUD.overtoc #METABOOKTOC,
+#METABOOKHUD.allglosses #METABOOKSOURCES,
+#METABOOKHUD.addgloss #METABOOKADDGLOSS,
+#METABOOKHUD.shownote #METABOOKNOTETEXT,
+#METABOOKHUD.refinesearch #METABOOKSEARCH,
+#METABOOKHUD.expandsearch #METABOOKSEARCH,
+#METABOOKHUD.searchresults #METABOOKSEARCH {
     position: static; display: block; opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
     filter: alpha(opacity=98);
@@ -396,27 +396,27 @@ body.hudup #CODEXHUD div.hudpanel {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-body.cxSKIMMING #CODEXHUD.allglosses #CODEXSOURCES,
-body.cxSKIMMING #CODEXHUD.searchresults #CODEXSEARCH {
+body.cxSKIMMING #METABOOKHUD.allglosses #METABOOKSOURCES,
+body.cxSKIMMING #METABOOKHUD.searchresults #METABOOKSEARCH {
     display: none; }
 
 /* Heart rules */
-#CODEXHUD.allglosses #CODEXALLGLOSSES.hudpanel,
-#CODEXHUD.showaside #CODEXASIDE.hudpanel,
-#CODEXHUD.statictoc #CODEXSTATICTOC.hudpanel,
-#CODEXHUD.about #CODEXABOUTBOOK.hudpanel,
-#CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXGLOSSCLOUD.hudpanel,
-#CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXGLOSSCLOUD.hudpanel,
-#CODEXHUD.addgloss.glosstagoutlet #CODEXHEART #CODEXSHARECLOUD.hudpanel,
-#CODEXHUD.addgloss.glossaddoutlet #CODEXHEART #CODEXSHARECLOUD.hudpanel,
-#CODEXHUD.addgloss.glossattach #CODEXHEART #CODEXGLOSSATTACH.hudpanel,
-#CODEXHUD.addgloss.glosseditdetail #CODEXHEART #CODEXGLOSSEDITDETAIL.hudpanel,
-#CODEXHUD.glossdetail #CODEXHEART #CODEXGLOSSDETAIL.hudpanel,
-#CODEXHUD.refinesearch #CODEXHEART #CODEXSEARCHCLOUD.hudpanel,
-#CODEXHUD.expandsearch #CODEXHEART #CODEXALLTAGS.hudpanel,
-#CODEXHUD.refinesearch.emptysearch #CODEXHEART #CODEXALLTAGS.hudpanel,
-#CODEXHUD.searchresults #CODEXHEART #CODEXSEARCHRESULTS.hudpanel,
-#CODEXHUD.login #CODEXLOGIN.hudpanel {
+#METABOOKHUD.allglosses #METABOOKALLGLOSSES.hudpanel,
+#METABOOKHUD.showaside #METABOOKASIDE.hudpanel,
+#METABOOKHUD.statictoc #METABOOKSTATICTOC.hudpanel,
+#METABOOKHUD.about #METABOOKABOUTBOOK.hudpanel,
+#METABOOKHUD.addgloss.glossaddtag #METABOOKHEART #METABOOKGLOSSCLOUD.hudpanel,
+#METABOOKHUD.addgloss.glosstagging #METABOOKHEART #METABOOKGLOSSCLOUD.hudpanel,
+#METABOOKHUD.addgloss.glosstagoutlet #METABOOKHEART #METABOOKSHARECLOUD.hudpanel,
+#METABOOKHUD.addgloss.glossaddoutlet #METABOOKHEART #METABOOKSHARECLOUD.hudpanel,
+#METABOOKHUD.addgloss.glossattach #METABOOKHEART #METABOOKGLOSSATTACH.hudpanel,
+#METABOOKHUD.addgloss.glosseditdetail #METABOOKHEART #METABOOKGLOSSEDITDETAIL.hudpanel,
+#METABOOKHUD.glossdetail #METABOOKHEART #METABOOKGLOSSDETAIL.hudpanel,
+#METABOOKHUD.refinesearch #METABOOKHEART #METABOOKSEARCHCLOUD.hudpanel,
+#METABOOKHUD.expandsearch #METABOOKHEART #METABOOKALLTAGS.hudpanel,
+#METABOOKHUD.refinesearch.emptysearch #METABOOKHEART #METABOOKALLTAGS.hudpanel,
+#METABOOKHUD.searchresults #METABOOKHEART #METABOOKSEARCHRESULTS.hudpanel,
+#METABOOKHUD.login #METABOOKLOGIN.hudpanel {
     position: static; display: block;
     opacity: 0.98;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=98)";
@@ -426,20 +426,20 @@ body.cxSKIMMING #CODEXHUD.searchresults #CODEXSEARCH {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-#CODEXHUD.refinesearch #CODEXHEART #CODEXALLTAGS.hudpanel,
-#CODEXHUD.refinesearch.emptysearch #CODEXHEART #CODEXSEARCHCLOUD.hudpanel {
+#METABOOKHUD.refinesearch #METABOOKHEART #METABOOKALLTAGS.hudpanel,
+#METABOOKHUD.refinesearch.emptysearch #METABOOKHEART #METABOOKSEARCHCLOUD.hudpanel {
     display: none;}
 
-#CODEXHUD #CODEXHEART #CODEXSEARCHCLOUD,
-#CODEXHUD #CODEXHEART #CODEXALLTAGS {
+#METABOOKHUD #METABOOKHEART #METABOOKSEARCHCLOUD,
+#METABOOKHUD #METABOOKHEART #METABOOKALLTAGS {
     padding-top: 12px;}
 
-#CODEXHEART #CODEXSEARCHBLOCK.hudpanel {
+#METABOOKHEART #METABOOKSEARCHBLOCK.hudpanel {
     margin-left: 0px; margin-right: 0px;
     background-color: transparent;}
-#CODEXHUD.refinesearch #CODEXSEARCHBLOCK.hudpanel,
-#CODEXHUD.expandsearch #CODEXSEARCHBLOCK.hudpanel,
-#CODEXHUD.searchresults #CODEXSEARCHBLOCK.hudpanel {
+#METABOOKHUD.refinesearch #METABOOKSEARCHBLOCK.hudpanel,
+#METABOOKHUD.expandsearch #METABOOKSEARCHBLOCK.hudpanel,
+#METABOOKHUD.searchresults #METABOOKSEARCHBLOCK.hudpanel {
     position: absolute; display: block; overflow: hidden;
     top: 0px; bottom: 0px; left: 0px; right: 0px;
     opacity: 0.98;
@@ -457,23 +457,23 @@ div.completions.hudpanel { line-height: 120%;}
 div.completions.hudpanel .prime { line-height: 250%;}
 div.completions.hudpanel .normal { line-height: 250%;}
 
-#CODEXGLOSSDETAIL.hudpanel {
+#METABOOKGLOSSDETAIL.hudpanel {
     text-align: left;
     margin-left: 1em; margin-right: 1em;}
 
-#CODEXHUD #CODEXNOTETEXT, #CODEXHUD #CODEXASIDE {
+#METABOOKHUD #METABOOKNOTETEXT, #METABOOKHUD #METABOOKASIDE {
     padding-left: 2em; padding-right: 2em;
     text-align: left;}
-#CODEXHUD #CODEXNOTETEXT p { margin-top: 1ex; margin-bottom: 1ex;}
-#CODEXHUD #CODEXNOTETEXT p:first-child { margin-top: 2px; }
-#CODEXNOTETEXT span.sbooknotelabel {
+#METABOOKHUD #METABOOKNOTETEXT p { margin-top: 1ex; margin-bottom: 1ex;}
+#METABOOKHUD #METABOOKNOTETEXT p:first-child { margin-top: 2px; }
+#METABOOKNOTETEXT span.sbooknotelabel {
     font-size: 150%; color: darkblue;
     position: relative; left: -1em;
     padding-right: 0.3ex;}
 
 /* HUD buttons */
 
-#CODEXHUD img.hudbutton {
+#METABOOKHUD img.hudbutton {
     position: absolute; width: 50px; height: 50px;
     border: solid transparent 2px; opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=05)";
@@ -482,7 +482,7 @@ div.completions.hudpanel .normal { line-height: 250%;}
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-.cxMOUSE #CODEXHUD:hover img.hudbutton {
+.cxMOUSE #METABOOKHUD:hover img.hudbutton {
     opacity: 0.30;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
     filter: alpha(opacity=30);
@@ -490,7 +490,7 @@ div.completions.hudpanel .normal { line-height: 250%;}
     -khtml-opacity: 0.30;
     -moz-opacity: 0.30;
     -o-opacity: 0.30;}
-.hudup.cxMOUSE #CODEXHUD:hover img.hudbutton {
+.hudup.cxMOUSE #METABOOKHUD:hover img.hudbutton {
     opacity: 0.99;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=99)";
     filter: alpha(opacity=99);
@@ -498,11 +498,11 @@ div.completions.hudpanel .normal { line-height: 250%;}
     -khtml-opacity: 0.99;
     -moz-opacity: 0.99;
     -o-opacity: 0.99;}
-#CODEXHUD .hudbutton.tapholdtarget {
+#METABOOKHUD .hudbutton.tapholdtarget {
     border-color: blue; opacity: 0.99;}
-.cxMOUSE #CODEXHUD img.hudbutton:hover {
+.cxMOUSE #METABOOKHUD img.hudbutton:hover {
     border-color: blue; border-style: dotted; opacity: 0.99;}
-body.cxSKIMMING #CODEXHUD img.hudbutton {
+body.cxSKIMMING #METABOOKHUD img.hudbutton {
     opacity: 0.80;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -510,42 +510,42 @@ body.cxSKIMMING #CODEXHUD img.hudbutton {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
-#CODEXHUD img.hudbutton {
+#METABOOKHUD img.hudbutton {
     transition-property: width, height, opacity;
     transition-duration: 1s;
     -webkit-transition-property: width, height, opacity;
     -webkit-transition-duration: 1s;}
 
-.hudup #CODEXHUD img.hudbutton {
+.hudup #METABOOKHUD img.hudbutton {
     width: 75px; height: 75px;}
-.hudup #CODEXHUD.openheart img.hudbutton {
+.hudup #METABOOKHUD.openheart img.hudbutton {
     width: 50px; height: 50px;}
 
-#CODEXHEAD img.hudbutton[hudmode="allglosses"],
-#CODEXHEAD img.hudbutton[hudmode="help"] {
+#METABOOKHEAD img.hudbutton[hudmode="allglosses"],
+#METABOOKHEAD img.hudbutton[hudmode="help"] {
     top: 0px; display: none;}
-#CODEXHEAD img.hudbutton[hudmode="allglosses"] {right: 60px;}
-#CODEXHEAD img.hudbutton[hudmode="help"] {left: 60px;}
+#METABOOKHEAD img.hudbutton[hudmode="allglosses"] {right: 60px;}
+#METABOOKHEAD img.hudbutton[hudmode="help"] {left: 60px;}
 
-#CODEXFOOT img.hudbutton[hudmode="searchresults"],
-#CODEXFOOT img.hudbutton[alt="save gloss"] {
+#METABOOKFOOT img.hudbutton[hudmode="searchresults"],
+#METABOOKFOOT img.hudbutton[alt="save gloss"] {
     display: none; }
-#CODEXHUD.addgloss #CODEXFOOT img.hudbutton {
+#METABOOKHUD.addgloss #METABOOKFOOT img.hudbutton {
     opacity: 0.8; -webkit-opacity: 0.8;
     -moz-opacity: 0.8; -o-opacity: 0.8;}
-#CODEXHUD.addgloss #CODEXFOOT img.hudbutton[alt="save gloss"],
-body.cxSKIMMING #CODEXHUD.searchresults
+#METABOOKHUD.addgloss #METABOOKFOOT img.hudbutton[alt="save gloss"],
+body.cxSKIMMING #METABOOKHUD.searchresults
    img.hudbutton[hudmode="searchresults"] {
     display: inline-block; }
-#CODEXHUD.addgloss img.hudbutton[hudmode="allglosses"],
-body.cxSKIMMING #CODEXHUD.searchresults
+#METABOOKHUD.addgloss img.hudbutton[hudmode="allglosses"],
+body.cxSKIMMING #METABOOKHUD.searchresults
   img.hudbutton[hudmode="allglosses"] {
     display: none; }
 
-body.hudup #CODEXHUD img.hudbutton  {}
-body.cxMOUSE #CODEXHUD img.hudbutton:hover,
-#CODEXHUD #CODEXFOOT.tapholding img.hudbutton,
-#CODEXHUD #CODEXHEAD.tapholding img.hudbutton {
+body.hudup #METABOOKHUD img.hudbutton  {}
+body.cxMOUSE #METABOOKHUD img.hudbutton:hover,
+#METABOOKHUD #METABOOKFOOT.tapholding img.hudbutton,
+#METABOOKHUD #METABOOKHEAD.tapholding img.hudbutton {
     opacity: 0.45;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
     filter: alpha(opacity=45);
@@ -553,40 +553,40 @@ body.cxMOUSE #CODEXHUD img.hudbutton:hover,
     -khtml-opacity: 0.45;
     -moz-opacity: 0.45;
     -o-opacity: 0.45;}
-#CODEXHUD #CODEXFOOT.tapholding img.hudbutton.tapholdtarget,
-#CODEXHUD #CODEXHEAD.tapholding img.hudbutton {
+#METABOOKHUD #METABOOKFOOT.tapholding img.hudbutton.tapholdtarget,
+#METABOOKHUD #METABOOKHEAD.tapholding img.hudbutton {
     width: 75px; height: 75px;}
-.cxTOUCH #CODEXHUD #CODEXFOOT.tapholding img.hudbutton.tapholdtarget,
-.cxTOUCH #CODEXHUD #CODEXHEAD.tapholding img.hudbutton.tapholdtarget {
+.cxTOUCH #METABOOKHUD #METABOOKFOOT.tapholding img.hudbutton.tapholdtarget,
+.cxTOUCH #METABOOKHUD #METABOOKHEAD.tapholding img.hudbutton.tapholdtarget {
     width: 125px; height: 125px;}
 
-#CODEXHUD .topleft {top: 0px; left: 0px;}
-#CODEXHUD .topright {top: 0px; right: 0px;}
-#CODEXHUD .botleft {bottom: 0px; left: 0px;}
-#CODEXHUD .botright {bottom: 0px; right: 0px;}
+#METABOOKHUD .topleft {top: 0px; left: 0px;}
+#METABOOKHUD .topright {top: 0px; right: 0px;}
+#METABOOKHUD .botleft {bottom: 0px; left: 0px;}
+#METABOOKHUD .botright {bottom: 0px; right: 0px;}
 
-#CODEXHUD img.topleft {
+#METABOOKHUD img.topleft {
     border-top-width: 0px; border-left-width: 0px;
     border-bottom-right-radius: 6px;
     -o-border-bottom-right-radius: 6px; 
     -webkit-border-bottom-right-radius: 6px; 
     -moz-border-radius-bottomright: 6px;
     -o-border-radius-bottomright: 6px;}
-#CODEXHUD img.topright {
+#METABOOKHUD img.topright {
     border-top-width: 0px; border-right-width: 0px;
     border-bottom-left-radius: 6px;
     -o-border-bottom-left-radius: 6px; 
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;
     -o-border-radius-bottomleft: 6px;}
-#CODEXHUD img.botleft {
+#METABOOKHUD img.botleft {
     border-bottom-width: 0px; border-left-width: 0px;
     border-top-right-radius: 6px;
     -o-border-top-right-radius: 6px; 
     -webkit-border-top-right-radius: 6px; 
     -moz-border-radius-topright: 6px;
     -o-border-radius-topright: 6px;}
-#CODEXHUD img.botright {
+#METABOOKHUD img.botright {
     border-bottom-width: 0px; border-right-width: 0px;
     border-top-left-radius: 6px;
     -o-border-top-left-radius: 6px; 
@@ -597,15 +597,15 @@ body.cxMOUSE #CODEXHUD img.hudbutton:hover,
 img.closebutton, img.codexpagebutton, img.codexskimbutton, img.hudbutton {
     cursor: pointer; z-index: 500;}
 
-#CODEXHUD.about #CODEXHEART .tabcontent#CODEXABOUTBOOK,
-#CODEXHUD.statictoc #CODEXHEART .tabcontent#CODEXSTATICTOC,
-#CODEXHUD.login #CODEXHEART .tabcontent#CODEXLOGIN {
+#METABOOKHUD.about #METABOOKHEART .tabcontent#METABOOKABOUTBOOK,
+#METABOOKHUD.statictoc #METABOOKHEART .tabcontent#METABOOKSTATICTOC,
+#METABOOKHUD.login #METABOOKHEART .tabcontent#METABOOKLOGIN {
     display: block;}
 
-#CODEXHUD.about #CODEXHEART .tabcontent {
+#METABOOKHUD.about #METABOOKHEART .tabcontent {
     margin-top: 0px;}
 
-#CODEXSHOWCOVER {
+#METABOOKSHOWCOVER {
     white-space: nowrap; box-sizing: border-box;
     background-color: rgba(0,0,0,0.5); color: white;
     font-size: 1.5em; width: 7em;
@@ -615,15 +615,15 @@ img.closebutton, img.codexpagebutton, img.codexskimbutton, img.hudbutton {
     cursor: pointer;
     font-variant: small-caps;
     display: inline-block;}
-#CODEXSHOWCOVER.tapholdtarget { border-color: blue; }
-#CODEXFRAME.cxANIMATE #CODEXSHOWCOVER {
+#METABOOKSHOWCOVER.tapholdtarget { border-color: blue; }
+#METABOOKFRAME.cxANIMATE #METABOOKSHOWCOVER {
     transition-property: opacity;
     -o-transition-property: opacity;
     -moz-transition-property: opacity;
     -webkit-transition-property: -webkit-opacity; 
     transition-duration: 1.0s; -o-transition-duration: 1.0s;
     -webkit-transition-duration: 1.0s; -moz-transition-duration: 1.0s;}
-#CODEXSHOWCOVER {
+#METABOOKSHOWCOVER {
     opacity: 0.00;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=00)";
     filter: alpha(opacity=00);
@@ -631,53 +631,53 @@ img.closebutton, img.codexpagebutton, img.codexskimbutton, img.hudbutton {
     -khtml-opacity: 0.00;
     -moz-opacity: 0.00;
     -o-opacity: 0.00;}
-#CODEXHEAD:hover #CODEXSHOWCOVER,
-#CODEXHEAD.tapholding #CODEXSHOWCOVER,
-body.cxTOUCH #CODEXHEAD.tapholding:hover #CODEXSHOWCOVER {
+#METABOOKHEAD:hover #METABOOKSHOWCOVER,
+#METABOOKHEAD.tapholding #METABOOKSHOWCOVER,
+body.cxTOUCH #METABOOKHEAD.tapholding:hover #METABOOKSHOWCOVER {
     opacity: 0.5;}
-body.cxTOUCH #CODEXHEAD:hover #CODEXSHOWCOVER {opacity: 0;}
-body.hudup #CODEXSHOWCOVER, body.hudup #CODEXHEAD:hover #CODEXSHOWCOVER {
+body.cxTOUCH #METABOOKHEAD:hover #METABOOKSHOWCOVER {opacity: 0;}
+body.hudup #METABOOKSHOWCOVER, body.hudup #METABOOKHEAD:hover #METABOOKSHOWCOVER {
     opacity: 1.0;}
-body.cxPREVIEW #CODEXSHOWCOVER, 
-body.cxPREVIEW.hudup #CODEXSHOWCOVER,
-body.hudup #CODEXHUD.openhead #CODEXSHOWCOVER {
+body.cxPREVIEW #METABOOKSHOWCOVER, 
+body.cxPREVIEW.hudup #METABOOKSHOWCOVER,
+body.hudup #METABOOKHUD.openhead #METABOOKSHOWCOVER {
     opacity: 0;}
-#CODEXSHOWCOVER { pointer-events: none; }
-body.hudup #CODEXSHOWCOVER, #CODEXHEAD.tapholding #CODEXSHOWCOVER,
-body.cxMOUSE #CODEXHEAD:hover #CODEXSHOWCOVER {
+#METABOOKSHOWCOVER { pointer-events: none; }
+body.hudup #METABOOKSHOWCOVER, #METABOOKHEAD.tapholding #METABOOKSHOWCOVER,
+body.cxMOUSE #METABOOKHEAD:hover #METABOOKSHOWCOVER {
     pointer-events: all; }
 
-body.cxMOUSE #CODEXSHOWCOVER:hover {
+body.cxMOUSE #METABOOKSHOWCOVER:hover {
     border: solid blue 2px;}
 
-#CODEXSHOWCOVER img {
+#METABOOKSHOWCOVER img {
     height: 1.2em; width: auto;
     float: left;}
-#CODEXSHOWCOVER span.text {
+#METABOOKSHOWCOVER span.text {
   vertical-align: middle;
   font-weight: bold;}
 
 body.cxNOUSER a.logout {
     display: none !important;}
 
-#CODEXHUD #CODEXBUTTON.toc img[alt='toc'],
-#CODEXHUD #CODEXBUTTON.search img[alt='search'],
-#CODEXHUD #CODEXBUTTON.browse img[alt='search'],
-#CODEXHUD #CODEXBUTTON.scan img[alt='scan'],
-#CODEXHUD #CODEXBUTTON.addgloss img[alt='addgloss'],
-#CODEXHUD #CODEXBUTTON.allglosses img[alt='allglosses'],
-#CODEXHUD #CODEXBUTTON.help img[alt='help'],
-#CODEXHUD #CODEXBUTTON.about img[alt='about'],
-#CODEXHUD #CODEXBUTTON.login img[alt='login'],
-#CODEXHUD #CODEXBUTTON.statictoc img[alt='statictoc'],
-#CODEXHUD #CODEXBUTTON.skimming img[alt='skimming'],
-#CODEXHUD #CODEXBUTTON.device img[alt='device'] {
+#METABOOKHUD #METABOOKBUTTON.toc img[alt='toc'],
+#METABOOKHUD #METABOOKBUTTON.search img[alt='search'],
+#METABOOKHUD #METABOOKBUTTON.browse img[alt='search'],
+#METABOOKHUD #METABOOKBUTTON.scan img[alt='scan'],
+#METABOOKHUD #METABOOKBUTTON.addgloss img[alt='addgloss'],
+#METABOOKHUD #METABOOKBUTTON.allglosses img[alt='allglosses'],
+#METABOOKHUD #METABOOKBUTTON.help img[alt='help'],
+#METABOOKHUD #METABOOKBUTTON.about img[alt='about'],
+#METABOOKHUD #METABOOKBUTTON.login img[alt='login'],
+#METABOOKHUD #METABOOKBUTTON.statictoc img[alt='statictoc'],
+#METABOOKHUD #METABOOKBUTTON.skimming img[alt='skimming'],
+#METABOOKHUD #METABOOKBUTTON.device img[alt='device'] {
     display: block;}
 
 /* HUDUP rules */
 
-body.hudup #CODEXHUD { }
-body.hudup #CODEXHUD .hudbutton {
+body.hudup #METABOOKHUD { }
+body.hudup #METABOOKHUD .hudbutton {
     opacity: 0.6;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
     filter: alpha(opacity=60);
@@ -685,8 +685,8 @@ body.hudup #CODEXHUD .hudbutton {
     -khtml-opacity: 0.60;
     -moz-opacity: 0.60;
     -o-opacity: 0.60;}
-body.hudup.cxMOUSE #CODEXHUD img.hudbutton:hover,
-body.hudup.cxFULLHEIGHT #CODEXHUD .hudbutton {
+body.hudup.cxMOUSE #METABOOKHUD img.hudbutton:hover,
+body.hudup.cxFULLHEIGHT #METABOOKHUD .hudbutton {
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -695,12 +695,12 @@ body.hudup.cxFULLHEIGHT #CODEXHUD .hudbutton {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 
-body.hudup #CODEXPAGE p, body.hudup #CODEXPAGE div { cursor: pointer;}
+body.hudup #METABOOKPAGE p, body.hudup #METABOOKPAGE div { cursor: pointer;}
 
-/* CODEXPOINTGLOSSES rules */
+/* METABOOKPOINTGLOSSES rules */
 
-#CODEXPOINTGLOSSES div.codexcard { margin-left: 0px;}
-#CODEXHUD #CODEXPOINTGLOSSES.hudpanel {
+#METABOOKPOINTGLOSSES div.codexcard { margin-left: 0px;}
+#METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel {
     top: 100px; left: auto; right: 100px;
     max-width: 40em; min-width: 20em; min-height: 20px; 
     background-color: rgb(255,255,240);
@@ -708,7 +708,7 @@ body.hudup #CODEXPAGE p, body.hudup #CODEXPAGE div { cursor: pointer;}
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;
     position: absolute;}
-#CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
+#METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES.hudpanel {
     opacity: 0.95;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
     filter: alpha(opacity=95);
@@ -717,17 +717,17 @@ body.hudup #CODEXPAGE p, body.hudup #CODEXPAGE div { cursor: pointer;}
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 
-#CODEXHUD #CODEXPOINTGLOSSES.hudpanel div.codexslice {
+#METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel div.codexslice {
     overflow: hidden;}
-#CODEXHUD #CODEXPOINTGLOSSES.hudpanel {
+#METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel {
     border: solid blue 2px;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;}
 
-#CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
+#METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES.hudpanel {
     display: block;}
 
-body.hudup #CODEXHUD.openglossmark div.hudpanel#CODEXPOINTGLOSSES {
+body.hudup #METABOOKHUD.openglossmark div.hudpanel#METABOOKPOINTGLOSSES {
     min-height: 50px; height: auto;
     box-shadow: 1em 1em 1em #cccccc;
     -webkit-box-shadow: 1em 1em 1em #cccccc;
@@ -735,14 +735,14 @@ body.hudup #CODEXHUD.openglossmark div.hudpanel#CODEXPOINTGLOSSES {
     -o-box-shadow: 1em 1em 1em #cccccc;
     display: block;}
 
-body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXPOINTGLOSSES {
+body.cxTOUCH #METABOOKFRAME > #METABOOKHUD > #METABOOKPOINTGLOSSES {
     pointer-events: all;}
 
-/* The CODEXSKIMMER */
+/* The METABOOKSKIMMER */
 
-body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER,
-body.cxPREVIEW #CODEXHUD.searchresults #CODEXSKIMMER,
-body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
+body.cxPREVIEW #METABOOKHUD.allglosses #METABOOKSKIMMER,
+body.cxPREVIEW #METABOOKHUD.searchresults #METABOOKSKIMMER,
+body.cxSKIMMING #METABOOKHUD #METABOOKSKIMMER {
     display: block; overflow: hidden; border-color: steelblue;
     opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -752,91 +752,91 @@ body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-#CODEXHUD #CODEXSKIMMER.expanded, body.hudup #CODEXSKIMMER.expanded,
-#CODEXTOP #CODEXSKIMMER.expanded {
+#METABOOKHUD #METABOOKSKIMMER.expanded, body.hudup #METABOOKSKIMMER.expanded,
+#METABOOKTOP #METABOOKSKIMMER.expanded {
     max-height: inherit; overflow: auto;}
 
-#CODEXSKIMMER.expanded .ellipsis .elided { display: inline; }
-#CODEXSKIMMER.expanded .ellipsis .elision,
-#CODEXSKIMMER.expanded .ellipsis .delision {
+#METABOOKSKIMMER.expanded .ellipsis .elided { display: inline; }
+#METABOOKSKIMMER.expanded .ellipsis .elision,
+#METABOOKSKIMMER.expanded .ellipsis .delision {
   display: none;}
 
 /* This is the twisty control */
-#CODEXSKIMMER span.expander {
+#METABOOKSKIMMER span.expander {
     position: absolute; left: 0px; top: 1.5em;}
-#CODEXSKIMMER span.expander img { width: 40px; height: 40px;}
-#CODEXSKIMMER span.expander img[alt='-'] { display: none;}
-#CODEXSKIMMER.expanded span.expander img[alt='-'] { display: inline;}
-#CODEXSKIMMER.expanded span.expander img[alt='+'] { display: none;}
+#METABOOKSKIMMER span.expander img { width: 40px; height: 40px;}
+#METABOOKSKIMMER span.expander img[alt='-'] { display: none;}
+#METABOOKSKIMMER.expanded span.expander img[alt='-'] { display: inline;}
+#METABOOKSKIMMER.expanded span.expander img[alt='+'] { display: none;}
 
-#CODEXSKIMMER span.expander {display: none;}
+#METABOOKSKIMMER span.expander {display: none;}
 
-#CODEXSKIMMER .codexskiminfo {
+#METABOOKSKIMMER .codexskiminfo {
     position: absolute; right: 2px; top: 1px; z-index: 100;
     font-size: 90%; color:  cyan;}
-#CODEXSKIMMER #CODEXSKIMCONTROLS .expanded { display: none;}
-#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .expanded {
+#METABOOKSKIMMER #METABOOKSKIMCONTROLS .expanded { display: none;}
+#METABOOKSKIMMER.expanded #METABOOKSKIMCONTROLS .expanded {
     display: inline;}
-#CODEXSKIMMER.expanded #CODEXSKIMCONTROLS .collapsed {
+#METABOOKSKIMMER.expanded #METABOOKSKIMCONTROLS .collapsed {
     display: none;}
 
-#CODEXSKIMMER div.tochead, #CODEXPOINTGLOSSES div.tochead {
+#METABOOKSKIMMER div.tochead, #METABOOKPOINTGLOSSES div.tochead {
     border-top-width: 0px; border-bottom-width: 0px;}
-#CODEXPOINTGLOSSES div.tochead { display: none; }
+#METABOOKPOINTGLOSSES div.tochead { display: none; }
 
-#CODEXSKIMMER div.codexcard.gloss > div.tochead,
-#CODEXSKIMMER div.codexcard.gloss div.codexcardbody {
+#METABOOKSKIMMER div.codexcard.gloss > div.tochead,
+#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody {
     margin-left: 50px;}
-#CODEXSKIMMER div.codexcard.gloss div.codexcardbody {
+#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody {
     padding-left: 4px;}
-#CODEXSKIMMER div.codexcard.gloss  > div.tochead {
+#METABOOKSKIMMER div.codexcard.gloss  > div.tochead {
     padding-left: 0px;}
-#CODEXSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
-#CODEXSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
+#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
+#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
   position: absolute; top: 0px; left: 0px; margin-top: 0px;}
 
 
-#CODEXHUD.overtoc #CODEXTOP {
+#METABOOKHUD.overtoc #METABOOKTOP {
     background-color: rgba(255,255,255,0.5);}
-#CODEXHUD div.hudpanel#CODEXTOC {
+#METABOOKHUD div.hudpanel#METABOOKTOC {
     background-color: rgba(255,255,255,0.5);
     z-index: 100; }
-body.hudup #CODEXHUD.overtoc div.hudpanel#CODEXTOC { overflow: hidden; }
+body.hudup #METABOOKHUD.overtoc div.hudpanel#METABOOKTOC { overflow: hidden; }
 
-body.hudup #CODEXHUD.help div.helphud { display: block;}
+body.hudup #METABOOKHUD.help div.helphud { display: block;}
 
-#CODEXHUD .completions { line-height: 150%;}
-#CODEXHUD .completions .weak, #CODEXHUD .completions .words {
+#METABOOKHUD .completions { line-height: 150%;}
+#METABOOKHUD .completions .weak, #METABOOKHUD .completions .words {
     line-height: 150%; font-size: 80%;}
-#CODEXHUD .completions .completion {
+#METABOOKHUD .completions .completion {
     white-space: nowrap;}
-#CODEXHUD div.completions img.label { width: 64px; height: 64px;}
+#METABOOKHUD div.completions img.label { width: 64px; height: 64px;}
 
-#CODEXHUD.refinesearch div.completions#CODEXSEARCHCLOUD { display: block;}
-#CODEXHUD.refinesearch.emptysearch div.completions#CODEXSEARCHCLOUD {
+#METABOOKHUD.refinesearch div.completions#METABOOKSEARCHCLOUD { display: block;}
+#METABOOKHUD.refinesearch.emptysearch div.completions#METABOOKSEARCHCLOUD {
     display: none;}
-#CODEXHUD.refinesearch div.completions#CODEXALLTAGS { display: none;}
-#CODEXHUD.refinesearch.emptysearch div.completions#CODEXALLTAGS,
-#CODEXHUD.expandsearch div.completions#CODEXALLTAGS {
+#METABOOKHUD.refinesearch div.completions#METABOOKALLTAGS { display: none;}
+#METABOOKHUD.refinesearch.emptysearch div.completions#METABOOKALLTAGS,
+#METABOOKHUD.expandsearch div.completions#METABOOKALLTAGS {
     display: block;}
 
-#CODEXHUD.refinesearch #CODEXSEARCH.norefiners
-   div.completions#CODEXSEARCHCLOUD { display: none;}
-#CODEXHUD.refinesearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
-#CODEXHUD.expandsearch div.codexslice#CODEXSEARCHRESULTS { display: none;}
-#CODEXHUD.searchresults div.codexslice#CODEXSEARCHRESULTS { display: block;}
-#CODEXHUD.searchresults div.completions#CODEXSEARCHCLOUD { display: none;}
+#METABOOKHUD.refinesearch #METABOOKSEARCH.norefiners
+   div.completions#METABOOKSEARCHCLOUD { display: none;}
+#METABOOKHUD.refinesearch div.codexslice#METABOOKSEARCHRESULTS { display: none;}
+#METABOOKHUD.expandsearch div.codexslice#METABOOKSEARCHRESULTS { display: none;}
+#METABOOKHUD.searchresults div.codexslice#METABOOKSEARCHRESULTS { display: block;}
+#METABOOKHUD.searchresults div.completions#METABOOKSEARCHCLOUD { display: none;}
 
-#CODEXHUD.addgloss.glossaddtag #CODEXHEART #CODEXGLOSSCLOUD,
-#CODEXHUD.addgloss.glosstagging #CODEXHEART #CODEXGLOSSCLOUD {
+#METABOOKHUD.addgloss.glossaddtag #METABOOKHEART #METABOOKGLOSSCLOUD,
+#METABOOKHUD.addgloss.glosstagging #METABOOKHEART #METABOOKGLOSSCLOUD {
     display: block;}
 
-#CODEXPOINTGLOSSES div.codexthread { border-right-width: 0px;}
+#METABOOKPOINTGLOSSES div.codexthread { border-right-width: 0px;}
 #SBOOKGLOSSES div.codexthread {
     border-left: none; margin-left: 0px;
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
 
-body.hudup #CODEXHUD.addgloss .hudbutton {
+body.hudup #METABOOKHUD.addgloss .hudbutton {
     opacity: 0.15;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
     filter: alpha(opacity=15);
@@ -845,74 +845,74 @@ body.hudup #CODEXHUD.addgloss .hudbutton {
     -moz-opacity: 0.15;
     -o-opacity: 0.15;}
 
-#CODEXHUD.allglosses .hudbutton[alt='allglosses'],
-#CODEXHUD.refinesearch .hudbutton[alt='search'],
-#CODEXHUD.expandsearch .hudbutton[alt='search'],
-#CODEXHUD.searchresults .hudbutton[alt='search'],
-#CODEXHUD.overtoc .hudbutton[alt='toc'] {
+#METABOOKHUD.allglosses .hudbutton[alt='allglosses'],
+#METABOOKHUD.refinesearch .hudbutton[alt='search'],
+#METABOOKHUD.expandsearch .hudbutton[alt='search'],
+#METABOOKHUD.searchresults .hudbutton[alt='search'],
+#METABOOKHUD.overtoc .hudbutton[alt='toc'] {
     border-color: darkblue;
     /* background-color: #4682b4; */
     background-color: silver;}
 
 /* Skimmer rules */
 
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="beginning"],
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="prev"] {
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="beginning"],
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="prev"] {
     position: absolute; left: 0px; top: 8px;}
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="end"], 
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="next"] {
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="end"], 
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="next"] {
     position: absolute; right: 0px; top: 8px;}
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="beginning"],
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="end"] {
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="beginning"],
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="end"] {
     display: none;}
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="beginning"],
-body.hudup #CODEXHUD #CODEXSKIMMER img[alt="end"] {
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="beginning"],
+body.hudup #METABOOKHUD #METABOOKSKIMMER img[alt="end"] {
     z-index: 100;}
-body.hudup #CODEXHUD #CODEXSKIMMER.sbookatend img[alt="next"] {display: none;}
-body.hudup #CODEXHUD #CODEXSKIMMER.sbookatend img[alt="end"] {display: block;}
-body.hudup #CODEXHUD #CODEXSKIMMER.sbookatstart img[alt="prev"] {display: none;}
-body.hudup #CODEXHUD #CODEXSKIMMER.sbookatstart img[alt="beginning"] {display: block;}
+body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatend img[alt="next"] {display: none;}
+body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatend img[alt="end"] {display: block;}
+body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatstart img[alt="prev"] {display: none;}
+body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatstart img[alt="beginning"] {display: block;}
 
-#CODEXHUD #CODEXSKIMMER.expanded .controller,
-#CODEXHUD #CODEXSKIMMER.expanded span.whenexpanded {
+#METABOOKHUD #METABOOKSKIMMER.expanded .controller,
+#METABOOKHUD #METABOOKSKIMMER.expanded span.whenexpanded {
     display: inline;}
-#CODEXHUD #CODEXSKIMMER.expanded .controller,
-#CODEXHUD #CODEXSKIMMER.expanded span.whencollapsed {
+#METABOOKHUD #METABOOKSKIMMER.expanded .controller,
+#METABOOKHUD #METABOOKSKIMMER.expanded span.whencollapsed {
     display: none;}
 
-#CODEXSKIMMER div.codexcard {
+#METABOOKSKIMMER div.codexcard {
     margin-left: 0px;}
-#CODEXSKIMMER div.codexcard > div.tochead {
+#METABOOKSKIMMER div.codexcard > div.tochead {
     margin-left: 0px; }
-#CODEXSKIMMER div.codexcard > div.idhead {
+#METABOOKSKIMMER div.codexcard > div.idhead {
     margin-left: 0px;}
 
-#CODEXHUD #CODEXSKIMMER div.idhead,
-#CODEXHUD #CODEXPOINTGLOSSES div.idhead {
+#METABOOKHUD #METABOOKSKIMMER div.idhead,
+#METABOOKHUD #METABOOKPOINTGLOSSES div.idhead {
     height: 0px;}
 /* Hide button, show label in the SKIM node, suppressed
    for now */
 /*
-#CODEXHUD #CODEXSKIMMER #CODEXSKIM img.button { display: none;}
-#CODEXHUD #CODEXSKIMMER #CODEXSKIM .tool span.label { display: inline;}
-#CODEXHUD #CODEXSKIMMER.expanded #CODEXSKIM .tool span.label { display: none;}
-#CODEXHUD #CODEXSKIMMER.expanded #CODEXSKIM img.button {
+#METABOOKHUD #METABOOKSKIMMER #METABOOKSKIM img.button { display: none;}
+#METABOOKHUD #METABOOKSKIMMER #METABOOKSKIM .tool span.label { display: inline;}
+#METABOOKHUD #METABOOKSKIMMER.expanded #METABOOKSKIM .tool span.label { display: none;}
+#METABOOKHUD #METABOOKSKIMMER.expanded #METABOOKSKIM img.button {
     display: inline;}
 */
 
-#CODEXSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
+#METABOOKSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
 
-#CODEXHUD div.hudpanel#CODEXSKIMMER.expanded { max-height: inherit; }
-#CODEXHUD #CODEXSKIMMER.expanded img.glosspic {  height: inherit; }
+#METABOOKHUD div.hudpanel#METABOOKSKIMMER.expanded { max-height: inherit; }
+#METABOOKHUD #METABOOKSKIMMER.expanded img.glosspic {  height: inherit; }
 
-#CODEXFRAME.cxANIMATE #CODEXHUD #CODEXSKIMMER {
+#METABOOKFRAME.cxANIMATE #METABOOKHUD #METABOOKSKIMMER {
     transition-property: background-color;
     -o-transition-property: background-color;
     -moz-transition-property: background-color;
     -webkit-transition-property: background-color; 
     transition-duration: 0.5s; -o-transition-duration: 0.5s;
     -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;}
-#CODEXHUD #CODEXSKIMMER div.codexcard span.glossinfo span.isclickable {
+#METABOOKHUD #METABOOKSKIMMER div.codexcard span.glossinfo span.isclickable {
     display: none;}
 body img.codexskimbutton {
     width: 50px; height: 100px;
@@ -967,48 +967,48 @@ body.hudup img.codexpagebutton {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70; }
-body img.codexskimbutton#CODEXNEXTSKIM,
-body img.codexskimbutton#CODEXENDSKIM,
-body img.codexpagebutton#CODEXNEXTPAGE {
+body img.codexskimbutton#METABOOKNEXTSKIM,
+body img.codexskimbutton#METABOOKENDSKIM,
+body img.codexpagebutton#METABOOKNEXTPAGE {
     right: 0px;}
-body img.codexskimbutton#CODEXPREVSKIM,
-body img.codexskimbutton#CODEXSTARTSKIM,
-body img.codexpagebutton#CODEXPREVPAGE {
+body img.codexskimbutton#METABOOKPREVSKIM,
+body img.codexskimbutton#METABOOKSTARTSKIM,
+body img.codexpagebutton#METABOOKPREVPAGE {
     left: 0px;}
 
 body.cxSKIMMING img.codexskimbutton {display: block;}
 body.cxSKIMMING img.codexpagebutton { display: none;}
-body.cxSKIMMING img.codexskimbutton#CODEXSTARTSKIM,
-body.cxSKIMMING img.codexskimbutton#CODEXENDSKIM {
+body.cxSKIMMING img.codexskimbutton#METABOOKSTARTSKIM,
+body.cxSKIMMING img.codexskimbutton#METABOOKENDSKIM {
     display: none;}
 
-body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#CODEXSTARTSKIM,
-body.cxSKIMMING.cxSKIMEND img.codexskimbutton#CODEXENDSKIM {
+body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#METABOOKSTARTSKIM,
+body.cxSKIMMING.cxSKIMEND img.codexskimbutton#METABOOKENDSKIM {
     display: block;}
-body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#CODEXPREVSKIM,
-body.cxSKIMMING.cxSKIMEND img.codexskimbutton#CODEXNEXTSKIM {
+body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#METABOOKPREVSKIM,
+body.cxSKIMMING.cxSKIMEND img.codexskimbutton#METABOOKNEXTSKIM {
     display: none;}
 
 /* Don't display any buttons when you're at both the start and end */
-body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXSTARTSKIM,
-body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXENDSKIM,
-body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXNEXTSKIM,
-body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#METABOOKSTARTSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#METABOOKENDSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#METABOOKNEXTSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#METABOOKPREVSKIM {
     display: none;}
 
-#CODEXHUD #SBOOKABOUT {
+#METABOOKHUD #SBOOKABOUT {
     display: block; max-width: 40em; margin-left: auto; margin-right: auto;}
-#CODEXHUD #SBOOKABOUT img { max-width: 25%;}
+#METABOOKHUD #SBOOKABOUT img { max-width: 25%;}
 
-#CODEXHUD #SBOOKABOUT div.textblock {
+#METABOOKHUD #SBOOKABOUT div.textblock {
     margin-bottom: 2ex; clear: both;}
 
-#CODEXHUD #SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
-#CODEXHUD #SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
+#METABOOKHUD #SBOOKABOUT a.book { font-style: italic; font-weight: normal;}
+#METABOOKHUD #SBOOKABOUT a.movie { font-weight: bold; font-style: normal;}
 
-/* CODEXADDGLOSS rules */
+/* METABOOKADDGLOSS rules */
 
-#CODEXHUD.addgloss div.hudpanel#CODEXADDGLOSS {
+#METABOOKHUD.addgloss div.hudpanel#METABOOKADDGLOSS {
     opacity: 0.95; margin-left: 0px; margin-right: 0px;
     border-color: silver; overflow: visible;
     background-color: transparent;
@@ -1021,25 +1021,25 @@ body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
 
 /* SBOOKGLOSSES */
 
-#CODEXHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
-#CODEXHUD #CODEXSOURCES.hudpanel {
+#METABOOKHUD div.hudpanel#SBOOKGLOSSES {position: absolute; right: 50px;}
+#METABOOKHUD #METABOOKSOURCES.hudpanel {
     overflow-y: hidden; overflow-x: auto; white-space: nowrap;
     padding-top: 2px;}
 
 /* Buttons */
 
-#CODEXHUD.about #CODEXHEART .tabcontent {
+#METABOOKHUD.about #METABOOKHEART .tabcontent {
     margin-top: 0px;}
 
 /* The start page */
 
-#CODEXHUD #CODEXSTARTPAGE.hudpanel {
+#METABOOKHUD #METABOOKSTARTPAGE.hudpanel {
     position: absolute; text-align: left; padding: 1em;
     background-color: silver; color: black; opacity: 1.0;
     top: 75px; bottom: 75px; left: 75px; right: 75px;
     height: auto; width: auto;}
 
-#CODEXHUD #CODEXSTARTPAGE.hudpanel {
+#METABOOKHUD #METABOOKSTARTPAGE.hudpanel {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     -webkit-opacity: 1;
@@ -1051,38 +1051,38 @@ body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
     -moz-box-shadow: 1em 1em 1em #cccccc;
     -o-box-shadow: 1em 1em 1em #cccccc;
     overflow: auto;}
-#CODEXHUD #CODEXSTARTPAGE.hudpanel > div {
+#METABOOKHUD #METABOOKSTARTPAGE.hudpanel > div {
     overflow: hidden; display: none;}
-#CODEXHUD #CODEXSTARTPAGE.hudpanel {
+#METABOOKHUD #METABOOKSTARTPAGE.hudpanel {
     border: solid blue 3px;
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -moz-border-radius: 1ex; -o-border-radius: 1ex;}
-#CODEXFRAME.cxANIMATE #CODEXHUD #CODEXSTARTPAGE {
+#METABOOKFRAME.cxANIMATE #METABOOKHUD #METABOOKSTARTPAGE {
     transition-property: opacity; transition-duration: 1s;
     -o-transition-property: opacity; -o-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;}
-#CODEXHUD #CODEXSTARTPAGE p.head {
+#METABOOKHUD #METABOOKSTARTPAGE p.head {
     font-weight: bold; text-align: center; margin-bottom: 0.40em;}
 
-#CODEXHUD #CODEXSTARTPAGE h2, #CODEXHUD #CODEXSTARTPAGE h3 {
+#METABOOKHUD #METABOOKSTARTPAGE h2, #METABOOKHUD #METABOOKSTARTPAGE h3 {
     text-align: center; margin: .25em;}
-#CODEXHUD #CODEXSTARTPAGE h2:first-child {
+#METABOOKHUD #METABOOKSTARTPAGE h2:first-child {
     margin-top: 0px; margin-bottom: 0px;}
-#CODEXHUD #CODEXSTARTPAGE .codexclicktohide {
+#METABOOKHUD #METABOOKSTARTPAGE .codexclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
     text-align: center; color: red;}
-#CODEXSTARTPAGE div.codexhelp p {
+#METABOOKSTARTPAGE div.codexhelp p {
     text-align: left; margin-left: 32px; margin-right: 2em;
     text-indent: -32px;}
-#CODEXSTARTPAGE div.codexhelp td p {
+#METABOOKSTARTPAGE div.codexhelp td p {
     margin-left: 0px; text-indent: 0px;
     margin-top: 0px; margin-bottom: 0px;}
 
 
 /* The page layout message/progress indicator */
 
-body.cxLAYOUT.cxLAYOUTMESSAGE #CODEXLAYOUTMESSAGE {
+body.cxLAYOUT.cxLAYOUTMESSAGE #METABOOKLAYOUTMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -1091,7 +1091,7 @@ body.cxLAYOUT.cxLAYOUTMESSAGE #CODEXLAYOUTMESSAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-#CODEXFRAME.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXLAYOUTMESSAGE {
+#METABOOKFRAME.cxANIMATE #METABOOKHUD div.fdjtprogress#METABOOKLAYOUTMESSAGE {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity;
@@ -1104,8 +1104,8 @@ body.cxLAYOUT.cxLAYOUTMESSAGE #CODEXLAYOUTMESSAGE {
 
 /* The cloud population message/progress indicator */
 
-body.cxINDEXING #CODEXHUD.search #CODEXINDEXMESSAGE,
-body.cxINDEXING #CODEXHUD.searchresults #CODEXINDEXMESSAGE {
+body.cxINDEXING #METABOOKHUD.search #METABOOKINDEXMESSAGE,
+body.cxINDEXING #METABOOKHUD.searchresults #METABOOKINDEXMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -1114,7 +1114,7 @@ body.cxINDEXING #CODEXHUD.searchresults #CODEXINDEXMESSAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 
-#CODEXFRAME.cxANIMATE #CODEXHUD div.fdjtprogress#CODEXINDEXMESSAGE {
+#METABOOKFRAME.cxANIMATE #METABOOKHUD div.fdjtprogress#METABOOKINDEXMESSAGE {
     transition-property: opacity;
     transition-duration: 1s;
     -webkit-transition-property: opacity;
@@ -1128,10 +1128,10 @@ body.cxINDEXING #CODEXHUD.searchresults #CODEXINDEXMESSAGE {
 
 /* Stuff at the top */
 
-#CODEXLOGIN form {
+#METABOOKLOGIN form {
     margin-left: auto; margin-right: auto;}
 
-#CODEXHUD div.tabcontent img.closebutton {
+#METABOOKHUD div.tabcontent img.closebutton {
     float: right; max-width: 12%; padding-right: 1ex;}
 
 form.sbooksapp {
@@ -1186,73 +1186,73 @@ img.codexclosehud {
     border-radius: 50%; border: solid red 3px;
     width: 32px; height: 32px;
     display: none;}
-#CODEXSHOWTEXT img.codexclosehud {
+#METABOOKSHOWTEXT img.codexclosehud {
     margin-left: 5px; height: 1.5ex; width: auto;
     vertical-align: top; margin-top: 2px;
     display: inline-block;}
-img.codexclosehud#CODEXSTOPSKIM {
+img.codexclosehud#METABOOKSTOPSKIM {
     position: absolute; top: 0px; right: 5px;
     width: 40px; height: 40px;
     /* Let's try to do without this for now */
     display: none;}
-body.cxSKIMMING #CODEXHUD img.codexclosehud#CODEXSTOPSKIM {
+body.cxSKIMMING #METABOOKHUD img.codexclosehud#METABOOKSTOPSKIM {
     z-index: 500; display: block;}
 
 /* Full height/width rules */
 
-body.cxFULLHEIGHT #CODEXTOP {display: none;}
-body.cxFULLHEIGHT #CODEXFOOT {}
-body.cxFULLHEIGHT.hudup #CODEXTOP, body.cxFULLHEIGHT.hudup #CODEXFOOT {
+body.cxFULLHEIGHT #METABOOKTOP {display: none;}
+body.cxFULLHEIGHT #METABOOKFOOT {}
+body.cxFULLHEIGHT.hudup #METABOOKTOP, body.cxFULLHEIGHT.hudup #METABOOKFOOT {
     display: block;}
 
-body.cxFULLHEIGHT.cxFULLWIDTH #CODEXHUD {display: none;}
+body.cxFULLHEIGHT.cxFULLWIDTH #METABOOKHUD {display: none;}
 
-body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD,
-body.cxFULLHEIGHT.cxFULLWIDTH.openhud #CODEXHUD,
-body.cxFULLHEIGHT.cxFULLWIDTH.openglossmark #CODEXHUD,
-body.cxFULLHEIGHT.cxFULLWIDTH.cxSKIMMING #CODEXHUD,
-body.cxFULLHEIGHT.cxFULLWIDTH.hudup #CODEXHUD {
+body.cxFULLHEIGHT.cxFULLWIDTH.hudup #METABOOKHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.openhud #METABOOKHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.openglossmark #METABOOKHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.cxSKIMMING #METABOOKHUD,
+body.cxFULLHEIGHT.cxFULLWIDTH.hudup #METABOOKHUD {
     display: block;}
 
-body.cxFULLHEIGHT #CODEXSHOWCOVER {
+body.cxFULLHEIGHT #METABOOKSHOWCOVER {
     padding: 0px;}
-body.cxFULLHEIGHT.hudup #CODEXFOOT {
+body.cxFULLHEIGHT.hudup #METABOOKFOOT {
     padding-top: 2px;
     border-radius: 0px;}
-body.cxFULLHEIGHT #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.cxFULLHEIGHT #METABOOKHUD #METABOOKFOOT #METABOOKSHOWTEXT {
     left: auto; right: auto; width: 100%;}
 
 @media (max-device-width: 500px) {
-    .hudup #CODEXHUD img.hudbutton {
+    .hudup #METABOOKHUD img.hudbutton {
         width: 50px; height: 50px;}
-    .hudup #CODEXHUD #CODEXSHOWCOVER img {
+    .hudup #METABOOKHUD #METABOOKSHOWCOVER img {
         width: 50px; height: 50px;}
-    body #CODEXFRAME > #CODEXHUD > #CODEXHEAD {
+    body #METABOOKFRAME > #METABOOKHUD > #METABOOKHEAD {
         height: 55px; max-height: 55px;
         background-color: rgba(255,255,240,0.9);
         border-bottom: solid black 1px;}
-    #CODEXSHOWCOVER {
+    #METABOOKSHOWCOVER {
         width: 50px; margin-top: 0px; border: 0px;
         background-color: transparent;}
-    #CODEXSHOWCOVER span.text { display: none;}
+    #METABOOKSHOWCOVER span.text { display: none;}
 
-    #CODEXHUD #CODEXHEAD.tapholding img.hudbutton,
-    .cxTOUCH #CODEXHUD #CODEXFOOT.tapholding img.hudbutton.tapholdtarget,
-    .cxTOUCH #CODEXHUD #CODEXHEAD.tapholding img.hudbutton.tapholdtarget {
+    #METABOOKHUD #METABOOKHEAD.tapholding img.hudbutton,
+    .cxTOUCH #METABOOKHUD #METABOOKFOOT.tapholding img.hudbutton.tapholdtarget,
+    .cxTOUCH #METABOOKHUD #METABOOKHEAD.tapholding img.hudbutton.tapholdtarget {
         width: 50px; height: 50px;}
 
-    #CODEXHUD.refinesearch #CODEXHEART,
-    #CODEXHUD.expandsearch #CODEXHEART,
-    #CODEXHUD.searchresults #CODEXHEART,
-    #CODEXHUD.glossaddtag #CODEXHEART,
-    #CODEXHUD.glossaddoutlet #CODEXHEART {
+    #METABOOKHUD.refinesearch #METABOOKHEART,
+    #METABOOKHUD.expandsearch #METABOOKHEART,
+    #METABOOKHUD.searchresults #METABOOKHEART,
+    #METABOOKHUD.glossaddtag #METABOOKHEART,
+    #METABOOKHUD.glossaddoutlet #METABOOKHEART {
         top: 62px;}
 
-    #CODEXHUD.refinesearch #CODEXRIBBON,
-    #CODEXHUD.expandsearch #CODEXRIBBON,
-    #CODEXHUD.searchresults #CODEXRIBBON,
-    #CODEXHUD.glossaddtag #CODEXRIBBON,
-    #CODEXHUD.glossaddoutlet #CODEXRIBBON {
+    #METABOOKHUD.refinesearch #METABOOKRIBBON,
+    #METABOOKHUD.expandsearch #METABOOKRIBBON,
+    #METABOOKHUD.searchresults #METABOOKRIBBON,
+    #METABOOKHUD.glossaddtag #METABOOKRIBBON,
+    #METABOOKHUD.glossaddoutlet #METABOOKRIBBON {
         height: 60px;}
 
 }
