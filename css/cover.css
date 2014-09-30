@@ -219,9 +219,9 @@ body._USER._CONN .control[data-mode='login'] { display: none;}
 #METABOOKTITLEPAGE.sbooktitlepage > .credits,
 #METABOOKTITLEPAGE.sbooktitlepage > .creators,
 #METABOOKTITLEPAGE.sbooktitlepage > .byline,
-.MBfullpage.sbooktitlepage > .credits,
-.MBfullpage.sbooktitlepage > .creators,
-.MBfullpage.sbooktitlepage > .byline,
+.codexfullpage.sbooktitlepage > .credits,
+.codexfullpage.sbooktitlepage > .creators,
+.codexfullpage.sbooktitlepage > .byline,
 .sbookfullpage.sbooktitlepage > .credits,
 .sbookfullpage.sbooktitlepage > .creators,
 .sbookfullpage.sbooktitlepage > .byline {
@@ -262,28 +262,34 @@ body._SHOWCONSOLE .control[alt='Console'] {display: none;}
     padding: 2em; padding-top: 1ex;
     font-size: 2em;}
 
-.codextitlepage { text-align: center;}
-.codextitlepage > .title {
+.metabooktitlepage, .codextitlepage { text-align: center;}
+.metabooktitlepage > .title, .codexbooktitlepage > .title {
     position: absolute; top: 2%; left: 10%; right: 10%;
     margin-top: 1ex; margin-bottom: 1ex;
     font-size: 3em; font-weight: bold;
     clear: both;}
-.codextitlepage .connector {font-size: 50%;}
-.codextitlepage > .credits, .codextitlepage > .author,
-.codextitlepage > .byline {
+.metabooktitlepage .connector, .codexbooktitlepage .connector {font-size: 50%;}
+.metabooktitlepage > .credits, .metabooktitlepage > .author,
+.metabooktitlepage > .byline, .codextitlepage > .credits,
+.codextitlepage > .author, .codextitlepage > .byline {
     position: absolute; top: 40%; left: 15%; right: 15%;
     margin-top: 1ex; margin-bottom: 1ex;
     font-size: 2em; font-style: italic;}
-.codextitlepage .pubinfo, .codextitlepage .sbookbibinfo,
-.codextitlepage .bibinfo {
+.metabooktitlepage .pubinfo, .metabooktitlepage .sbookbibinfo,
+.metabooktitlepage .bibinfo, .codextitlepage .pubinfo,
+.codextitlepage .sbookbibinfo, .codextitlepage .bibinfo {
     display: inline-block; font-size: 1em;
     text-align: left; padding-bottom: 1ex;}
+.metabooktitlepage .pubinfo p, .metabooktitlepage .sbookbibinfo p,
 .codextitlepage .pubinfo p, .codextitlepage .sbookbibinfo p {
     margin-left: 3em; text-indent: -3em;
     margin-top: 0px; margin-bottom: 0px;}
+.metabooktitlepage .pubinfo p span.bibdate,
+.metabooktitlepage .sbookbibinfo p span.bibdate,
 .codextitlepage .pubinfo p span.bibdate,
 .codextitlepage .sbookbibinfo p span.bibdate {
     padding-left: 1em; float: right;}
+.metabooktitlepage .dedication, .metabooktitlepage .epigraph,
 .codextitlepage .dedication, .codextitlepage .epigraph { 
     text-align: left; font-size: 1em;
     font-style: normal; font-weight: normal;
@@ -291,11 +297,11 @@ body._SHOWCONSOLE .control[alt='Console'] {display: none;}
     page-break-inside: avoid;
     margin-top: 1em;
     max-width: 70%;}
-.codextitlepage .codextitlefoot {
+.metabooktitlepage .metabooktitlefoot, .codextitlepage .codextitlefoot {
     position: absolute; bottom: 0px; left: 0px; right: 0px;
     width: 100%; margin: 0px; border: 0px; padding: 0px;}
 
-.codexbibpage { text-align: left;}
+.metabookbibpage, .codexbibpage { text-align: left;}
 
 /* Settings */
 
@@ -312,9 +318,9 @@ body._TOUCH #METABOOKSETTINGS table.settings {  font-size: 1.25em; }
 #METABOOKSETTINGS h1 a.logout:visited {color: red;}
 #METABOOKSETTINGS span.message {
     float: right; clear: right; font-size: 40%;}
-#METABOOKSETTINGS .codexsettingschanged {
+#METABOOKSETTINGS .metabooksettingschanged {
     color: red; display: none;}
-#METABOOKSETTINGS.changed .codexsettingschanged { display: block;}
+#METABOOKSETTINGS.changed .metabooksettingschanged { display: block;}
 
 body._NOUSER #METABOOKSETTINGS h1 a.logout {display:none;}
 
@@ -386,7 +392,7 @@ table.settings .checkspan.ischecked {
     color: red; background-color: white;}
 body._NOUSER #METABOOKSETTINGS h1 a.logout {display:none;}
 
-#METABOOKSETTINGS tr.codexlayoutsettings { display: none; }
+#METABOOKSETTINGS tr.metabooklayoutsettings { display: none; }
 
 table.settings td { padding-bottom: 0.5ex;}
 
@@ -476,7 +482,7 @@ body._BUSY #METABOOKCOVERMESSAGE > #METABOOKREADYMESSAGE {
 
 #METABOOKREADYMESSAGE { padding-bottom: 1ex; }
 
-#METABOOKCOVERMESSAGE > div > div.codexprogressbox {
+#METABOOKCOVERMESSAGE > div > div.metabookprogressbox {
     width: 100%; border: solid silver 2px; border-top: 0px;}
 #METABOOKCOVERMESSAGE div.indicator {
     height: 1ex; background-color: gold;}

@@ -2410,7 +2410,7 @@
             target.blur();}}
     metaBook.clearFocus=clearFocus;
 
-    function codexfocus(evt){
+    function metaBookFocus(evt){
         evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var input=getParent(target,'textarea');
@@ -2419,8 +2419,8 @@
             (input.type.search(fdjtDOM.text_types)!==0))
             return;
         setFocus(input);}
-    metaBook.UI.focus=codexfocus;
-    function codexblur(evt){
+    metaBook.UI.focus=metaBookFocus;
+    function metaBookBlur(evt){
         evt=evt||window.event;
         var target=((evt.nodeType)?(evt):(fdjtUI.T(evt)));
         var input=getParent(target,'textarea');
@@ -2429,7 +2429,7 @@
             (input.type.search(fdjtDOM.text_types)!==0))
             return;
         clearFocus(input);}
-    metaBook.UI.blur=codexblur;
+    metaBook.UI.blur=metaBookBlur;
 
     /* Rules */
 
@@ -2573,8 +2573,8 @@
             keypress: onkeypress,
             mouseup: global_mouseup,
             click: default_tap,
-            focus: codexfocus,
-            blur: codexblur},
+            focus: metaBookFocus,
+            blur: metaBookBlur},
          content: {tap: body_tapped,
                    taptap: body_taptap,
                    hold: body_held,
@@ -2659,9 +2659,9 @@
              tap: saveGloss,hold: saveGloss},
          // GLOSSFORM rules
          ".sbookglossform": {click: glossform_touch,touchstart: glossform_touch},
-         "span.codexsharegloss": {
+         "span.BMsharegloss": {
              tap: fdjt.UI.CheckSpan.onclick},
-         ".codexclosehud": {click: back_to_reading},
+         ".BMclosehud": {click: back_to_reading},
          ".sbookglossform .response": {click: mB.toggleHUD},
          ".addglossmenu": {
              tap: glossmode_tap,
@@ -2718,8 +2718,8 @@
             // touchmove: noDefault,
             touchend: stopPageTurner,
             touchmove: preview_touchmove_nodefault,
-            focus: codexfocus,
-            blur: codexblur},
+            focus: metaBookFocus,
+            blur: metaBookBlur},
          content: {tap: body_tapped,
                    hold: body_held,
                    taptap: body_taptap,

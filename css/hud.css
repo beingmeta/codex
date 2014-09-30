@@ -831,11 +831,6 @@ body.hudup #METABOOKHUD.help div.helphud { display: block;}
 #METABOOKHUD.addgloss.glosstagging #METABOOKHEART #METABOOKGLOSSCLOUD {
     display: block;}
 
-#METABOOKPOINTGLOSSES div.codexthread { border-right-width: 0px;}
-#SBOOKGLOSSES div.codexthread {
-    border-left: none; margin-left: 0px;
-    padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
-
 body.hudup #METABOOKHUD.addgloss .hudbutton {
     opacity: 0.15;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
