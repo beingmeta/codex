@@ -45,25 +45,25 @@ body.sbook { font-size: 62.5%; line-height: inherit;}
 
 #METABOOKBODY {
     font-size: 2em;}
-#METABOOKBODY.mBbodysizexlarge {
+#METABOOKBODY.textbodysizexlarge {
     font-size: 2.5em;}
-#METABOOKBODY.mBbodysizelarge {
+#METABOOKBODY.textbodysizelarge {
     font-size: 2.5em;}
-#METABOOKBODY.mBbodysizenormal {
+#METABOOKBODY.textbodysizenormal {
     font-size: 2em;}
-#METABOOKBODY.mBbodysizesmall {
+#METABOOKBODY.textbodysizesmall {
     font-size: 1.5em;}
-#METABOOKBODY.mBbodysizetiny {
+#METABOOKBODY.textbodysizetiny {
     font-size: 0.9em;}
-.mBbody.codexlinespacingsingle {
+.textbody.codexlinespacingsingle {
     line-height: 100%;}
-.mBbody.codexlinespacingdouble {
+.textbody.codexlinespacingdouble {
     line-height: 200%;}
-.mBbody.codexlinespacingnormal {}
-.mBbody.codexlinespacingonefive {
+.textbody.codexlinespacingnormal {}
+.textbody.codexlinespacingonefive {
     line-height: 150%;}
 
-.mBbody.codexjustify p, .mBbody.codexjustify li {
+.textbody.textbodyjustify p, .textbody.textbodyjustify li {
     text-align: justify;}
 
 #METABOOKBODY.codexfamilydefault {
@@ -82,8 +82,8 @@ body.sbook { font-size: 62.5%; line-height: inherit;}
 
 #METABOOKBODY a:hover, #METABOOKBODY a:active { color: blue; }
 
-#METABOOKBODY.mBbodysizexlarge p, #METABOOKBODY.mBbodysizexlarge li,
-#METABOOKBODY.mBbodysizexlarge dt, #METABOOKBODY.mBbodysizexlarge dd {
+#METABOOKBODY.textbodysizexlarge p, #METABOOKBODY.textbodysizexlarge li,
+#METABOOKBODY.textbodysizexlarge dt, #METABOOKBODY.textbodysizexlarge dd {
     font-size: 130%;}
 
 #METABOOKBODY.codexcontrasthigh { background-color: #ffffff; color: #111; }
@@ -101,7 +101,7 @@ span { font-size: inherit; }
 #METABOOKBODY .tapholdtarget .tapholdtarget {outline: none;}
 */
 
-.mBbody .titlepage, .mBbody .sbooktitlepage { text-align: center;}
+.textbody .titlepage, .textbody .sbooktitlepage { text-align: center;}
 
 .sbooktitlepage .title { margin-bottom: 1em; }
 .sbooktitlepage .credits {

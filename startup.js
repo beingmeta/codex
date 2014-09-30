@@ -1848,14 +1848,14 @@ metaBook.Startup=
             mB.body=fdjtID("METABOOKBODY");
             if (!(mB.body)) {
                 var cxbody=mB.body=
-                    fdjtDOM("div#METABOOKBODY.mBbody",content,page);
-                if (mB.justify) addClass(cxbody,"codexjustify");
+                    fdjtDOM("div#METABOOKBODY.textbody",content,page);
+                if (mB.justify) addClass(cxbody,"textbodyjustify");
                 if (mB.bodysize)
-                    addClass(cxbody,"mBbodysize"+mB.bodysize);
+                    addClass(cxbody,"textbodysize"+mB.bodysize);
                 if (mB.bodyfamily)
-                    addClass(cxbody,"mBbodyfamily"+mB.bodyfamily);
+                    addClass(cxbody,"textbodyfamily"+mB.bodyfamily);
                 if (mB.bodyspacing)
-                    addClass(cxbody,"mBbodyspacing"+mB.bodyspacing);
+                    addClass(cxbody,"textbodyspacing"+mB.bodyspacing);
                 body.appendChild(cxbody);}
             else mB.body.appendChild(page);
             // Initialize the margins
