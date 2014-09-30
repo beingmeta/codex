@@ -16,15 +16,15 @@ div.searchbox div.query {
 #METABOOKHUD.emptysearch  #METABOOKSEARCHLABEL {
     display: none;}
 
-div.searchbox .codexclearsearch {
+div.searchbox .MBclearsearch {
     box-sizing: border-box;
     float: right;}
-div.searchbox .codexclearsearch {
+div.searchbox .MBclearsearch {
     box-sizing: border-box;
     border: solid transparent 2px;
     width: 2.5em; height: auto;
     padding: 0.5ex; padding-top: 0px;}
-div.searchbox .codexclearsearch.tapholdtarget {
+div.searchbox .MBclearsearch.tapholdtarget {
     border-color: blue;}
 
 div.searchbox div.input input[type='TEXT'] {

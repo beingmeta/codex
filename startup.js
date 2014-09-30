@@ -1917,7 +1917,7 @@ metaBook.Startup=
                 mB.CSS.glossmark_rule.style.marginRight=
                     (-glossmark_offset)+"px";}
             else mB.CSS.glossmark_rule=fdjtDOM.addCSSRule(
-                "#METABOOKPAGE .codexglossmark","margin-right: "+
+                "#METABOOKPAGE .glossmark","margin-right: "+
                     (-glossmark_offset)+"px;");
             
             var shrinkrule=mB.CSS.shrinkrule;
@@ -1979,9 +1979,9 @@ metaBook.Startup=
             if (choosing_resize) {
                 fdjt.Dialog.close(choosing_resize);
                 choosing_resize=false;}
-            resize_wait=setTimeout(codexResize,1000);}
+            resize_wait=setTimeout(metaBookResize,1000);}
 
-        function codexResize(){
+        function metaBookResize(){
             var layout=mB.layout;
             if (resizing) {
                 clearTimeout(resizing); resizing=false;}
@@ -2321,7 +2321,7 @@ metaBook.Startup=
                 if ((names)&&(names.length)) {
                     i=0; lim=names.length; while (i<lim)
                         names[i++].innerHTML=username;}
-                names=fdjtDOM.$(".codexusername");
+                names=fdjtDOM.$(".metabookusername");
                 if ((names)&&(names.length)) {
                     i=0; lim=names.length; while (i<lim)
                         names[i++].innerHTML=username;}}
@@ -2479,7 +2479,7 @@ metaBook.Startup=
             var state=mB.state;
             if (state) {}
             else {
-                var target=fdjtID("METABOOKSTART")||fdjt.$1(".codexstart")||
+                var target=fdjtID("METABOOKSTART")||fdjt.$1(".metabookstart")||
                     fdjtID("SBOOKSTART")||fdjt.$1(".sbookstart")||
                     fdjtID("SBOOKTITLEPAGE");
                 if (target)

@@ -85,26 +85,26 @@ body._LAYOUT #METABOOKLAYOUTADJUST { display: block; }
 body._LAYOUT hr#METABOOKLAYOUTINDICATOR {
     display: block; opacity: 0.8;}
 
-#METABOOKFOOT #METABOOKPAGEBAR .codexpagespans {
+#METABOOKFOOT #METABOOKPAGEBAR .MBpagespans {
   position: absolute; bottom: 0px;
   width: 100%; height: 100%; z-index: 10;}
-#METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span {
+#METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span {
   opacity: 0.0; overflow: hidden; z-index: 20; height: 100%;
   display: inline-block; position: absolute; bottom: 0px;
   box-sizing: border-box; vertical-align: top;}
-body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span {
+body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span {
     height: 100%;}
-#METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
+#METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span.current {
   background-color: lightblue; color: transparent; 
   visibility: visible; opacity: 1.0; z-index: 100;
   overflow: visible; z-index: 50;}
-body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans {
+body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans {
   top: 0px; bottom: auto;}
-body #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
+body #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span.current {
     vertical-align: bottom; height: 50%;}
-body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
+body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span.current {
     height: 100%;}
-body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
+body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span.current {
   overflow: visible; visibility: visible; z-index: 60; color: black;
   opacity: 1.0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -113,12 +113,12 @@ body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
   -khtml-opacity: 1.00;
   -moz-opacity: 1.00;
   -o-opacity: 1.00;}
-body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.preview {
+body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span.preview {
   background-color: gold; overflow: visible;
   visibility: visible; opacity: 1.0; z-index: 100;
   font-size: 200%; height: 150%; width: 1.5em;
   pointer-events: none;}
-body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
+body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span.current {
     font-size: 200%; height: 75%;}
 
 #METABOOKFOOT #METABOOKPAGEBAR #METABOOKPAGEPROGRESS {
@@ -128,7 +128,7 @@ body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
   background-color: rgba(162,181,205,0.8);
   pointer-events: none;
   z-index: 15;}
-#METABOOKFOOT #METABOOKPAGEBAR .codexsectmarker {
+#METABOOKFOOT #METABOOKPAGEBAR .MBsectmarker {
   box-sizing: content-box;
   /* border-left: dotted rgba(0,0,255,0.5) 2px; border-right: dotted rgba(0,0,255,0.5) 2px; */
   position: absolute; bottom: 0px; left: 10%; width: 0%;
@@ -136,16 +136,16 @@ body._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.current {
   border-top-left-radius: 4px; border-top-right-radius: 4px;
   pointer-events: none;
   z-index: 45;}
-#METABOOKFOOT #METABOOKPAGEBAR #METABOOKSECTMARKER1.codexsectmarker {
+#METABOOKFOOT #METABOOKPAGEBAR #METABOOKSECTMARKER1.MBsectmarker {
     height: 80%;}
-#METABOOKFOOT #METABOOKPAGEBAR #METABOOKSECTMARKER2.codexsectmarker {
+#METABOOKFOOT #METABOOKPAGEBAR #METABOOKSECTMARKER2.MBsectmarker {
     height: 65%; background-color: rgba(0,0,255,0.2); }
-#METABOOKFOOT #METABOOKPAGEBAR #METABOOKSECTMARKER3.codexsectmarker {
+#METABOOKFOOT #METABOOKPAGEBAR #METABOOKSECTMARKER3.MBsectmarker {
     height: 50%; background-color: rgba(0,0,255,0.1); }
 
 body._TOUCH._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR {
     height: 150px;}
-body._TOUCH._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .codexpagespans span.preview  {
+body._TOUCH._PREVIEW #METABOOKFOOT #METABOOKPAGEBAR .MBpagespans span.preview  {
     height: 100%;}
 
 #METABOOKHUD .codexgoto {

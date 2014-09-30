@@ -6,25 +6,25 @@
 
 /* TOC rules */
 
-div.codextoc { display: none;}
-div.codextoc div.spanbar { height: 20px;}
-div.codextoc > div, div.codextoc > div.head {
+div.metabooktoc { display: none;}
+div.metabooktoc div.spanbar { height: 20px;}
+div.metabooktoc > div, div.metabooktoc > div.head {
     padding-left: 1em; padding-right: 1em;}
-div.codextoc div.head {
+div.metabooktoc div.head {
   position: relative; margin: 0px; padding: 0px; border: 0px;
   left: 0px; right: 0px; margin: 0px;
   padding-left: 1em; padding-right: 1em;
   display: none;}
-div.codextoc > div.spanbar {
+div.metabooktoc > div.spanbar {
   margin-left: 0px; margin-right: 0px;
   padding-left: 0px; padding-right: 0px;}                             
 
-div.codextoc div.head { min-height: 24px;}
+div.metabooktoc div.head { min-height: 24px;}
 @media (pointer: coarse) {
-    #METABOOKSTATICTOC div.codextoc div.head { min-height: 30px;}
+    #METABOOKSTATICTOC div.metabooktoc div.head { min-height: 30px;}
     }
 
-div.codextoc div.head .progressbar, div.codextoc div.head .sizebar { 
+div.metabooktoc div.head .progressbar, div.metabooktoc div.head .sizebar { 
     padding: 0px; margin: 0px; 
     position: absolute;  left: 0px; height: 100%;
     z-index: -100;
@@ -35,7 +35,7 @@ div.codextoc div.head .progressbar, div.codextoc div.head .sizebar {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-div.codextoc div.head .progressbar {
+div.metabooktoc div.head .progressbar {
     color: rgb(173,216,230); background-color: rgb(173,216,230);
     border-right: solid red 2px;
     opacity: 0.99;
@@ -46,39 +46,39 @@ div.codextoc div.head .progressbar {
     -moz-opacity: 0.99;
     -o-opacity: 0.99;
     display: none;}
-div.codextoc div.head.codexlivehead > .progressbar { display: block; }
-div.codextoc div.head .sizebar {
+div.metabooktoc div.head.MBlivehead > .progressbar { display: block; }
+div.metabooktoc div.head .sizebar {
     background-color: rgb(173,216,230);}
-div.codextoc img[alt='next'], div.codextoc img[alt='nextstop'] {
+div.metabooktoc img[alt='next'], div.metabooktoc img[alt='nextstop'] {
     height: 1em; width: auto; float: right;
     cursor: pointer; z-index: 100;}
-div.codextoc img[alt='back'], div.codextoc img[alt='backstop'] {
+div.metabooktoc img[alt='back'], div.metabooktoc img[alt='backstop'] {
     height: 1em; width: auto; float: left;
     cursor: pointer; z-index: 100;}
 
 /* Conditional display, so only the live elements are displayed */
-div.codextoc.codexlivehead { display: block;}
-div.codextoc.codexlivehead div.head { display: block;}
+div.metabooktoc.MBlivehead { display: block;}
+div.metabooktoc.MBlivehead div.head { display: block;}
 
-div.codextoc.codexlivehead div.codextoc { display: none;}
-div.codextoc.codexlivehead div.codextoc.codexlivehead { display: block;}
-div.codextoc div.spanbar div.codexhudspan a.brick {
+div.metabooktoc.MBlivehead div.metabooktoc { display: none;}
+div.metabooktoc.MBlivehead div.metabooktoc.MBlivehead { display: block;}
+div.metabooktoc div.spanbar div.MBhudspan a.brick {
     border: 0px; border-right: solid darkblue 1px;
     text-align: center; /* color: red; */
     cursor: crosshair;}
-div.codextoc div.spanbar div.codexhudspan.codexfirstspan a.brick {
+div.metabooktoc div.spanbar div.MBhudspan.MBfirstspan a.brick {
     border-left: 0px;}
-div.codextoc div.spanbar div.codexhudspan.codexlastspan a.brick {
+div.metabooktoc div.spanbar div.MBhudspan.MBlastspan a.brick {
     border-right: 0px;}
-div.codextoc.toc0 > div.spanbar div.codexhudspan.codexfirstspan a.brick {
+div.metabooktoc.toc0 > div.spanbar div.MBhudspan.MBfirstspan a.brick {
     border-left: 0px;}
-div.codextoc.toc0 > div.spanbar div.codexhudspan.codexlastspan a.brick {
+div.metabooktoc.toc0 > div.spanbar div.MBhudspan.MBlastspan a.brick {
     border-right: 0px;}
 
-div.codextoc div.spanbar div.codexhudspan a.brick.codexlivehead {
+div.metabooktoc div.spanbar div.MBhudspan a.brick.MBlivehead {
     background-color: rgba(0,0,255,0.3); z-index: 0;}
 
-div.codextoc div.sub {
+div.metabooktoc div.sub {
     display: none; clear: both;
     background-color: rgba(255,255,255,0.9);
     border: solid rgba(0,0,255,0.3) 4px; border-top: 0px;
@@ -90,65 +90,65 @@ div.codextoc div.sub {
     -webkit-border-bottom-right-radius: 6px; 
     -moz-border-radius-bottomright: 6px;
     -o-border-radius-bottomright: 6px;}
-div.codextoc.codexcurhead div.head { }
-div.codextoc.codexcurhead div.sub { display: block;}
+div.metabooktoc.MBcurhead div.head { }
+div.metabooktoc.MBcurhead div.sub { display: block;}
 
 #METABOOKHEART #METABOOKSTATICTOC {
     margin-left: 0.1em; margin-right: 0.1em;
     font-size: 2em;}
-#METABOOKHEART #METABOOKSTATICTOC div.codextoc {
+#METABOOKHEART #METABOOKSTATICTOC div.metabooktoc {
     display: block; font-size: 90%; text-align: left;}
-#METABOOKHEART #METABOOKSTATICTOC div.codextoc img { display: none;}
-#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.codextoc div.head {
+#METABOOKHEART #METABOOKSTATICTOC div.metabooktoc img { display: none;}
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.metabooktoc div.head {
     margin-left: 0px; margin-right: 0px;
     padding-left: 0px; padding-right: 0px;
     display: block; font-weight: bold;}
-#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.codextocleaf > div.head {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.metabooktocleaf > div.head {
     display: block; font-weight: normal;}
 #METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.progressbox { display: none;}
-#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.codexlivehead > div.head {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.MBlivehead > div.head {
     color: blue;}
 #METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC
-  div.codexlivehead > div.spanbar div.progressbox {
+  div.MBlivehead > div.spanbar div.progressbox {
       display: block;}
-#METABOOKHEART #METABOOKSTATICTOC div.codextoc a.brick {
+#METABOOKHEART #METABOOKSTATICTOC div.metabooktoc a.brick {
     border: solid black 1px;}
 
-#METABOOKSTATICTOC div.codextoc.codexcurhead div.sub { display: none;}
+#METABOOKSTATICTOC div.metabooktoc.MBcurhead div.sub { display: none;}
 
-#METABOOKSTATICTOC > div.codextoc { margin-left: 0.5ex; margin-right: 0.5ex;}
+#METABOOKSTATICTOC > div.metabooktoc { margin-left: 0.5ex; margin-right: 0.5ex;}
 #METABOOKSTATICTOC div.spanbar { display: none; }
 
 #METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.spanbar div.spans {
     left: 0px;}
-#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.head.codexlivehead {
+#METABOOKHUD #METABOOKHEART #METABOOKSTATICTOC div.head.MBlivehead {
     border-bottom: solid red 1px;}
 
-div.codextoc .sectname.cohi {
+div.metabooktoc .sectname.cohi {
     background-color: silver;}
-div.codextoc .sectname { color: darkblue; cursor: crosshair;}
-div.codextoc div.sub a.sectname { 
+div.metabooktoc .sectname { color: darkblue; cursor: crosshair;}
+div.metabooktoc div.sub a.sectname { 
   color: darkblue; font-size: 80%; white-space: nowrap;}
-div.codextoc div.sub a.sectname.cohi { background-color: gold; }
+div.metabooktoc div.sub a.sectname.cohi { background-color: gold; }
 
-div.codextoc a.codextitle.cohi {
+div.metabooktoc a.MBtitle.cohi {
     background-color: gold; opacity: 0.6;}
-div.codextoc div.spans:hover a.codextitle.cohi {
+div.metabooktoc div.spans:hover a.MBtitle.cohi {
     background-color: transparent; opacity: 1;}
 
-#METABOOKHUD div.codextoc div.head { display: none;}
-#METABOOKHUD div.codextoc div.head { display: none;}
-#METABOOKHUD div.codextoc div.spanbar { display: none;}
-#METABOOKHUD div.codextoc img { display: none;}
+#METABOOKHUD div.metabooktoc div.head { display: none;}
+#METABOOKHUD div.metabooktoc div.head { display: none;}
+#METABOOKHUD div.metabooktoc div.spanbar { display: none;}
+#METABOOKHUD div.metabooktoc img { display: none;}
 
-#METABOOKHUD.overtoc div.codextoc div.head { display: block;}
-#METABOOKHUD.overtoc div.codextoc div.spanbar {
+#METABOOKHUD.overtoc div.metabooktoc div.head { display: block;}
+#METABOOKHUD.overtoc div.metabooktoc div.spanbar {
     display: block;
     border-left: solid darkgray 2px;
     border-right: solid darkgray 2px;}
-#METABOOKHUD.overtoc div.codextoc img { display: inherit;}
-#METABOOKHUD.overtoc div.codextoc.codexcurhead div.sub { display: block;}
-#METABOOKHUD #METABOOKTOC.hover div.codextoc.codexcurhead div.sub {
+#METABOOKHUD.overtoc div.metabooktoc img { display: inherit;}
+#METABOOKHUD.overtoc div.metabooktoc.MBcurhead div.sub { display: block;}
+#METABOOKHUD #METABOOKTOC.hover div.metabooktoc.MBcurhead div.sub {
     display: none;}
 
 #METABOOKHUD.overtoc #METABOOKTOC div.spanbar div.progressbox {
@@ -164,7 +164,7 @@ div.codextoc div.spans:hover a.codextitle.cohi {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;}
-#METABOOKTOC div.codextoc div.spanbar div.codexhudspan.codexlivehead {
+#METABOOKTOC div.metabooktoc div.spanbar div.MBhudspan.MBlivehead {
     z-index: 0;}
 
 #METABOOKTOC div.spanbar { height: 48px;}
@@ -172,19 +172,19 @@ div.codextoc div.spans:hover a.codextitle.cohi {
     border-top: solid rgba(0,0,255,0.3) 4px;
     border-bottom: solid rgba(0,0,255,0.3) 4px;
     height: 40px;}
-#METABOOKTOC div.spanbar div.codexhudspan {
+#METABOOKTOC div.spanbar div.MBhudspan {
     height: 100%; z-index: 50;}
-#METABOOKTOC div.codextoc div.spanbar div.codexhudspan a.brick {
+#METABOOKTOC div.metabooktoc div.spanbar div.MBhudspan a.brick {
     height: 100%;}
 #METABOOKTOC div.spanbar div.progressbox {
     vertical-align: top; height: auto; top: 4px; bottom: 4px;}
 #METABOOKTOC div.toc0 > div.spanbar div.progressbox {
     vertical-align: top; top: 0px;}
 #METABOOKTOC div.spanbar div.spans { font-size: 30px;}
-#METABOOKTOC div.spanbar div.spans a.codextitle {
+#METABOOKTOC div.spanbar div.spans a.MBtitle {
     white-space: nowrap; height: 36px;}
 /*
-#METABOOKTOC div.spanbar div.spans a.codextitle:before {
+#METABOOKTOC div.spanbar div.spans a.MBtitle:before {
     content: "·"; color: red;}
 */
 
@@ -193,13 +193,13 @@ div.spanbar div.progressbox {
     width: 0.25em; background-color: rgba(255,0,0,0.7);
     position: absolute; z-index: 100; }
 
-#METABOOKTOC div.codextoc.codexcurhead > div.spanbar { }
-body._PREVIEW #METABOOKTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
+#METABOOKTOC div.metabooktoc.MBcurhead > div.spanbar { }
+body._PREVIEW #METABOOKTOC div.metabooktoc.MBcurhead > div.spanbar div.MBhudspan {
     height: 18px;}
-#METABOOKTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
+#METABOOKTOC div.metabooktoc.MBcurhead > div.spanbar div.spans a.MBtitle {
     display: none;}
-#METABOOKTOC div.codextoc.codexcurhead div.spanbar
-div.codexhudspan a.brick.cohi {
+#METABOOKTOC div.metabooktoc.MBcurhead div.spanbar
+div.MBhudspan a.brick.cohi {
     background-color: gold;
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -208,7 +208,7 @@ div.codexhudspan a.brick.cohi {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-#METABOOKTOC div.codextoc div.spanbar div.codexhudspan.codexheld a.brick {
+#METABOOKTOC div.metabooktoc div.spanbar div.MBhudspan.MBheld a.brick {
     background-color: gold;
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -219,7 +219,7 @@ div.codexhudspan a.brick.cohi {
     -o-opacity: 0.50;}
 
 /*
-#METABOOKTOC div.codextoc {
+#METABOOKTOC div.metabooktoc {
     border-bottom-left-radius: 6px;
     -webkit-border-bottom-left-radius: 6px; 
     -moz-border-radius-bottomleft: 6px;
@@ -230,7 +230,7 @@ div.codexhudspan a.brick.cohi {
     -o-border-radius-bottomright: 6px;}
 */
 
-#METABOOKTOC div.codextoc div.codextoc {
+#METABOOKTOC div.metabooktoc div.metabooktoc {
     border-bottom-left-radius: 0px;
     -webkit-border-bottom-left-radius: 0px; 
     -moz-border-radius-bottomleft: 0px;
@@ -240,48 +240,48 @@ div.codexhudspan a.brick.cohi {
     -moz-border-radius-bottomright: 0px;
     -o-border-radius-bottomright: 0px;}
 
-#METABOOKHUD #METABOOKSTATICTOC div.spans a.codextitle { display: none;}
+#METABOOKHUD #METABOOKSTATICTOC div.spans a.MBtitle { display: none;}
 
 div.spanbar div.spans { 
   position: relative; width: 100%; /* background-color: black; */
   margin: 0px; padding: 0px; border: 0px;}
-div.codextoc div.spanbar div.spans
-    a.codextitle {
+div.metabooktoc div.spanbar div.spans
+    a.MBtitle {
         font-weight: bold;}
-div.codextoc div.spanbar div.spans
-    a.codextitle {
+div.metabooktoc div.spanbar div.spans
+    a.MBtitle {
         position: absolute; top: 4px; width: 100%; z-index: 25;
         display: none; pointer-events: none;}
-div.codextoc div.spanbar div.spans
-    a.codextitle.codexlivehead { display: block;}
-body._PREVIEW div.codextoc.codexheld div.spanbar div.spans
-    a.codextitle.codexlivehead { display: none;}
-body._PREVIEW div.codextoc.codexheld div.spanbar div.spans
-    a.codextitle.codexpreviewtitle {
+div.metabooktoc div.spanbar div.spans
+    a.MBtitle.MBlivehead { display: block;}
+body._PREVIEW div.metabooktoc.MBheld div.spanbar div.spans
+    a.MBtitle.MBlivehead { display: none;}
+body._PREVIEW div.metabooktoc.MBheld div.spanbar div.spans
+    a.MBtitle.MBpreviewtitle {
         color: yellow;
         display: block;}
-div.spanbar div.codexhudspan {
+div.spanbar div.MBhudspan {
   background-color: transparent; clear: none; position: absolute;
   margin: 0px; padding: 0px; border: 0px;
   border-right: none; border-left: none;}
-#METABOOKSTATICTOC div.spanbar div.codexhudspan { z-index: 75;}
-div.spanbar div.codexhudspan a.brick {
+#METABOOKSTATICTOC div.spanbar div.MBhudspan { z-index: 75;}
+div.spanbar div.MBhudspan a.brick {
   display: block; text-decoration: none;
   border: 0px; padding: 0px;
   border-left: solid black 1px; /* border-right: solid black 1px; */
   height: 100%;}
-div.spanbar div.codexhudspan[odd] {}
-div.spanbar div.codexhudspan[even] {}
-div.spanbar div.codexhudspan.current {
+div.spanbar div.MBhudspan[odd] {}
+div.spanbar div.MBhudspan[even] {}
+div.spanbar div.MBhudspan.current {
     color: yellow; background-color: transparent;}
-#METABOOKHUD div.codextoc { 
+#METABOOKHUD div.metabooktoc { 
   padding-left: 1em; padding-right: 1em;}
-#METABOOKHUD #METABOOKTOC div.codextoc { 
+#METABOOKHUD #METABOOKTOC div.metabooktoc { 
   padding-left: 0.5em; padding-right: 0.5em;}
-#METABOOKHUD #METABOOKTOC div.codextoc.toc0 { 
+#METABOOKHUD #METABOOKTOC div.metabooktoc.toc0 { 
   padding-left: 0px; padding-right: 0px;
   border-right: 0px; border-left: 0px;}
-#METABOOKHUD div.codextoc.toc0 {
+#METABOOKHUD div.metabooktoc.toc0 {
   padding-left: 0px; padding-right: 0px;}
 
 div.spanbar { padding: 0px; margin: 0px;}
@@ -290,7 +290,7 @@ div.spanbar div.spans {
 
 /* Handling preview mode */
 
-body._PREVIEW #METABOOKHUD #METABOOKTOC a.codextitle {
+body._PREVIEW #METABOOKHUD #METABOOKTOC a.MBtitle {
     visibility: hidden;}
 body._PREVIEW #METABOOKHUD div.spanbar {
     opacity: 0.03;
@@ -300,7 +300,7 @@ body._PREVIEW #METABOOKHUD div.spanbar {
     -khtml-opacity: 0.03;
     -moz-opacity: 0.03;
     -o-opacity: 0.03;}
-body._PREVIEW #METABOOKHUD div.spanbar.codexvisible {
+body._PREVIEW #METABOOKHUD div.spanbar.MBvisible {
     visibility: visible;
     opacity: 0.25;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
@@ -309,7 +309,7 @@ body._PREVIEW #METABOOKHUD div.spanbar.codexvisible {
     -khtml-opacity: 0.25;
     -moz-opacity: 0.25;
     -o-opacity: 0.25;}
-body._PREVIEW #METABOOKHUD div.codextoc > div.head {
+body._PREVIEW #METABOOKHUD div.metabooktoc > div.head {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=05)";
     filter: alpha(opacity=05);
@@ -317,7 +317,7 @@ body._PREVIEW #METABOOKHUD div.codextoc > div.head {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body._PREVIEW #METABOOKHUD div.codextoc.codexcurhead div.sub {
+body._PREVIEW #METABOOKHUD div.metabooktoc.MBcurhead div.sub {
     opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -325,7 +325,7 @@ body._PREVIEW #METABOOKHUD div.codextoc.codexcurhead div.sub {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body._PREVIEW #METABOOKHUD div.codextoc.codexlivehead > div.head {
+body._PREVIEW #METABOOKHUD div.metabooktoc.MBlivehead > div.head {
     opacity: 0.10;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
@@ -333,7 +333,7 @@ body._PREVIEW #METABOOKHUD div.codextoc.codexlivehead > div.head {
     -khtml-opacity: 0.10;
     -moz-opacity: 0.10;
     -o-opacity: 0.10;}
-body._PREVIEW #METABOOKHUD div.codextoc.codexlivehead.codexcurhead > div.head {
+body._PREVIEW #METABOOKHUD div.metabooktoc.MBlivehead.MBcurhead > div.head {
     opacity: 0.40;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);
@@ -345,11 +345,11 @@ body._PREVIEW #METABOOKHUD div.codextoc.codexlivehead.codexcurhead > div.head {
 /* The first one is special, doesn't need a top border to indicate
    hierarchy */
 
-#METABOOKTOC div.codextoc.toc0 > div.spanbar { height: 44px;}
-#METABOOKTOC div.codextoc.toc0 > div.spanbar > div.spans {
+#METABOOKTOC div.metabooktoc.toc0 > div.spanbar { height: 44px;}
+#METABOOKTOC div.metabooktoc.toc0 > div.spanbar > div.spans {
     border-top-width: 0px;}
-#METABOOKTOC div.codextoc.toc0 >
-   div.spanbar div.codexhudspan a.brick.codexlivehead {
+#METABOOKTOC div.metabooktoc.toc0 >
+   div.spanbar div.MBhudspan a.brick.MBlivehead {
     border-top-color: darkblue;}
 
 /* Static TOC */
@@ -367,25 +367,25 @@ body._PREVIEW #METABOOKHUD div.codextoc.codexlivehead.codexcurhead > div.head {
 
 /* No confusing underlines in the METABOOKTOC */
 
-#METABOOKHUD #METABOOKTOC a.codextitle,
-#METABOOKHUD #METABOOKTOC a.codextitle:visited,
-#METABOOKHUD #METABOOKTOC a.codextitle:hover {
+#METABOOKHUD #METABOOKTOC a.MBtitle,
+#METABOOKHUD #METABOOKTOC a.MBtitle:visited,
+#METABOOKHUD #METABOOKTOC a.MBtitle:hover {
     z-index: 100; color: blue;}
-#METABOOKHUD #METABOOKTOC a.codexpreviewtitle,
-#METABOOKHUD #METABOOKTOC a.codexpreviewtitle:visited,
-#METABOOKHUD #METABOOKTOC a.codexpreviewtitle:hover {
+#METABOOKHUD #METABOOKTOC a.MBpreviewtitle,
+#METABOOKHUD #METABOOKTOC a.MBpreviewtitle:visited,
+#METABOOKHUD #METABOOKTOC a.MBpreviewtitle:hover {
     z-index: 100; color: black;}
 
-div.codextoc a.brick {
+div.metabooktoc a.brick {
     color: transparent; font-weight: bold;
     background-color: rgba(0,0,0,0.1);}
 #METABOOKHUD #METABOOKTOC a.brick:visited, #METABOOKHUD #METABOOKTOC a.brick:hover {
     color: transparent;}
-#METABOOKHUD #METABOOKTOC a.brick.codexlivehead { }
+#METABOOKHUD #METABOOKTOC a.brick.MBlivehead { }
 #METABOOKHUD #METABOOKTOC a:hover { text-decoration: none;}
 
 @media (max-device-width: 500px) {
-    #METABOOKHUD div.codextoc {
+    #METABOOKHUD div.metabooktoc {
         padding-left:0.5ex; padding-right: 2px;}
     }
 

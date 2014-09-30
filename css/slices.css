@@ -4,7 +4,7 @@
 
 @charset "UTF-8";
 
-/* codex 'slices' of summaries or glosses */
+/* MB 'slices' of summaries or glosses */
 
 div.bookslice { cursor: crosshair; }
 div.bookslice button, div.bookslice input[TYPE="SUBMIT"],
@@ -18,13 +18,13 @@ div.bookslice.sourced div.mbcard.sourced { display: block;}
 @media (pointer: coarse) and (max-width: 650px) {
     div.bookslice div.mbcard { font-size: 120%; }}
 
-div.bookslice.sourced div.codexthread { display: none;}
-div.bookslice.sourced div.codexthread > div { display: none;}
-div.bookslice.sourced div.codexthread.sourced { display: block;}
-div.bookslice.sourced div.codexthread.sourced > div.tochead { display: block;}
-div.bookslice.sourced div.codexthread.sourced > div.idhead { display: block;}
-div.bookslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
-div.bookslice.sourced div.codexthread.sourced > div.codexthread.sourced {
+div.bookslice.sourced div.MBthread { display: none;}
+div.bookslice.sourced div.MBthread > div { display: none;}
+div.bookslice.sourced div.MBthread.sourced { display: block;}
+div.bookslice.sourced div.MBthread.sourced > div.tochead { display: block;}
+div.bookslice.sourced div.MBthread.sourced > div.idhead { display: block;}
+div.bookslice.sourced div.MBthread.sourced > div.MBthread { display: none;}
+div.bookslice.sourced div.MBthread.sourced > div.MBthread.sourced {
     display: block;}
 
 div.bookslice.onepassage .tocblock .tochead {display:none;}
@@ -49,57 +49,57 @@ div.bookslice .showxrefs div.xrefs { display: block;}
 div.bookslice div.xrefs a { display: block;}
 div.bookslice div.mbcard span.tags span.other { display: none;}
 
-div.codexthread {
+div.MBthread {
     clear: both; margin: 0px; border: none;
     border-right: gold solid 3px;}
-div.codexthread.singleton {
+div.MBthread.singleton {
     border-left: none; margin-left: 0px;
     padding-left: 0px; margin-top: 0px; margin-bottom: 6px;}
-div.codexthread .locbar { background-color: silver;}
-div.codexthread.headthread { border-top: solid gold 2px;}
-div.codexthread.idthread {border: none;}
-div.codexthread.idthread .mbcard {}
-div.bookslice div.codexthread div.mbcard div.locbar {border: none;}
-div.bookslice div.codexthread div.mbcard div.locbar {display:none;}
-div.bookslice div.codexthread div.mbcard:first-child div.locbar {
+div.MBthread .locbar { background-color: silver;}
+div.MBthread.headthread { border-top: solid gold 2px;}
+div.MBthread.idthread {border: none;}
+div.MBthread.idthread .mbcard {}
+div.bookslice div.MBthread div.mbcard div.locbar {border: none;}
+div.bookslice div.MBthread div.mbcard div.locbar {display:none;}
+div.bookslice div.MBthread div.mbcard:first-child div.locbar {
     display:block;}
 
-div.bookslice div.codexskimpoint {
+div.bookslice div.MBskimpoint {
     border-left: solid red 16px;
     border-top: solid red 4px;
     border-bottom: solid red 4px;
     margin-left: 0px;
     background-color: white;}
-div.bookslice div.codexskimpoint.mbcard {}
-div.bookslice div.codexskimpoint.mbcard .tool {
+div.bookslice div.MBskimpoint.mbcard {}
+div.bookslice div.MBskimpoint.mbcard .tool {
     font-size: 47%; font-weight: bold;}
-div.bookslice div.codexskimpoint.mbcard img.userpic,
-div.bookslice div.codexskimpoint.mbcard img.sourcepic {
+div.bookslice div.MBskimpoint.mbcard img.userpic,
+div.bookslice div.MBskimpoint.mbcard img.sourcepic {
     width: 75px;}
 
-div.codexskimpoint .mbcard .mbcardbody { padding-top: 0px;}
+div.MBskimpoint .mbcard .mbcardbody { padding-top: 0px;}
 
-div.bookslice div.mbcard.codexskimpoint + div.mbcard > div.mbcardbody,
-div.bookslice div.mbcard.codexskimpoint .mbcardbody {
+div.bookslice div.mbcard.MBskimpoint + div.mbcard > div.mbcardbody,
+div.bookslice div.mbcard.MBskimpoint .mbcardbody {
     border-top-width: 0px;}
-div.bookslice div.mbcard.codexskimpoint .fdjtclearfloats {
+div.bookslice div.mbcard.MBskimpoint .fdjtclearfloats {
     margin-bottom: 0px;}
 
 /* METABOOKSOURCES */
 
-div.codexsources {}
-div.codexsources img.button {
+div.sbooksources {}
+div.sbooksources img.button {
     height: 50px; width: auto; max-width: 50px; border-radius: 10%;
     box-sizing: border-box;}
-div.codexsources img.button.everyone {}
-div.codexsources img.button.everyone.selected { background-color: silver; }
-div.codexsources .button {
+div.sbooksources img.button.everyone {}
+div.sbooksources img.button.everyone.selected { background-color: silver; }
+div.sbooksources .button {
     border: solid transparent 4px;
     margin: 0px; margin-left: 2px; margin-right: 2px;}
-div.codexsources img.button.source.selected,
-div.codexsources div.button.source.selected {
+div.sbooksources img.button.source.selected,
+div.sbooksources div.button.source.selected {
     border-color: blue;}
-div.codexsources div.button.source {
+div.sbooksources div.button.source {
     min-height: 50px; min-width: 50px; display: inline;
     height: 50px; width: 50px; font-size: 32px;
     text-align: center; vertical-align: top;
@@ -107,7 +107,7 @@ div.codexsources div.button.source {
 
 /* Heads of various sorts */
 
-#METABOOKHUD div.codexthread > div.locrule {
+#METABOOKHUD div.MBthread > div.locrule {
     position: relative; left: 0px; bottom: 0px; z-index: 50;
     width: 100%; min-height: 10px;}
 

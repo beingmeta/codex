@@ -112,8 +112,8 @@
     function everyone_ontap(evt){
         evt=evt||window.event||null;
         var target=fdjtDOM.T(evt);
-        // var sources=fdjtDOM.getParent(target,".codexsources");
-        // var glosses=fdjtDOM.getParent(target,".sbookglosses");
+        // var sources=fdjtDOM.getParent(target,".sbooksources");
+        // var glosses=fdjtDOM.getParent(target,".bookglosses");
         var sources=fdjtID("METABOOKSOURCES");
         var glosses=fdjtID("METABOOKALLGLOSSES");
         if ((!(sources))||(!(glosses)))
@@ -133,8 +133,8 @@
         evt=evt||window.event||null;
         // if (!(mB.user)) return;
         var target=fdjtDOM.T(evt);
-        // var sources=fdjtDOM.getParent(target,".codexsources");
-        // var glosses=fdjtDOM.getParent(target,".sbookglosses");
+        // var sources=fdjtDOM.getParent(target,".sbooksources");
+        // var glosses=fdjtDOM.getParent(target,".bookglosses");
         var sources=fdjtID("METABOOKSOURCES");
         var glosses=fdjtID("METABOOKALLGLOSSES");
         var new_sources=[];
@@ -197,13 +197,13 @@
     
     metaBook.UI.addGlossmark=function(passage,gloss){
         var Glosses=mB.glossdb;
-        var current_glossmark=fdjtDOM.getChild(passage,".codexglossmark");
+        var current_glossmark=fdjtDOM.getChild(passage,".glossmark");
         if ((current_glossmark)&&(current_glossmark.parentNode===passage)) {
             if (gloss) extendGlossmark(current_glossmark,[gloss]);
             return current_glossmark;}
         var imgsrc=(mbicon("sbwedge",64,64));
         var wedge=fdjtDOM.Image(imgsrc,"wedge","glosses");
-        var glossmark=fdjtDOM("a.codexglossmark.fdjtskiptext",wedge);
+        var glossmark=fdjtDOM("a.glossmark.fdjtskiptext",wedge);
         // Get all the glosses from the index
         var id=passage.getAttribute("data-baseid")||passage.id;
         var glosses=Glosses.find("frag",id);
@@ -227,7 +227,7 @@
         if (!(id)) return;
         var dups=mB.getDups(target.id);
         var glossids=mB.glossdb.find('frag',id), glosses=[];
-        var slicediv=fdjtDOM("div.codexglosses.bookslice");
+        var slicediv=fdjtDOM("div.bookglosses.bookslice");
         if ((!(glossids))||(!(glossids.length)))
             fdjtDOM.addClass(slicediv,"noglosses");
         if (mB.target) mB.clearHighlights(mB.target);
@@ -241,8 +241,8 @@
                 var range=mB.findExcerpt(dups,gloss.excerpt,gloss.exoff);
                 if (range) {
                     var starts=range.startContainer;
-                    if (!(hasClass(starts,"mBhighlightexcerpt"))) {
-                        fdjtUI.Highlight(range,"mBhighlightexcerpt");}}}}
+                    if (!(hasClass(starts,"MBhighlightexcerpt"))) {
+                        fdjtUI.Highlight(range,"MBhighlightexcerpt");}}}}
         var slice=new BookSlice(slicediv,glosses);
         var hudwrapper=fdjtDOM("div.hudpanel#METABOOKPOINTGLOSSES",slicediv);
         if (point) {
@@ -326,7 +326,7 @@
 
     function clearGlossmark() {
         if (mB.mode==="openglossmark") mB.setMode(false,true);
-        var slicediv=fdjtDOM("div.codexglosses.bookslice");
+        var slicediv=fdjtDOM("div.bookglosses.bookslice");
         var hudwrapper=fdjtDOM("div.hudpanel#METABOOKPOINTGLOSSES",slicediv);
         fdjtDOM.replace("METABOOKPOINTGLOSSES",hudwrapper);}
     metaBook.clearGlossmark=clearGlossmark;

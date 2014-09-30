@@ -150,9 +150,9 @@ metaBook.setMode=
 
             mB.hudtick=fdjtTime();
 
-            fdjtDOM.setInputs(".codexrefuri",mB.refuri);
-            fdjtDOM.setInputs(".codexdocuri",mB.docuri);
-            fdjtDOM.setInputs(".codextopuri",mB.topuri);
+            fdjtDOM.setInputs(".bmrefuri",mB.refuri);
+            fdjtDOM.setInputs(".bmdocuri",mB.docuri);
+            fdjtDOM.setInputs(".bmtopuri",mB.topuri);
             
             // Initialize gloss UI
             mB.DOM.allglosses=fdjtID("METABOOKALLGLOSSES");
@@ -278,7 +278,7 @@ metaBook.setMode=
                 if (item.excerpt) {
                     var range=mB.findExcerpt(nodes,item.excerpt,item.exoff);
                     if (range) {
-                        fdjtUI.Highlight(range,"codexuserexcerpt",
+                        fdjtUI.Highlight(range,"mbuserexcerpt",
                                          item.note,{"data-glossid":item.uuid});}}
                 if (item.tags) {
                     var gloss_cloud=mB.gloss_cloud;
@@ -398,8 +398,8 @@ metaBook.setMode=
         /* Mode controls */
         
         var metaBookModes=/\b((search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
-        var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossaddtag)|(glossaddtag)|(glossaddoutlet)|(glosseditdetail))\b/g;
-        var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(shownote))\b/g;
+        var metaBookHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossaddtag)|(glossaddtag)|(glossaddoutlet)|(glosseditdetail))\b/g;
+        var metaBookHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(shownote))\b/g;
         var metaBookPopModes=/\b((glossdetail))\b/g;
         var metaBookCoverModes=/\b((welcome)|(help)|(layers)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
         var metaBookSearchModes=/((refinesearch)|(searchresults)|(expandsearch))/;
@@ -510,18 +510,18 @@ metaBook.setMode=
                     // addgloss has submodes which may specify the
                     //  open heart configuration
                     addClass(metaBookHUD,"openhead");
-                    if (metaBookHUD.className.search(codexHeartModes)<0)
+                    if (metaBookHUD.className.search(metaBookHeartModes)<0)
                         dropClass(metaBookHUD,"openheart");
                     else addClass(metaBookHUD,"openheart");}
                 else {
-                    if (mode.search(codexHeartModes)<0) {
+                    if (mode.search(metaBookHeartModes)<0) {
                         dropClass(metaBookHUD,"openheart");}
-                    if (mode.search(codexHeadModes)<0)
+                    if (mode.search(metaBookHeadModes)<0)
                         dropClass(metaBookHUD,"openhead");
-                    if (mode.search(codexHeartModes)>=0) {
+                    if (mode.search(metaBookHeartModes)>=0) {
                         mB.heart_mode=mode;
                         addClass(metaBookHUD,"openheart");}
-                    if (mode.search(codexHeadModes)>=0) {
+                    if (mode.search(metaBookHeadModes)>=0) {
                         mB.head_mode=mode;
                         addClass(metaBookHUD,"openhead");}}
                 changeMode(mode);}
@@ -539,7 +539,7 @@ metaBook.setMode=
                 if (mB.skimming) {
                     var dups=mB.getDups(mB.target);
                     mB.clearHighlights(dups);
-                    dropClass(dups,"mBhighlightpassage");}
+                    dropClass(dups,"MBhighlightpassage");}
                 dropClass(metaBookHUD,"openheart");
                 dropClass(metaBookHUD,"openhead");
                 dropClass(document.body,"dimmed");
@@ -661,7 +661,7 @@ metaBook.setMode=
             else if (mode===mB.mode)
                 if (keephud) setMode(true); else setMode(false);
             else if ((mode==='heart')&&
-                     (mB.mode.search(codexHeartModes)===0))
+                     (mB.mode.search(metaBookHeartModes)===0))
                 if (keephud) setMode(true); else setMode(false);
             else setMode(mode);}
         metaBook.toggleMode=metaBookHUDToggle;
@@ -759,8 +759,8 @@ metaBook.setMode=
                 var skiminfo=fdjtID("METABOOKSKIMINFO");
                 skiminfo.innerHTML=(before+1)+"/"+(before+after+1);
                 // This marks where we are currently skimming
-                if (pelt) dropClass(pelt,"codexskimpoint");
-                if (src) addClass(src,"codexskimpoint");
+                if (pelt) dropClass(pelt,"mbskimpoint");
+                if (src) addClass(src,"mbskimpoint");
                 if (typeof expanded === "undefined") {}
                 else if (expanded) addClass("METABOOKSKIMMER","expanded");
                 else dropClass("METABOOKSKIMMER","expanded");
@@ -779,12 +779,12 @@ metaBook.setMode=
                         searching,glossinfo.excerpt,glossinfo.exoff);
                     if (range) {
                         highlights=
-                            fdjtUI.Highlight(range,"mBhighlightexcerpt");
+                            fdjtUI.Highlight(range,"MBhighlightexcerpt");
                         addClass("METABOOKSKIMMER","cxhighlights");}}
                 else if (src.about[0]==="#")
                     addClass(mB.getDups(src.about.slice(1)),
-                             "mBhighlightpassage");
-                else addClass(mB.getDups(src.about),"mBhighlightpassage");}
+                             "MBhighlightpassage");
+                else addClass(mB.getDups(src.about),"MBhighlightpassage");}
             else if ((src)&&(getParent(src,".sbookresults"))) {
                 var about=src.about, target=mbID(about);
                 if (target) {
@@ -793,7 +793,7 @@ metaBook.setMode=
                     var spellings=info.knodeterms;
                     i=0; lim=terms.length;
                     if (lim===0)
-                        addClass(mB.getDups(target),"mBhighlightpassage");
+                        addClass(mB.getDups(target),"MBhighlightpassage");
                     else while (i<lim) {
                         var term=terms[i++];
                         var h=mB.highlightTerm(term,target,info,spellings);
@@ -838,7 +838,7 @@ metaBook.setMode=
         
         mB.addConfig("uisize",function(name,value){
             fdjtDOM.swapClass(
-                mB.Frame,/codexuifont\w+/,"codexuifont"+value);});
+                mB.Frame,/metabookuifont\w+/,"metabookuifont"+value);});
         mB.addConfig("animatecontent",function(name,value){
             if (mB.dontanimate) {}
             else if (value) addClass(document.body,"_ANIMATE");

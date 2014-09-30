@@ -17,7 +17,7 @@
         border-bottom-right-radius: 1ex;
         padding-bottom: 0px;
         left: 5px; right: 5px; }
-    img.codexclosehud#METABOOKSTOPSKIM {
+    img.MBclosehud#METABOOKSTOPSKIM {
         bottom: 50px; top: auto;}
 
     #METABOOKHUD.addgloss img.hudbutton[alt="toc"],
@@ -57,10 +57,10 @@
         left: 50px; right: 50px;}
 
     #METABOOKPAGE { left: 1.5em; right: 1.5em;}
-    body._BYPAGE .codexglossmark {margin-right: 0em;}
+    body._BYPAGE .glossmark {margin-right: 0em;}
 
     div.searchbox div.query { font-size: 12px; }
-    div.searchbox div.query .codexclearsearch {
+    div.searchbox div.query .MBclearsearch {
         width: 10%; height: auto;}
     div.searchbox div.query div.input {
         width: auto; margin-right: 10%;}

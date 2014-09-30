@@ -120,7 +120,7 @@
     /* For tracking gestures */
     var preview_timer=false;
 
-    metaBook.uiclasses=/\b(codexui|codexglossmark)\b/gi;
+    metaBook.uiclasses=/\b(metabookui|glossmark)\b/gi;
 
     mB.addConfig("controlc",function(key,val){mB.controlc=val;});
 
@@ -196,7 +196,7 @@
         gloss_blurred=false;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
-        var div=((form)&&(getParent(form,".codexglossform")));
+        var div=((form)&&(getParent(form,".sbookglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));
         if (div) {
             mB.setGlossMode(false);}
@@ -208,7 +208,7 @@
         evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var form=getParent(target,"FORM");
-        var div=((form)&&(getParent(form,".codexglossform")));
+        var div=((form)&&(getParent(form,".sbookglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));
         if (div) dropClass(div,"focused");
         if (input) mB.clearFocus(input);
@@ -225,7 +225,7 @@
         var closing=getParent(target,".submitclose");
         if (closing) dropClass(closing,"submitclose");
         var form=getParent(target,"FORM");
-        var div=((form)&&(getParent(form,".codexglossform")));
+        var div=((form)&&(getParent(form,".sbookglossform")));
         var input=((div)&&(getChild(div,"TEXTAREA")));
         if (hasClass(div,"focused")) {
             setTimeout(function(){
@@ -321,7 +321,7 @@
             fdjt.UI.cancel(evt);
             return false;}
 
-        if (hasParent(target,".codexglossmark")) {
+        if (hasParent(target,".glossmark")) {
              cancel(evt);
             return false;}
 
@@ -356,7 +356,7 @@
             return false;}
 
         // If we're in a glossmark, let its handler apply
-        if (hasParent(target,".codexglossmark")) {
+        if (hasParent(target,".glossmark")) {
             fdjtUI.cancel(evt);
             return false;}
 
@@ -517,7 +517,7 @@
             var glossid=glossref.getAttribute("data-glossid");
             var gloss=mB.glossdb.ref(glossid);
             if (!(gloss)) return false;
-            var slicediv=fdjtDOM("div.codexglosses.bookslice");
+            var slicediv=fdjtDOM("div.bookglosses.bookslice");
             var slice=new BookSlice(slicediv,[gloss]);
             var hudwrapper=fdjtDOM("div.hudpanel#METABOOKPOINTGLOSSES",slicediv);
             fdjtDOM.replace("METABOOKPOINTGLOSSES",hudwrapper);
@@ -826,7 +826,7 @@
         return false;}
 
     function getTitleSpan(toc,ref){
-        var titles=getChildren(toc,".codextitle");
+        var titles=getChildren(toc,".metaBooktitle");
         var i=0; var lim=titles.length;
         while (i<lim) {
             var title=titles[i++];
@@ -868,16 +868,16 @@
         if (about) {
             var name=about.name||about.getAttribute("name");
             var ref=name.slice(3);
-            var toc=getParent(about,".codextoc");
+            var toc=getParent(about,".metabooktoc");
             var title=getTitleSpan(toc,name);
             if (Trace.gestures)
                 fdjtLog("toc_held %o about=%o ref=%s toc=%o title=%s",
                         evt,about,ref,toc,title);
-            addClass(title,"codexpreviewtitle");
-            addClass(about.parentNode,"codexheld");
+            addClass(title,"MBpreviewtitle");
+            addClass(about.parentNode,"MBheld");
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
-            addClass(spanbar,"codexvisible");
-            addClass(toc,"codexheld");
+            addClass(spanbar,"MBvisible");
+            addClass(toc,"MBheld");
             mB.startPreview(mbID(ref),"toc_held");
             return fdjtUI.cancel(evt);}
         else if (Trace.gestures) fdjtLog("toc_held %o noabout", evt);
@@ -890,16 +890,16 @@
         if (about) {
             var name=about.name||about.getAttribute("name");
             var ref=name.slice(3);
-            var toc=getParent(about,".codextoc");
+            var toc=getParent(about,".metabooktoc");
             var title=getTitleSpan(toc,name);
             if (Trace.gestures)
                 fdjtLog("toc_released %o ref=%o about=%o toc=%o title=%s",
                         evt,ref,about,toc,title);
-            dropClass(title,"codexpreviewtitle");
-            dropClass(about.parentNode,"codexheld");
+            dropClass(title,"MBpreviewtitle");
+            dropClass(about.parentNode,"MBheld");
             var spanbar=getParent(about,".spanbar")||getChild(toc,".spanbar");
-            dropClass(spanbar,"codexvisible");
-            dropClass(toc,"codexheld");
+            dropClass(spanbar,"MBvisible");
+            dropClass(toc,"MBheld");
             if (mB.previewing)
                 mB.stopPreview("toc_released");}
         else if (Trace.gestures) {
@@ -1001,7 +1001,7 @@
         // If we're currently previewing something, clear it
         if (mB.previewTarget) {
             var drop=mB.getDups(mB.previewTarget);
-            dropClass(drop,"mBpreviewtarget");
+            dropClass(drop,"MBpreviewtarget");
             mB.clearHighlights(drop);
             mB.previewTarget=false;}
 
@@ -1012,7 +1012,7 @@
         var passage=mbID(passageid), show_target=false;
         var dups=mB.getDups(passageid);
         // Set up for preview
-        mB.previewTarget=passage; addClass(dups,"mBpreviewtarget");
+        mB.previewTarget=passage; addClass(dups,"MBpreviewtarget");
         if ((gloss)&&(gloss.excerpt)) {
             // Highlight the gloss excerpt
             var range=mB.findExcerpt(dups,gloss.excerpt,gloss.exoff);
@@ -1022,7 +1022,7 @@
                     // This is the case where the glosses excerpt
                     //  starts in a 'dup' generated by page layout
                     show_target=getTargetDup(starts,passage);
-                fdjtUI.Highlight(range,"mBhighlightexcerpt");}}
+                fdjtUI.Highlight(range,"MBhighlightexcerpt");}}
 
         if (getParent(card,".sbookresults")) {
             // It's a search result, so highlight any matching terms
@@ -1125,7 +1125,7 @@
             if ((ranges)&&(ranges.length)) {
                 var k=0; while (k<ranges.length) {
                     var h=fdjtUI.Highlight(
-                        ranges[k++],"mBhighlightsearch");
+                        ranges[k++],"MBhighlightsearch");
                     highlights=highlights.concat(h);}}}
         return highlights;}
     metaBook.highlightTerm=highlightTerm;
@@ -1624,7 +1624,7 @@
         if ((evt.ctrlKey)||(evt.altKey)||(evt.metaKey)||(evt.shiftKey))
             return;
         var target=fdjtUI.T(evt);
-        var glossmark=getParent(target,".codexglossmark");
+        var glossmark=getParent(target,".glossmark");
         var passage=
             ((glossmark.name)&&
              (glossmark.name.search("GLOSSMARK_NAME_")===0)&&
@@ -1650,8 +1650,8 @@
     var glossmark_image=false;
     function animate_glossmark(target,enable){
         if ((target)&&(enable)) {
-            var glossmark=((hasClass(target,"codexglossmark"))?(target):
-                           (getParent(target,".codexglossmark")));
+            var glossmark=((hasClass(target,"glossmark"))?(target):
+                           (getParent(target,".glossmark")));
             if (!(glossmark)) return;
             if (animated_glossmark===glossmark) return;
             if (glossmark_animated) {
@@ -1676,19 +1676,19 @@
         evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
-        if (!(fdjtDOM.hasClass(passage,"mBtarget")))
+        if (!(fdjtDOM.hasClass(passage,"MBtarget")))
             animate_glossmark(target,true);}
 
     function glossmark_hoverdone(evt){
         evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var passage=getTarget(target);
-        if (!(fdjtDOM.hasClass(passage,"mBtarget")))
+        if (!(fdjtDOM.hasClass(passage,"MBtarget")))
             animate_glossmark(target,false);}
 
     function setTargetUI(target){
         if (target) {
-            var glossmark=getChild(target,".codexglossmark");
+            var glossmark=getChild(target,".glossmark");
             if (glossmark) animate_glossmark(glossmark,true);
             else animate_glossmark(false,false);}
         else animate_glossmark(false,false);}
@@ -1819,7 +1819,7 @@
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=mbID(ids[i]);
-                        var glossmark=getChild(passage,".codexglossmark");
+                        var glossmark=getChild(passage,".glossmark");
                         mB.GoTo(passage,"skimForward/glosses",true);
                         mB.showGlossmark(passage,glossmark);
                         return;}
@@ -1883,7 +1883,7 @@
                     var g=glossdb.find('frag',ids[i]);
                     if ((g)&&(g.length)) {
                         var passage=mbID(ids[i]);
-                        var glossmark=getChild(passage,".codexglossmark");
+                        var glossmark=getChild(passage,".glossmark");
                         mB.GoTo(passage,"skimBackward/glosses",true);
                         mB.showGlossmark(passage,glossmark);
                         return;}
@@ -2046,7 +2046,7 @@
         if (((hasParent(target,pagebar))&&(target.tagName!=="SPAN")))
             return;
         var gopage=getGoPage(target,evt);
-        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"metaBooktrace")))
             fdjtLog("pagebar_span_hold %o t=%o gopage: %o=>%o/%o, start=%o",
                     evt,target,previewing_page,gopage,mB.pagecount,
                    preview_start_page);
@@ -2069,7 +2069,7 @@
     function pagebar_tap(evt,target){
         evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("METABOOKPAGEBAR");
-        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"metaBooktrace")))
             fdjtLog("pagebar_tap %o",evt);
         if (preview_timer) {
             clearTimeout(preview_timer);
@@ -2095,7 +2095,7 @@
     function pagebar_release(evt,target){
         evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("METABOOKPAGEBAR");
-        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"metaBooktrace")))
             fdjtLog("pagebar_release %o, previewing=%o, ptarget=%o start=%o",
                     evt,mB.previewing,mB.previewTarget,
                     preview_start_page);
@@ -2118,7 +2118,7 @@
         if (preview_timer) {
             clearTimeout(preview_timer);
             preview_timer=false;}
-        if ((Trace.gestures)||(hasClass(pagebar,"codextrace")))
+        if ((Trace.gestures)||(hasClass(pagebar,"metaBooktrace")))
             fdjtLog("pagebar_slip %o, previewing=%o, target=%o start=%o",
                     evt,mB.previewing,mB.previewTarget,
                     preview_start_page);
@@ -2181,7 +2181,7 @@
 
         var menu=getParent(target,'.addglossmenu');
         var form=getParent(target,'form');
-        var div=getParent(form,"div.codexglossform");
+        var div=getParent(form,"div.sbookglossform");
         
         if (alt==="downmenu") {
             addClass(menu,"expanded");
@@ -2238,7 +2238,7 @@
         var target=fdjtUI.T(evt);
         var menu=getParent(target,'.addglossmenu');
         var form=getParent(target,'form');
-        var div=getParent(form,"div.codexglossform");
+        var div=getParent(form,"div.sbookglossform");
         var alt=target.alt;
         dropClass(target,"held");
         if (hasClass(target,"menutop")) {
@@ -2271,7 +2271,7 @@
 
     function addgloss_delete(menu,form,div){
         if (!(form)) form=getParent(menu,"FORM");
-        if (!(div)) div=getParent(form,".codexglossform");
+        if (!(div)) div=getParent(form,".sbookglossform");
         var modified=fdjtDOM.hasClass(div,"modified");
         // This keeps it from being saved when it loses the focus
         dropClass(div,"modified");
@@ -2311,7 +2311,7 @@
 
     function addgloss_cancel(menu,form,div){
         if (!(form)) form=getParent(menu,"FORM");
-        if (!(div)) div=getParent(form,".codexglossform");
+        if (!(div)) div=getParent(form,".sbookglossform");
         mB.cancelGloss();
         mB.setMode(false);
         fdjtDOM.remove(div);
@@ -2320,7 +2320,7 @@
         return;}
 
     function addgloss_respond(target){
-        var block=getParent(target,".codexglossform");
+        var block=getParent(target,".sbookglossform");
         if (!(block)) return;
         var glosselt=getInput(block,'UUID');
         if (!(glosselt)) return;
@@ -2337,7 +2337,7 @@
         evt=evt||window.event;
         var target=fdjtUI.T(evt);
         var alternate=fdjtID(
-            (fdjtDOM.hasParent(target,".codexglossform"))?
+            (fdjtDOM.hasParent(target,".sbookglossform"))?
                 ("METABOOKNETWORKBUTTONS"):(("METABOOKLIVEGLOSS")));
         var doppels=getInputsFor(alternate,'NETWORK',target.value);
         fdjtUI.CheckSpan.set(doppels,target.checked);}
@@ -2345,7 +2345,7 @@
 
     function changeGlossPosting(evt){
         var target=fdjtUI.T(evt=(evt||window.event));
-        var glossdiv=getParent(target,".codexglossform");
+        var glossdiv=getParent(target,".sbookglossform");
         if (target.checked) fdjtDOM.addClass(glossdiv,"posted");
         else fdjtDOM.dropClass(glossdiv,"posted");}
     metaBook.UI.changeGlossPosting=changeGlossPosting;
@@ -2353,7 +2353,7 @@
     function changeGlossPrivacy(evt){
         evt=evt||window.event;
         var target=fdjtUI.T(evt=(evt||window.event));
-        var glossdiv=getParent(target,".codexglossform");
+        var glossdiv=getParent(target,".sbookglossform");
         var postgloss=getChild(glossdiv,".postgloss");
         var postinput=(postgloss)&&(getInput(postgloss,"POSTGLOSS"));
         if (postgloss) {
@@ -2479,16 +2479,16 @@
             fn();}}
 
     function unhighlightSettings(){
-        dropClass(fdjtDOM.$(".codexhighlightsetting"),"mBhighlightsetting");}
+        dropClass(fdjtDOM.$(".MBhighlightsetting"),"MBhighlightsetting");}
     function highlightSetting(id,evt){
         var setting=fdjtID(id);
         if (evt) fdjt.UI.cancel(evt);
         if (!(id)) {
             fdjtLog.warn("Couldn't resolve setting %s",id);
-            dropClass(fdjtDOM.$(".codexhighlightsetting"),"mBhighlightsetting");
+            dropClass(fdjtDOM.$(".MBhighlightsetting"),"MBhighlightsetting");
             mB.setMode("device");
             return;}
-        addClass(setting,"mBhighlightsetting");
+        addClass(setting,"MBhighlightsetting");
         if (mB.mode!=="device") {
             if (mB.popmode) {
                 var fn=mB.popmode; mB.popmode=unhighlightSettings(); fn();}
@@ -2602,7 +2602,7 @@
              tap: showcover_tapped, release: showcover_released},
          "#METABOOKHUDHELP": {click: mB.UI.dropHUD},
          ".helphud": {click: mB.UI.dropHUD},
-         ".codexheart": {tap: flyleaf_tap},
+         ".metaBookheart": {tap: flyleaf_tap},
          "#METABOOKPAGEBAR": {tap: pagebar_tap,
                             hold: pagebar_hold,
                             release: pagebar_release,
@@ -2658,11 +2658,11 @@
          ".hudbutton[alt='save gloss']": {
              tap: saveGloss,hold: saveGloss},
          // GLOSSFORM rules
-         ".codexglossform": {click: glossform_touch,touchstart: glossform_touch},
+         ".sbookglossform": {click: glossform_touch,touchstart: glossform_touch},
          "span.codexsharegloss": {
              tap: fdjt.UI.CheckSpan.onclick},
          ".codexclosehud": {click: back_to_reading},
-         ".codexglossform .response": {click: mB.toggleHUD},
+         ".sbookglossform .response": {click: mB.toggleHUD},
          ".addglossmenu": {
              tap: glossmode_tap,
              hold: glossmode_hold,
@@ -2673,8 +2673,8 @@
          "div.glossetc div.sharing": {click: glossform_outlets_tapped},
          "div.glossetc div.notetext": {click: editglossnote},
          // For checkspans
-         ".codexglossform, #METABOOKSETTINGS": {click: fdjt.UI.CheckSpan.onclick},
-         ".codextogglehelp": {click: mB.toggleHelp},
+         ".sbookglossform, #METABOOKSETTINGS": {click: fdjt.UI.CheckSpan.onclick},
+         ".MBtogglehelp": {click: mB.toggleHelp},
          "#METABOOKCONSOLETEXTINPUT": {
              focus: function(){fdjt.DOM.addClass('METABOOKCONSOLEINPUT','uptop');},
              blur: function(){fdjt.DOM.dropClass('METABOOKCONSOLEINPUT','uptop');}},
@@ -2686,16 +2686,16 @@
          "#METABOOKREFRESHOFFLINE": {click: refreshOffline},
          "#METABOOKREFRESHLAYOUT": {click: refreshLayout},
          ".clearoffline": {click: clearOffline},
-         ".codexclearmode": {click: clearMode},
+         ".MBclearmode": {click: clearMode},
          "#METABOOKGOTOPAGEHELP": {click: clearMode},
          "#METABOOKGOTOLOCHELP": {click: clearMode},
-         ".codexshowsearch": {click: function(evt){
+         ".MBshowsearch": {click: function(evt){
              mB.showSearchResults(); fdjt.UI.cancel(evt);}},
-         ".codexrefinesearch": {click: function(evt){
+         ".MBrefinesearch": {click: function(evt){
              mB.setMode('refinesearch'); fdjt.UI.cancel(evt);}},
-         ".codexexpandsearch": {click: function(evt){
+         ".MBexpandsearch": {click: function(evt){
              mB.setMode('expandsearch'); fdjt.UI.cancel(evt);}},
-         ".codexclearsearch": {click: function(evt){
+         ".MBclearsearch": {click: function(evt){
              evt=evt||window.event;
              mB.UI.handlers.clearSearch(evt);
              fdjt.UI.cancel(evt);
@@ -2812,13 +2812,13 @@
          ".hudbutton[alt='save gloss']": {
              tap: saveGloss,hold: saveGloss},
          // GLOSSFORM rules
-         //".codexglossform": {click: cancel,touchend: glossform_touch},
-         "span.codexsharegloss": {},
-         ".codexclosehud": {
+         //".sbookglossform": {click: cancel,touchend: glossform_touch},
+         "span.MBsharegloss": {},
+         ".MBclosehud": {
              click: back_to_reading,
              touchmove: cancel,
              touchend: cancel},
-         ".codexglossform .response": {click: mB.toggleHUD},
+         ".sbookglossform .response": {click: mB.toggleHUD},
          ".addglossmenu": {
              tap: glossmode_tap,
              hold: glossmode_hold,
@@ -2836,7 +2836,7 @@
              click: cancel},
          "#METABOOKSETTINGS": {
              touchend: fdjt.UI.CheckSpan.onclick},
-         ".codextogglehelp": {
+         ".MBtogglehelp": {
              touchstart: cancel,
              touchend: mB.toggleHelp},
         
@@ -2857,22 +2857,22 @@
          "#METABOOKREFRESHOFFLINE": {touchstart: cancel, touchend: refreshOffline},
          "#METABOOKREFRESHLAYOUT": {touchstart: cancel, touchend: refreshLayout},
          ".clearoffline": {touchstart: cancel, touchend: clearOffline},
-         ".codexclearmode": {touchstart: cancel, touchend: clearMode},
+         ".MBclearmode": {touchstart: cancel, touchend: clearMode},
          "#METABOOKGOTOPAGEHELP": {touchstart: cancel, touchend: clearMode},
          "#METABOOKGOTOLOCHELP": {touchstart: cancel, touchend: clearMode},
-         ".codexshowsearch": {
+         ".MBshowsearch": {
              touchstart: cancel,
              touchend: function(evt){
                  mB.showSearchResults(); fdjt.UI.cancel(evt);}},
-         ".codexrefinesearch": {
+         ".MBrefinesearch": {
              touchstart: cancel,
              touchend: function(evt){
                  mB.setMode('refinesearch'); fdjt.UI.cancel(evt);}},
-         ".codexexpandsearch": {
+         ".MBexpandsearch": {
              touchstart: cancel,
              touchend: function(evt){
                  mB.setMode('expandsearch'); fdjt.UI.cancel(evt);}},
-         ".codexclearsearch": {
+         ".MBclearsearch": {
              touchstart: cancel,
              touchend: function(evt){
                  evt=evt||window.event;

@@ -866,10 +866,10 @@ var metaBook={
         if (mB.target) {
             var old_target=mB.target, oldid=old_target.id;
             var old_targets=getDups(oldid);
-            dropClass(old_target,"mBtarget");
-            dropClass(old_target,"mBnewtarget");
-            dropClass(old_targets,"mBtarget");
-            dropClass(old_targets,"mBnewtarget");
+            dropClass(old_target,"MBtarget");
+            dropClass(old_target,"MBnewtarget");
+            dropClass(old_targets,"MBtarget");
+            dropClass(old_targets,"MBnewtarget");
             if (!(hasParent(old_target,target)))
                 clearHighlights(old_targets);
             mB.target=false;}
@@ -882,16 +882,16 @@ var metaBook={
         var targetid=target.baseid||target.id;
         var primary=((targetid)&&(mbID(targetid)))||target;
         var targets=getDups(targetid);
-        addClass(target,"mBtarget");
-        addClass(target,"mBnewtarget");
-        addClass(targets,"mBtarget");
-        addClass(targets,"mBnewtarget");
+        addClass(target,"MBtarget");
+        addClass(target,"MBnewtarget");
+        addClass(targets,"MBtarget");
+        addClass(targets,"MBnewtarget");
         setTimeout(function(){
-            dropClass(target,"mBnewtarget");
-            dropClass(targets,"mBnewtarget");},
+            dropClass(target,"MBnewtarget");
+            dropClass(targets,"MBnewtarget");},
                    3000);
         fdjtState.setCookie(
-            "mBtarget",targetid||target.getAttribute('data-sbookid'));
+            "MBtarget",targetid||target.getAttribute('data-sbookid'));
         mB.target=primary;
         if (mB.UI.setTarget) mB.UI.setTarget(primary);
         if (mB.empty_cloud)
@@ -902,16 +902,16 @@ var metaBook={
         if (typeof target === "string") target=mbID(target);
         if (!(target)) return;
         else if (target.length) {
-            dropClass(target,"mBhighlightpassage");
+            dropClass(target,"MBhighlightpassage");
             var i=0, lim=target.length;
             while (i<lim) {
                 var node=target[i++];
-                fdjtUI.Highlight.clear(node,"mBhighlightexcerpt");
-                fdjtUI.Highlight.clear(node,"mBhighlightsearch");}}
+                fdjtUI.Highlight.clear(node,"MBhighlightexcerpt");
+                fdjtUI.Highlight.clear(node,"MBhighlightsearch");}}
         else {
-            dropClass(target,"mBhighlightpassage");
-            fdjtUI.Highlight.clear(target,"mBhighlightexcerpt");
-            fdjtUI.Highlight.clear(target,"mBhighlightsearch");}}
+            dropClass(target,"MBhighlightpassage");
+            fdjtUI.Highlight.clear(target,"MBhighlightexcerpt");
+            fdjtUI.Highlight.clear(target,"MBhighlightsearch");}}
     metaBook.clearHighlights=clearHighlights;
 
     function findExcerpt(node,excerpt,off){
@@ -1495,7 +1495,7 @@ var metaBook={
         var current=fdjtDOM.$(".mBpreviewtarget");
         var i=0, lim=current.length; while (i<lim) {
             var p=current[i++];
-            dropClass(p,"mBpreviewtarget");
+            dropClass(p,"MBpreviewtarget");
             mB.clearHighlights(p);}}
 
     function startPreview(spec,caller){
@@ -1506,10 +1506,10 @@ var metaBook={
         else if (mB.layout instanceof fdjt.CodexLayout) {
             var dups=((getTarget(target))&&(mB.getDups(target)));
             mB.startPagePreview(target,caller);
-            if (dups) addClass(dups,"mBpreviewtarget");}
+            if (dups) addClass(dups,"MBpreviewtarget");}
         else {
             scrollPreview(target,caller);
-            addClass(target,"mBpreviewtarget");}
+            addClass(target,"MBpreviewtarget");}
         mB.previewing=target;
         addClass(document.body,"_PREVIEW");
         if (hasClass(target,"codexpage"))

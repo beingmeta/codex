@@ -34,7 +34,7 @@
 /* Major wrappers and rules */
 
 body._FULLWIDTH #METABOOKPAGE { max-width: inherit;}
-body._SCROLL #METABOOKPAGE, img.codexpagebutton { display: none;}
+body._SCROLL #METABOOKPAGE, img.MBpagebutton { display: none;}
 
 body._BYPAGE { overflow: hidden; }
 body._BYPAGE #METABOOKCONTENT { display: none;}
@@ -319,7 +319,7 @@ div.locbar hr {
 
 /* Glossmarks */
 
-.codexglossmark {
+.glossmark {
     position: absolute; right: 0px;
     /* float: right; text-align: right; */
     margin: 0px; padding: 0px; text-indent: 0px; 
@@ -329,16 +329,16 @@ div.locbar hr {
     width: 54px; height: 50px;
     box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     z-index: 50;}
-#METABOOKPAGE .codexglossmark {margin-right: -50px;}
-body._NARROW div.fdjtselecting .codexglossmark {
+#METABOOKPAGE .glossmark {margin-right: -50px;}
+body._NARROW div.fdjtselecting .glossmark {
     width: 10px; z-index: -20; }
-div.fdjtselecting .codexglossmark > img {
+div.fdjtselecting .glossmark > img {
     visibility: hidden;}
-div.fdjtselecting .codexglossmark:hover > img {
+div.fdjtselecting .glossmark:hover > img {
     visibility: visible;}
-/* #METABOOKCONTENT .codexglossmark { right: 5px;} */
+/* #METABOOKCONTENT .glossmark { right: 5px;} */
 
-body .codexglossmark > img {
+body .glossmark > img {
     opacity: 0.01;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
     filter: alpha(opacity=01);
@@ -346,10 +346,10 @@ body .codexglossmark > img {
     -khtml-opacity: 0.01;
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
-div.codexpage .codexglossmark img {
+div.codexpage .glossmark img {
     max-width: inherit; max-height: inherit;}
 
-body .codexglossmark:hover > img, body .codexglossmark.hover > img {
+body .glossmark:hover > img, body .glossmark.hover > img {
     opacity: 0.50;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
@@ -358,9 +358,9 @@ body .codexglossmark:hover > img, body .codexglossmark.hover > img {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 
-body .codexglossmark#METABOOKOPENGLOSSMARK > img,
-body .codexglossmark#METABOOKOPENGLOSSMARK:hover > img,
-body .codexglossmark#METABOOKOPENGLOSSMARK.hover > img {
+body .glossmark#METABOOKOPENGLOSSMARK > img,
+body .glossmark#METABOOKOPENGLOSSMARK:hover > img,
+body .glossmark#METABOOKOPENGLOSSMARK.hover > img {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -369,12 +369,12 @@ body .codexglossmark#METABOOKOPENGLOSSMARK.hover > img {
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
 
-.codexglossmark img {
+.glossmark img {
     position: static;
     vertical-align: middle; text-align: right;
     float: right;}
-.codexglossmark img { width: 100%; height: auto;}
-.codexglossmark img.wedge {
+.glossmark img { width: 100%; height: auto;}
+.glossmark img.wedge {
     position: absolute; right: 0px; top: 0px;}
 
 .codexglossbutton {
@@ -401,7 +401,7 @@ body.hudup .codexglossbutton {
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
 body.hudup .mBtarget .codexglossbutton { display: block;}
-body.hudup .mBtarget.codexglosstarget .codexglossbutton {
+body.hudup .mBtarget.MBglosstarget .codexglossbutton {
     background-color: lightblue;}
 
 #METABOOKBODY div.fdjtselecting { background-color: lightyellow; }
@@ -437,7 +437,7 @@ body.mBtarget { color: inherit;}
 
 /* body._SKIMMING .mBtarget {outline: dotted steelblue 2px;} */
 
-body._ANIMATE .codexglossmark > img {
+body._ANIMATE .glossmark > img {
     transition-property: opacity;
     transition-duration: 0.5s;
     -o-transition-property: opacity;
@@ -447,8 +447,8 @@ body._ANIMATE .codexglossmark > img {
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.5s;}
 
-body.hudup .mBtarget .codexglossmark:hover > img,
-body.hudup .mBtarget .codexglossmark.hover > img {
+body.hudup .mBtarget .glossmark:hover > img,
+body.hudup .mBtarget .glossmark.hover > img {
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -667,13 +667,13 @@ details > summary , .html5details > summary {
 #METABOOKBODY #SBOOKDETAILS .sbookaside {
     page-break-before: always;}
 
-div.codexglossform form table {
+div.sbookglossform form table {
     width: 100%;}
-div.codexglossform form table td {
+div.sbookglossform form table td {
     vertical-align: top; text-align: left;}
-div.codexglossform form table td.button {
+div.sbookglossform form table td.button {
     width: 50px; text-align: center;}
-div.codexglossform form table td textarea { width: 100%;}
+div.sbookglossform form table td textarea { width: 100%;}
 
 /* New pagination model */
 
@@ -791,16 +791,16 @@ img.codexcoverpage {
 
 /* Highlighting */
 
-body._SKIMMING .codexhighlightexcerpt,
-body._PREVIEW .codexhighlightexcerpt,
-body.openhud .codexhighlightexcerpt {
+body._SKIMMING .MBhighlightexcerpt,
+body._PREVIEW .MBhighlightexcerpt,
+body.openhud .MBhighlightexcerpt {
     background-color: yellow;}
-body._SKIMMING .codexhighlightpassage,
-body._PREVIEW .codexhighlightpassage,
-body.openhud .codexhighlightpassage {
+body._SKIMMING .MBhighlightpassage,
+body._PREVIEW .MBhighlightpassage,
+body.openhud .MBhighlightpassage {
     background-color: rgba(255, 255, 0, 0.21);}
-body._SKIMMING .codexhighlightsearch,
-body._PREVIEW .codexhighlightsearch {
+body._SKIMMING .MBhighlightsearch,
+body._PREVIEW .MBhighlightsearch {
     background-color: gold;}
 .mBpreviewtarget {
     color: rgb(122,34,95);
@@ -816,7 +816,7 @@ section.mBpreviewtarget h6, div.html5section.mBpreviewtarget h6,
 section.mBpreviewtarget h7, div.html5section.mBpreviewtarget h7 {
     color: rgb(122,34,95); } 
 
-.codexuserexcerpt {
+.MBuserexcerpt {
     text-shadow: 0.2ex 0.2ex rgba(255, 215, 0, 0.53);}
 
 /* Startup messages */

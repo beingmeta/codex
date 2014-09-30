@@ -594,7 +594,7 @@ body._MOUSE #METABOOKHUD img.hudbutton:hover,
     -moz-border-radius-topleft: 6px;
     -o-border-radius-topleft: 6px;}
 
-img.closebutton, img.codexpagebutton, img.codexskimbutton, img.hudbutton {
+img.closebutton, img.MBpagebutton, img.MBskimbutton, img.hudbutton {
     cursor: pointer; z-index: 500;}
 
 #METABOOKHUD.about #METABOOKHEART .tabcontent#METABOOKABOUTBOOK,
@@ -914,11 +914,11 @@ body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatstart img[alt="beginning"] {disp
     -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;}
 #METABOOKHUD #METABOOKSKIMMER div.mbcard span.glossinfo span.isclickable {
     display: none;}
-body img.codexskimbutton {
+body img.MBskimbutton {
     width: 50px; height: 100px;
     position: absolute; bottom: 50%; 
     display: none;}
-body._ANIMATE img.codexskimbutton {
+body._ANIMATE img.MBskimbutton {
     transition-property: opacity,background-color;
     -o-transition-property: -o-opacity,background-color;
     -moz-transition-property: -moz-opacity,background-color;
@@ -932,7 +932,7 @@ body._ANIMATE img.codexskimbutton {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-body img.codexskimbutton.flash  {
+body img.MBskimbutton.flash  {
     background-color: silver;
     opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -942,7 +942,7 @@ body img.codexskimbutton.flash  {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
     
-body img.codexpagebutton {
+body img.MBpagebutton {
     width: 50px; height: 100px;
     position: absolute; bottom: 50%; opacity: 0.15;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
@@ -951,7 +951,7 @@ body img.codexpagebutton {
     -khtml-opacity: 0.15;
     -moz-opacity: 0.15;
     -o-opacity: 0.15;}
-body._MOUSE img.codexpagebutton:hover {
+body._MOUSE img.MBpagebutton:hover {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -959,7 +959,7 @@ body._MOUSE img.codexpagebutton:hover {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70; }
-body.hudup img.codexpagebutton {
+body.hudup img.MBpagebutton {
     opacity: 0.7;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     filter: alpha(opacity=70);
@@ -967,33 +967,33 @@ body.hudup img.codexpagebutton {
     -khtml-opacity: 0.70;
     -moz-opacity: 0.70;
     -o-opacity: 0.70; }
-body img.codexskimbutton#METABOOKNEXTSKIM,
-body img.codexskimbutton#METABOOKENDSKIM,
-body img.codexpagebutton#METABOOKNEXTPAGE {
+body img.MBskimbutton#METABOOKNEXTSKIM,
+body img.MBskimbutton#METABOOKENDSKIM,
+body img.MBpagebutton#METABOOKNEXTPAGE {
     right: 0px;}
-body img.codexskimbutton#METABOOKPREVSKIM,
-body img.codexskimbutton#METABOOKSTARTSKIM,
-body img.codexpagebutton#METABOOKPREVPAGE {
+body img.MBskimbutton#METABOOKPREVSKIM,
+body img.MBskimbutton#METABOOKSTARTSKIM,
+body img.MBpagebutton#METABOOKPREVPAGE {
     left: 0px;}
 
-body._SKIMMING img.codexskimbutton {display: block;}
-body._SKIMMING img.codexpagebutton { display: none;}
-body._SKIMMING img.codexskimbutton#METABOOKSTARTSKIM,
-body._SKIMMING img.codexskimbutton#METABOOKENDSKIM {
+body._SKIMMING img.MBskimbutton {display: block;}
+body._SKIMMING img.MBpagebutton { display: none;}
+body._SKIMMING img.MBskimbutton#METABOOKSTARTSKIM,
+body._SKIMMING img.MBskimbutton#METABOOKENDSKIM {
     display: none;}
 
-body._SKIMMING._SKIMSTART img.codexskimbutton#METABOOKSTARTSKIM,
-body._SKIMMING._SKIMEND img.codexskimbutton#METABOOKENDSKIM {
+body._SKIMMING._SKIMSTART img.MBskimbutton#METABOOKSTARTSKIM,
+body._SKIMMING._SKIMEND img.MBskimbutton#METABOOKENDSKIM {
     display: block;}
-body._SKIMMING._SKIMSTART img.codexskimbutton#METABOOKPREVSKIM,
-body._SKIMMING._SKIMEND img.codexskimbutton#METABOOKNEXTSKIM {
+body._SKIMMING._SKIMSTART img.MBskimbutton#METABOOKPREVSKIM,
+body._SKIMMING._SKIMEND img.MBskimbutton#METABOOKNEXTSKIM {
     display: none;}
 
 /* Don't display any buttons when you're at both the start and end */
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#METABOOKSTARTSKIM,
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#METABOOKENDSKIM,
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#METABOOKNEXTSKIM,
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#METABOOKPREVSKIM {
+body._SKIMMING._SKIMSTART._SKIMEND img.MBskimbutton#METABOOKSTARTSKIM,
+body._SKIMMING._SKIMSTART._SKIMEND img.MBskimbutton#METABOOKENDSKIM,
+body._SKIMMING._SKIMSTART._SKIMEND img.MBskimbutton#METABOOKNEXTSKIM,
+body._SKIMMING._SKIMSTART._SKIMEND img.MBskimbutton#METABOOKPREVSKIM {
     display: none;}
 
 #METABOOKHUD #SBOOKABOUT {
@@ -1069,7 +1069,7 @@ body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#METABOOKPREVSKIM {
     text-align: center; margin: .25em;}
 #METABOOKHUD #METABOOKSTARTPAGE h2:first-child {
     margin-top: 0px; margin-bottom: 0px;}
-#METABOOKHUD #METABOOKSTARTPAGE .codexclicktohide {
+#METABOOKHUD #METABOOKSTARTPAGE .MBclicktohide {
     margin-top: 0px; padding-top: 3px; padding-bottom: 3px;
     text-align: center; color: red;}
 #METABOOKSTARTPAGE div.mbhelp p {
@@ -1182,20 +1182,20 @@ body._USER._DISCONN .cxwithconn {display: none;}
 
 /* Close HUD buttons */
 
-img.codexclosehud {
+img.MBclosehud {
     border-radius: 50%; border: solid red 3px;
     width: 32px; height: 32px;
     display: none;}
-#METABOOKSHOWTEXT img.codexclosehud {
+#METABOOKSHOWTEXT img.MBclosehud {
     margin-left: 5px; height: 1.5ex; width: auto;
     vertical-align: top; margin-top: 2px;
     display: inline-block;}
-img.codexclosehud#METABOOKSTOPSKIM {
+img.MBclosehud#METABOOKSTOPSKIM {
     position: absolute; top: 0px; right: 5px;
     width: 40px; height: 40px;
     /* Let's try to do without this for now */
     display: none;}
-body._SKIMMING #METABOOKHUD img.codexclosehud#METABOOKSTOPSKIM {
+body._SKIMMING #METABOOKHUD img.MBclosehud#METABOOKSTOPSKIM {
     z-index: 500; display: block;}
 
 /* Full height/width rules */

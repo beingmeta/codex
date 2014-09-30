@@ -72,7 +72,7 @@ metaBook.TOC=
             var progressbar=fdjtDOM("HR.progressbar");
             var head=((headless)?(false):
                       (fdjtDOM("A.sectname",headinfo.title)));
-            var spec=tocspec||"DIV.codextoc";
+            var spec=tocspec||"DIV.metabooktoc";
             var next_button=
                 ((head)&&
                  ((headinfo.next)?
@@ -108,7 +108,7 @@ metaBook.TOC=
             fdjtDOM.addClass(toc,"toc"+depth);
             toc.id=(prefix||"METABOOKTOC4")+headinfo.frag;
             if ((!(sub))||(!(sub.length))) {
-                fdjtDOM.addClass(toc,"codextocleaf");
+                fdjtDOM.addClass(toc,"metabooktocleaf");
                 return toc;}
             var i=0; var n=sub.length;
             while (i<n) {
@@ -178,11 +178,11 @@ metaBook.TOC=
                     ("SBR"+spaninfo.frag),start);
                 if (!(firstspan)) {
                     firstspan=span;
-                    addClass(firstspan,"codexfirstspan");}
+                    addClass(firstspan,"MBfirstspan");}
                 lastspan=span;
                 spans.appendChild(span);
                 if (addname) {
-                    var anchor=fdjtDOM("A.codextitle",spaninfo.title);
+                    var anchor=fdjtDOM("A.MBtitle",spaninfo.title);
                     anchor.name="SBR"+spaninfo.frag;
                     spans.appendChild(anchor);}
                 last_info=spaninfo;}
@@ -191,9 +191,9 @@ metaBook.TOC=
                  * actual section */
                 span=generate_span(
                     sectnum,head,headinfo.title,last_info.ends_at,end,len,start);
-                addClass(span,"codexlastspan");
+                addClass(span,"MBlastspan");
                 spanbar.appendChild(span);}
-            else if (lastspan) addClass(lastspan,"codexlastspan");
+            else if (lastspan) addClass(lastspan,"MBlastspan");
             return spanbar;}
 
         function generate_span(sectnum,subsection,title,
@@ -201,7 +201,7 @@ metaBook.TOC=
             var spanlen=spanend-spanstart;
             // var anchor=fdjtDOM("A.brick","\u00A0");
             var anchor=fdjtDOM("A.brick","·");
-            var span=fdjtDOM("DIV.codexhudspan",anchor);
+            var span=fdjtDOM("DIV.MBhudspan",anchor);
             var width=(Math.round(100000000*(spanlen/len))/1000000);
             var left=(Math.round(100000000*((spanstart-pstart)/len))/1000000);
             span.style.left=left+"%";
@@ -222,14 +222,14 @@ metaBook.TOC=
 
         function updateTOC(head,tocroot){
             var prefix=getTOCPrefix(tocroot.id);
-            var cur=(getChildren(tocroot,".codexcurhead"));
-            var live=(getChildren(tocroot,".codexlivehead"));
-            var cxt=(getChildren(tocroot,".codexcxthead"));
-            dropClass(tocroot,"codexcxthead");
-            dropClass(tocroot,"codexcurhead");
-            dropClass(cur,"codexcurhead");
-            dropClass(live,"codexlivehead");
-            dropClass(cxt,"codexcxthead");
+            var cur=(getChildren(tocroot,".MBcurhead"));
+            var live=(getChildren(tocroot,".MBlivehead"));
+            var cxt=(getChildren(tocroot,".MBcxthead"));
+            dropClass(tocroot,"MBcxthead");
+            dropClass(tocroot,"MBcurhead");
+            dropClass(cur,"MBcurhead");
+            dropClass(live,"MBlivehead");
+            dropClass(cxt,"MBcxthead");
             if (!(head)) return;
             var base_elt=document.getElementById(prefix+head.frag);
             var toshow=[]; var base_info=head;
@@ -239,29 +239,29 @@ metaBook.TOC=
                 head=head.head;}
             var n=toshow.length-1;
             if ((base_info.sub)&&(base_info.sub.length))
-                addClass(base_elt,"codexcxthead");
-            else if (toshow[1]) addClass(toshow[1],"codexcxthead");
+                addClass(base_elt,"MBcxthead");
+            else if (toshow[1]) addClass(toshow[1],"MBcxthead");
             else {}
             // Go backwards to accomodate some redisplayers
             while (n>=0) {
                 var show=toshow[n--];
                 if ((show.tagName==='A')&&
                     (show.className.search(/\bbrick\b/)>=0))
-                    addClass(show.parentNode,"codexlivehead");
-                addClass(show,"codexlivehead");}
-            addClass(base_elt,"codexcurhead");}
+                    addClass(show.parentNode,"MBlivehead");
+                addClass(show,"MBlivehead");}
+            addClass(base_elt,"MBcurhead");}
         MetaBookTOC.updateTOC=updateTOC;
 
         MetaBookTOC.setHead=function setHead(headinfo){
-            var livetitles=(fdjtDOM.$("a.codexlivehead.codextitle"));
+            var livetitles=(fdjtDOM.$("a.MBlivehead.MBtitle"));
             var i=0; var lim=livetitles.length;
             while (i<lim) livetitles[i++].style.fontSize='';
             var tocs=fdjtDOM.$(".toc0");
             // Update current location in ToCs
             i=0; lim=tocs.length; while (i<lim) { updateTOC(headinfo,tocs[i++]);}
             if (!(headinfo)) {
-                addClass(tocs,"codexlivehead");
-                addClass(tocs,"codexcurhead");
+                addClass(tocs,"MBlivehead");
+                addClass(tocs,"MBcurhead");
                 return;}
             var head=headinfo;
             while (head) {
@@ -270,13 +270,13 @@ metaBook.TOC=
                 var j=0; var jlim=refs.length;
                 while (j<jlim) {
                     var ref=refs[j++];
-                    var toc=getParent(ref,".codextoc");
+                    var toc=getParent(ref,".metabooktoc");
                     var isbrick=((ref.tagName==='A')&&(ref.className)&&
                                  (ref.className.search(/\bbrick\b/)>=0));
                     if ((level)&&(isbrick)&&(!(hasClass(toc,"toc"+(level-1)))))
                         continue;
-                    addClass(ref,"codexlivehead");
-                    if (isbrick) addClass(ref.parentNode,"codexlivehead");}
+                    addClass(ref,"MBlivehead");
+                    if (isbrick) addClass(ref.parentNode,"MBlivehead");}
                 head=head.head;}
             setTimeout(function(){scaleTitles(headinfo);},200);};
 
@@ -288,7 +288,7 @@ metaBook.TOC=
                 var j=0; var nrefs=refs.length;
                 while (j<nrefs) {
                     var elt=refs[j++];
-                    if ((elt.tagName==='A')&&(hasClass(elt,"codextitle"))) {
+                    if ((elt.tagName==='A')&&(hasClass(elt,"MBtitle"))) {
                         var cw=elt.clientWidth, sw=elt.scrollWidth;
                         if (sw>cw) elt.style.fontSize=(80*(cw/sw))+"%";}}
                 head=head.head;}}

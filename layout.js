@@ -101,7 +101,7 @@ metaBook.Paginate=
                     indicator.style.width=Math.floor(pct)+"%";
                 fdjtDOM.replace(
                     "METABOOKPAGENOTEXT",
-                    fdjtDOM("div.codexpageno#METABOOKPAGENOTEXT",
+                    fdjtDOM("div.MBpageno#METABOOKPAGENOTEXT",
                             mB.curpage||"?",
                             "/",pagenum," (",Math.floor(pct),
                             "%)"));
@@ -123,7 +123,7 @@ metaBook.Paginate=
                     if (indicator) indicator.style.width=fpct+"%";
                     fdjtDOM.replace(
                         "METABOOKPAGENOTEXT",
-                        fdjtDOM("div.codexpageno#METABOOKPAGENOTEXT",
+                        fdjtDOM("div.MBpageno#METABOOKPAGENOTEXT",
                                 mB.curpage||"?",
                                 "/",pagenum," (",fpct,"%)"));
                     layoutMessage(fdjtString(
@@ -469,7 +469,7 @@ metaBook.Paginate=
             var width=getGeometry(fdjtID("METABOOKPAGE"),false,true).width;
             var height=getGeometry(fdjtID("METABOOKPAGE"),false,true).inner_height;
             var origin=fdjtDOM("div#METABOOKCONTENT");
-            var container=fdjtDOM("div.codexpages#METABOOKPAGES");
+            var container=fdjtDOM("div.MBpages#METABOOKPAGES");
             var bodyfamily=mB.bodyfamily||"serif";
             var bodysize=mB.bodysize||"normal";
             var sourceid=mB.sourceid||fdjtHash.hex_md5(mB.docuri);
@@ -705,7 +705,7 @@ metaBook.Paginate=
                 args.scale_pages=false;
             else args.scale_pages=true;
 
-            args.dontsave=fdjt.DOM.Selector(".codexglossmark");
+            args.dontsave=fdjt.DOM.Selector(".glossmark");
             
             return args;}
         CodexLayout.getLayoutArgs=getLayoutArgs;
@@ -762,7 +762,7 @@ metaBook.Paginate=
             if (mB.CSS.pagespanrule)
                 mB.CSS.pagespanrule.style.width=spanwidth+"px";
             else mB.CSS.pagespanrule=fdjtDOM.addCSSRule(
-                "div.codexpagespans > span","width: "+spanwidth+"px;");
+                "div.MBpagespans > span","width: "+spanwidth+"px;");
             addClass(document.body,"_SCALEDLAYOUT");}
         metaBook.scaleLayout=scaleLayout;
         
@@ -791,7 +791,7 @@ metaBook.Paginate=
                 locoff.title=location+"/"+max_loc;}
             else locoff=fdjtDOM("span.locoff#METABOOKLOCPCT");
             var pageno_text=fdjtDOM(
-                "span#METABOOKPAGENOTEXT.codexpageno",pagenum,"/",npages);
+                "span#METABOOKPAGENOTEXT.MBpageno",pagenum,"/",npages);
             fdjtDOM.replace("METABOOKPAGENOTEXT",pageno_text);
             fdjtDOM.replace("METABOOKLOCPCT",locoff);
             locoff.title=
@@ -873,7 +873,7 @@ metaBook.Paginate=
             if (mB.CSS.pagespanrule)
                 mB.CSS.pagespanrule.style.width=spanwidth+"px";
             else mB.CSS.pagespanrule=fdjtDOM.addCSSRule(
-                "div.codexpagespans > span","width: "+spanwidth+"px;");
+                "div.MBpagespans > span","width: "+spanwidth+"px;");
             while (i<n) {
                 var page=mB.layout.pages[i];
                 var topid=(page)&&(page.getAttribute("data-topid"));
@@ -881,7 +881,7 @@ metaBook.Paginate=
                 var zstyle=(((topinfo)&&(topinfo.level))?
                             ("; z-index: 50;"):(""));
                 html.push("<span id='METABOOKPAGESPAN"+(i+1)+"' "+
-                          "class='codexpagespan' "+
+                          "class='MBpagespan' "+
                           "title='p"+(i+1)+". Hold to glimpse, tap to jump' "+
                           "style='left: "+(100*(i/n))+"%"+zstyle+"'"+
                           ">"+(i+1)+"</span>");

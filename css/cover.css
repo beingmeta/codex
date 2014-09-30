@@ -140,7 +140,7 @@ body._USER #METABOOKCOVER div.userbox {
     #METABOOKCOVER div.userbox span.text {display: none;}
     #METABOOKCOVER div.userbox a.sbookslogo { float: left; display: inline-block;}
     #METABOOKCOVER div.userbox a.sbooks { display: none;}
-    #METABOOKCOVER div.userbox a.codexusername { float: right;}}
+    #METABOOKCOVER div.userbox a.MBusername { float: right;}}
 
 #METABOOKCOVER.bookcover > #METABOOKBOOKCOVER,
 #METABOOKCOVER.bookcover > #METABOOKBOOKCOVERHOLDER,
@@ -210,7 +210,7 @@ body._USER._CONN .control[data-mode='login'] { display: none;}
 
 #METABOOKTITLEPAGE.sbooktitlepage { }
 #METABOOKTITLEPAGE.sbooktitlepage > .title,
-.codexfullpage.sbooktitlepage > .title,
+.MBfullpage.sbooktitlepage > .title,
 .sbookfullpage.sbooktitlepage > .title {
    position: absolute; box-sizing: border-box;
    top: 0px; height: 40%;
@@ -219,9 +219,9 @@ body._USER._CONN .control[data-mode='login'] { display: none;}
 #METABOOKTITLEPAGE.sbooktitlepage > .credits,
 #METABOOKTITLEPAGE.sbooktitlepage > .creators,
 #METABOOKTITLEPAGE.sbooktitlepage > .byline,
-.codexfullpage.sbooktitlepage > .credits,
-.codexfullpage.sbooktitlepage > .creators,
-.codexfullpage.sbooktitlepage > .byline,
+.MBfullpage.sbooktitlepage > .credits,
+.MBfullpage.sbooktitlepage > .creators,
+.MBfullpage.sbooktitlepage > .byline,
 .sbookfullpage.sbooktitlepage > .credits,
 .sbookfullpage.sbooktitlepage > .creators,
 .sbookfullpage.sbooktitlepage > .byline {
@@ -329,7 +329,7 @@ body._NOUSER #METABOOKSETTINGS h1 a.logout {display:none;}
       font-style: italic; clear: both; margin-left: 3em;}
 #METABOOKSETTINGS table.settings {
     width: 98%; margin-left: auto; margin-right: auto; vertical-align: top;}
-#METABOOKSETTINGS table.settings .codexhighlightsetting {
+#METABOOKSETTINGS table.settings .MBhighlightsetting {
     font-size: 120%; background-color: yellow;}
 #METABOOKSETTINGS table.settings tbody { margin-bottom: 1ex;}
 #METABOOKSETTINGS table.settings th {

@@ -110,7 +110,7 @@
         var form=((arg.tagName==="FORM")?(arg):
                   ((fdjtDOM.getParent(arg,"form"))||
                    (fdjtDOM.getChild(arg,"form"))));
-        var div=getParent(form,".codexglossform");
+        var div=getParent(form,".sbookglossform");
         var input=false;
         var detail_elt=getInput(form,"DETAIL");
         if (!(form)) return;
@@ -306,7 +306,7 @@
                 cancel_button,"click",cancelGloss_handler);
         form.setAttribute("sbooksetup","yes");
         updateForm(form);
-        var container=getParent(form,".codexglossform");
+        var container=getParent(form,".sbookglossform");
         if (container) dropClass(container,"modified");
         return form;}
 
@@ -318,7 +318,7 @@
             fdjtLog("setGlossTarget %o form=%o selecting=%o",
                     target,form,selecting);
         if (mB.glosstarget) {
-            dropClass(mB.glosstarget,"codexglosstarget");}
+            dropClass(mB.glosstarget,"sbookglosstarget");}
         dropClass("METABOOKHUD",/\bgloss\w+\b/);
         dropClass("METABOOKHUD","editgloss");
         if (!(target)) {
@@ -359,7 +359,7 @@
         mB.glosstarget=target;
         // Reset this when we actually get a gloss
         mB.select_target=false;
-        addClass(target,"codexglosstarget");
+        addClass(target,"MBglosstarget");
         mB.GoTo(target,"addgloss",true);
         mB.setCloudCuesFromTarget(mB.gloss_cloud,target);
         setGlossForm(form);
@@ -486,7 +486,7 @@
 
     function addOutlet(form,outlet,formvar,checked) {
         if (typeof checked === 'undefined') checked=true;
-        var wrapper=getParent(form,".codexglossform");
+        var wrapper=getParent(form,".sbookglossform");
         addClass(wrapper,"modified");
         if (Trace.glossing)
             fdjtLog(
@@ -555,7 +555,7 @@
         var aspan=fdjtDOM("span.checkspan.ischecked.waschecked.anchor",
                           img,checkbox,anchor,
                           fdjtDOM.Image(mbicon("redx",32,32),"img.redx","x"));
-        var wrapper=getParent(form,".codexglossform");
+        var wrapper=getParent(form,".sbookglossform");
         if (Trace.glossing)
             fdjtLog(
                 "addOutlet wrapper=%o form=%o url=%o title=%o",
@@ -571,7 +571,7 @@
     /***** Adding excerpts ******/
     
     function setExcerpt(form,excerpt,off) {
-        var wrapper=getParent(form,".codexglossform");
+        var wrapper=getParent(form,".sbookglossform");
         var excerpt_span=getChild(form,'.excerpt');
         var input=getInput(form,'EXCERPT'), exoff=getInput(form,'EXOFF');
         if ((!(excerpt))||(fdjtString.isEmpty(excerpt))) {
@@ -619,7 +619,7 @@
             form=getParent(form,'form')||form;
         if (!(knodule)) knodule=mB.getMakerKnodule(mB.user);
         if (typeof checked==="undefined") checked=true;
-        var wrapper=getParent(form,".codexglossform");
+        var wrapper=getParent(form,".sbookglossform");
         if (Trace.glossing)
             fdjtLog(
                 "AddTag %o form=%o tag=%o var=%o checked=%o kno=%o",
@@ -772,7 +772,7 @@
         if ((Trace.glossing)||(Trace.gestures>2))
             fdjtLog("glossinput_onkeypress '%o' %o text=%o pos=%o taginfo=%o",
                     ch,evt,text,pos,taginfo);
-        if (ch!==13) addClass(getParent(form,".codexglossform"),"focused");
+        if (ch!==13) addClass(getParent(form,".sbookglossform"),"focused");
         if (ch===13) {
             if (taginfo) {
                 // Remove tag text
@@ -1076,9 +1076,9 @@
             if (!(arg.nodeType)) arg=fdjtUI.T(arg);
             if ((arg.nodeType)&&(arg.nodeType===1)&&
                 (arg.tagName==="FORM")) {
-                form=arg; div=getParent(form,".codexglossform");}
+                form=arg; div=getParent(form,".sbookglossform");}
             else if ((arg.nodeType)&&(arg.nodeType===1)&&
-                     (arg.tagName==="DIV")&&(hasClass(arg,"codexglossform"))) {
+                     (arg.tagName==="DIV")&&(hasClass(arg,"sbookglossform"))) {
                 div=arg; form=getChild(div,"FORM");}}
         if (!(form)) return;
         if (form.className==="editdetail") {
@@ -1196,7 +1196,7 @@
         var target=((!arg)?(fdjtID("METABOOKLIVEGLOSS")):
                     (arg.nodeType)?(arg):(fdjtUI.T(arg)));
         var glossform=(target)&&
-            (fdjtDOM.getParent(target,".codexglossform"));
+            (fdjtDOM.getParent(target,".sbookglossform"));
         setGlossTarget(false);
         mB.setMode(false);
         if ((arg)&&((arg.cancelable)||(arg.bubbles))) {
