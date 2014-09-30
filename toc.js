@@ -4,10 +4,10 @@
 
 /* Copyright (C) 2009-2014 beingmeta, inc.
 
-   This file implements the "dynamic table of contents" for the Codex
+   This file implements the "dynamic table of contents" for the metaBook
    e-reader web application.
 
-   This file is part of Codex, a Javascript/DHTML web application for reading
+   This file is part of metaBook, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -35,26 +35,29 @@
 
 */
 /* jshint browser: true */
-/* global Codex: false */
+/* global metaBook: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
 // var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var metaBook=((typeof metaBook !== "undefined")?(metaBook):({}));
 // var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
 // var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
-Codex.TOC=
+metaBook.TOC=
     (function(){
         "use strict";
+
         var fdjtDOM=fdjt.DOM;
         var fdjtUI=fdjt.UI;
         var getParent=fdjtDOM.getParent;
-        var cxID=Codex.ID;
+
+        var mB=metaBook;
+        var mbID=mB.ID;
+        var cxicon=mB.icon;
         
-        var cxicon=Codex.icon;
         function navicon(kind){
             switch (kind) {
             case 'right': return cxicon("skim_right",64,64);
@@ -62,7 +65,7 @@ Codex.TOC=
             case 'start': return cxicon("skim_left_stop",64,64);
             case 'end': return cxicon("skim_right_stop",64,64);
             default: return false;}}
-        Codex.navicon=navicon;
+        mB.navicon=navicon;
 
         function CodexTOC(headinfo,depth,tocspec,prefix,headless){
             var sizebar=fdjtDOM("HR.sizebar");
@@ -112,17 +115,17 @@ Codex.TOC=
                 toc.appendChild(new CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
             if (depth===0) {
                 if (prefix)
-                    Codex.TapHold[prefix]=fdjtUI.TapHold(
+                    mB.TapHold[prefix]=fdjtUI.TapHold(
                         toc,{id: (prefix||"TOC"),holdclass: false,
                              taptapthresh: 0,
                              touchtoo: function(evt){
                                  evt=evt||window.event;
-                                 if (Codex.previewing)
-                                     Codex.stopPreview("touchtoo",true);
+                                 if (mB.previewing)
+                                     mB.stopPreview("touchtoo",true);
                                  this.abort(evt,"touchtoo");},
                              noslip: (prefix==="CODEXSTATICTOC4")});
                 else fdjtUI.TapHold(toc,{holdfast: true});
-                Codex.UI.addHandlers(toc,'toc');}
+                mB.UI.addHandlers(toc,'toc');}
             return toc;}
         
         function generate_subsections(headinfo) {
@@ -145,7 +148,7 @@ Codex.TOC=
             var start=headinfo.starts_at, end=headinfo.ends_at;
             var len=end-start;
             var subsections=headinfo.sub, last_info, sectnum=0;
-            var head=headinfo.elt||cxID(headinfo.frag);
+            var head=headinfo.elt||mbID(headinfo.frag);
             spanbar.starts=start; spanbar.ends=end;
             if ((!(subsections)) || (subsections.length===0))
                 return false;
@@ -157,14 +160,14 @@ Codex.TOC=
             if (range) range.style.left="0%";
             var i=0; while (i<subsections.length) {
                 var spaninfo=subsections[i++];
-                var subsection=spaninfo.elt||cxID(spaninfo.frag);
+                var subsection=spaninfo.elt||mbID(spaninfo.frag);
                 var spanstart; var spanend; var addname=true;
                 if ((sectnum===0) && ((spaninfo.starts_at-start)>0)) {
                     /* Add 'fake section' for the precursor of the
                      * first actual section */
                     spanstart=start;  spanend=spaninfo.starts_at;
                     spaninfo=headinfo;
-                    subsection=headinfo.elt||cxID(headinfo.frag);
+                    subsection=headinfo.elt||mbID(headinfo.frag);
                     i--; sectnum++; addname=false;}
                 else {
                     spanstart=spaninfo.starts_at; spanend=spaninfo.ends_at;

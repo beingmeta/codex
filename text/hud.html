@@ -134,8 +134,8 @@
 </div>
 <div id="CODEXHUDHELP"></div>
 <div id="CODEXKEYBOARDHELPBOX" class="closed">
-  <span class="keep" onclick="Codex.keyboardHelp(true);">keep</span>
-  <span class="close" onclick="Codex.keyboardHelp(false);">close</span>
+  <span class="keep" onclick="metaBook.keyboardHelp(true);">keep</span>
+  <span class="close" onclick="metaBook.keyboardHelp(false);">close</span>
   <div id="CODEXKEYBOARDHELP"></div>
   <div class="checkspan">
     <input TYPE="CHECKBOX" NAME="CODEXKEYBOARDHELP" VALUE="yes"
@@ -189,12 +189,12 @@
         <input type="text" name="GOTOLOC" value="" placeholder="loc"
                title="Enter a percent (<= 100) or an immediate location (> 100)"
                id="CODEXLOCINPUT"
-               onkeypress="Codex.UI.goto_keypress(event);"/>%
+               onkeypress="metaBook.UI.goto_keypress(event);"/>%
       </div>
       <div id="CODEXGOTOPAGE" class="codexgoto">
         <input type="text" name="GOTOPAGE" value=""
                id="CODEXPAGEINPUT" placeholder="page"
-               onkeypress="Codex.UI.goto_keypress(event);"/>/
+               onkeypress="metaBook.UI.goto_keypress(event);"/>/
         <span id="CODEXGOTOPAGEMAX"></span>
       </div>
     </div>

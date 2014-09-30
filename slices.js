@@ -7,7 +7,7 @@
    This file implements the display of lists of glosses or summaries
    referring to book passages.
 
-   This file is part of Codex, a Javascript/DHTML web application for reading
+   This file is part of metaBook, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -36,43 +36,45 @@
 
 */
 /* jshint browser: true */
-/* global Codex: false */
+/* global metaBook: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
 // var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var metaBook=((typeof metaBook !== "undefined")?(metaBook):({}));
 // var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
 // var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
-Codex.Slice=(function () {
+metaBook.Slice=(function () {
     "use strict";
     
     var fdjtString=fdjt.String;
     var fdjtTime=fdjt.Time;
     var fdjtDOM=fdjt.DOM;
     var fdjtUI=fdjt.UI;
-    var cxID=Codex.ID;
     var RefDB=fdjt.RefDB, Ref=RefDB.Ref;
 
     var addClass=fdjtDOM.addClass;
     var dropClass=fdjtDOM.dropClass;
 
+    var mB=metaBook;
+    var mbID=mB.ID;
+
     var debug_locbars=false;
     var odq="\u201c"; var cdq="\u201d";
 
-    var cxicon=Codex.icon;
+    var cxicon=mB.icon;
     var addListener=fdjtDOM.addListener;
 
     function renderCard(info,query,idprefix,standalone){
         var target_id=(info.frag)||(info.id);
-        var target=((target_id)&&(cxID(target_id)));
-        var target_info=Codex.docinfo[target_id];
+        var target=((target_id)&&(mbID(target_id)));
+        var target_info=mB.docinfo[target_id];
         if (!(target_info)) return false;
         var head_info=((target_info.level)?(target_info):(target_info.head));
-        var head=((head_info)&&(cxID(head_info.frag)));
+        var head=((head_info)&&(mbID(head_info.frag)));
         var score=((query)&&(query.scores.get(info)));
         var excerpt_len=((info.excerpt)?(info.excerpt.length):(0));
         var note_len=((info.note)?(info.note.length):(0));
@@ -105,13 +107,13 @@ Codex.Slice=(function () {
                     body,
                     fdjtDOM("div.fdjtclearfloats"));
         var makerinfo=(info.maker);
-        Codex.sourcedb.load(info.maker);
+        mB.sourcedb.load(info.maker);
         var tstamp=info.tstamp||info.modified||info.created;
         if (tstamp)
             body.title=
             "gloss from "+(((makerinfo)&&(makerinfo.name))||"someone")+
             " at "+fdjtTime.shortString(tstamp);
-        else {} // div.title=Codex.getTitle(target,true);
+        else {} // div.title=mB.getTitle(target,true);
         div.about="#"+info.frag;
         div.setAttribute('data-passage',target_id);
         div.setAttribute('data-location',target_info.starts_at);
@@ -127,12 +129,12 @@ Codex.Slice=(function () {
             div.name=div.qref=info._id;
             div.setAttribute("name",info._id);}
         return div;}
-    Codex.renderCard=renderCard;
+    mB.renderCard=renderCard;
     
     function convertNote(note){
         if (note.search(/^{(md|markdown)}/)===0) {
             var close=note.indexOf('}');
-            return Codex.md2DOM(note.slice(close+1),true);}
+            return mB.md2DOM(note.slice(close+1),true);}
         else return note;}
 
     function showtags(info,query){
@@ -159,7 +161,7 @@ Codex.Slice=(function () {
                 else {count++; seen[tagstring]=tag;}
                 var sectag=((tag._qid)&&(tag._qid[0]==="\u00a7"));
                 var elt=((sectag)?(sectag2HTML(tag)):
-                         (Knodule.HTML(tag,Codex.knodule)));
+                         (Knodule.HTML(tag,mB.knodule)));
                 if ((matches)&&(tag_matchp(tag,query)))
                     fdjtDOM(matches," ",elt);
                 else if (sectag) fdjtDOM(sectags," ",elt);
@@ -195,7 +197,7 @@ Codex.Slice=(function () {
              (fdjtDOM("span.count",outlets.length, " outlets"))),
             " ");
         var i=0; var lim=outlets.length; while (i<lim) {
-            var outlet=outlets[i]; var info=Codex.sourcedb.ref(outlet);
+            var outlet=outlets[i]; var info=mB.sourcedb.ref(outlet);
             var outlet_span=fdjtDOM("span.outlet");
             if (info._live) {
                 fdjtDOM(outlet_span,info.name);
@@ -251,22 +253,22 @@ Codex.Slice=(function () {
         else return fdjtDOM("span.score","(",score,")");}
     function showglossinfo(info) {
         var user=info.maker;
-        var userinfo=(user)&&(Codex.sourcedb.load(user));
+        var userinfo=(user)&&(mB.sourcedb.load(user));
         var agestring=timestring(info.modified||info.created||info.tstamp);
         var age=fdjtDOM("span.age",agestring);
         age.title=fdjtTime.timeString(info.modified||info.created||info.tstamp);
         var tool=fdjtDOM(
             "span.tool",age," ",
             fdjtDOM("span.label",
-                    (((user===Codex.user)||(user===Codex.user._id))?"modify":"respond")),
+                    (((user===mB.user)||(user===mB.user._id))?"modify":"respond")),
             fdjtDOM.Image(
-                (((user===Codex.user)||(user===Codex.user._id))?
+                (((user===mB.user)||(user===mB.user._id))?
                  (cxicon("gloss_edit_titled",64,64)):
                  (cxicon("gloss_respond_titled",64,64))),
                 "img.button",
-                (((user===Codex.user)||(user===Codex.user._id))?
+                (((user===mB.user)||(user===mB.user._id))?
                  ("edit"):("reply")),
-                (((user===Codex.user)||(user===Codex.user._id))?
+                (((user===mB.user)||(user===mB.user._id))?
                  ("tap to edit this gloss, hold to reply"):
                  ("relay/reply to this gloss"))),
             ((info.private)&&(fdjtDOM("span.private","Private"))));
@@ -301,14 +303,14 @@ Codex.Slice=(function () {
             if (typeof sources === 'string') sources=[sources];
             var i=0; var lim=sources.length;
             while (i<lim) {
-                var source=Codex.sourcedb.loadref(sources[i++]);
+                var source=mB.sourcedb.loadref(sources[i++]);
                 if ((source)&&(source.kind===':OVERLAY'))
                     return source;}
             return false;}
         else return false;}
 
     function getfakepic(maker,spec){
-        var userinfo=Codex.sourcedb.loadref(maker);
+        var userinfo=mB.sourcedb.loadref(maker);
         var pic=fdjtDOM(spec||"div.sbooksourcepic",
                         (((userinfo)&&(userinfo.name))?
                          (fdjtString.getInitials(userinfo.name)):
@@ -323,7 +325,7 @@ Codex.Slice=(function () {
             var sources=info.sources;
             if (typeof sources==='string') sources=[sources];
             i=0; lim=sources.length; while (i<lim) {
-                var source=Codex.sourcedb.loadref(sources[i++]);
+                var source=mB.sourcedb.loadref(sources[i++]);
                 if ((source)&&(source.kind===':OVERLAY')&&(source.pic))
                     return { src: source.pic, alt: source.name,
                              classname: "img.glosspic.sourcepic"};}}
@@ -338,12 +340,12 @@ Codex.Slice=(function () {
             var outlets=info.shared;
             if (typeof outlets==='string') outlets=[outlets];
             i=0; lim=outlets.length; while (i<lim) {
-                var outlet=Codex.sourcedb.loadref(outlets[i++]);
+                var outlet=mB.sourcedb.loadref(outlets[i++]);
                 if ((outlet)&&(outlet.kind===':LAYER')&&(outlet.pic))
                     return { src: outlet.pic, alt: outlet.name,
                              classname: "img.glosspic.sourcepic"};}}
         if (info.maker) {
-            var userinfo=Codex.sourcedb.loadref(info.maker);
+            var userinfo=mB.sourcedb.loadref(info.maker);
             if (userinfo.pic)
                 return { src: userinfo.pic, alt: userinfo.name,
                          classname: "img.glosspic.userpic"};
@@ -376,7 +378,7 @@ Codex.Slice=(function () {
         var target_start=target_info.starts_at;
         var target_end=target_info.ends_at;
         var target_len=target_end-target_start;
-        if (!(cxt_info)) cxt_info=Codex.docinfo[document.body.id];
+        if (!(cxt_info)) cxt_info=mB.docinfo[document.body.id];
         var cxt_start=cxt_info.starts_at;
         var cxt_end=cxt_info.ends_at;
         var cxt_len=cxt_end-cxt_start;
@@ -388,12 +390,12 @@ Codex.Slice=(function () {
         var id=target_info.id||target_info.frag;
         if (id) {
             locbar.about="#"+id;
-            locbar.title=sumText(cxID(id));}
+            locbar.title=sumText(mbID(id));}
         return locbar;}
 
     function makelocrule(target_info,cxtinfo,spec){
         var tocrule=(!(cxtinfo));
-        if (!(cxtinfo)) cxtinfo=Codex.docinfo[Codex.content.id];
+        if (!(cxtinfo)) cxtinfo=mB.docinfo[mB.content.id];
         var locrule=fdjtDOM(spec||"hr.locrule");
         var cxt_start=cxtinfo.starts_at;
         var cxt_end=cxtinfo.ends_at;
@@ -413,7 +415,7 @@ Codex.Slice=(function () {
         return locrule;}
     function makelocstring(target_info,cxtinfo){
         var tocrule=(!(cxtinfo));
-        if (!(cxtinfo)) cxtinfo=Codex.docinfo[Codex.content.id];
+        if (!(cxtinfo)) cxtinfo=mB.docinfo[mB.content.id];
         var cxt_start=cxtinfo.starts_at;
         var cxt_end=cxtinfo.ends_at;
         var cxt_len=cxt_end-cxt_start;
@@ -435,25 +437,25 @@ Codex.Slice=(function () {
             else scan=scan.parentNode;}
         if (!(scan)) return;
         var qref=scan.qref;
-        var gloss=Codex.glossdb.ref(qref);
-        var form=Codex.setGlossTarget(gloss,evt.type==="hold");
+        var gloss=mB.glossdb.ref(qref);
+        var form=mB.setGlossTarget(gloss,evt.type==="hold");
         if (!(form)) return;
-        Codex.setMode("addgloss");}
+        mB.setMode("addgloss");}
 
     // Displayings sets of notes organized into threads
 
     function sumText(target){
-        var title=Codex.getTitle(target,true);
+        var title=mB.getTitle(target,true);
         if (title.length<40) return title;
         /* title.slice(0,40)+"\u22ef "; */
         else return title;}
     
     function makeTOCHead(target,head){
-        if (!(head)) head=Codex.getHead(target);
+        if (!(head)) head=mB.getHead(target);
         var basespan=fdjtDOM("span");
         basespan.title='this location in the structure of the book';
-        var title=Codex.getTitle(target,true);
-        var info=Codex.docinfo[target.id];
+        var title=mB.getTitle(target,true);
+        var info=mB.docinfo[target.id];
         if (target!==head) {
             var paratext=
                 fdjtDOM("span.paratext.tocref",
@@ -472,12 +474,12 @@ Codex.Slice=(function () {
             var curspan=fdjtDOM("span.head",headtext);
             headtext.title='jump to the section: '+text;
             fdjtDOM.append(basespan," ",curspan);
-            var heads=Codex.Info(head).heads;
+            var heads=mB.Info(head).heads;
             if (heads) {
                 var j=heads.length-1; while (j>0) {
-                    var hinfo=heads[j--]; var elt=cxID(hinfo.frag);
+                    var hinfo=heads[j--]; var elt=mbID(hinfo.frag);
                     if ((!(elt))||(!(hinfo.title))||
-                        (elt===Codex.docroot)||(elt===document.body))
+                        (elt===mB.docroot)||(elt===document.body))
                         continue;
                     var anchor=
                         fdjtDOM("span.tocref.headtext",
@@ -499,7 +501,7 @@ Codex.Slice=(function () {
         return tochead;}
 
     function makeIDHead(target,headinfo){
-        var info=Codex.docinfo[target.id];
+        var info=mB.docinfo[target.id];
         if (!(headinfo)) headinfo=info.head;
         var idhead=fdjtDOM("div.idhead",
                            makelocrule(info,headinfo),
@@ -508,7 +510,7 @@ Codex.Slice=(function () {
         idhead.title=makelocstring(info,headinfo);
         return idhead;}
 
-    Codex.nextSlice=function(start){
+    mB.nextSlice=function(start){
         var card=fdjtDOM.getParent(start,".codexcard");
         if (!(card)) return false;
         var scan=card.nextSibling;
@@ -517,7 +519,7 @@ Codex.Slice=(function () {
                 return scan;
             else scan=scan.nextSibling;}
         return false;};
-    Codex.prevSlice=function(start){
+    mB.prevSlice=function(start){
         var card=fdjtDOM.getParent(start,".codexcard");
         if (!(card)) return false;
         var scan=card.previousSibling;
@@ -532,7 +534,7 @@ Codex.Slice=(function () {
     var hasClass=fdjtDOM.hasClass;
 
     function selectSources(slice,sources){
-        var sourcerefs=[], sourcedb=Codex.sourcedb;
+        var sourcerefs=[], sourcedb=mB.sourcedb;
         if ((!(sources))||(sources.length===0)) {
             slice.filter(false); return;}
         var i=0; var lim=sources.length; while (i<lim) {
@@ -544,16 +546,16 @@ Codex.Slice=(function () {
                     ((RefDB.contains(sourcerefs,gloss.maker))||
                      (RefDB.overlaps(sourcerefs,gloss.sources))||
                      (RefDB.overlaps(sourcerefs,gloss.shared))));});
-        Codex.UI.updateScroller(slice.container);
-        if (Codex.target) scrollSlice(Codex.target,slice);}
-    Codex.UI.selectSources=selectSources;
+        mB.UI.updateScroller(slice.container);
+        if (mB.target) scrollSlice(mB.target,slice);}
+    mB.UI.selectSources=selectSources;
 
     /* Scrolling slices */
 
     function scrollSlice(elt,slice,top){
-        if (Codex.iscroll) {
-            var scroller=Codex.scrollers[elt.id]||
-                ((elt.parentNode)&&(Codex.scrollers[elt.parentNode.id]));
+        if (mB.iscroll) {
+            var scroller=mB.scrollers[elt.id]||
+                ((elt.parentNode)&&(mB.scrollers[elt.parentNode.id]));
             if (scroller) scroller.scrollToElement(elt,0);}
         else {
             var cardinfo=slice.getCard(elt);
@@ -561,7 +563,7 @@ Codex.Slice=(function () {
                 var scrollto=cardinfo.dom;
                 if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
                     scrollto.scrollIntoView(true);}}}}
-    Codex.UI.scrollSlice=scrollSlice;
+    mB.UI.scrollSlice=scrollSlice;
     
     /* Results handlers */
 
@@ -590,16 +592,16 @@ Codex.Slice=(function () {
         var settings={noslip: true,id: container.id,holdclass: false,
                       touchtoo: function(evt){
                           evt=evt||window.event;
-                          if (Codex.previewing)
-                              Codex.stopPreview("touchtoo",true);
+                          if (mB.previewing)
+                              mB.stopPreview("touchtoo",true);
                           this.abort(evt,"touchtoo");}};
-        if (Codex.iscroll) {
+        if (mB.iscroll) {
             settings.override=true; settings.bubble=true;}
         if (container.id)
-            Codex.TapHold[container.id]=new fdjtUI.TapHold(
+            mB.TapHold[container.id]=new fdjtUI.TapHold(
                 container,settings);
         else fdjtUI.TapHold(container,settings);
-        Codex.UI.addHandlers(container,'summary');
+        mB.UI.addHandlers(container,'summary');
         this.container=container; this.cards=[];
         if (sortfn) this.sortfn=sortfn;
         this.byid=new fdjt.RefMap();
@@ -725,7 +727,7 @@ Codex.Slice=(function () {
             if (card.getAttribute("data-location"))
                 info.location=parseInt(card.getAttribute("data-location"),10);
             if (card.getAttribute("data-gloss"))
-                info.gloss=Codex.glossdb.refs[card.getAttribute("data-gloss")];
+                info.gloss=mB.glossdb.refs[card.getAttribute("data-gloss")];
             if (card.getAttribute("data-searchscore"))
                 info.score=parseInt(card.getAttribute("data-searchscore"),10);
             if (card.getAttribute("data-timestamp"))

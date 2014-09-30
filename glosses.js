@@ -7,7 +7,7 @@
    This file implements the interface for adding and editing **glosses**,
    which are annotations associated with text passages in a document.
 
-   This file is part of Codex, a Javascript/DHTML web application for reading
+   This file is part of metaBook, a Javascript/DHTML web application for reading
    large structured documents (sBooks).
 
    For more information on sbooks, visit www.sbooks.net
@@ -36,14 +36,14 @@
 
 */
 /* jshint browser: true */
-/* global Codex: false */
+/* global metaBook: false */
 
 /* Initialize these here, even though they should always be
    initialized before hand.  This will cause various code checkers to
    not generate unbound variable warnings when called on individual
    files. */
 // var fdjt=((typeof fdjt !== "undefined")?(fdjt):({}));
-// var Codex=((typeof Codex !== "undefined")?(Codex):({}));
+// var metaBook=((typeof metaBook !== "undefined")?(metaBook):({}));
 // var Knodule=((typeof Knodule !== "undefined")?(Knodule):({}));
 // var iScroll=((typeof iScroll !== "undefined")?(iScroll):({}));
 
@@ -59,8 +59,10 @@
     var RefDB=fdjt.RefDB;
     var Ref=fdjt.Ref;
     var fdjtID=fdjt.ID;
-    var cxID=Codex.ID;
-    var Trace=Codex.Trace;
+
+    var mB=metaBook;
+    var mbID=mB.ID;
+    var Trace=mB.Trace;
 
     var addClass=fdjtDOM.addClass;
     var hasClass=fdjtDOM.hasClass;
@@ -76,13 +78,13 @@
 
     var setCheckSpan=fdjtUI.CheckSpan.set;
 
-    var glossmodes=Codex.glossmodes;
+    var glossmodes=mB.glossmodes;
 
-    var cxicon=Codex.icon;
+    var cxicon=mB.icon;
 
-    var getTarget=Codex.getTarget;
+    var getTarget=mB.getTarget;
 
-    var getGlossTags=Codex.getGlossTags;
+    var getGlossTags=mB.getGlossTags;
 
     var uri_prefix=/(http:)|(https:)|(ftp:)|(urn:)/;
 
@@ -99,7 +101,7 @@
         if ((!(match))||(match.length===0)||(!(match[0])))
             return false;
         else return match[0];}
-    Codex.getGlossMode=getGlossMode;
+    mB.getGlossMode=getGlossMode;
 
     function setGlossMode(mode,arg,toggle){
         if (!(arg)) arg=fdjtID("CODEXLIVEGLOSS");
@@ -147,23 +149,23 @@
             fdjtLog("setGlossMode gm=%s input=%o",mode,input);
         form.className=mode;
         swapClass("CODEXHUD",/\bgloss\w+\b/,"gloss"+mode);
-        Codex.setHUD(true);
+        mB.setHUD(true);
         if ((mode)&&(/(editdetail|addtag|addoutlet)/.exec(mode)))
             addClass("CODEXHUD","openheart");
-        if (input) Codex.setFocus(input);}
-    Codex.setGlossMode=setGlossMode;
+        if (input) mB.setFocus(input);}
+    mB.setGlossMode=setGlossMode;
 
     // set the gloss target for a particular passage
     function getGlossForm(arg,response) {
         if (typeof arg === 'string')
-            arg=fdjtID(arg)||Codex.glossdb.ref(arg)||false;
+            arg=fdjtID(arg)||mB.glossdb.ref(arg)||false;
         if (!(arg)) return false;
         var gloss=((!(arg.nodeType))&&((arg.maker)||(arg.gloss))&&(arg));
         if (!(gloss)) response=false;
-        else if ((arg.maker)&&(arg.maker!==Codex.user))
+        else if ((arg.maker)&&(arg.maker!==mB.user))
             response=true;
         else {}
-        var passage=((gloss)?(cxID(gloss.frag)):(arg));
+        var passage=((gloss)?(mbID(gloss.frag)):(arg));
         var passageid=((passage.codexbaseid)||(passage.id));
         var formid=((gloss)?
                     ((response)?
@@ -179,30 +181,30 @@
             form=getChildren(div,"form")[0];
             form.id=formid;
             form=setupGlossForm(form,passage,gloss,response||false);
-            Codex.setupGestures(div);}
+            mB.setupGestures(div);}
         else form=getChildren(div,"form")[0];
         if (gloss) {
             if (response) addClass(div,"glossreply");
             else {
                 addClass(div,"glossedit");
-                addClass(Codex.HUD,"editgloss");}}
+                addClass(mB.HUD,"editgloss");}}
         else addClass(div,"glossadd");
         if (form) return div; else return false;}
-    Codex.getGlossForm=getGlossForm;
+    mB.getGlossForm=getGlossForm;
     
     function setupGlossForm(form,passage,gloss,response){
         var passageid=((passage.codexbaseid)||(passage.id));
-        var info=Codex.docinfo[passageid];
+        var info=mB.docinfo[passageid];
         if (form.getAttribute("sbooksetup")) return false;
         if (!(info)) return false;
         form.onsubmit=submitGloss;
-        getInput(form,"REFURI").value=Codex.refuri;
+        getInput(form,"REFURI").value=mB.refuri;
         getInput(form,"DOCTITLE").value=document.title;
         getInput(form,"DOCURI").value=document.location.href;
         getInput(form,"FRAG").value=passageid;
         if (info.wsnid) getInput(form,"WSNID").value=info.wsnid;
-        if (Codex.user) getInput(form,"MAKER").value=Codex.user._id;
-        if (Codex.mycopyid) getInput(form,"MYCOPYID").value=Codex.mycopyid;
+        if (mB.user) getInput(form,"MAKER").value=mB.user._id;
+        if (mB.mycopyid) getInput(form,"MYCOPYID").value=mB.mycopyid;
         if (gloss) {
             var glossdate_elt=getChild(form,".glossdate");
             fdjtDOM(glossdate_elt,fdjtTime.shortString(gloss.created));
@@ -217,8 +219,8 @@
                 glossinput.value=gloss.note||"";
                 if (notespan) notespan.innerHTML=glossinput.value;}
             else glossinput.value="";}
-        if (Codex.syncstamp)
-            getInput(form,"SYNC").value=(Codex.syncstamp+1);
+        if (mB.syncstamp)
+            getInput(form,"SYNC").value=(mB.syncstamp+1);
         var menu=getChild(form,".addglossmenu");
         fdjt.UI.TapHold(menu,{override: true});
         var loc=getInput(form,"LOCATION");
@@ -233,7 +235,7 @@
             var maker_elt=getChild(response_elt,".respmaker");
             var date_elt=getChild(response_elt,".respdate");
             var note_elt=getChild(response_elt,".respnote");
-            var makerinfo=Codex.sourcedb.ref(gloss.maker);
+            var makerinfo=mB.sourcedb.ref(gloss.maker);
             fdjtDOM(maker_elt,makerinfo.name);
             fdjtDOM(date_elt,fdjtTime.shortString(gloss.created));
             if (gloss.note) {
@@ -284,7 +286,7 @@
                 addTag(form,share[share_i++],"SHARE");}
         if ((!(response))&&(gloss)&&(gloss._id)) {
             uuidelt.value=gloss._id;}
-        else uuidelt.value=fdjtState.getUUID(Codex.nodeid);
+        else uuidelt.value=fdjtState.getUUID(mB.nodeid);
         if (gloss) {
             // Set the default outlets to unchecked before
             //  adding/setting the assigned outlets.
@@ -297,7 +299,7 @@
             var private_span=getChild(form,".private");
             setCheckSpan(private_span,gloss.private);}
         if (((gloss)&&(gloss.excerpt)))
-            Codex.setExcerpt(form,gloss.excerpt,gloss.exoff);
+            mB.setExcerpt(form,gloss.excerpt,gloss.exoff);
         var cancel_button=fdjtDOM.getChild(form,".cancelbutton");
         if (cancel_button)
             fdjtDOM.addListener(
@@ -315,27 +317,27 @@
         if (Trace.glossing)
             fdjtLog("setGlossTarget %o form=%o selecting=%o",
                     target,form,selecting);
-        if (Codex.glosstarget) {
-            dropClass(Codex.glosstarget,"codexglosstarget");}
+        if (mB.glosstarget) {
+            dropClass(mB.glosstarget,"codexglosstarget");}
         dropClass("CODEXHUD",/\bgloss\w+\b/);
         dropClass("CODEXHUD","editgloss");
         if (!(target)) {
             var cur=fdjtID("CODEXLIVEGLOSS");
             if (cur) cur.id="";
-            Codex.glosstarget=false;
-            Codex.glossform=false;
+            mB.glosstarget=false;
+            mB.glossform=false;
             setSelecting(false);
             return;}
         var gloss=false;
         // Identify when the target is a gloss
-        if ((typeof target === 'string')&&(cxID(target))) 
-            target=cxID(target);
+        if ((typeof target === 'string')&&(mbID(target))) 
+            target=mbID(target);
         else if ((typeof target === 'string')&&
-                 (Codex.glossdb.probe(target))) {
-            gloss=Codex.glossdb.ref(target);
-            target=cxID(gloss.frag);}
-        else if (target._db===Codex.glossdb) {
-            gloss=target; target=cxID(gloss.frag);}
+                 (mB.glossdb.probe(target))) {
+            gloss=mB.glossdb.ref(target);
+            target=mbID(gloss.frag);}
+        else if (target._db===mB.glossdb) {
+            gloss=target; target=mbID(gloss.frag);}
         else {}
         if ((gloss)&&(form)&&(!(form.nodeType))) {
             // Passing a non-false non-node as a form forces a
@@ -354,38 +356,38 @@
             if (!(form)) {
                 fdjtUI.alert("There was a problem adding a gloss");
                 return false;}}
-        Codex.glosstarget=target;
+        mB.glosstarget=target;
         // Reset this when we actually get a gloss
-        Codex.select_target=false;
+        mB.select_target=false;
         addClass(target,"codexglosstarget");
-        Codex.GoTo(target,"addgloss",true);
-        Codex.setCloudCuesFromTarget(Codex.gloss_cloud,target);
+        mB.GoTo(target,"addgloss",true);
+        mB.setCloudCuesFromTarget(mB.gloss_cloud,target);
         setGlossForm(form);
         // Clear current selection and set up new selection
         setSelecting(false);
-        Codex.clearHighlights(target);
+        mB.clearHighlights(target);
         if (selecting) setSelecting(selecting);
         else setSelecting(selectText(target));
         if ((gloss)&&(gloss.excerpt)&&(gloss.excerpt.length))
-            Codex.selecting.setString(gloss.excerpt);
+            mB.selecting.setString(gloss.excerpt);
         else if (selecting) 
             updateExcerpt(form,selecting);
         else {}
-        Codex.selecting.onchange=function(){
+        mB.selecting.onchange=function(){
             updateExcerpt(form,this);};
         return form;}
-    Codex.setGlossTarget=setGlossTarget;
+    mB.setGlossTarget=setGlossTarget;
 
     function setSelecting(selecting){
-        if (Codex.selecting===selecting) return;
-        else if (Codex.selecting) {
+        if (mB.selecting===selecting) return;
+        else if (mB.selecting) {
             if ((Trace.selection)||(Trace.glossing))
                 fdjtLog("setSelecting, replacing %o with %o",
-                        Codex.selecting,selecting);
-            Codex.selecting.clear();}
+                        mB.selecting,selecting);
+            mB.selecting.clear();}
         else {}
-        Codex.selecting=selecting;}
-    Codex.setSelecting=setSelecting;
+        mB.selecting=selecting;}
+    mB.setSelecting=setSelecting;
 
     function updateExcerpt(form,sel){
         var info=sel.getInfo();
@@ -393,12 +395,12 @@
             fdjtLog("Updating excerpt for %o from %o: %s",
                     form,sel,sel.getString());
         if (!(info)) {
-            Codex.setExcerpt(form,false);
+            mB.setExcerpt(form,false);
             return;}
-        Codex.setExcerpt(form,info.string,info.off);
+        mB.setExcerpt(form,info.string,info.off);
         var start_target=getTarget(info.start,true);
         var new_target=((start_target)&&
-                        (!(hasParent(Codex.glosstarget,start_target)))&&
+                        (!(hasParent(mB.glosstarget,start_target)))&&
                         (new_target));
         if (new_target) {
             // When real_target is changed, we need to get a new EXOFF
@@ -415,28 +417,28 @@
         if (passages.nodeType) passages=[passages];
         var dups=[];
         var i=0, lim=passages.length;
-        while (i<lim) dups=dups.concat(Codex.getDups(passages[i++]));
+        while (i<lim) dups=dups.concat(mB.getDups(passages[i++]));
         if ((Trace.selection)||(Trace.glossing))
             fdjtLog("selectText %o, dups=%o",passages,dups);
         return new fdjt.UI.TextSelect(
             dups,{ontap: gloss_selecting_ontap,
                   onrelease: ((opts)&&(opts.onrelease)),
                   onslip: ((opts)&&(opts.onslip)),
-                  fortouch: Codex.touch,
+                  fortouch: mB.touch,
                   holdthresh: 150,
                   movethresh: 250});}
-    Codex.UI.selectText=selectText;
+    mB.UI.selectText=selectText;
 
     function gloss_selecting_ontap(evt){
         evt=evt||window.event;
         if ((Trace.selection)||(Trace.glossing)||(Trace.gestures))
             fdjtLog("gloss_selecting_ontap %o, mode=%o, livegloss=%o",
-                    evt,Codex.mode,fdjt.ID("CODEXLIVEGLOSS"));
-        if (Codex.mode!=="addgloss") 
-            Codex.setMode("addgloss",false);
-        else if ((Codex.modechange)&&
-                 ((fdjtTime()-Codex.modechange)<1500)) {}
-        else Codex.setHUD(false);
+                    evt,mB.mode,fdjt.ID("CODEXLIVEGLOSS"));
+        if (mB.mode!=="addgloss") 
+            mB.setMode("addgloss",false);
+        else if ((mB.modechange)&&
+                 ((fdjtTime()-mB.modechange)<1500)) {}
+        else mB.setHUD(false);
         fdjtUI.cancel(evt);
         return;}
 
@@ -444,25 +446,25 @@
         var cur=fdjtID("CODEXLIVEGLOSS");
         if (cur) cur.id="";
         if (Trace.glossing)
-            fdjtLog("setGlossForm %o <== %o",form,Codex.glossform);
+            fdjtLog("setGlossForm %o <== %o",form,mB.glossform);
         if (!(form)) {
-            Codex.glossform=false;
+            mB.glossform=false;
             return;}
         form.id="CODEXLIVEGLOSS";
-        if ((Codex.glossform)&&
-            (Codex.glossform.className==="editdetail")) {
-            var oldform=Codex.glossform;
+        if ((mB.glossform)&&
+            (mB.glossform.className==="editdetail")) {
+            var oldform=mB.glossform;
             var detail_elt=getInput(oldform,"DETAIL");
             detail_elt.value=fdjt.ID("CODEXDETAILTEXT").value;
             detail_elt=getInput(form,"DETAIL");
             fdjt.ID("CODEXDETAILTEXT").value=detail_elt.value;}
-        Codex.glossform=form;
+        mB.glossform=form;
         var syncelt=getInput(form,"SYNC");
-        syncelt.value=(Codex.syncstamp+1);
+        syncelt.value=(mB.syncstamp+1);
         /* Do completions based on those input's values */
-        Codex.share_cloud.complete();
-        Codex.gloss_cloud.complete();}
-    Codex.setGlossForm=setGlossForm;
+        mB.share_cloud.complete();
+        mB.gloss_cloud.complete();}
+    mB.setGlossForm=setGlossForm;
 
     function updateForm(form){
         var glossetc=getChild(form,".glossetc");
@@ -495,7 +497,7 @@
         if (typeof outlet === 'string') {
             if ((outlet[0]==='@')||
                 ((outlet[0]===':')&&(outlet[0]==='@')))
-                outlet=Codex.sourcedb.ref(outlet);
+                outlet=mB.sourcedb.ref(outlet);
             else {
                 outlet={name: outlet};
                 spanspec="span.checkspan.email";
@@ -529,7 +531,7 @@
         fdjtDOM(outletspan,checkspan," ");
         dropClass(outletspan,"empty");
         return checkspan;}
-    Codex.addOutlet2Form=addOutlet;
+    mB.addOutlet2Form=addOutlet;
 
     function clearOutlets(form){
         var outletspan=getChild(form,".outlets");
@@ -564,7 +566,7 @@
         dropClass(linkselt,"empty");
         updateForm(form);
         return aspan;}
-    Codex.addLink2Form=addLink;
+    mB.addLink2Form=addLink;
 
     /***** Adding excerpts ******/
     
@@ -589,7 +591,7 @@
         updateForm(form);
         addClass(wrapper,"modified");
         return;}
-    Codex.setExcerpt=setExcerpt;
+    mB.setExcerpt=setExcerpt;
 
     function trim_excerpt(string,lim){
         var len=string.length; if (!(lim)) lim=20; 
@@ -615,7 +617,7 @@
         if (tag.prefix) {prefix=tag.prefix; tag=tag.tag;}
         if (form.tagName!=='FORM')
             form=getParent(form,'form')||form;
-        if (!(knodule)) knodule=Codex.getMakerKnodule(Codex.user);
+        if (!(knodule)) knodule=mB.getMakerKnodule(mB.user);
         if (typeof checked==="undefined") checked=true;
         var wrapper=getParent(form,".codexglossform");
         if (Trace.glossing)
@@ -633,7 +635,7 @@
                 varname='SHARE'; textspec='span.source';}
             else {}
             if (tag.title) title=tag.title;
-            tag=Codex.gloss_cloud.getValue(tag);}
+            tag=mB.gloss_cloud.getValue(tag);}
         var ref=
             ((tag instanceof Ref)?(tag):
              ((typeof tag === 'string')&&
@@ -652,7 +654,7 @@
             if (ref.knodule===knodule) tagval=ref.dterm;
             else tagval=ref._qid||ref.getQID();}
         if (prefix) tagval=prefix+tagval;
-        if ((ref)&&(ref._db===Codex.sourcedb)) varname='SHARED';
+        if ((ref)&&(ref._db===mB.sourcedb)) varname='SHARED';
         var checkspans=getChildren(tagselt,".checkspan");
         var i=0; var lim=checkspans.length;
         while (i<lim) {
@@ -677,9 +679,9 @@
         dropClass(tagselt,"empty");
         updateForm(form);
         return span;}
-    Codex.addTag2Form=addTag;
+    mB.addTag2Form=addTag;
 
-    Codex.setGlossNetwork=function(form,network,checked){
+    mB.setGlossNetwork=function(form,network,checked){
         if (typeof form === 'string') form=fdjtID(form);
         if (!(form)) return;
         var input=getInput(form,'NETWORKS',network);
@@ -738,7 +740,7 @@
             if ((delim)&&(partialok)) result.needs=tag_delims[delim];
             return result;}
         else return false;}
-    Codex.findTag=findTag;
+    mB.findTag=findTag;
 
     function tagclear(input_elt,pos){
         var text=input_elt.value;
@@ -756,7 +758,7 @@
         if ((Trace.glossing)||(Trace.gestures))
             fdjtLog("glossinput_onfocus %o text=%o pos=%o taginfo=%o",
                     evt,text,pos,taginfo);
-        Codex.UI.glossform_focus(evt);
+        mB.UI.glossform_focus(evt);
         if (!(taginfo)) return;
         if (glossinput_timer) clearTimeout(glossinput_timer);
         glossinput_timer=setTimeout(function(){
@@ -809,14 +811,14 @@
     function glossinput_onkeydown(evt){
         var ch=evt.keyCode, target=fdjtUI.T(evt);
         if (ch===27) {
-            Codex.cancelGloss(); fdjtUI.cancel(evt);
+            mB.cancelGloss(); fdjtUI.cancel(evt);
             return;}
         else if ((ch===9)||(ch===13)) {
             var form=getParent(target,"FORM"), text=target.value;
             var pos=target.selectionStart||0, taginfo=findTag(text,pos,true);
             var cloud=((taginfo.prefix==="@")?
-                       (Codex.share_cloud):
-                       (Codex.gloss_cloud));
+                       (mB.share_cloud):
+                       (mB.gloss_cloud));
             if ((Trace.glossing)||(Trace.gestures>2))
                 fdjtLog("glossinput_onkeydown '%o' %o taginfo=%o cloud=%o",
                         ch,evt,taginfo,cloud);
@@ -836,14 +838,14 @@
                         text.slice(0,replace_start)+cloud.prefix+
                         text.slice(replace_end);
                     setTimeout(function(){
-                        Codex.UI.updateScroller("CODEXGLOSSCLOUD");},
+                        mB.UI.updateScroller("CODEXGLOSSCLOUD");},
                                100);
                     return;}
                 else if (evt.shiftKey) cloud.selectPrevious();
                 else cloud.selectNext();
                 fdjtUI.cancel(evt);}
             else if (cloud.selection) {
-                Codex.addTag2Form(form,cloud.selection);
+                mB.addTag2Form(form,cloud.selection);
                 target.value=text.slice(0,taginfo.start)+text.slice(taginfo.end);
                 dropClass("CODEXHUD",/gloss(tagging|tagoutlet)/g);
                 setTimeout(function(){cloud.complete("");},10);
@@ -869,8 +871,8 @@
             else swapClass(
                 "CODEXHUD",/gloss(tagging|tagoutlet)/g,"glosstagging");
             if (isoutlet)
-                completions=Codex.share_cloud.complete(taginfo.content);
-            else completions=Codex.gloss_cloud.complete(taginfo.content);
+                completions=mB.share_cloud.complete(taginfo.content);
+            else completions=mB.gloss_cloud.complete(taginfo.content);
             if (Trace.glossing)
                 fdjtLog("Got %d completions for %s",
                         completions.length,taginfo.content);}
@@ -879,13 +881,13 @@
     function glosstag_done(input_elt,tagtext,personal,isoutlet){
         var form=getParent(input_elt,"FORM"), tag=false;
         if ((!(isoutlet))&&(personal)) 
-            tag=Codex.knodule.def(tagtext);
+            tag=mB.knodule.def(tagtext);
         else if (tagtext.indexOf('|')>0) {
             if (isoutlet) 
                 fdjtLog.warn("Can't define outlets (sources) from %s",tagtext);
-            else tag=Codex.knodule.def(tagtext);}
+            else tag=mB.knodule.def(tagtext);}
         else {
-            var cloud=((isoutlet)?(Codex.share_cloud):(Codex.gloss_cloud));
+            var cloud=((isoutlet)?(mB.share_cloud):(mB.gloss_cloud));
             var completions=cloud.complete(tagtext);
             if (completions.length===0) {}
             else if (completions.length===1) tag=completions[0];
@@ -894,7 +896,7 @@
                 fdjtLog.warn("Unknown outlet %s",tagtext);
             else if (isoutlet) addOutlet(form,tag);
             else if (!(tag)) {
-                tag=Codex.knodule.ref(tagtext);
+                tag=mB.knodule.ref(tagtext);
                 if (tag) addTag(form,tag);
                 else addTag(form,tagtext);}
             else addTag(form,tag);}
@@ -904,8 +906,8 @@
         var tagval=span.getAttribute("data-tagval");
         if (tagval) {
             var at=tagval.indexOf('@');
-            if ((Codex.knodule)&&(at>0)&&
-                (tagval.slice(at+1)===Codex.knodule.name))
+            if ((mB.knodule)&&(at>0)&&
+                (tagval.slice(at+1)===mB.knodule.name))
                 return tagval.slice(0,at);
             else return tagval;}
         else {
@@ -917,7 +919,7 @@
 
     function handleTagInput(tagstring,form,exact){
         var isoutlet=(tagstring[0]==="@");
-        var cloud=((isoutlet)?(Codex.share_cloud):(Codex.gloss_cloud));
+        var cloud=((isoutlet)?(mB.share_cloud):(mB.gloss_cloud));
         var text=(((tagstring[0]==='@')||(tagstring[0]==='#'))?
             (tagstring.slice(1)):(tagstring));
         var completions=cloud.complete(text);
@@ -947,24 +949,24 @@
                     var mc=completions[i++];
                     if (mc!==completion) {completion=false; break;}}}
             if ((completion)&&(completion===completions[0])) {
-                var ks=Codex.gloss_cloud.getKey(completions.matches[0]);
+                var ks=mB.gloss_cloud.getKey(completions.matches[0]);
                 if ((exact)?(ks.toLowerCase()!==std.toLowerCase()):
                     (ks.toLowerCase().search()!==0)) {
                     // When exact is true, count on exact matches;
                     // even if it is false, don't except non-prefix
                     // matches
                     addTag(form,std);
-                    Codex.gloss_cloud.complete("");
+                    mB.gloss_cloud.complete("");
                     return std;}}
             if (completion) {
                 var span=addTag(form,completion);
-                Codex.gloss_cloud.complete("");
-                return getTagString(span,Codex.gloss_cloud.getKey(completion));}
+                mB.gloss_cloud.complete("");
+                return getTagString(span,mB.gloss_cloud.getKey(completion));}
             else {
                 addTag(form,std);
-                Codex.gloss_cloud.complete("");
+                mB.gloss_cloud.complete("");
                 return std;}}}
-    Codex.handleTagInput=handleTagInput;
+    mB.handleTagInput=handleTagInput;
 
     function get_addgloss_callback(form,keep,uri){
         return function(req){
@@ -982,7 +984,7 @@
             addClass(form.parentNode,"submitdone");
         else addClass(form.parentNode,"submitclose");
         var json=JSON.parse(req.responseText);
-        var ref=Codex.glossdb.Import(
+        var ref=mB.glossdb.Import(
             // item,rules,flags
             json,false,((RefDB.REFINDEX)|(RefDB.REFSTRINGS)|(RefDB.REFLOAD)));
         var reps=document.getElementsByName(ref._id);
@@ -990,7 +992,7 @@
         while (i<lim) {
             var rep=reps[i++];
             if (hasClass(rep,"codexcard")) {
-                var new_card=Codex.renderCard(ref);
+                var new_card=mB.renderCard(ref);
                 if (new_card) fdjtDOM.replace(rep,new_card);}}
         ref.save();
         /* Turn off the target lock */
@@ -1000,8 +1002,8 @@
                     if ((form.parentNode)&&(form.parentNode))
                         fdjtDOM.remove(form.parentNode);
                     setGlossTarget(false);
-                    Codex.setTarget(false);
-                    Codex.setMode(false);}},
+                    mB.setTarget(false);
+                    mB.setMode(false);}},
                        1500);}
         else if (form)
             setTimeout(function(){
@@ -1034,11 +1036,11 @@
             if (!(hasClass("CODEXHUD","glossaddtag"))) {
                 // This means we have a bracketed reference
                 var tagstring=getTagString(
-                    span,Codex.gloss_cloud.getKey(completion));
+                    span,mB.gloss_cloud.getKey(completion));
                 var input=getInput(form,"NOTE");
                 if ((input)&&(tagstring)) tagclear(input);}}
         fdjtUI.cancel(evt);}
-    Codex.UI.handlers.glosscloud_select=glosscloud_select;
+    mB.UI.handlers.glosscloud_select=glosscloud_select;
 
     /***** The Outlet Cloud *****/
 
@@ -1050,14 +1052,14 @@
             var form=((live)&&(getChild(live,"form")));
             var value=completion.getAttribute("data-value");
             if (hasClass(completion,"source")) {
-                if (value) addOutlet(form,Codex.sourcedb.ref(value),"SHARE");}
+                if (value) addOutlet(form,mB.sourcedb.ref(value),"SHARE");}
             else if (hasClass(completion,"network")) 
                 addOutlet(form,completion,"NETWORK");
             else if (hasClass(completion,"email")) 
                 if (value) addOutlet(form,completion,"EMAIL");
             else addOutlet(form,completion);}
         fdjtUI.cancel(evt);}
-    Codex.UI.sharecloud_ontap=sharecloud_ontap;
+    mB.UI.sharecloud_ontap=sharecloud_ontap;
 
     /***** Saving (submitting/queueing) glosses *****/
 
@@ -1093,7 +1095,7 @@
         var uuidelt=getInput(form,"UUID");
         if (!((uuidelt)&&(uuidelt.value)&&(uuidelt.value.length>5))) {
             fdjtLog.warn('missing UUID');
-            if (uuidelt) uuidelt.value=fdjtState.getUUID(Codex.nodeid);}
+            if (uuidelt) uuidelt.value=fdjtState.getUUID(mB.nodeid);}
         var note_input=getInputs(form,"NOTE")[0];
         if (note_input.value.search(uri_prefix)===0) {
             // This is a convenience kludge where notes that look like
@@ -1104,51 +1106,51 @@
             else addLink(form,note.slice(0,brk),note.slice(brk+1));
             note_input.value="";}
         if ((!(login_message))&&
-            ((!(navigator.onLine))||(!(Codex.connected)))) {
+            ((!(navigator.onLine))||(!(mB.connected)))) {
             var choices=[];
             if (navigator.onLine) 
                 choices.push({label: "Login",
                               isdefault: true,
                               handler: function(){
-                                  setTimeout(function(){Codex.setMode("login");},0);
+                                  setTimeout(function(){mB.setMode("login");},0);
                                   var resubmit=function(){submitGloss(arg,keep);};
-                                  if (Codex._onconnect) Codex._onconnect.push(resubmit);
-                                  else Codex._onconnect=[resubmit];
+                                  if (mB._onconnect) mB._onconnect.push(resubmit);
+                                  else mB._onconnect=[resubmit];
                                   login_message=true;}});
-            if ((Codex.user)&&(Codex.persist)) 
+            if ((mB.user)&&(mB.persist)) 
                 choices.push({label: "Queue",
                               isdefault: ((!(navigator.onLine))&&
-                                          (Codex.cacheglosses)),
+                                          (mB.cacheglosses)),
                               handler: function(){
-                                  if (Codex.nocache)
-                                      Codex.setConfig("cacheglosses",true);
+                                  if (mB.nocache)
+                                      mB.setConfig("cacheglosses",true);
                                   login_message=true;
-                                  if (!((navigator.onLine)&&(Codex.connected)))
+                                  if (!((navigator.onLine)&&(mB.connected)))
                                       queueGloss(arg,false,keep);
                                   else submitGloss(arg,keep);}});
             else {
                 choices.push({label: "Cache",
                               isdefault: ((!(navigator.onLine))&&
-                                          (Codex.cacheglosses)),
+                                          (mB.cacheglosses)),
                               handler: function(){
-                                  if (Codex.nocache)
-                                      Codex.setConfig("cacheglosses",true,true);
+                                  if (mB.nocache)
+                                      mB.setConfig("cacheglosses",true,true);
                                   login_message=true;
                                   queueGloss(arg,false,keep);}});
-                if (Codex.nocache)
+                if (mB.nocache)
                     choices.push({label: "Lose",
                                   isdefault:((!(navigator.onLine))&&
-                                             (Codex.nocache)),
+                                             (mB.nocache)),
                                   handler: function(){
                                       tempGloss(form); login_message=true;}});}
             choices.push({label: "Cancel",
                           handler: function(){
                               fdjtDOM.remove(form.parentNode);
                               setGlossTarget(false);
-                              Codex.setTarget(false);
-                              Codex.setMode(false);}});
+                              mB.setTarget(false);
+                              mB.setMode(false);}});
             fdjtUI.choose(choices,
-                          ((navigator.onLine)&&(!(Codex.user))&&
+                          ((navigator.onLine)&&(!(mB.user))&&
                            ([fdjtDOM("p.smaller",
                                     "This book isn't currently associated with an sBooks account, ",
                                     "so any highlights or glosses you add will not be permanently saved ",
@@ -1158,7 +1160,7 @@
                                      "on this machine until you do login, ",
                                      "lose your changes when this page closes, ",
                                      "or cancel the change you're about to make.")])),
-                          (((navigator.onLine)&&(Codex.user)&&
+                          (((navigator.onLine)&&(mB.user)&&
                             ([fdjtDOM("p.smaller",
                                      "You aren't currently logged into your sBooks account from ",
                                      "this machine, so any highlights or glosses you add won't ",
@@ -1168,7 +1170,7 @@
                               fdjtDOM("p.smaller",
                                       "You may either login now, queue any changes you make until ",
                                      "you do login, or cancel the change you were trying to make.")]))),
-                          ((!(navigator.onLine))&&(Codex.nocache)&&
+                          ((!(navigator.onLine))&&(mB.nocache)&&
                            ([fdjtDOM("p.smaller",
                                     "You are currently offline and have elected to not save ",
                                     "highlights or glosses locally on this computer."),
@@ -1177,11 +1179,11 @@
                                     "lose your changes when this page closes,",
                                     "or cancel the change you were about to make.")])));
             return;}
-        var sent=((navigator.onLine)&&(Codex.connected)&&(Codex.user)&&
+        var sent=((navigator.onLine)&&(mB.connected)&&(mB.user)&&
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
         if (!(sent)) queueGloss(form,((arg)&&(arg.type)&&(arg)),keep);
         else dropClass(div,"modified");}
-    Codex.submitGloss=submitGloss;
+    mB.submitGloss=submitGloss;
 
     function cancelGloss_handler(evt){
         evt=evt||window.event;
@@ -1196,11 +1198,11 @@
         var glossform=(target)&&
             (fdjtDOM.getParent(target,".codexglossform"));
         setGlossTarget(false);
-        Codex.setMode(false);
+        mB.setMode(false);
         if ((arg)&&((arg.cancelable)||(arg.bubbles))) {
             fdjtUI.cancel(evt);}
         if (glossform) fdjtDOM.remove(glossform);}
-    Codex.cancelGloss=cancelGloss;
+    mB.cancelGloss=cancelGloss;
 
     // We save gloss defaults on the prototype gloss form hidden in the DOM
     function saveGlossDefaults(form,proto){
@@ -1241,11 +1243,11 @@
         // params to send when we get online
         var json=fdjt.Ajax.formJSON(form,true);
         var params=fdjt.Ajax.formParams(form);
-        var queued=Codex.queued;
+        var queued=mB.queued;
         queued.push(json.uuid);
-        if (Codex.cacheglosses) {
+        if (mB.cacheglosses) {
             fdjtState.setLocal("codex.params("+json.uuid+")",params);
-            fdjtState.setLocal("codex.queued("+Codex.refuri+")",queued,true);}
+            fdjtState.setLocal("codex.queued("+mB.refuri+")",queued,true);}
         else queued_data[json.uuid]=params;
         // Now save it to the in-memory database
         var glossdata=
@@ -1263,7 +1265,7 @@
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
-        Codex.glossdb.Import(glossdata,false,false,true);
+        mB.glossdb.Import(glossdata,false,false,true);
         if (evt) fdjtUI.cancel(evt);
         dropClass(form.parentNode,"submitting");
         /* Turn off the target lock */
@@ -1271,8 +1273,8 @@
             // Clear the UUID
             clearGlossForm(form);
             setGlossTarget(false);
-            Codex.setTarget(false);
-            Codex.setMode(false);}}
+            mB.setTarget(false);
+            mB.setMode(false);}}
 
     // Creates a gloss which will go away when the page closes
     function tempGloss(form,evt){
@@ -1295,21 +1297,21 @@
             glossdata.details=json.details;
         if ((json.tags)&&(json.tags.length>0)) glossdata.tags=json.tags;
         if ((json.xrefs)&&(json.xrefs.length>0)) glossdata.xrefs=json.xrefs;
-        Codex.glossdb.Import(glossdata,false,false,true);
+        mB.glossdb.Import(glossdata,false,false,true);
         // Clear the UUID
         clearGlossForm(form);
         if (evt) fdjtUI.cancel(evt);
         dropClass(form.parentNode,"submitting");
         /* Turn off the target lock */
-        setGlossTarget(false); Codex.setTarget(false); Codex.setMode(false);}
+        setGlossTarget(false); mB.setTarget(false); mB.setMode(false);}
 
     // Saves queued glosses
     function writeQueuedGlosses(){
-        if (Codex.queued.length) {
+        if (mB.queued.length) {
             var ajax_uri=getChild(fdjtID("CODEXADDGLOSSPROTOTYPE"),"form").
                 getAttribute("ajaxaction");
-            var queued=Codex.queued; var glossid=queued[0];
-            var post_data=((Codex.nocache)?((queued_data[glossid])):
+            var queued=mB.queued; var glossid=queued[0];
+            var post_data=((mB.nocache)?((queued_data[glossid])):
                            (fdjtState.getLocal("codex.params("+glossid+")")));
             if (post_data) {
                 var req=new XMLHttpRequest();
@@ -1319,25 +1321,25 @@
                     if ((req.readyState === 4) &&
                         (req.status>=200) && (req.status<300)) {
                         fdjtState.dropLocal("codex.params("+glossid+")");
-                        var pending=Codex.queued;
+                        var pending=mB.queued;
                         if ((pending)&&(pending.length)) {
                             var pos=pending.indexOf(glossid);
                             if (pos>=0) {
                                 pending.splice(pos,pos);
-                                if (Codex.cacheglosses)
-                                    fdjtState.setLocal("codex.queued("+Codex.refuri+")",pending,true);
-                                Codex.queued=pending;}}
+                                if (mB.cacheglosses)
+                                    fdjtState.setLocal("codex.queued("+mB.refuri+")",pending,true);
+                                mB.queued=pending;}}
                         addgloss_callback(req,false,false);
                         if (pending.length) setTimeout(writeQueuedGlosses,200);
-                        fdjtState.dropLocal("codex.queued("+Codex.refuri+")");}
+                        fdjtState.dropLocal("codex.queued("+mB.refuri+")");}
                     else if (req.readyState===4) {
-                        Codex.setConnected(false);}
+                        mB.setConnected(false);}
                     else {}};
                 try {
                     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     req.send(post_data);}
-                catch (ex) {Codex.setConnected(false);}}}}
-    Codex.writeQueuedGlosses=writeQueuedGlosses;
+                catch (ex) {mB.setConnected(false);}}}}
+    mB.writeQueuedGlosses=writeQueuedGlosses;
     
 })();
 

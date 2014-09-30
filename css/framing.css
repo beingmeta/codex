@@ -112,7 +112,7 @@ body.cxTOUCH #CODEXFRAME > #CODEXHUD > #CODEXFOOT {
 /* The COVER contains the usual wrapping elements for the book
    (coverpage, title, blurbs, etc) and also contains elements which
    aren't part of physical books: settings, layer management, and
-   a small Codex tutorial. */
+   a small metaBook tutorial. */
 #CODEXCOVER {
     position: absolute; width: 100%; height: 100%;
     top: 0px; bottom: 0px; left: 0px; right: 0px;
