@@ -99,7 +99,7 @@ metaBook.Startup=
                 (typeof mB.Trace.startup === "number")&&
                 (mB.Trace.startup>1))
                 fdjtLog.apply(null,arguments);}
-        mB.startupMessage=startupMessage;
+        metaBook.startupMessage=startupMessage;
 
         /* Save local */
 
@@ -142,12 +142,12 @@ metaBook.Startup=
                     fdjtLog("Applying config handler to current %s=%s",
                             name,current_config[name]);
                 handler(name,current_config[name]);}}
-        mB.addConfig=addConfig;
+        metaBook.addConfig=addConfig;
 
         function getConfig(name){
             if (!(name)) return current_config;
             else return current_config[name];}
-        mB.getConfig=getConfig;
+        metaBook.getConfig=getConfig;
 
         function setConfig(name,value,save){
             if (arguments.length===1) {
@@ -202,8 +202,8 @@ metaBook.Startup=
             if ((save)&&(saved_config[name]!==value)) {
                 saved_config[name]=value;
                 saveConfig(saved_config);}}
-        mB.setConfig=setConfig;
-        mB.resetConfig=function(){setConfig(saved_config);};
+        metaBook.setConfig=setConfig;
+        metaBook.resetConfig=function(){setConfig(saved_config);};
 
         function saveConfig(config,toserver){
             if (typeof toserver === "undefined") toserver=true;
@@ -220,7 +220,7 @@ metaBook.Startup=
                     (!(getQuery(setting)))) {
                     saved[setting]=config[setting];}}
             if (mB.Trace.config) fdjtLog("Saving config %o",saved);
-            saveLocal("codex.config("+mB.docuri+")",JSON.stringify(saved));
+            saveLocal("metabook.config("+mB.docuri+")",JSON.stringify(saved));
             if ((toserver)&&(navigator.onLine)) {
                 var req=new XMLHttpRequest();
                 req.onreadystatechange=function(evt){
@@ -245,12 +245,12 @@ metaBook.Startup=
                 catch (ex) {}}
             fdjtDOM.dropClass("METABOOKSETTINGS","changed");
             saved_config=saved;}
-        mB.saveConfig=saveConfig;
+        metaBook.saveConfig=saveConfig;
 
         function initConfig(){
             var setting, started=fdjtTime(); // changed=false;
-            var config=getLocal("codex.config("+mB.docuri+")",true)||
-                fdjtState.getSession("codex.config("+mB.docuri+")",true);
+            var config=getLocal("metabook.config("+mB.docuri+")",true)||
+                fdjtState.getSession("metabook.config("+mB.docuri+")",true);
             mB.postconfig=[];
             if (config) {
                 for (setting in config) {
@@ -269,7 +269,7 @@ metaBook.Startup=
                         if (getQuery(setting))
                             setConfig(setting,getQuery(setting));
                         else if (getMeta("METABOOK."+setting))
-                            setConfig(setting,getMeta("CODEX."+setting));
+                            setConfig(setting,getMeta("METABOOK."+setting));
                         else setConfig(setting,default_config[setting]);}}
             var dopost=mB.postconfig;
             mB.postconfig=false;
@@ -300,7 +300,7 @@ metaBook.Startup=
             if ((elt.type==='radio')||(elt.type==='checkbox'))
                 setConfig(name,elt.checked||false,save);
             else setConfig(name,elt.value,save);}
-        mB.updateConfig=updateConfig;
+        metaBook.updateConfig=updateConfig;
 
         mB.addConfig("keyboardhelp",function(name,value){
             mB.keyboardhelp=value;
@@ -368,7 +368,7 @@ metaBook.Startup=
 
             if ((fdjtDevice.standalone)&&
                 (fdjtDevice.ios)&&(fdjtDevice.mobile)&&
-                (!(getLocal("codex.user")))&&
+                (!(getLocal("metabook.user")))&&
                 (fdjtState.getQuery("SBOOKS:AUTH-"))) {
                 var authkey=fdjt.State.getQuery("SBOOKS:AUTH-");
                 fdjtLog("Got auth key %s",authkey);
@@ -397,7 +397,7 @@ metaBook.Startup=
 
             // Figure out if we have a user and whether we can keep
             // user information
-            if (getLocal("codex.user")) {
+            if (getLocal("metabook.user")) {
                 mB.persist=true;
                 userSetup();}
 
@@ -407,7 +407,7 @@ metaBook.Startup=
             // If we have no clue who the user is, ask right away (updateInfo())
             if (!((mB.user)||(window._sbook_loadinfo)||
                   (mB.userinfo)||(window._userinfo)||
-                  (getLocal("codex.user")))) {
+                  (getLocal("metabook.user")))) {
                 if (mB.Trace.startup)
                     fdjtLog("No local user info, requesting from sBooks server %s",mB.server);
                 // When mB.user is not defined, this just requests identity information
@@ -453,7 +453,7 @@ metaBook.Startup=
                     nodes.push(children[i++]);}
                 i=0; while (i<lim) frag.appendChild(nodes[i++]);
                 return frag;}
-            mB.md2DOM=md2DOM;
+            metaBook.md2DOM=md2DOM;
 
             mB.Timeline.sync_startup=new Date();
             if (mB.onsyncstartup) {
@@ -483,7 +483,7 @@ metaBook.Startup=
             // First, define common schemas
             fdjtDOM.addAppSchema("SBOOK","http://sbooks.net/");
             fdjtDOM.addAppSchema("SBOOKS","http://sbooks.net/");
-            fdjtDOM.addAppSchema("metaBook","http://codex.sbooks.net/");
+            fdjtDOM.addAppSchema("metaBook","http://metabook.sbooks.net/");
             fdjtDOM.addAppSchema("DC","http://purl.org/dc/elements/1.1/");
             fdjtDOM.addAppSchema("DCTERMS","http://purl.org/dc/terms/");
             fdjtDOM.addAppSchema("OLIB","http://openlibrary.org/");
@@ -496,7 +496,7 @@ metaBook.Startup=
                 (window.location.protocol==='https:'))
                 mB.root=https_root;
             // Whether to suppress login, etc
-            if ((getLocal("codex.nologin"))||(getQuery("nologin")))
+            if ((getLocal("metabook.nologin"))||(getQuery("nologin")))
                 mB.nologin=true;
             var sbooksrv=getMeta("SBOOKS.server")||getMeta("SBOOKSERVER");
             if (sbooksrv) mB.server=sbooksrv;
@@ -565,7 +565,7 @@ metaBook.Startup=
 
             // Setup the reticle (if desired)
             if ((typeof (body.style["pointer-events"])!== "undefined")&&
-                ((mB.demo)||(fdjtState.getLocal("codex.demo"))||
+                ((mB.demo)||(fdjtState.getLocal("metabook.demo"))||
                  (fdjtState.getCookie("sbooksdemo"))||
                  (getQuery("demo")))) {
                 fdjtUI.Reticle.setup();}
@@ -586,18 +586,18 @@ metaBook.Startup=
             if (mB.Trace.gestures)
                 fdjtLog("Content setup in %dms",fdjtTime()-started);}
 
-        mB.setSync=function setSync(val){
+        metaBook.setSync=function setSync(val){
             if (!(val)) return false;
             var cur=mB.sync;
             if ((cur)&&(cur>val)) return cur;
             mB.sync=val;
             if (mB.persist)
-                saveLocal("codex.sync("+mB.docuri+")",val);
+                saveLocal("metabook.sync("+mB.docuri+")",val);
             return val;};
 
         function userSetup(){
             // Get any local sync information
-            var sync=mB.sync=getLocal("codex.sync("+mB.refuri+")",true)||0;
+            var sync=mB.sync=getLocal("metabook.sync("+mB.refuri+")",true)||0;
             var started=fdjtTime();
             var loadinfo=false, userinfo=false;
 
@@ -606,7 +606,7 @@ metaBook.Startup=
             if ((mB.sync)&&(!(mB.persist))) clearOffline();
 
             if (mB.nologin) {}
-            else if ((mB.persist)&&(getLocal("codex.user"))) {
+            else if ((mB.persist)&&(getLocal("metabook.user"))) {
                 initUserOffline();
                 if (mB.Trace.storage) 
                     fdjtLog("Local info for %o (%s) from %o",
@@ -663,7 +663,7 @@ metaBook.Startup=
                 updateInfo();
                 return;}
             else return;}
-        mB.userSetup=userSetup;
+        metaBook.userSetup=userSetup;
 
         function readTraceSettings(){
             var tracing=getQuery("cxtrace",true);
@@ -684,7 +684,7 @@ metaBook.Startup=
 
         var glosshash_pat=/G[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
         
-        function CodexStartup(force){
+        function metaBookStartup(force){
             var metadata=false;
             if (mB._setup) return;
             if ((!force)&&(getQuery("nocodex"))) return;
@@ -801,7 +801,7 @@ metaBook.Startup=
                         else indexingDone();}},
                 startupDone],
              100,25);}
-        mB.Startup=CodexStartup;
+        metaBook.Startup=metaBookStartup;
         
         function addTOCLevel(specs,level){
             var j=0, nspecs=specs.length; while (j<nspecs) {
@@ -928,7 +928,7 @@ metaBook.Startup=
                 mB.hideCover();
             else if ((!(mode))&&(mB.user)) {
                 var opened=readLocal(
-                    "codex.opened("+mB.docuri+")",true);
+                    "metabook.opened("+mB.docuri+")",true);
                 if ((opened)&&((opened+((3600+1800)*1000))>fdjtTime()))
                     mB.hideCover();}
             if (fdjtDOM.vischange)
@@ -949,74 +949,75 @@ metaBook.Startup=
             mB.docuri=_getsbookdocuri();
             mB.topuri=document.location.href;
             
-            var refuris=getLocal("codex.refuris",true)||[];
+            var refuris=getLocal("metabook.refuris",true)||[];
 
-            mB.sourceid=
+            metaBook.sourceid=
                 getMeta("SBOOKS.sourceid")||getMeta("SBOOKS.fileid")||
                 mB.docuri;
-            mB.sourcetime=getMeta("SBOOKS.sourcetime");
-            var oldid=getLocal("codex.sourceid("+mB.docuri+")");
+            metaBook.sourcetime=getMeta("SBOOKS.sourcetime");
+            var oldid=getLocal("metabook.sourceid("+mB.docuri+")");
             if ((oldid)&&(oldid!==mB.sourceid)) {
-                var layouts=getLocal("codex.layouts("+oldid+")");
+                var layouts=getLocal("metabook.layouts("+oldid+")");
                 if ((layouts)&&(layouts.length)) {
                     var i=0, lim=layouts.length; while (i<lim) 
                         CodexLayout.dropLayout(layouts[i++]);}}
-            else saveLocal("codex.sourceid("+mB.docuri+")",mB.sourceid);
+            else saveLocal("metabook.sourceid("+mB.docuri+")",mB.sourceid);
 
-            mB.bookbuild=getMeta("SBOOKS.buildstamp");
+            metaBook.bookbuild=getMeta("SBOOKS.buildstamp");
 
-            mB.bypage=(mB.page_style==='bypage'); 
-            mB.max_excerpt=getMeta("SBOOKS.maxexcerpt")||(mB.max_excerpt);
-            mB.min_excerpt=getMeta("SBOOKS.minexcerpt")||(mB.min_excerpt);
+            metaBook.bypage=(mB.page_style==='bypage'); 
+            metaBook.max_excerpt=getMeta("SBOOKS.maxexcerpt")||(mB.max_excerpt);
+            metaBook.min_excerpt=getMeta("SBOOKS.minexcerpt")||(mB.min_excerpt);
             
             var notespecs=getMeta("sbooknote",true).concat(
                 getMeta("SBOOKS.note",true));
             var noterefspecs=getMeta("sbooknoteref",true).concat(
                 getMeta("SBOOKS.noteref",true));
-            mB.sbooknotes=(((notespecs)&&(notespecs.length))?
-                              (fdjtDOM.sel(notespecs)):(false));
-            mB.sbooknoterefs=(((noterefspecs)&&(noterefspecs.length))?
-                                 (fdjtDOM.sel(noterefspecs)):(false));
+            metaBook.sbooknotes=(((notespecs)&&(notespecs.length))?
+                                 (fdjtDOM.sel(notespecs)):(false));
+            metaBook.sbooknoterefs=(((noterefspecs)&&(noterefspecs.length))?
+                                    (fdjtDOM.sel(noterefspecs)):(false));
 
             refuris.push(refuri);
 
             var docref=getMeta("SBOOKS.docref");
-            if (docref) mB.docref=docref;
+            if (docref) metaBook.docref=docref;
 
             var coverpage=getLink("SBOOKS.coverpage",false,true)||
                 getLink("coverpage",false,true);
-            if (coverpage) mB.coverpage=coverpage;
+            if (coverpage) metaBook.coverpage=coverpage;
             var coverimage=getLink("SBOOKS.coverimage",false,true)||
                 getLink("coverimage",false,true);
-            if (coverimage) mB.coverimage=coverimage;
+            if (coverimage) metaBook.coverimage=coverimage;
             var thumbnail=getLink("SBOOKS.thumbnail",false,true)||
                 getLink("thumbnail",false,true);
-            if (thumbnail) mB.thumbnail=thumbnail;
+            if (thumbnail) metaBook.thumbnail=thumbnail;
             var icon=getLink("SBOOKS.icon",false,true)||
                 getLink("icon",false,true);
-            if (icon) mB.icon=icon;
+            if (icon) metaBook.icon=icon;
             
             var baseid=getMeta("SBOOKS.id")||
                 getMeta("SBOOKS.prefix")||getMeta("SBOOKS.baseid");
-            if (baseid) mB.baseid=baseid;
+            if (baseid) metaBook.baseid=baseid;
             var prefix=getMeta("SBOOKS.prefix")||baseid;
-            if (prefix) mB.prefix=prefix;
+            if (prefix) metaBook.prefix=prefix;
             var targetprefix=getMeta("SBOOKS.targetprefix");
             if ((targetprefix)&&(targetprefix==="*"))
-                mB.targetids=false;
+                metaBook.targetids=false;
             else if ((targetprefix)&&(targetprefix[0]==='/'))
-                mB.targetids=new RegExp(targetprefix.slice(1,targetprefix.length-1));
+                metaBook.targetids=new RegExp(
+                    targetprefix.slice(1,targetprefix.length-1));
             else if (targetprefix)
-                mB.targetids=new RegExp("^"+targetprefix);
+                metaBook.targetids=new RegExp("^"+targetprefix);
             else if (prefix)
-                mB.targetids=new RegExp("^"+prefix);
-            else mB.targetids=false;
+                metaBook.targetids=new RegExp("^"+prefix);
+            else metaBook.targetids=false;
             
             var autofonts=fdjtDOM.getMeta("SBOOKS.adjustfont",true);
             if (autofonts.length)
                 fdjt.DOM.autofont=fdjt.DOM.autofont+","+autofonts.join(",");
 
-            if (getMeta("CODEX.forcelayout"))
+            if (getMeta("METABOOK.forcelayout"))
                 default_config.forcelayout=true;
 
             var autotoc=getMeta("SBOOKS.autotoc");
@@ -1024,14 +1025,14 @@ metaBook.Startup=
                 if ((autotoc[0]==="y")||(autotoc[0]==="Y")||
                     (autotoc==="ON")||(autotoc==="on")||
                     (autotoc==="1")||(autotoc==="enable"))
-                    mB.autotoc=true;
-                else mB.autotoc=false;}
+                    metaBook.autotoc=true;
+                else metaBook.autotoc=false;}
 
             if (!(mB.nologin)) {
-                mB.mycopyid=getMeta("SBOOKS.mycopyid")||
+                metaBook.mycopyid=getMeta("SBOOKS.mycopyid")||
                     (getLocal("mycopy("+refuri+")"))||
                     false;}
-            if (mB.persist) saveLocal("codex.refuris",refuris,true);}
+            if (mB.persist) saveLocal("metabook.refuris",refuris,true);}
 
         function deviceSetup(){
             var useragent=navigator.userAgent;
@@ -1136,13 +1137,13 @@ metaBook.Startup=
         function getBookInfo(){
             if (mB.bookinfo) return mB.bookinfo;
             else {bookSetup(); return mB.bookinfo;}}
-        mB.getBookInfo=getBookInfo;
+        metaBook.getBookInfo=getBookInfo;
         
         function initUserOffline(){
             var refuri=mB.refuri;
-            var user=getLocal("codex.user");
+            var user=getLocal("metabook.user");
             var sync=mB.sync;
-            var nodeid=getLocal("codex.nodeid("+refuri+")",true);
+            var nodeid=getLocal("metabook.nodeid("+refuri+")",true);
             // We store the information for the current user
             //  in both localStorage and in the "real" sourcedb.
             // We fetch the user from local storage because we
@@ -1157,9 +1158,9 @@ metaBook.Startup=
                 fdjtLog("initOffline userinfo=%j",userinfo);
             // Should these really be refs in sourcedb?
             var outlets=mB.outlets=
-                getLocal("codex.outlets("+refuri+")",true)||[];
+                getLocal("metabook.outlets("+refuri+")",true)||[];
             var layers=mB.layers=
-                getLocal("codex.layers("+refuri+")",true)||[];
+                getLocal("metabook.layers("+refuri+")",true)||[];
             if (userinfo) setUser(userinfo,outlets,layers,sync);
             if (nodeid) setNodeID(nodeid);}
 
@@ -1255,7 +1256,7 @@ metaBook.Startup=
                   (elt.className.search(/\bsbookignore\b/)>=0))))
                 return true;
             else return false;}
-        mB.hasTOCLevel=hasTOCLevel;
+        metaBook.hasTOCLevel=hasTOCLevel;
 
         var headlevels=["not","A","B","C","D","E","F","G","H","I","J","K","L"];
 
@@ -1297,7 +1298,8 @@ metaBook.Startup=
             if (notoc.length) mB.notoc=new fdjtDOM.Selector(notoc);
             var terminal=((getMeta("sbookterminal"))||[]).concat(
                 ((getMeta("SBOOKS.terminal"))||[]));
-            if (terminal.length) mB.terminals=new fdjtDOM.Selector(terminal.length);
+            if (terminal.length)
+                mB.terminals=new fdjtDOM.Selector(terminal.length);
             var focus=
                 ((getMeta("sbookfocus"))||[]).concat(
                     ((getMeta("SBOOKS.focus"))||[])).concat(
@@ -1929,7 +1931,7 @@ metaBook.Startup=
             document.body.style.overflow='';
             if (mB.Trace.startup>1)
                 fdjtLog("Content sizing took %dms",fdjtTime()-started);}
-        mB.sizeContent=sizeContent;
+        metaBook.sizeContent=sizeContent;
         
         /* Margin creation */
 
@@ -1937,7 +1939,7 @@ metaBook.Startup=
             var topleading=fdjtDOM("div#SBOOKTOPLEADING.leading.top"," ");
             var bottomleading=
                 fdjtDOM("div#SBOOKBOTTOMLEADING.leading.bottom"," ");
-            topleading.codexui=true; bottomleading.codexui=true;
+            topleading.metabookui=true; bottomleading.metabookui=true;
             
             var skimleft=document.createDocumentFragment();
             var skimright=document.createDocumentFragment();
@@ -2068,9 +2070,9 @@ metaBook.Startup=
                             info.outlets,info.layers,
                             info.sync);
                 else {
-                    if (getLocal("codex.queued("+mB.refuri+")"))
+                    if (getLocal("metabook.queued("+mB.refuri+")"))
                         mB.glossdb.load(
-                            getLocal("codex.queued("+mB.refuri+")",true));
+                            getLocal("metabook.queued("+mB.refuri+")",true));
                     fdjtID("METABOOKCOVER").className="bookcover";
                     addClass(document.body,"cxNOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
@@ -2102,8 +2104,8 @@ metaBook.Startup=
                 clearOffline();}
             info.loaded=fdjtTime();
             if ((!(mB.localglosses))&&
-                ((getLocal("codex.sync("+refuri+")"))||
-                 (getLocal("codex.queued("+refuri+")"))))
+                ((getLocal("metabook.sync("+refuri+")"))||
+                 (getLocal("metabook.queued("+refuri+")"))))
                 initGlossesOffline();
             if (mB.Trace.glosses) {
                 fdjtLog("loadInfo for %d %sglosses and %d refs (sync=%d)",
@@ -2119,7 +2121,7 @@ metaBook.Startup=
                 initGlosses(info.glosses||[],info.etc||[],
                             function(){infoLoaded(info);});
             if (mB.glosses) mB.glosses.update();}
-        mB.loadInfo=loadInfo;
+        metaBook.loadInfo=loadInfo;
 
         function infoLoaded(info){
             var keepdata=(mB.cacheglosses);
@@ -2158,7 +2160,7 @@ metaBook.Startup=
                 else fdjtLog("Response from %s",source||mB.server);}
             updating=false; loadInfo(data);
             if ((!(user))&&(mB.user)) userSetup();}
-        mB.updatedInfo=updatedInfo;
+        metaBook.updatedInfo=updatedInfo;
         function updateInfo(callback,jsonp){
             var user=mB.user; var start=fdjtTime();
             var uri="https://"+mB.server+"/v1/loadinfo.js?REFURI="+
@@ -2230,11 +2232,11 @@ metaBook.Startup=
                 fdjtLog.warn(
                     "Ajax call to %s failed on transmission, falling back to JSONP",uri);
                 updateInfoJSONP(uri);}}
-        mB.updateInfo=updateInfo;
+        metaBook.updateInfo=updateInfo;
         function updatedInfoJSONP(data){
             var elt=fdjtID("METABOOKUPDATEINFO");
             mB.updatedInfo(data,(((elt)&&(elt.src))||"JSON"));}
-        mB.updatedInfoJSONP=updatedInfoJSONP;
+        metaBook.updatedInfoJSONP=updatedInfoJSONP;
         function updateInfoJSONP(uri,callback){
             if (!(navigator.onLine)) return;
             if (!(callback)) callback="mB.updatedInfoJSONP";
@@ -2270,7 +2272,7 @@ metaBook.Startup=
                 fdjtLog.warn(
                     "Cached user information is newer (%o) than loaded (%o)",
                     cursync,sync);}
-            if ((navigator.onLine)&&(getLocal("codex.queued("+mB.refuri+")")))
+            if ((navigator.onLine)&&(getLocal("metabook.queued("+mB.refuri+")")))
                 mB.writeQueuedGlosses();
             mB.user=mB.sourcedb.Import(
                 userinfo,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
@@ -2278,7 +2280,7 @@ metaBook.Startup=
             if (layers) mB.layers=layers;
             // No callback needed
             mB.user.save();
-            saveLocal("codex.user",mB.user._id);
+            saveLocal("metabook.user",mB.user._id);
             // We also save it locally so we can get it synchronously
             saveLocal(mB.user._id,mB.user.Export(),true);
             if (mB.locsync) setConfig("locsync",true);
@@ -2293,15 +2295,15 @@ metaBook.Startup=
             if (mB.cacheglosses) mB.cacheGlosses(true);
             if (mB._ui_setup) setupUI4User();
             return mB.user;}
-        mB.setUser=setUser;
+        metaBook.setUser=setUser;
         
         function setNodeID(nodeid){
             var refuri=mB.refuri;
             if (!(mB.nodeid)) {
                 mB.nodeid=nodeid;
                 if ((nodeid)&&(mB.persist))
-                    setLocal("codex.nodeid("+refuri+")",nodeid,true);}}
-        mB.setNodeID=setNodeID;
+                    setLocal("metabook.nodeid("+refuri+")",nodeid,true);}}
+        metaBook.setNodeID=setNodeID;
 
         function setupUI4User(){
             var i=0, lim;
@@ -2384,7 +2386,7 @@ metaBook.Startup=
                 info,false,RefDB.REFLOAD|RefDB.REFSTRINGS|RefDB.REFINDEX);
             setupUI4User();
             mB._user_setup=false;}
-        mB.loginUser=loginUser;
+        metaBook.loginUser=loginUser;
         
         function gotItem(item,qids){
             if (typeof item === 'string') {
@@ -2401,7 +2403,7 @@ metaBook.Startup=
             var refuri=mB.refuri;
             metaBook[name]=qids;
             if (mB.cacheglosses)
-                saveLocal("codex."+name+"("+refuri+")",qids,true);}
+                saveLocal("metabook."+name+"("+refuri+")",qids,true);}
         
         // Processes info loaded remotely
         function gotInfo(name,info,persist) {
@@ -2422,7 +2424,7 @@ metaBook.Startup=
                     if (persist) ref.save();
                     metaBook[name]=ref._id;
                     if (persist) saveLocal(
-                        "codex."+name+"("+mB.refuri+")",ref._id,true);}}}
+                        "metabook."+name+"("+mB.refuri+")",ref._id,true);}}}
 
         function initGlosses(glosses,etc,callback){
             if (typeof callback === "undefined") callback=true;
@@ -2457,12 +2459,12 @@ metaBook.Startup=
                 fdjtLog("Assimilated %d new glosses in %dms...",
                         glosses.length,fdjtTime()-start);
             dropClass(msg,"running");}
-        mB.Startup.initGlosses=initGlosses;
+        metaBook.Startup.initGlosses=initGlosses;
         
         function go_online(){return offline_update();}
         function offline_update(){
             mB.writeQueuedGlosses(); updateInfo();}
-        mB.update=offline_update;
+        metaBook.update=offline_update;
         
         fdjtDOM.addListener(window,"online",go_online);
 
@@ -2486,7 +2488,7 @@ metaBook.Startup=
                            changed: 978307200};
                 else state={location: 1,changed: 978307200};}
             mB.saveState(state,true,true);}
-        mB.initLocation=initLocation;
+        metaBook.initLocation=initLocation;
 
         function resolveXState(xstate) {
             var state=mB.state;
@@ -2505,7 +2507,7 @@ metaBook.Startup=
                 state.maxloc=xstate.maxloc;
                 var statestring=JSON.stringify(state);
                 var uri=mB.docuri;
-                saveLocal("codex.state("+uri+")",statestring);}
+                saveLocal("metabook.state("+uri+")",statestring);}
             else {}
             if (state.changed>=xstate.changed) {
                 // The locally saved state is newer than the server,
@@ -2567,13 +2569,13 @@ metaBook.Startup=
                      onclose: function(){mB.statedialog=false;},
                      spec: "div.fdjtdialog.resolvestate#METABOOKRESOLVESTATE"},
                     fdjtDOM("div",msg1));}
-        mB.resolveXState=resolveXState;
+        metaBook.resolveXState=resolveXState;
 
         function clearStateDialog(){
             if (mB.statedialog) {
                 fdjt.Dialog.close(mB.statedialog);
                 mB.statedialog=false;}}
-        mB.clearStateDialog=clearStateDialog;
+        metaBook.clearStateDialog=clearStateDialog;
 
         /* Indexing tags */
         
@@ -2853,7 +2855,7 @@ metaBook.Startup=
                                 tohandle.length);
                     if (whendone) whendone();},
                 200,5);}
-        mB.applyTagAttributes=applyTagAttributes;
+        metaBook.applyTagAttributes=applyTagAttributes;
         
         function handle_inline_tags(info){
             if (info.atags) addTags(info,info.atags);
@@ -2894,11 +2896,11 @@ metaBook.Startup=
         
         /* Other setup */
         
-        mB.StartupHandler=function(){
+        metaBook.StartupHandler=function(){
             mB.Startup();};
 
-        return CodexStartup;})();
-mB.Setup=mB.StartupHandler;
+        return metaBookStartup;})();
+metaBook.Setup=metaBook.StartupHandler;
 /*
 sbookStartup=mB.StartupHandler;
 sbook={Start: mB.Startup,

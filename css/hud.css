@@ -13,15 +13,15 @@
 /* Size rules */
 
 #METABOOKHUD { font-size: 2em; }
-#METABOOKFRAME.codexuifontlarge #METABOOKHUD { font-size: 2.5em; }
-#METABOOKFRAME.codexuifontnormal #METABOOKHUD { font-size: 2em; }
-#METABOOKFRAME.codexuifontsmall #METABOOKHUD { font-size: 1em; }
+#METABOOKFRAME.metabookuifontlarge #METABOOKHUD { font-size: 2.5em; }
+#METABOOKFRAME.metabookuifontnormal #METABOOKHUD { font-size: 2em; }
+#METABOOKFRAME.metabookuifontsmall #METABOOKHUD { font-size: 1em; }
 
 #METABOOKHUD .codexhelp, #METABOOKHUD .helpbox { font-size: 80%;}
 #METABOOKHUD #METABOOKRIBBON, #METABOOKHUD #METABOOKTOP, #METABOOKHUD #METABOOKFOOT {
     font-size: 80%;}
-#METABOOKHUD .codexslice { font-size: 90%;}
-#METABOOKHUD .codexslice .tochead, #METABOOKHUD .codexslice .idhead {
+#METABOOKHUD .bookslice { font-size: 90%;}
+#METABOOKHUD .bookslice .tochead, #METABOOKHUD .bookslice .idhead {
     font-size: 80%;}
 
 /* Major HUD components, head and heart */
@@ -99,7 +99,7 @@ body.hudup #METABOOKTOP .hudpanel {
 #METABOOKSKIMMER { display: none; }
 
 #METABOOKTOP, #METABOOKTOP .hudpanel, #METABOOKSKIMMER,
-#METABOOKSKIMMER .codexcard, #METABOOKSKIMMER .codexcardbody {
+#METABOOKSKIMMER .mbcard, #METABOOKSKIMMER .mbcardbody {
     border-radius: 1ex; -webkit-border-radius: 1ex;
     -o-border-radius: 1ex; -moz-border-radius: 1ex;
     border-top-width: 0px;
@@ -450,7 +450,7 @@ body.cxSKIMMING #METABOOKHUD.searchresults #METABOOKSEARCH {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-body.cxTOUCH .codexcard .age {
+body.cxTOUCH .mbcard .age {
     font-size: 125%; padding-bottom: 2px;}
 
 div.completions.hudpanel { line-height: 120%;}
@@ -699,7 +699,7 @@ body.hudup #METABOOKPAGE p, body.hudup #METABOOKPAGE div { cursor: pointer;}
 
 /* METABOOKPOINTGLOSSES rules */
 
-#METABOOKPOINTGLOSSES div.codexcard { margin-left: 0px;}
+#METABOOKPOINTGLOSSES div.mbcard { margin-left: 0px;}
 #METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel {
     top: 100px; left: auto; right: 100px;
     max-width: 40em; min-width: 20em; min-height: 20px; 
@@ -717,7 +717,7 @@ body.hudup #METABOOKPAGE p, body.hudup #METABOOKPAGE div { cursor: pointer;}
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 
-#METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel div.codexslice {
+#METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel div.bookslice {
     overflow: hidden;}
 #METABOOKHUD #METABOOKPOINTGLOSSES.hudpanel {
     border: solid blue 2px;
@@ -784,15 +784,15 @@ body.cxSKIMMING #METABOOKHUD #METABOOKSKIMMER {
     border-top-width: 0px; border-bottom-width: 0px;}
 #METABOOKPOINTGLOSSES div.tochead { display: none; }
 
-#METABOOKSKIMMER div.codexcard.gloss > div.tochead,
-#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody {
+#METABOOKSKIMMER div.mbcard.gloss > div.tochead,
+#METABOOKSKIMMER div.mbcard.gloss div.mbcardbody {
     margin-left: 50px;}
-#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody {
+#METABOOKSKIMMER div.mbcard.gloss div.mbcardbody {
     padding-left: 4px;}
-#METABOOKSKIMMER div.codexcard.gloss  > div.tochead {
+#METABOOKSKIMMER div.mbcard.gloss  > div.tochead {
     padding-left: 0px;}
-#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody img.glosspic,
-#METABOOKSKIMMER div.codexcard.gloss div.codexcardbody .sourcepic {
+#METABOOKSKIMMER div.mbcard.gloss div.mbcardbody img.glosspic,
+#METABOOKSKIMMER div.mbcard.gloss div.mbcardbody .sourcepic {
   position: absolute; top: 0px; left: 0px; margin-top: 0px;}
 
 
@@ -822,9 +822,9 @@ body.hudup #METABOOKHUD.help div.helphud { display: block;}
 
 #METABOOKHUD.refinesearch #METABOOKSEARCH.norefiners
    div.completions#METABOOKSEARCHCLOUD { display: none;}
-#METABOOKHUD.refinesearch div.codexslice#METABOOKSEARCHRESULTS { display: none;}
-#METABOOKHUD.expandsearch div.codexslice#METABOOKSEARCHRESULTS { display: none;}
-#METABOOKHUD.searchresults div.codexslice#METABOOKSEARCHRESULTS { display: block;}
+#METABOOKHUD.refinesearch div.bookslice#METABOOKSEARCHRESULTS { display: none;}
+#METABOOKHUD.expandsearch div.bookslice#METABOOKSEARCHRESULTS { display: none;}
+#METABOOKHUD.searchresults div.bookslice#METABOOKSEARCHRESULTS { display: block;}
 #METABOOKHUD.searchresults div.completions#METABOOKSEARCHCLOUD { display: none;}
 
 #METABOOKHUD.addgloss.glossaddtag #METABOOKHEART #METABOOKGLOSSCLOUD,
@@ -880,11 +880,11 @@ body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatstart img[alt="beginning"] {disp
 #METABOOKHUD #METABOOKSKIMMER.expanded span.whencollapsed {
     display: none;}
 
-#METABOOKSKIMMER div.codexcard {
+#METABOOKSKIMMER div.mbcard {
     margin-left: 0px;}
-#METABOOKSKIMMER div.codexcard > div.tochead {
+#METABOOKSKIMMER div.mbcard > div.tochead {
     margin-left: 0px; }
-#METABOOKSKIMMER div.codexcard > div.idhead {
+#METABOOKSKIMMER div.mbcard > div.idhead {
     margin-left: 0px;}
 
 #METABOOKHUD #METABOOKSKIMMER div.idhead,
@@ -900,7 +900,7 @@ body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatstart img[alt="beginning"] {disp
     display: inline;}
 */
 
-#METABOOKSKIMMER.cxhighlights .codexcard .excerpt { display: none; }
+#METABOOKSKIMMER.cxhighlights .mbcard .excerpt { display: none; }
 
 #METABOOKHUD div.hudpanel#METABOOKSKIMMER.expanded { max-height: inherit; }
 #METABOOKHUD #METABOOKSKIMMER.expanded img.glosspic {  height: inherit; }
@@ -912,7 +912,7 @@ body.hudup #METABOOKHUD #METABOOKSKIMMER.sbookatstart img[alt="beginning"] {disp
     -webkit-transition-property: background-color; 
     transition-duration: 0.5s; -o-transition-duration: 0.5s;
     -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s;}
-#METABOOKHUD #METABOOKSKIMMER div.codexcard span.glossinfo span.isclickable {
+#METABOOKHUD #METABOOKSKIMMER div.mbcard span.glossinfo span.isclickable {
     display: none;}
 body img.codexskimbutton {
     width: 50px; height: 100px;

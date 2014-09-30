@@ -80,7 +80,7 @@
 
     var glossmodes=mB.glossmodes;
 
-    var cxicon=mB.icon;
+    var mbicon=mB.icon;
 
     var getTarget=mB.getTarget;
 
@@ -101,7 +101,7 @@
         if ((!(match))||(match.length===0)||(!(match[0])))
             return false;
         else return match[0];}
-    mB.getGlossMode=getGlossMode;
+    metaBook.getGlossMode=getGlossMode;
 
     function setGlossMode(mode,arg,toggle){
         if (!(arg)) arg=fdjtID("METABOOKLIVEGLOSS");
@@ -153,7 +153,7 @@
         if ((mode)&&(/(editdetail|addtag|addoutlet)/.exec(mode)))
             addClass("METABOOKHUD","openheart");
         if (input) mB.setFocus(input);}
-    mB.setGlossMode=setGlossMode;
+    metaBook.setGlossMode=setGlossMode;
 
     // set the gloss target for a particular passage
     function getGlossForm(arg,response) {
@@ -166,7 +166,7 @@
             response=true;
         else {}
         var passage=((gloss)?(mbID(gloss.frag)):(arg));
-        var passageid=((passage.codexbaseid)||(passage.id));
+        var passageid=((passage.baseid)||(passage.id));
         var formid=((gloss)?
                     ((response)?
                      ("METABOOKRESPONDGLOSS_"+gloss._id):
@@ -190,10 +190,10 @@
                 addClass(mB.HUD,"editgloss");}}
         else addClass(div,"glossadd");
         if (form) return div; else return false;}
-    mB.getGlossForm=getGlossForm;
+    metaBook.getGlossForm=getGlossForm;
     
     function setupGlossForm(form,passage,gloss,response){
-        var passageid=((passage.codexbaseid)||(passage.id));
+        var passageid=((passage.baseid)||(passage.id));
         var info=mB.docinfo[passageid];
         if (form.getAttribute("sbooksetup")) return false;
         if (!(info)) return false;
@@ -376,7 +376,7 @@
         mB.selecting.onchange=function(){
             updateExcerpt(form,this);};
         return form;}
-    mB.setGlossTarget=setGlossTarget;
+    metaBook.setGlossTarget=setGlossTarget;
 
     function setSelecting(selecting){
         if (mB.selecting===selecting) return;
@@ -387,7 +387,7 @@
             mB.selecting.clear();}
         else {}
         mB.selecting=selecting;}
-    mB.setSelecting=setSelecting;
+    metaBook.setSelecting=setSelecting;
 
     function updateExcerpt(form,sel){
         var info=sel.getInfo();
@@ -427,7 +427,7 @@
                   fortouch: mB.touch,
                   holdthresh: 150,
                   movethresh: 250});}
-    mB.UI.selectText=selectText;
+    metaBook.UI.selectText=selectText;
 
     function gloss_selecting_ontap(evt){
         evt=evt||window.event;
@@ -464,7 +464,7 @@
         /* Do completions based on those input's values */
         mB.share_cloud.complete();
         mB.gloss_cloud.complete();}
-    mB.setGlossForm=setGlossForm;
+    metaBook.setGlossForm=setGlossForm;
 
     function updateForm(form){
         var glossetc=getChild(form,".glossetc");
@@ -522,7 +522,7 @@
         var checkspan=fdjtUI.CheckSpan(
             spanspec,formvar||"SHARE",outlet_id,checked,
             "→",outlet.nick||outlet.name,
-            fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x"));
+            fdjtDOM.Image(mbicon("redx",32,32),"img.redx","x"));
         if ((outlet.nick)&&(outlet.description))
             checkspan.title=outlet.name+": "+outlet.description;
         else if (outlet.description)
@@ -549,12 +549,12 @@
     function addLink(form,url,title) {
         var linkselt=getChild(form,'.links');
         var linkval=((title)?(url+" "+title):(url));
-        var img=fdjtDOM.Image(cxicon("diaglink",64,64),"img");
+        var img=fdjtDOM.Image(mbicon("diaglink",64,64),"img");
         var anchor=fdjtDOM.Anchor(url,"a.glosslink",((title)||url));
         var checkbox=fdjtDOM.Checkbox("LINKS",linkval,true);
         var aspan=fdjtDOM("span.checkspan.ischecked.waschecked.anchor",
                           img,checkbox,anchor,
-                          fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x"));
+                          fdjtDOM.Image(mbicon("redx",32,32),"img.redx","x"));
         var wrapper=getParent(form,".codexglossform");
         if (Trace.glossing)
             fdjtLog(
@@ -566,7 +566,7 @@
         dropClass(linkselt,"empty");
         updateForm(form);
         return aspan;}
-    mB.addLink2Form=addLink;
+    metaBook.addLink2Form=addLink;
 
     /***** Adding excerpts ******/
     
@@ -591,7 +591,7 @@
         updateForm(form);
         addClass(wrapper,"modified");
         return;}
-    mB.setExcerpt=setExcerpt;
+    metaBook.setExcerpt=setExcerpt;
 
     function trim_excerpt(string,lim){
         var len=string.length; if (!(lim)) lim=20; 
@@ -674,14 +674,14 @@
             fdjtDOM.append(span,fdjtDOM(textspec,text));
         else fdjtDOM.append(span,text);
         fdjtDOM.append(
-            span,fdjtDOM.Image(cxicon("redx",32,32),"img.redx","x"));
+            span,fdjtDOM.Image(mbicon("redx",32,32),"img.redx","x"));
         fdjtDOM.append(tagselt,span," ");
         dropClass(tagselt,"empty");
         updateForm(form);
         return span;}
-    mB.addTag2Form=addTag;
+    metaBook.addTag2Form=addTag;
 
-    mB.setGlossNetwork=function(form,network,checked){
+    metaBook.setGlossNetwork=function(form,network,checked){
         if (typeof form === 'string') form=fdjtID(form);
         if (!(form)) return;
         var input=getInput(form,'NETWORKS',network);
@@ -740,7 +740,7 @@
             if ((delim)&&(partialok)) result.needs=tag_delims[delim];
             return result;}
         else return false;}
-    mB.findTag=findTag;
+    metaBook.findTag=findTag;
 
     function tagclear(input_elt,pos){
         var text=input_elt.value;
@@ -966,7 +966,7 @@
                 addTag(form,std);
                 mB.gloss_cloud.complete("");
                 return std;}}}
-    mB.handleTagInput=handleTagInput;
+    metaBook.handleTagInput=handleTagInput;
 
     function get_addgloss_callback(form,keep,uri){
         return function(req){
@@ -991,7 +991,7 @@
         var i=0, lim=reps.length;
         while (i<lim) {
             var rep=reps[i++];
-            if (hasClass(rep,"codexcard")) {
+            if (hasClass(rep,"mbcard")) {
                 var new_card=mB.renderCard(ref);
                 if (new_card) fdjtDOM.replace(rep,new_card);}}
         ref.save();
@@ -1059,7 +1059,7 @@
                 if (value) addOutlet(form,completion,"EMAIL");
             else addOutlet(form,completion);}
         fdjtUI.cancel(evt);}
-    mB.UI.sharecloud_ontap=sharecloud_ontap;
+    metaBook.UI.sharecloud_ontap=sharecloud_ontap;
 
     /***** Saving (submitting/queueing) glosses *****/
 
@@ -1183,7 +1183,7 @@
                   (fdjt.Ajax.onsubmit(form,get_addgloss_callback(form,keep))));
         if (!(sent)) queueGloss(form,((arg)&&(arg.type)&&(arg)),keep);
         else dropClass(div,"modified");}
-    mB.submitGloss=submitGloss;
+    metaBook.submitGloss=submitGloss;
 
     function cancelGloss_handler(evt){
         evt=evt||window.event;
@@ -1202,7 +1202,7 @@
         if ((arg)&&((arg.cancelable)||(arg.bubbles))) {
             fdjtUI.cancel(evt);}
         if (glossform) fdjtDOM.remove(glossform);}
-    mB.cancelGloss=cancelGloss;
+    metaBook.cancelGloss=cancelGloss;
 
     // We save gloss defaults on the prototype gloss form hidden in the DOM
     function saveGlossDefaults(form,proto){
@@ -1246,8 +1246,8 @@
         var queued=mB.queued;
         queued.push(json.uuid);
         if (mB.cacheglosses) {
-            fdjtState.setLocal("codex.params("+json.uuid+")",params);
-            fdjtState.setLocal("codex.queued("+mB.refuri+")",queued,true);}
+            fdjtState.setLocal("metabook.params("+json.uuid+")",params);
+            fdjtState.setLocal("metabook.queued("+mB.refuri+")",queued,true);}
         else queued_data[json.uuid]=params;
         // Now save it to the in-memory database
         var glossdata=
@@ -1312,7 +1312,7 @@
                 getAttribute("ajaxaction");
             var queued=mB.queued; var glossid=queued[0];
             var post_data=((mB.nocache)?((queued_data[glossid])):
-                           (fdjtState.getLocal("codex.params("+glossid+")")));
+                           (fdjtState.getLocal("metabook.params("+glossid+")")));
             if (post_data) {
                 var req=new XMLHttpRequest();
                 req.open('POST',ajax_uri);
@@ -1320,18 +1320,18 @@
                 req.onreadystatechange=function () {
                     if ((req.readyState === 4) &&
                         (req.status>=200) && (req.status<300)) {
-                        fdjtState.dropLocal("codex.params("+glossid+")");
+                        fdjtState.dropLocal("metabook.params("+glossid+")");
                         var pending=mB.queued;
                         if ((pending)&&(pending.length)) {
                             var pos=pending.indexOf(glossid);
                             if (pos>=0) {
                                 pending.splice(pos,pos);
                                 if (mB.cacheglosses)
-                                    fdjtState.setLocal("codex.queued("+mB.refuri+")",pending,true);
+                                    fdjtState.setLocal("metabook.queued("+mB.refuri+")",pending,true);
                                 mB.queued=pending;}}
                         addgloss_callback(req,false,false);
                         if (pending.length) setTimeout(writeQueuedGlosses,200);
-                        fdjtState.dropLocal("codex.queued("+mB.refuri+")");}
+                        fdjtState.dropLocal("metabook.queued("+mB.refuri+")");}
                     else if (req.readyState===4) {
                         mB.setConnected(false);}
                     else {}};
@@ -1339,7 +1339,7 @@
                     req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     req.send(post_data);}
                 catch (ex) {mB.setConnected(false);}}}}
-    mB.writeQueuedGlosses=writeQueuedGlosses;
+    metaBook.writeQueuedGlosses=writeQueuedGlosses;
     
 })();
 

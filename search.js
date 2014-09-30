@@ -76,7 +76,7 @@
     // id="METABOOKSEARCHINPUT" 
     // completions="METABOOKSEARCHCLOUD"
 
-    mB.getQuery=function(){return mB.query;};
+    metaBook.getQuery=function(){return mB.query;};
     
     function setQuery(query){
         if (mB.Trace.search) log("Setting working query to %o",query);
@@ -100,7 +100,7 @@
                 showSearchResults();
             else {fdjtID("METABOOKSEARCHINPUT").focus();}}}
 
-    mB.setQuery=setQuery;
+    metaBook.setQuery=setQuery;
 
     function useQuery(query,box_arg){
         if (query instanceof Query) query=query;
@@ -198,7 +198,7 @@
         query._box=box; box.setAttribute("qstring",qstring);
         mB.UI.updateScroller(completions.dom);
         return query;}
-    mB.useQuery=useQuery;
+    metaBook.useQuery=useQuery;
 
     function extendQuery(query,elt){
         var elts=[].concat(query.tags);
@@ -206,9 +206,9 @@
             elts.push(kbref(elt)||elt);
         else elts.push(elt);
         return useQuery(new mB.Query(elts),query._box);}
-    mB.extendQuery=extendQuery;
+    metaBook.extendQuery=extendQuery;
 
-    mB.updateQuery=function(input_elt){
+    metaBook.updateQuery=function(input_elt){
         var q=Knodule.Query.string2query(input_elt.value);
         if ((q)!==(mB.query.tags))
             mB.setQuery(q,false);};
@@ -221,14 +221,14 @@
         fdjtID("METABOOKSEARCHINPUT").blur();
         fdjtID("METABOOKSEARCHRESULTS").focus();
         mB.UI.updateScroller(fdjtID("METABOOKSEARCHRESULTS"));}
-    mB.showSearchResults=showSearchResults;
+    metaBook.showSearchResults=showSearchResults;
 
     /* Call this to search */
 
     function startSearch(tag){
         setQuery([tag]);
         mB.setMode("refinesearch");}
-    mB.startSearch=startSearch;
+    metaBook.startSearch=startSearch;
 
     /* Text input handlers */
 
@@ -296,7 +296,7 @@
         if (!(input)) input=fdjtID("METABOOKSEARCHINPUT");
         if (!(cloud)) cloud=mB.queryCloud(mB.query);
         cloud.complete(input.value);}
-    mB.searchUpdate=searchUpdate;
+    metaBook.searchUpdate=searchUpdate;
 
     function searchInput_focus(evt){
         evt=evt||window.event||null;
@@ -326,9 +326,9 @@
             setQuery(mB.empty_query);
             input.value="";}
         input.focus();}
-    mB.UI.handlers.clearSearch=clearSearch;
+    metaBook.UI.handlers.clearSearch=clearSearch;
     
-    mB.toggleSearch=function(evt){
+    metaBook.toggleSearch=function(evt){
         evt=evt||window.event;
         if ((mB.mode==="refinesearch")||
             (mB.mode==="searchresults"))
@@ -340,16 +340,16 @@
     
     /* Search result listings */
 
-    var CodexSlice=mB.Slice;
+    var BookSlice=mB.Slice;
     function SearchResults(query){
         if (!(this instanceof SearchResults))
             return new SearchResults(query);
         this.query=query; this.results=query.results;
-        return CodexSlice.call(
-            this,fdjtDOM("div.codexslice.sbookresults"),this.results);}
-    mB.SearchResults=SearchResults;
+        return BookSlice.call(
+            this,fdjtDOM("div.bookslice.sbookresults"),this.results);}
+    metaBook.SearchResults=SearchResults;
 
-    SearchResults.prototype=new CodexSlice();
+    SearchResults.prototype=new BookSlice();
     SearchResults.prototype.renderCard=function renderSearchResult(result){
         return mB.renderCard(result,this.query);};
     SearchResults.prototype.sortfn=function searchResultsSortFn(x,y){

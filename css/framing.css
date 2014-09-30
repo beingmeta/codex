@@ -123,11 +123,11 @@ body.cxTOUCH #METABOOKFRAME > #METABOOKHUD > #METABOOKFOOT {
     z-index: 100;}
 body.cxCOVER #METABOOKFRAME > #METABOOKCOVER { pointer-events: all; }
 
-#METABOOKFRAME.codexuifontlarge #METABOOKCOVER { font-size: 2em; }
-#METABOOKFRAME.codexuifontnormal #METABOOKCOVER { font-size: 1.5em; }
-#METABOOKFRAME.codexuifontsmall #METABOOKCOVER { font-size: 1em; }
+#METABOOKFRAME.metabookuifontlarge #METABOOKCOVER { font-size: 2em; }
+#METABOOKFRAME.metabookuifontnormal #METABOOKCOVER { font-size: 1.5em; }
+#METABOOKFRAME.metabookuifontsmall #METABOOKCOVER { font-size: 1em; }
 
-#METABOOKFRAME.codexuifontlarge #METABOOKCOVER > #METABOOKCOVERCONTROLS {
+#METABOOKFRAME.metabookuifontlarge #METABOOKCOVER > #METABOOKCOVERCONTROLS {
     font-size: 0.8em; }
 
 body.cxCOVER #METABOOKCOVER {

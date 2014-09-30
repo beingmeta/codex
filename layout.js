@@ -233,7 +233,7 @@ metaBook.Paginate=
             var max_layouts=3;
 
             function recordLayout(layout_id,source_id){
-                var key="codex.layouts("+source_id+")";
+                var key="metabook.layouts("+source_id+")";
                 var saved=getLocal(key,true);
                 if (!(saved)) setLocal(key,[layout_id],true);
                 else {
@@ -342,7 +342,7 @@ metaBook.Paginate=
                     else new_layout();});}
             else {
                 setTimeout(new_layout,10);}}
-        mB.Paginate=Paginate;
+        metaBook.Paginate=Paginate;
 
         CodexLayout.prototype.onresize=function(){
             if (mB.bypage) mB.Paginate("resize");
@@ -439,31 +439,31 @@ metaBook.Paginate=
                               // the REFURI
                               source_id,
                               ((layout_source)?("["+layout_source+"]"):("")));}
-        mB.getLayoutID=getLayoutID;
+        metaBook.getLayoutID=getLayoutID;
 
         function layoutCached(layout_id){
             if (!(layout_id)) layout_id=getLayoutID();
             else if (typeof layout_id === "number")
                 layout_id=getLayoutID.apply(null,arguments);
             else {}
-            var layouts=getLocal("codex.layouts("+mB.sourceid+")",true);
+            var layouts=getLocal("metabook.layouts("+mB.sourceid+")",true);
             return ((layouts)&&(layouts.indexOf(layout_id)>=0));}
-        mB.layoutCached=layoutCached;
+        metaBook.layoutCached=layoutCached;
         
         function clearLayouts(source_id){
             if (typeof source_id === "undefined") source_id=mB.sourceid;
             if (source_id) {
-                var layouts=getLocal("codex.layouts("+mB.sourceid+")",true);
+                var layouts=getLocal("metabook.layouts("+mB.sourceid+")",true);
                 var i=0, lim=layouts.length; while (i<lim) {
                     var layout=layouts[i++];
                     fdjtLog("Dropping layout %s",layout);
                     CodexLayout.dropLayout(layout);}
-                fdjtState.dropLocal("codex.layouts("+mB.sourceid+")");}
+                fdjtState.dropLocal("metabook.layouts("+mB.sourceid+")");}
             else {
                 CodexLayout.clearLayouts();
                 CodexLayout.clearAll();
-                fdjtState.dropLocal(/^codex.layouts\(/g);}}
-        mB.clearLayouts=clearLayouts;
+                fdjtState.dropLocal(/^metabook.layouts\(/g);}}
+        metaBook.clearLayouts=clearLayouts;
 
         function getLayoutArgs(){
             var width=getGeometry(fdjtID("METABOOKPAGE"),false,true).width;
@@ -490,7 +490,7 @@ metaBook.Paginate=
             function setPageInfo(page,layout){
                 var pages=layout.pages, pagenum=layout.pagenum;
                 var topnode=getPageTop(page);
-                var topid=topnode.codexbaseid||topnode.id;
+                var topid=topnode.baseid||topnode.id;
                 var curloc=false;
                 if (topnode) {
                     var topstart=mbID(topid);
@@ -526,7 +526,7 @@ metaBook.Paginate=
                 var last=false;
                 if (hasClass(node,"codexpage")) {}
                 else if (((node.id)&&(docinfo[node.id]))||
-                         ((node.codexbaseid)&&(docinfo[node.codexbaseid]))) {
+                         ((node.baseid)&&(docinfo[node.baseid]))) {
                     if (hasContent(node,true)) last=node;}
                 else {}
                 var children=node.childNodes;
@@ -540,7 +540,7 @@ metaBook.Paginate=
                 return last;}
             function getPageLastID(node,id) {
                 if (hasClass(node,"codexpage")) {}
-                else if ((node.id)&&(!(node.codexbaseid))&&
+                else if ((node.id)&&(!(node.baseid))&&
                          (mB.docinfo[node.id]))
                     id=node.id;
                 if (node.nodeType!==1) return id;
@@ -556,7 +556,7 @@ metaBook.Paginate=
             function getDupNode(under,id){
                 var children;
                 if (under.nodeType!==1) return false;
-                else if (under.codexbaseid===id) return under;
+                else if (under.baseid===id) return under;
                 if (!(children=under.childNodes))
                     return false;
                 else if (!(children.length)) return false;
@@ -587,7 +587,7 @@ metaBook.Paginate=
             // We track the sourceid to know when, for example, any
             //  cached layouts need to be invalidated.
             var saved_sourceid=
-                fdjtState.getLocal("codex.sourceid("+mB.refuri+")");
+                fdjtState.getLocal("metabook.sourceid("+mB.refuri+")");
             if ((saved_sourceid)&&(sourceid)&&(sourceid!==sourceid)) {
                 var layouts=fdjtState.getLocal("fdjtmB.layouts",true);
                 var kept=[];
@@ -603,7 +603,7 @@ metaBook.Paginate=
                 else fdjtState.dropLocal("fdjtmB.layouts",kept);}
             
             if (sourceid)
-                fdjtState.setLocal("codex.sourceid("+mB.refuri+")",
+                fdjtState.setLocal("metabook.sourceid("+mB.refuri+")",
                                    sourceid);
             
             var args={page_height: height,page_width: width,
@@ -764,7 +764,7 @@ metaBook.Paginate=
             else mB.CSS.pagespanrule=fdjtDOM.addCSSRule(
                 "div.codexpagespans > span","width: "+spanwidth+"px;");
             addClass(document.body,"cxSCALEDLAYOUT");}
-        mB.scaleLayout=scaleLayout;
+        metaBook.scaleLayout=scaleLayout;
         
         /* Updating the page display */
 
@@ -841,7 +841,7 @@ metaBook.Paginate=
                 locoff,mB.UI.handlers[mB.ui]["#METABOOKLOCPCT"]);
             fdjtDOM.addListeners(
                 pageno_text,mB.UI.handlers[mB.ui]["#METABOOKPAGENOTEXT"]);}
-        mB.updatePageDisplay=updatePageDisplay;
+        metaBook.updatePageDisplay=updatePageDisplay;
         
         function getPageSpan(headinfo) {
             var scan=headinfo, nextinfo, result={};
@@ -892,7 +892,7 @@ metaBook.Paginate=
             var inner_width=fdjt.DOM.getInsideBounds(spans);
             var tweak=outer_width/inner_width;
             spans.style[fdjt.DOM.transform]="scale("+tweak+",1)";}
-        mB.setupPagebar=setupPagebar;
+        metaBook.setupPagebar=setupPagebar;
         
         /* Movement by pages */
         
@@ -966,7 +966,7 @@ metaBook.Paginate=
                     var addGlossmark=mB.UI.addGlossmark;
                     var i=0; var lim=glossed.length;
                     while (i<lim) addGlossmark(glossed[i++]);}}}
-        mB.GoToPage=GoToPage;
+        metaBook.GoToPage=GoToPage;
         
 
         /** Previewing **/
@@ -991,7 +991,7 @@ metaBook.Paginate=
             mB.previewing=previewing=page;
             addClass(document.body,"cxPREVIEW");
             updatePageDisplay(pagenum,pageloc,"preview");}
-        mB.startPagePreview=startPagePreview;
+        metaBook.startPagePreview=startPagePreview;
         function stopPagePreview(caller,target){
             var pagenum=parseInt(curpage.getAttribute("data-pagenum"),10);
             if ((mB.Trace.flips)||(mB.Trace.gestures))
@@ -1025,7 +1025,7 @@ metaBook.Paginate=
                                   "current");}
             else updatePageDisplay(pagenum,mB.location,"current");
             if (typeof newpage === "number") mB.GoToPage(newpage);}
-        mB.stopPagePreview=stopPagePreview;
+        metaBook.stopPagePreview=stopPagePreview;
         
         function getPage(arg,location){
             var node=((arg)&&
@@ -1046,11 +1046,11 @@ metaBook.Paginate=
                 else if (loc>location) return prev;
                 else i++;}
             return page;}
-        mB.getPage=getPage;
+        metaBook.getPage=getPage;
         
         function refreshLayout(why){
             mB.Paginate(why,{forced: true});}
-        mB.refreshLayout=refreshLayout;
+        metaBook.refreshLayout=refreshLayout;
         
         function syncLayout(){
             var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
@@ -1063,7 +1063,7 @@ metaBook.Paginate=
         function displaySync(){
             if ((mB.pagecount)&&(mB.curpage))
                 mB.GoToPage(mB.curpage,"displaySync",false);}
-        mB.displaySync=displaySync;
+        metaBook.displaySync=displaySync;
 
         return Paginate;})();
 

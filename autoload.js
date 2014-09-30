@@ -1,2 +1,2 @@
-if ((typeof _codex_suppressed === "undefined")||(!(_codex_suppressed)))
+if ((typeof _metabook_suppressed === "undefined")||(!(_metabook_suppressed)))
     window.onload=function(evt){metaBook.Setup();};

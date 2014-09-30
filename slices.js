@@ -65,7 +65,7 @@ metaBook.Slice=(function () {
     var debug_locbars=false;
     var odq="\u201c"; var cdq="\u201d";
 
-    var cxicon=mB.icon;
+    var mbicon=mB.icon;
     var addListener=fdjtDOM.addListener;
 
     function renderCard(info,query,idprefix,standalone){
@@ -83,7 +83,7 @@ metaBook.Slice=(function () {
         if (typeof shared === 'string') shared=[shared];
         if (overlay) shared=RefDB.remove(shared,(overlay._qid||overlay._id));
         var body=
-            fdjtDOM("div.codexcardbody",
+            fdjtDOM("div.mbcardbody",
                     ((score)&&(showscore(score,query))),
                     (((info.maker)||(info.tstamp))?(showglossinfo(info)):
                      (showdocinfo(info))),
@@ -99,8 +99,8 @@ metaBook.Slice=(function () {
                     ((shared)&&(shared.length)&&(showaudience(shared))));
         var div=
             fdjtDOM(((info.maker) ?
-                     "div.codexcard.gloss" :
-                     "div.codexcard.passage"),
+                     "div.mbcard.gloss" :
+                     "div.mbcard.passage"),
                     ((head)&&(makeTOCHead(head,((info.level)&&(info))))),
                     ((head_info)&&(makeIDHead(target,head_info))),
                     ((standalone)&&(makelocbar(target_info))),
@@ -129,7 +129,7 @@ metaBook.Slice=(function () {
             div.name=div.qref=info._id;
             div.setAttribute("name",info._id);}
         return div;}
-    mB.renderCard=renderCard;
+    metaBook.renderCard=renderCard;
     
     function convertNote(note){
         if (note.search(/^{(md|markdown)}/)===0) {
@@ -138,7 +138,7 @@ metaBook.Slice=(function () {
         else return note;}
 
     function showtags(info,query){
-        var tagicon=fdjtDOM.Image(cxicon("tagicon",64,64),
+        var tagicon=fdjtDOM.Image(mbicon("tagicon",64,64),
                                   "img.tagicon","tags");
         var matches=((query)&&(fdjtDOM("span.matches")));
         var toptags=fdjtDOM("span.top");
@@ -224,7 +224,7 @@ metaBook.Slice=(function () {
         for (url in refs) {
             if (url[0]==='_') continue;
             var urlinfo=refs[url];
-            var title; var icon=cxicon("diaglink",64,64);
+            var title; var icon=mbicon("diaglink",64,64);
             if (typeof urlinfo === 'string') title=urlinfo;
             else {
                 title=urlinfo.title;
@@ -263,8 +263,8 @@ metaBook.Slice=(function () {
                     (((user===mB.user)||(user===mB.user._id))?"modify":"respond")),
             fdjtDOM.Image(
                 (((user===mB.user)||(user===mB.user._id))?
-                 (cxicon("gloss_edit_titled",64,64)):
-                 (cxicon("gloss_respond_titled",64,64))),
+                 (mbicon("gloss_edit_titled",64,64)):
+                 (mbicon("gloss_respond_titled",64,64))),
                 "img.button",
                 (((user===mB.user)||(user===mB.user._id))?
                  ("edit"):("reply")),
@@ -510,21 +510,21 @@ metaBook.Slice=(function () {
         idhead.title=makelocstring(info,headinfo);
         return idhead;}
 
-    mB.nextSlice=function(start){
-        var card=fdjtDOM.getParent(start,".codexcard");
+    metaBook.nextSlice=function(start){
+        var card=fdjtDOM.getParent(start,".mbcard");
         if (!(card)) return false;
         var scan=card.nextSibling;
         while (scan) {
-            if ((scan.nodeType===1)&&(hasClass(scan,"codexcard")))
+            if ((scan.nodeType===1)&&(hasClass(scan,"mbcard")))
                 return scan;
             else scan=scan.nextSibling;}
         return false;};
-    mB.prevSlice=function(start){
-        var card=fdjtDOM.getParent(start,".codexcard");
+    metaBook.prevSlice=function(start){
+        var card=fdjtDOM.getParent(start,".mbcard");
         if (!(card)) return false;
         var scan=card.previousSibling;
         while (scan) {
-            if ((scan.nodeType===1)&&(hasClass(scan,"codexcard")))
+            if ((scan.nodeType===1)&&(hasClass(scan,"mbcard")))
                 return scan;
             else scan=scan.previousSibling;}
         return false;};
@@ -548,7 +548,7 @@ metaBook.Slice=(function () {
                      (RefDB.overlaps(sourcerefs,gloss.shared))));});
         mB.UI.updateScroller(slice.container);
         if (mB.target) scrollSlice(mB.target,slice);}
-    mB.UI.selectSources=selectSources;
+    metaBook.UI.selectSources=selectSources;
 
     /* Scrolling slices */
 
@@ -563,18 +563,18 @@ metaBook.Slice=(function () {
                 var scrollto=cardinfo.dom;
                 if ((scrollto)&&((top)||(!(fdjtDOM.isVisible(scrollto))))) {
                     scrollto.scrollIntoView(true);}}}}
-    mB.UI.scrollSlice=scrollSlice;
+    metaBook.UI.scrollSlice=scrollSlice;
     
     /* Results handlers */
 
     var named_slices={};
 
-    function CodexSlice(container,cards,sortfn){
+    function BookSlice(container,cards,sortfn){
         if (typeof container === "undefined") return this;
-        else if (!(this instanceof CodexSlice))
-            return new CodexSlice(container,cards,sortfn);
+        else if (!(this instanceof BookSlice))
+            return new BookSlice(container,cards,sortfn);
         else if (!(container)) 
-            container=fdjtDOM("div.codexslice");
+            container=fdjtDOM("div.bookslice");
         else if (typeof container === "string") {
             if (named_slices.hasOwnProperty(container))
                 return named_slices[container];
@@ -611,7 +611,7 @@ metaBook.Slice=(function () {
         if ((cards)&&(cards.length)) this.update();
         return this;}
 
-    CodexSlice.prototype.setLive=function setSliceLive(flag){
+    BookSlice.prototype.setLive=function setSliceLive(flag){
         if (flag) {
             if (this.live) return false;
             else {
@@ -622,10 +622,10 @@ metaBook.Slice=(function () {
             return true;}
         else return false;};
 
-    CodexSlice.prototype.renderCard=function renderCardForSlice(about){
+    BookSlice.prototype.renderCard=function renderCardForSlice(about){
         return renderCard(about);};
 
-    CodexSlice.prototype.sortfn=function defaultSliceSortFn(x,y){
+    BookSlice.prototype.sortfn=function defaultSliceSortFn(x,y){
         if (x.location) {
             if (y.location) {
                 if (x.location===y.location) {
@@ -638,8 +638,8 @@ metaBook.Slice=(function () {
             else return -1;}
         else return 1;};
 
-    CodexSlice.prototype.getCard=function getCard(ref){
-        if ((ref.nodeType===1)&&(hasClass(ref,"codexcard"))) {
+    BookSlice.prototype.getCard=function getCard(ref){
+        if ((ref.nodeType===1)&&(hasClass(ref,"mbcard"))) {
             var id=ref.getAttribute("data-gloss")||
                 ref.getAttribute("data-passage");
             return this.byid.get(id);}
@@ -660,7 +660,7 @@ metaBook.Slice=(function () {
                 else i++;}}
         return false;}
 
-    CodexSlice.prototype.display=CodexSlice.prototype.update=
+    BookSlice.prototype.display=BookSlice.prototype.update=
         function updateSlice(force){
             if ((!(this.changed))&&(!(force))) return;
             var cards=this.cards, byfrag=this.byfrag;
@@ -688,7 +688,7 @@ metaBook.Slice=(function () {
             if (frag!==this.container) this.container.appendChild(frag);
             this.changed=false;};
 
-    CodexSlice.prototype.filter=function filterSlice(fn){
+    BookSlice.prototype.filter=function filterSlice(fn){
         var cards=this.cards; var i=0, n=cards.length;
         if (!(fn)) while (i<n) delete cards[i++].hidden;
         else while (i<n) {
@@ -698,7 +698,7 @@ metaBook.Slice=(function () {
         this.changed=true;
         this.update();};
 
-    CodexSlice.prototype.addCards=function addCards(adds){
+    BookSlice.prototype.addCards=function addCards(adds){
         if (!(adds)) return;
         if (!(adds instanceof Array)) adds=[adds];
         if (adds.length===0) return;
@@ -707,7 +707,7 @@ metaBook.Slice=(function () {
         while (i<lim) {
             var add=adds[i++], info=false, card, id, about=false, replace=false;
             if ((add.nodeType)&&(add.nodeType===1)&&
-                (hasClass(add,"codexcard"))) {
+                (hasClass(add,"mbcard"))) {
                 card=add; id=add.name||add.getAttribute("name");
                 if (!(id)) continue;
                 if ((info=byid[id])) {
@@ -741,7 +741,7 @@ metaBook.Slice=(function () {
         if (this.live) this.update();
         else this.changed=true;};
 
-    return CodexSlice;
+    return BookSlice;
 
 })();
 

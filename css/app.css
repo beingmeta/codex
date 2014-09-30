@@ -247,18 +247,18 @@ div.leading { height: 50px; width: 100%;}
 
 body.sbookpagevertical { overflow: hidden;}
 
-body div.codexmargin {
+body div.mBmargin {
     position: absolute; display: block;
     background-color: white; z-index: 200;}
 
-body.sbooknopage div.codexmargin  { display: none;}
+body.sbooknopage div.mBmargin  { display: none;}
 
-body div.codexmargin#METABOOKPAGEHEAD,
-body div.codexmargin#METABOOKPAGEFOOT {
+body div.mBmargin#METABOOKPAGEHEAD,
+body div.mBmargin#METABOOKPAGEFOOT {
   left: 0px; right: 0px; width: 100%; height: 20px; z-index: 75;
   text-align: center;}
-body div.codexmargin#METABOOKPAGEHEAD { top: 0px; }
-body div.codexmargin#METABOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
+body div.mBmargin#METABOOKPAGEHEAD { top: 0px; }
+body div.mBmargin#METABOOKPAGEFOOT { bottom: 0px; vertical-align: bottom;}
 body.cxSCROLL #METABOOKPAGEFOOT, body.cxSCROLL #METABOOKPAGEHEAD { display: none;}
 
 #METABOOKPAGES.pageswitch {
@@ -400,15 +400,15 @@ body.hudup .codexglossbutton {
     -khtml-opacity: 0.50;
     -moz-opacity: 0.50;
     -o-opacity: 0.50;}
-body.hudup .codextarget .codexglossbutton { display: block;}
-body.hudup .codextarget.codexglosstarget .codexglossbutton {
+body.hudup .mBtarget .codexglossbutton { display: block;}
+body.hudup .mBtarget.codexglosstarget .codexglossbutton {
     background-color: lightblue;}
 
 #METABOOKBODY div.fdjtselecting { background-color: lightyellow; }
 
 /* Displaying the sbook target */
 
-body.cxANIMATE .codextarget, body.cxSHRINK .codextarget {
+body.cxANIMATE .mBtarget, body.cxSHRINK .mBtarget {
     transition-property: color,background-color;
     transition-duration: 6s;
     -o-transition-property: color,background-color;
@@ -417,25 +417,25 @@ body.cxANIMATE .codextarget, body.cxSHRINK .codextarget {
     -moz-transition-duration: 6s;
     -webkit-transition-property: color,background-color;
     -webkit-transition-duration: 6s;}
-body.hudup .codextarget, body.cxSHRINK .codextarget {
+body.hudup .mBtarget, body.cxSHRINK .mBtarget {
     cursor: pointer;}
 
-body.hudup .codextarget.codexnewtarget {
+body.hudup .mBtarget.mBnewtarget {
     background-color: inherit; }
-.codexnewtarget {color: blue; }
-div.sbooksection.codexnewtarget, section.codexnewtarget,
-div.sbooksection.codexnewtarget > *, section.codexnewtarget > * {
+.mBnewtarget {color: blue; }
+div.sbooksection.mBnewtarget, section.mBnewtarget,
+div.sbooksection.mBnewtarget > *, section.mBnewtarget > * {
     color: inherit;}
-section.codexnewtarget > *:first-child,
-div.sbooksection.codexnewtarget > *:first-child {
+section.mBnewtarget > *:first-child,
+div.sbooksection.mBnewtarget > *:first-child {
     color: blue;}
 
 /* Don't color the body
    (actually, the body should probably never be a target, but when it is...)
    */
-body.codextarget { color: inherit;}
+body.mBtarget { color: inherit;}
 
-/* body.cxSKIMMING .codextarget {outline: dotted steelblue 2px;} */
+/* body.cxSKIMMING .mBtarget {outline: dotted steelblue 2px;} */
 
 body.cxANIMATE .codexglossmark > img {
     transition-property: opacity;
@@ -447,8 +447,8 @@ body.cxANIMATE .codexglossmark > img {
     -webkit-transition-property: opacity;
     -webkit-transition-duration: 0.5s;}
 
-body.hudup .codextarget .codexglossmark:hover > img,
-body.hudup .codextarget .codexglossmark.hover > img {
+body.hudup .mBtarget .codexglossmark:hover > img,
+body.hudup .mBtarget .codexglossmark.hover > img {
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -802,18 +802,18 @@ body.openhud .codexhighlightpassage {
 body.cxSKIMMING .codexhighlightsearch,
 body.cxPREVIEW .codexhighlightsearch {
     background-color: gold;}
-.codexpreviewtarget {
+.mBpreviewtarget {
     color: rgb(122,34,95);
     background-color: rgba(255,215,0,0.3);}
-section.codexpreviewtarget, div.html5section.codexpreviewtarget,
-section.codexpreviewtarget p, div.html5section.codexpreviewtarget p,
-section.codexpreviewtarget h1, div.html5section.codexpreviewtarget h1,
-section.codexpreviewtarget h2, div.html5section.codexpreviewtarget h2,
-section.codexpreviewtarget h3, div.html5section.codexpreviewtarget h3,
-section.codexpreviewtarget h4, div.html5section.codexpreviewtarget h4,
-section.codexpreviewtarget h5, div.html5section.codexpreviewtarget h5,
-section.codexpreviewtarget h6, div.html5section.codexpreviewtarget h6,
-section.codexpreviewtarget h7, div.html5section.codexpreviewtarget h7 {
+section.mBpreviewtarget, div.html5section.mBpreviewtarget,
+section.mBpreviewtarget p, div.html5section.mBpreviewtarget p,
+section.mBpreviewtarget h1, div.html5section.mBpreviewtarget h1,
+section.mBpreviewtarget h2, div.html5section.mBpreviewtarget h2,
+section.mBpreviewtarget h3, div.html5section.mBpreviewtarget h3,
+section.mBpreviewtarget h4, div.html5section.mBpreviewtarget h4,
+section.mBpreviewtarget h5, div.html5section.mBpreviewtarget h5,
+section.mBpreviewtarget h6, div.html5section.mBpreviewtarget h6,
+section.mBpreviewtarget h7, div.html5section.mBpreviewtarget h7 {
     color: rgb(122,34,95); } 
 
 .codexuserexcerpt {

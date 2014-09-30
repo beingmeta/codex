@@ -75,8 +75,8 @@ metaBook.setMode=
 
         var fixStaticRefs=mB.fixStaticRefs;
 
-        var CodexHUD=false;
-        var CodexMedia=false;
+        var metaBookHUD=false;
+        var metaBookMedia=false;
 
         // This will contain the interactive input console (for debugging)
         var frame=false, hud=false, media=false;
@@ -88,9 +88,9 @@ metaBook.setMode=
             var messages=fdjtDOM("div#METABOOKSTARTUPMESSAGES.startupmessages");
             messages.innerHTML=fixStaticRefs(mB.HTML.messages);
             if (mB.Trace.startup>2) fdjtLog("Initializing HUD layout");
-            mB.HUD=CodexHUD=hud=fdjtDOM("div#METABOOKHUD");
-            mB.Media=CodexMedia=media=fdjtDOM("div#METABOOKMEDIA");
-            hud.codexui=true; media.codexui=true;
+            mB.HUD=metaBookHUD=hud=fdjtDOM("div#METABOOKHUD");
+            mB.Media=metaBookMedia=media=fdjtDOM("div#METABOOKMEDIA");
+            hud.metabookui=true; media.metabookui=true;
             hud.innerHTML=fixStaticRefs(mB.HTML.hud);
             fdjtDOM.append(messages);
             if (fdjtID("METABOOKFRAME")) frame=fdjtID("METABOOKFRAME");
@@ -214,11 +214,11 @@ metaBook.setMode=
 
             resizeHUD();
 
-            mB.scrollers={};
+            metaBook.scrollers={};
 
             /* Setup clouds */
             var dom_gloss_cloud=fdjtID("METABOOKGLOSSCLOUD");
-            mB.gloss_cloud=
+            metaBook.gloss_cloud=
                 new fdjtUI.Completions(
                     dom_gloss_cloud,fdjtID("METABOOKTAGINPUT"),
                     fdjtUI.FDJT_COMPLETE_OPTIONS|
@@ -227,7 +227,7 @@ metaBook.setMode=
             updateScroller("METABOOKGLOSSCLOUD");
             mB.TapHold.gloss_cloud=new TapHold(mB.gloss_cloud.dom);
 
-            mB.empty_cloud=
+            metaBook.empty_cloud=
                 new fdjtUI.Completions(
                     fdjtID("METABOOKALLTAGS"),false,
                     fdjtUI.FDJT_COMPLETE_OPTIONS|
@@ -241,7 +241,7 @@ metaBook.setMode=
             mB.TapHold.empty_cloud=new TapHold(mB.empty_cloud.dom);
             
             var dom_share_cloud=fdjtID("METABOOKSHARECLOUD");
-            mB.share_cloud=
+            metaBook.share_cloud=
                 new fdjtUI.Completions(
                     dom_share_cloud,fdjtID("METABOOKTAGINPUT"),
                     fdjtUI.FDJT_COMPLETE_OPTIONS|
@@ -255,13 +255,13 @@ metaBook.setMode=
 
             if (mB.Trace.startup>1)
                 fdjtLog("Initialized basic HUD in %dms",fdjtTime()-started);}
-        mB.initHUD=initHUD;
+        metaBook.initHUD=initHUD;
         
         function resizeHUD(){
             var view_height=fdjtDOM.viewHeight();
             fdjtID("METABOOKHEART").style.maxHeight=(view_height-100)+'px';
             fdjt.DOM.tweakFonts(mB.HUD);}
-        mB.resizeHUD=resizeHUD;
+        metaBook.resizeHUD=resizeHUD;
 
         /* Various UI methods */
         function addGloss2UI(item){
@@ -312,7 +312,7 @@ metaBook.setMode=
             var statictoc=createStaticTOC("div#METABOOKSTATICTOC.hudpanel",root_info);
             mB.Statictoc=statictoc;
             fdjtDOM.replace("METABOOKSTATICTOC",statictoc);}
-        mB.setupTOC=setupTOC;
+        metaBook.setupTOC=setupTOC;
 
         function createNavHUD(eltspec,root_info){
             var scan=root_info;
@@ -348,7 +348,7 @@ metaBook.setMode=
                 fdjtLog("setHUD %o mode=%o hudup=%o bc=%o hc=%o",
                         flag,mB.mode,mB.hudup,
                         document.body.className,
-                        CodexHUD.className);
+                        metaBookHUD.className);
             if (flag) {
                 mB.hudup=true;
                 dropClass(document.body,"cxSKIMMING");
@@ -364,10 +364,10 @@ metaBook.setMode=
                         var fn=mB.popmode;
                         mB.popmode=false;
                         fn();}
-                    dropClass(CodexHUD,"openheart");
-                    dropClass(CodexHUD,"openhead");
-                    dropClass(CodexHUD,"full");
-                    dropClass(CodexHUD,CodexModes);
+                    dropClass(metaBookHUD,"openheart");
+                    dropClass(metaBookHUD,"openhead");
+                    dropClass(metaBookHUD,"full");
+                    dropClass(metaBookHUD,metaBookModes);
                     dropClass(document.body,"cxSKIMMING");
                     dropClass(document.body,"cxSKIMSTART");
                     dropClass(document.body,"cxSKIMEND");
@@ -375,36 +375,36 @@ metaBook.setMode=
                 dropClass(document.body,"hudup");
                 dropClass(document.body,"openhud");
                 mB.focusBody();}}
-        mB.setHUD=setHUD;
+        metaBook.setHUD=setHUD;
 
         /* Opening and closing the cover */
 
         function showCover(){
             if (mB._setup)
-                fdjtState.dropLocal("codex.opened("+mB.docuri+")");
+                fdjtState.dropLocal("metabook.opened("+mB.docuri+")");
             addClass(document.body,"cxCOVER");}
-        mB.showCover=showCover;
+        metaBook.showCover=showCover;
         function hideCover(){
             if (mB._setup)
                 fdjtState.setLocal(
-                    "codex.opened("+mB.docuri+")",fdjtTime());
+                    "metabook.opened("+mB.docuri+")",fdjtTime());
             dropClass(document.body,"cxCOVER");}
-        mB.hideCover=hideCover;
+        metaBook.hideCover=hideCover;
         function toggleCover(){
             if (hasClass(document.body,"cxCOVER")) hideCover();
             else showCover();}
-        mB.toggleCover=toggleCover;
+        metaBook.toggleCover=toggleCover;
         
         /* Mode controls */
         
-        var CodexModes=/\b((search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
+        var metaBookModes=/\b((search)|(refinesearch)|(expandsearch)|(searchresults)|(overtoc)|(openglossmark)|(allglosses)|(context)|(statictoc)|(minimal)|(addgloss)|(gotoloc)|(gotopage)|(shownote)|(showaside)|(glossdetail))\b/g;
         var codexHeartModes=/\b((statictoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(showaside)|(glossaddtag)|(glossaddtag)|(glossaddoutlet)|(glosseditdetail))\b/g;
         var codexHeadModes=/\b((overtoc)|(search)|(refinesearch)|(expandsearch)|(searchresults)|(allglosses)|(addgloss)|(shownote))\b/g;
-        var CodexPopModes=/\b((glossdetail))\b/g;
-        var CodexCoverModes=/\b((welcome)|(help)|(layers)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
-        var CodexSearchModes=/((refinesearch)|(searchresults)|(expandsearch))/;
-        mB.searchModes=CodexSearchModes;
-        var codex_mode_scrollers=
+        var metaBookPopModes=/\b((glossdetail))\b/g;
+        var metaBookCoverModes=/\b((welcome)|(help)|(layers)|(login)|(settings)|(cover)|(aboutsbooks)|(console)|(aboutbook)|(titlepage))\b/g;
+        var metaBookSearchModes=/((refinesearch)|(searchresults)|(expandsearch))/;
+        metaBook.searchModes=metaBookSearchModes;
+        var metabook_mode_scrollers=
             {allglosses: "METABOOKALLGLOSSES",
              searchresults: "METABOOKSEARCHRESULTS",
              expandsearch: "METABOOKALLTAGS",
@@ -412,7 +412,7 @@ metaBook.setMode=
              refinesearch: "METABOOKSEARCHCLOUD",
              openglossmark: "METABOOKPOINTGLOSSES",
              statictoc: "METABOOKSTATICTOC"};
-        var codex_mode_foci=
+        var metabook_mode_foci=
             {gotopage: "METABOOKPAGEINPUT",
              gotoloc: "METABOOKLOCINPUT",
              search: "METABOOKSEARCHINPUT",
@@ -424,7 +424,7 @@ metaBook.setMode=
             if (typeof mode === 'undefined') return oldmode;
             if (mode==='last') mode=mB.last_mode;
             if ((!(mode))&&(mB.mode)&&
-                (mB.mode.search(CodexPopModes)>=0))
+                (mB.mode.search(metaBookPopModes)>=0))
                 mode=mB.last_mode;
             if (mode==='none') mode=false;
             if (mode==='heart') mode=mB.heart_mode||"about";
@@ -439,10 +439,10 @@ metaBook.setMode=
                 fn();}
             if (hasClass(document.body,"cxCOVER")) {
                 if (!(mode)) hideCover();
-                else if (mode.search(CodexCoverModes)>=0)
+                else if (mode.search(metaBookCoverModes)>=0)
                     hideCover();
                 else {}
-                CodexCoverModes.lastIndex=0;} // Kludge
+                metaBookCoverModes.lastIndex=0;} // Kludge
             if ((mB.mode==="addgloss")&&(mode!=="addgloss")&&
                 (hasClass("METABOOKLIVEGLOSS","modified")))
                 mB.submitGloss(fdjt.ID("METABOOKLIVEGLOSS"));
@@ -454,15 +454,15 @@ metaBook.setMode=
                 else if (mode===true) {
                     /* True just puts up the HUD with no mode info */
                     mB.hideCover();
-                    if (codex_mode_foci[mB.mode]) {
-                        var input=fdjtID(codex_mode_foci[mB.mode]);
+                    if (metabook_mode_foci[mB.mode]) {
+                        var input=fdjtID(metabook_mode_foci[mB.mode]);
                         input.blur();}
-                    dropClass(CodexHUD,CodexModes);
+                    dropClass(metaBookHUD,metaBookModes);
                     mB.mode=false;
                     mB.last_mode=true;}
                 else if (typeof mode !== 'string') 
                     throw new Error('mode arg not a string');
-                else if (mode.search(CodexCoverModes)>=0) {
+                else if (mode.search(metaBookCoverModes)>=0) {
                     fdjtID("METABOOKCOVER").className=mode;
                     if (mode==="console") fdjtLog.update();
                     showCover();
@@ -472,8 +472,8 @@ metaBook.setMode=
                 else {
                     mB.hideCover();
                     mB.modechange=fdjtTime();
-                    if (codex_mode_foci[mB.mode]) {
-                        var modeinput=fdjtID(codex_mode_foci[mB.mode]);
+                    if (metabook_mode_foci[mB.mode]) {
+                        var modeinput=fdjtID(metabook_mode_foci[mB.mode]);
                         modeinput.blur();}
                     if (mode!==mB.mode) mB.last_mode=mB.mode;
                     mB.mode=mode;}
@@ -487,8 +487,8 @@ metaBook.setMode=
                 // element in the HUD for this mode
                 if (typeof mode !== 'string')
                     mB.scrolling=false;
-                else if (codex_mode_scrollers[mode]) 
-                    mB.scrolling=(codex_mode_scrollers[mode]);
+                else if (metabook_mode_scrollers[mode]) 
+                    mB.scrolling=(metabook_mode_scrollers[mode]);
                 else mB.scrolling=false;
 
                 if ((mode==='refinesearch')||
@@ -503,27 +503,27 @@ metaBook.setMode=
                 else setHUD(true);
                 // Actually change the class on the HUD object
                 if (mode===true) {
-                    dropClass(CodexHUD,"openhead");
-                    dropClass(CodexHUD,"openheart");
-                    fdjtDOM.swapClass(CodexHUD,CodexModes,"minimal");}
+                    dropClass(metaBookHUD,"openhead");
+                    dropClass(metaBookHUD,"openheart");
+                    fdjtDOM.swapClass(metaBookHUD,metaBookModes,"minimal");}
                 else if (mode==="addgloss") {
                     // addgloss has submodes which may specify the
                     //  open heart configuration
-                    addClass(CodexHUD,"openhead");
-                    if (CodexHUD.className.search(codexHeartModes)<0)
-                        dropClass(CodexHUD,"openheart");
-                    else addClass(CodexHUD,"openheart");}
+                    addClass(metaBookHUD,"openhead");
+                    if (metaBookHUD.className.search(codexHeartModes)<0)
+                        dropClass(metaBookHUD,"openheart");
+                    else addClass(metaBookHUD,"openheart");}
                 else {
                     if (mode.search(codexHeartModes)<0) {
-                        dropClass(CodexHUD,"openheart");}
+                        dropClass(metaBookHUD,"openheart");}
                     if (mode.search(codexHeadModes)<0)
-                        dropClass(CodexHUD,"openhead");
+                        dropClass(metaBookHUD,"openhead");
                     if (mode.search(codexHeartModes)>=0) {
                         mB.heart_mode=mode;
-                        addClass(CodexHUD,"openheart");}
+                        addClass(metaBookHUD,"openheart");}
                     if (mode.search(codexHeadModes)>=0) {
                         mB.head_mode=mode;
-                        addClass(CodexHUD,"openhead");}}
+                        addClass(metaBookHUD,"openhead");}}
                 changeMode(mode);}
             else {
                 // Clearing the mode is a lot simpler, in part because
@@ -539,14 +539,14 @@ metaBook.setMode=
                 if (mB.skimming) {
                     var dups=mB.getDups(mB.target);
                     mB.clearHighlights(dups);
-                    dropClass(dups,"codexhighlightpassage");}
-                dropClass(CodexHUD,"openheart");
-                dropClass(CodexHUD,"openhead");
+                    dropClass(dups,"mBhighlightpassage");}
+                dropClass(metaBookHUD,"openheart");
+                dropClass(metaBookHUD,"openhead");
                 dropClass(document.body,"dimmed");
                 dropClass(document.body,"codexhelp");
                 dropClass(document.body,"cxPREVIEW");
                 dropClass(document.body,"cxSHRINK");
-                dropClass(CodexHUD,CodexModes);
+                dropClass(metaBookHUD,metaBookModes);
                 mB.cxthelp=false;
                 if (display_sync) mB.displaySync();
                 if (nohud) mB.setHUD(false);
@@ -562,14 +562,14 @@ metaBook.setMode=
                     mB.UI.scrollSlice(
                         mB.skimming||mB.point,mB.query.listing);}
             else {}}
-        mB.scrollSlices=scrollSlices;
+        metaBook.scrollSlices=scrollSlices;
 
         function changeMode(mode){      
             if (mB.Trace.mode)
                 fdjtLog("changeMode %o, cur=%o dbc=%o",
                         mode,mB.mode,document.body.className);
-            fdjtDOM.dropClass(CodexHUD,CodexModes);
-            fdjtDOM.addClass(CodexHUD,mode);
+            fdjtDOM.dropClass(metaBookHUD,metaBookModes);
+            fdjtDOM.addClass(metaBookHUD,mode);
             scrollSlices(mode);
             if (mode==="statictoc") {
                 var headinfo=((mB.head)&&(mB.head.id)&&
@@ -627,8 +627,8 @@ metaBook.setMode=
             
             // We autofocus any input element appropriate to the
             // mode
-            if (codex_mode_foci[mode]) {
-                var input=fdjtID(codex_mode_foci[mode]);
+            if (metabook_mode_foci[mode]) {
+                var input=fdjtID(metabook_mode_foci[mode]);
                 if (input) {
                     setTimeout(function(){
                         mB.setFocus(input);},
@@ -654,9 +654,9 @@ metaBook.setMode=
                     fdjtDOM(heart,contents);}
                 mB.heartscroller=new iScroll(heart);
                 mB.heartscroller.refresh();}}
-        mB.UI.updateScroller=updateScroller;
+        metaBook.UI.updateScroller=updateScroller;
 
-        function CodexHUDToggle(mode,keephud){
+        function metaBookHUDToggle(mode,keephud){
             if (!(mB.mode)) setMode(mode);
             else if (mode===mB.mode)
                 if (keephud) setMode(true); else setMode(false);
@@ -664,10 +664,10 @@ metaBook.setMode=
                      (mB.mode.search(codexHeartModes)===0))
                 if (keephud) setMode(true); else setMode(false);
             else setMode(mode);}
-        mB.toggleMode=CodexHUDToggle;
+        metaBook.toggleMode=metaBookHUDToggle;
 
-        mB.dropHUD=function(){return setMode(false);};
-        mB.toggleHUD=function(evt){
+        metaBook.dropHUD=function(){return setMode(false);};
+        metaBook.toggleHUD=function(evt){
             evt=evt||window.event;
             if ((evt)&&(fdjtUI.isClickable(fdjtUI.T(evt)))) return;
             fdjtLog("toggle HUD %o hudup=%o",evt,mB.hudup);
@@ -703,22 +703,22 @@ metaBook.setMode=
 
             fdjtID("SBOOKSAPP").src=appuri;
             iframe_app_init=true;}
-        mB.initIFrameApp=initIFrameApp;
+        metaBook.initIFrameApp=initIFrameApp;
 
-        mB.selectApp=function(){
+        metaBook.selectApp=function(){
             if (mB.mode==='sbooksapp') setMode(false);
             else setMode('sbooksapp');};
 
         /* Skimming */
 
-        function CodexSkim(elt,src,dir,expanded){
+        function metaBookSkim(elt,src,dir,expanded){
             var nextSlice=mB.nextSlice, prevSlice=mB.prevSlice;
             var pelt=mB.skimming;
             var i=0, lim=0;
             if (typeof dir !== "number") dir=0;
             addClass(document.body,"cxSKIMMING"); setHUD(false,false);
             if (true) // (mB.Trace.mode)
-                fdjtLog("CodexSkim() %o (src=%o) mode=%o scn=%o/%o dir=%o",
+                fdjtLog("metaBookSkim() %o (src=%o) mode=%o scn=%o/%o dir=%o",
                         elt,src,mB.mode,mB.skimming,mB.target,
                         dir);
             // Copy the description of what we're skimming into the
@@ -779,12 +779,12 @@ metaBook.setMode=
                         searching,glossinfo.excerpt,glossinfo.exoff);
                     if (range) {
                         highlights=
-                            fdjtUI.Highlight(range,"codexhighlightexcerpt");
+                            fdjtUI.Highlight(range,"mBhighlightexcerpt");
                         addClass("METABOOKSKIMMER","cxhighlights");}}
                 else if (src.about[0]==="#")
                     addClass(mB.getDups(src.about.slice(1)),
-                             "codexhighlightpassage");
-                else addClass(mB.getDups(src.about),"codexhighlightpassage");}
+                             "mBhighlightpassage");
+                else addClass(mB.getDups(src.about),"mBhighlightpassage");}
             else if ((src)&&(getParent(src,".sbookresults"))) {
                 var about=src.about, target=mbID(about);
                 if (target) {
@@ -793,7 +793,7 @@ metaBook.setMode=
                     var spellings=info.knodeterms;
                     i=0; lim=terms.length;
                     if (lim===0)
-                        addClass(mB.getDups(target),"codexhighlightpassage");
+                        addClass(mB.getDups(target),"mBhighlightpassage");
                     else while (i<lim) {
                         var term=terms[i++];
                         var h=mB.highlightTerm(term,target,info,spellings);
@@ -823,7 +823,7 @@ metaBook.setMode=
                     mB.GoTo(mB.skimpoints[mB.skimoff]);}
                 else mB.GoTo(elt,"Skim");}
             else mB.GoTo(elt,"Skim");}
-        mB.Skim=CodexSkim;
+        metaBook.Skim=metaBookSkim;
         function stopSkimming(){
             // Tapping the tochead returns to results/glosses/etc
             var skimming=mB.skimming;
@@ -834,7 +834,7 @@ metaBook.setMode=
             else if (getParent(skimming,fdjtID("METABOOKSEARCHRESULTS"))) 
                 mB.setMode("searchresults");
             else {}}
-        mB.stopSkimming=stopSkimming;
+        metaBook.stopSkimming=stopSkimming;
         
         mB.addConfig("uisize",function(name,value){
             fdjtDOM.swapClass(
@@ -891,11 +891,11 @@ metaBook.setMode=
             
             return result;}
 
-        mB.UI.settingsUpdate=function(){
+        metaBook.UI.settingsUpdate=function(){
             var settings=getSettings();
             mB.setConfig(settings);};
 
-        mB.UI.settingsSave=function(evt){
+        metaBook.UI.settingsSave=function(evt){
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
             var settings=getSettings();
@@ -906,7 +906,7 @@ metaBook.setMode=
                             fdjtDOM("span.message#METABOOKSETTINGSMESSAGE",
                                     "Your settings have been saved."));};
 
-        mB.UI.settingsReset=function(evt){
+        metaBook.UI.settingsReset=function(evt){
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
             mB.resetConfig();
@@ -915,7 +915,7 @@ metaBook.setMode=
                             fdjtDOM("span.message#METABOOKSETTINGSMESSAGE",
                                     "Your settings have been reset."));};
 
-        mB.UI.settingsOK=function(evt){
+        metaBook.UI.settingsOK=function(evt){
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
             var settings=getSettings();
@@ -925,7 +925,7 @@ metaBook.setMode=
                             fdjtDOM("span.message#METABOOKSETTINGSMESSAGE",
                                     "Your settings have been saved."));};
         
-        mB.UI.settingsCancel=function(evt){
+        metaBook.UI.settingsCancel=function(evt){
             if (typeof evt === "undefined") evt=event;
             if (evt) fdjt.UI.cancel(evt);
             mB.setConfig(mB.getConfig());
@@ -965,11 +965,11 @@ metaBook.setMode=
                             fdjtDOM.swapClass(box,"closing","closed");},
                                    5000);},
                            5000);}
-        mB.keyboardHelp=keyboardHelp;
+        metaBook.keyboardHelp=keyboardHelp;
 
         /* Showing a particular gloss */
 
-        mB.showGloss=function showGloss(uuid){
+        metaBook.showGloss=function showGloss(uuid){
             if (!(mB.glossdb.ref(uuid))) return false;
             var elts=document.getElementsByName(uuid);
             if (!(elts)) return false;
@@ -987,9 +987,9 @@ metaBook.setMode=
                 return false;}};
 
         /* Setting/clearing help mode */
-        mB.hideHelp=function(){
+        metaBook.hideHelp=function(){
             fdjtDOM.dropClass(document.body,"codexhelp");};
-        mB.showHelp=function(){
+        metaBook.showHelp=function(){
             fdjtDOM.addClass(document.body,"codexhelp");};
 
         return setMode;})();

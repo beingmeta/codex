@@ -1,7 +1,6 @@
 /* -*- Mode: Javascript; Character-encoding: utf-8; -*- */
 
-/* ###################### codex
-/core.js ###################### */
+/* ###################### codex/core.js ###################### */
 
 /* Copyright (C) 2009-2014 beingmeta, inc.
    This file implements a Javascript/DHTML web application for reading
@@ -187,28 +186,28 @@ var metaBook={
     
     var mB=metaBook;
 
-    mB.tagweights=new ObjectMap();
-    mB.tagscores=new ObjectMap();
+    metaBook.tagweights=new ObjectMap();
+    metaBook.tagscores=new ObjectMap();
 
     function hasLocal(key){
         if (mB.persist) return fdjtState.existsLocal(key);
         else return fdjtState.existsSession(key);}
-    mB.hasLocal=hasLocal;
+    metaBook.hasLocal=hasLocal;
     function saveLocal(key,value,unparse){
         if (mB.persist) setLocal(key,value,unparse);
         else fdjtState.setSession(key,value,unparse);}
-    mB.saveLocal=saveLocal;
+    metaBook.saveLocal=saveLocal;
     function readLocal(key,parse){
         if (mB.persist) return getLocal(key,parse)||
             fdjtState.getSession(key,parse);
         else return fdjtState.getSession(key,parse)||getLocal(key,parse);}
-    mB.readLocal=readLocal;
+    metaBook.readLocal=readLocal;
     function clearLocal(key){
         fdjtState.dropLocal(key);
         fdjtState.dropSession(key);}
-    mB.clearLocal=clearLocal;
+    metaBook.clearLocal=clearLocal;
 
-    mB.focusBody=function(){
+    metaBook.focusBody=function(){
         // document.body.focus();
         };
     
@@ -217,7 +216,7 @@ var metaBook={
         var refuri=(mB.refuri||document.location.href);
         if (refuri.indexOf('#')>0) refuri=refuri.slice(0,refuri.indexOf('#'));
 
-        mB.docdb=new RefDB(
+        metaBook.docdb=new RefDB(
             refuri+"#",{indices: ["frag","head","heads",
                                   "tags","tags*",
                                   "*tags","**tags","~tags",
@@ -230,9 +229,9 @@ var metaBook={
             fdjtDOM.getMeta("SBOOKS.knodule")||
             fdjtDOM.getMeta("~KNODULE")||
             refuri;
-        mB.knodule=new Knodule(knodule_name);
+        metaBook.knodule=new Knodule(knodule_name);
         Knodule.current=mB.knodule;
-        mB.BRICO=new Knodule("BRICO");
+        metaBook.BRICO=new Knodule("BRICO");
         mB.BRICO.addAlias(":@1/");
         mB.BRICO.addAlias("@1/");
         var glosses_init={
@@ -240,7 +239,7 @@ var metaBook={
                       "tags","*tags","**tags",
                       "tags*","*tags*","**tags*"]};
         var stdspace=fdjtString.stdspace;
-        mB.glossdb=new RefDB("glosses@"+mB.refuri,glosses_init); {
+        metaBook.glossdb=new RefDB("glosses@"+mB.refuri,glosses_init); {
             mB.glossdb.absrefs=true;
             mB.glossdb.addAlias("glossdb");
             mB.glossdb.addAlias("-UUIDTYPE=61");
@@ -312,8 +311,8 @@ var metaBook={
             "*tags**": exportTagSlot, "**tags**": exportTagSlot,
             "~tags**": exportTagSlot, "~~tags**": exportTagSlot,
             "tags**": exportTagSlot};
-        mB.tag_export_rules=tag_export_rules;
-        mB.tag_import_rules=tag_export_rules;
+        metaBook.tag_rules=tag_export_rules;
+        metaBook.tag_import_rules=tag_export_rules;
 
         // Use this when generating external summaries.  In particular,
         //  this recovers all of the separate weighted tag slots into
@@ -323,7 +322,7 @@ var metaBook={
 
         mB.glossdb.refclass=Gloss;
         
-        mB.sourcedb=new RefDB("sources@"+mB.refuri);{
+        metaBook.sourcedb=new RefDB("sources@"+mB.refuri);{
             mB.sourcedb.absrefs=true;
             mB.sourcedb.oidrefs=true;
             mB.sourcedb.addAlias("@1961/");
@@ -336,11 +335,13 @@ var metaBook={
                 if (source.about) span.title=source.about;
                 return span;};
             var anonymous=mB.sourcedb.ref("@1961/0");
-            mB.anonymous=anonymous;
+            metaBook.anonymous=anonymous;
             anonymous.name="anonymous";}
 
-        mB.queued=((mB.cacheglosses)&&
-                      (getLocal("codex.queued("+mB.refuri+")",true)))||[];
+        metaBook.queued=
+            ((mB.cacheglosses)&&
+             (getLocal("metabook.queued("+mB.refuri+")",true)))||
+            [];
 
         function cacheGlosses(value){
             var saveprops=mB.saveprops, uri=mB.docuri;
@@ -354,27 +355,27 @@ var metaBook={
                     while (i<lim) {
                         var prop=saveprops[i++];
                         if (metaBook[prop]) saveLocal(
-                            "codex."+prop+"("+uri+")",metaBook[prop],true);}
+                            "metabook."+prop+"("+uri+")",metaBook[prop],true);}
                     mB.glossdb.save(true);
                     mB.sourcedb.save(true);
                     if ((mB.queued)&&(mB.queued.length)) 
                         mB.queued=mB.queued.concat(
-                            getLocal("codex.queued("+uri+")",true)||[]);
-                    else mB.queued=getLocal("codex.queued("+uri+")",true)||[];}
+                            getLocal("metabook.queued("+uri+")",true)||[]);
+                    else mB.queued=getLocal("metabook.queued("+uri+")",true)||[];}
                 mB.cacheglosses=true;}
             else {
                 clearOffline(mB.docuri);
-                if (uri) fdjtState.dropLocal("codex.queued("+uri+")");
+                if (uri) fdjtState.dropLocal("metabook.queued("+uri+")");
                 mB.queued=[];
                 mB.cacheglosses=false;}}
-        mB.cacheGlosses=cacheGlosses;
+        metaBook.cacheGlosses=cacheGlosses;
         
         /* Clearing offline data */
 
         function clearOffline(uri){
             var dropLocal=fdjtState.dropLocal;
             if (!(uri)) {
-                dropLocal("codex.user");
+                dropLocal("metabook.user");
                 if (mB.user) {
                     // For now, we clear layouts, because they might
                     //  contain personalized information
@@ -384,31 +385,31 @@ var metaBook={
             else {
                 if (typeof uri !== "string") uri=mB.docuri;
                 mB.sync=false;
-                clearLocal("codex.sources("+uri+")");
-                clearLocal("codex.outlets("+uri+")");
-                clearLocal("codex.layers("+uri+")");
-                clearLocal("codex.etc("+uri+")");
+                clearLocal("metabook.sources("+uri+")");
+                clearLocal("metabook.outlets("+uri+")");
+                clearLocal("metabook.layers("+uri+")");
+                clearLocal("metabook.etc("+uri+")");
                 // We don't currently clear sources when doing book
                 // specific clearing because they might be shared
                 // between books
                 mB.glossdb.clearOffline(function(){
-                    clearLocal("codex.sync("+uri+")");});}}
-        mB.clearOffline=clearOffline;
+                    clearLocal("metabook.sync("+uri+")");});}}
+        metaBook.clearOffline=clearOffline;
         
         function refreshOffline(){
             var uri=mB.docuri;
             mB.sync=false;
-            clearLocal("codex.sources("+uri+")");
-            clearLocal("codex.outlets("+uri+")");
-            clearLocal("codex.layers("+uri+")");
-            clearLocal("codex.etc("+uri+")");
+            clearLocal("metabook.sources("+uri+")");
+            clearLocal("metabook.outlets("+uri+")");
+            clearLocal("metabook.layers("+uri+")");
+            clearLocal("metabook.etc("+uri+")");
             // We don't currently clear sources when doing book
             // specific clearing because they might be shared
             // between books
             mB.glossdb.clearOffline(function(){
-                clearLocal("codex.sync("+uri+")");
+                clearLocal("metabook.sync("+uri+")");
                 setTimeout(mB.updateInfo,25);});}
-             mB.refreshOffline=refreshOffline;
+        metaBook.refreshOffline=refreshOffline;
 
         function Query(tags,base_query){
             if (!(this instanceof Query))
@@ -422,12 +423,12 @@ var metaBook={
         Query.prototype.dbs=[mB.glossdb,mB.docdb];
         Query.prototype.weights={"tags": 4,"^tags": 2,"+tags": 8,"^+tags": 4};
         Query.prototype.uniqueids=true;
-        mB.Query=Query;
+        metaBook.Query=Query;
 
-        mB.query=mB.empty_query=new Query([]);
+        metaBook.query=metaBook.empty_query=new Query([]);
 
         if (mB.Trace.start>1) fdjtLog("Initialized DB");}
-    mB.initDB=initDB;
+    metaBook.initDB=initDB;
 
     function getMakerKnodule(arg){
         var result;
@@ -446,7 +447,7 @@ var metaBook={
         else result=mB.knodule;
         result.description=arg.name;
         return result;}
-    mB.getMakerKnodule=getMakerKnodule;
+    metaBook.getMakerKnodule=getMakerKnodule;
 
     var trace1="%s %o in %o: mode%s=%o, target=%o, head=%o skimming=%o";
     var trace2="%s %o: mode%s=%o, target=%o, head=%o skimming=%o";
@@ -459,27 +460,29 @@ var metaBook={
         else fdjtLog(trace2,handler,cxt,
                      ((mB.skimming)?("(skimming)"):""),mB.mode,
                      mB.target,mB.head,mB.skimming);}
-    mB.trace=sbook_trace;
+    metaBook.trace=sbook_trace;
 
     // This is the hostname for the sbookserver.
-    mB.server=false;
+    metaBook.server=false;
     // This is an array for looking up sbook servers.
-    mB.servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
-    //mB.servers=[];
+    metaBook.servers=[[/.sbooks.net$/g,"glosses.sbooks.net"]];
+    //metaBook.servers=[];
     // This is the default server
-    mB.default_server="glosses.sbooks.net";
+    metaBook.default_server="glosses.sbooks.net";
     // There be icons here!
-    mB.root=fdjtDOM.getLink("CODEX.staticroot")||
+    metaBook.root=fdjtDOM.getLink("metaBook.staticroot")||
+        fdjtDOM.getLink("METABOOK.staticroot")||
+        fdjtDOM.getLink("CODEX.staticroot")||
         "http://static.beingmeta.com/";
     if (mB.root[mB.root.length-1]!=="/")
-        mB.root=mB.root+"/";
-    mB.withsvg=document.implementation.hasFeature(
+        metaBook.root=mB.root+"/";
+    metaBook.withsvg=document.implementation.hasFeature(
         "http://www.w3.org/TR/SVG11/feature#Image", "1.1")||
         navigator.mimeTypes["image/svg+xml"];
-    mB.svg=fdjt.DOM.checkSVG();
-    if (fdjtState.getQuery("nosvg")) mB.svg=false;
-    else if (fdjtState.getQuery("withsvg")) mB.svg=true;
-    mB.icon=function(base,width,height){
+    metaBook.svg=fdjt.DOM.checkSVG();
+    if (fdjtState.getQuery("nosvg")) metaBook.svg=false;
+    else if (fdjtState.getQuery("withsvg")) metaBook.svg=true;
+    metaBook.icon=function(base,width,height){
         return mB.root+"g/codex/"+base+
             ((mB.svg)?(".svgz"):
              ((((width)&&(height))?(width+"x"+height):
@@ -498,7 +501,7 @@ var metaBook={
                 return scan.getAttribute("refuri");
             else scan=scan.parentNode;}
         return mB.refuri;}
-    mB.getRefURI=getRefURI;
+    metaBook.getRefURI=getRefURI;
 
     function getDocURI(target){
         var scan=target;
@@ -512,14 +515,14 @@ var metaBook={
                 return scan.getAttribute("docuri");
             else scan=scan.parentNode;}
         return mB.docuri;}
-    mB.getDocURI=getDocURI;
+    metaBook.getDocURI=getDocURI;
 
-    mB.getRefID=function(target){
+    metaBook.getRefID=function(target){
         if (target.getAttributeNS)
             return (target.getAttributeNS('sbookid','http://sbooks.net/'))||
             (target.getAttributeNS('sbookid'))||
             (target.getAttributeNS('data-sbookid'))||
-            (target.codexbaseid)||(target.id);
+            (target.baseid)||(target.id);
         else return target.id;};
 
     /* A Kludge For iOS */
@@ -586,7 +589,7 @@ var metaBook={
     
     function getHead(target){
         /* First, find some relevant docinfo */
-        var targetid=(target.codexbaseid)||(target.id);
+        var targetid=(target.baseid)||(target.id);
         if ((targetid)&&(mB.docinfo[targetid]))
             target=mB.docinfo[targetid];
         else if (targetid) {
@@ -599,7 +602,7 @@ var metaBook={
             var scan=target.firstChild; var scanid=false;
             var next=target.nextNode;
             while ((scan)&&(scan!==next)) {
-                if ((scan.id)||(scan.codexbaseid)) break;
+                if ((scan.id)||(scan.baseid)) break;
                 if ((scan.nodeType===3)&&
                     (!(fdjtString.isEmpty(scan.nodeValue)))) break;
                 scan=fdjtDOM.forward(scan);}
@@ -608,7 +611,7 @@ var metaBook={
                 target=mB.docinfo[scanid];
             else {
                 while (target)
-                    if ((targetid=((target.codexbaseid)||(target.id)))&&
+                    if ((targetid=((target.baseid)||(target.id)))&&
                         (mB.docinfo[targetid])) {
                         target=mB.docinfo[targetid]; break;}
                 else target=target.parentNode;}}
@@ -619,9 +622,9 @@ var metaBook={
                 return mbID(target.head.frag);
             else return false;}
         else return false;}
-    mB.getHead=getHead;
+    metaBook.getHead=getHead;
 
-    mB.getRef=function(target){
+    metaBook.getRef=function(target){
         while (target)
             if (target.about) break;
         else if ((target.getAttribute)&&(target.getAttribute("about"))) break;
@@ -633,7 +636,7 @@ var metaBook={
                 return mbID(ref.slice(1));
             else return mbID(ref);}
         else return false;};
-    mB.getRefElt=function(target){
+    metaBook.getRefElt=function(target){
         while (target)
             if ((target.about)||
                 ((target.getAttribute)&&(target.getAttribute("about"))))
@@ -641,7 +644,7 @@ var metaBook={
         else target=target.parentNode;
         return target||false;};
 
-    mB.checkTarget=function(){
+    metaBook.checkTarget=function(){
         if ((mB.target)&&(mB.mode==='openglossmark'))
             if (!(fdjtDOM.isVisible(mB.target))) {
                 mB.setMode(false); mB.setMode(true);}};
@@ -655,21 +658,21 @@ var metaBook={
                 if (d) return [mbID(id)].concat(d);
                 else return [mbID(id)];}
             else return [mbID(id)];}
-        else return getDups(id.codexbaseid||id.id);}
-    mB.getDups=getDups;
+        else return getDups(id.baseid||id.id);}
+    metaBook.getDups=getDups;
 
     function getTarget(scan,closest){
         scan=((scan.nodeType)?(scan):(scan.target||scan.srcElement||scan));
         var target=false, id=false, targetids=mB.targetids;
         var wsn_target=false;
         if (hasParent(scan,mB.HUD)) return false;
-        else if (hasParent(scan,".codexmargin")) return false;
+        else if (hasParent(scan,".mBmargin")) return false;
         else while (scan) {
-            if (scan.codexui) return false;
+            if (scan.metabookui) return false;
             else if ((scan===mB.docroot)||(scan===document.body))
                 return target;
-            else if ((id=(scan.codexbaseid||scan.id))&&(mB.docinfo[id])) {
-                if ((!(scan.codexbaseid))&&(id.search("METABOOKTMP")===0)) {}
+            else if ((id=(scan.baseid||scan.id))&&(mB.docinfo[id])) {
+                if ((!(scan.baseid))&&(id.search("METABOOKTMP")===0)) {}
                 else if ((target)&&(id.search("WSN_")===0)) {}
                 else if (id.search("WSN_")===0) wsn_target=scan;
                 else if ((targetids)&&(id.search(targetids)!==0)) {}
@@ -690,7 +693,7 @@ var metaBook={
             else {}
             scan=scan.parentNode;}
         return target||wsn_target;}
-    mB.getTarget=getTarget;
+    metaBook.getTarget=getTarget;
     
     var isEmpty=fdjtString.isEmpty;
 
@@ -700,13 +703,13 @@ var metaBook={
             else return arg;}
         else return false;}
 
-    var codex_docinfo=false;
+    var metabook_docinfo=false;
     function mbID(id){
         var info;
         if ((id)&&(typeof id === "string")&&(id[0]==="#"))
             id=id.slice(1);
-        if (!(codex_docinfo)) codex_docinfo=mB.docinfo;
-        var elt=((codex_docinfo)&&(info=codex_docinfo[id])&&
+        if (!(metabook_docinfo)) metabook_docinfo=mB.docinfo;
+        var elt=((metabook_docinfo)&&(info=metabook_docinfo[id])&&
                  (info.elt)&&(info.elt.id===id)&&(info.elt));
         if (elt) return elt;
         else if ((elt=document.getElementById(id))) return elt;
@@ -717,12 +720,12 @@ var metaBook={
         elt=fdjtDOM.$("[data-tocid='"+id+"']");
         if (elt.length===1) return elt[0];
         else return false;}
-    mB.ID=mbID;
+    metaBook.ID=mbID;
 
-    mB.getTitle=function(target,tryhard) {
+    metaBook.getTitle=function(target,tryhard) {
         var targetid;
         return target.sbooktitle||
-            (((targetid=((target.codexbaseid)||(target.id)))&&
+            (((targetid=((target.baseid)||(target.id)))&&
               (mB.docinfo[targetid]))?
              (notEmpty(mB.docinfo[targetid].title)):
              (notEmpty(target.title)))||
@@ -741,12 +744,12 @@ var metaBook={
                         mB.glossdb.probe(arg)||
                         RefDB.resolve(arg));
             else if (arg._id) return arg;
-            else if (arg.codexbaseid)
-                return mB.docinfo[arg.codexbaseid];
+            else if (arg.baseid)
+                return mB.docinfo[arg.baseid];
             else if (arg.id) return mB.docinfo[arg.id];
             else return false;}
         else return false;}
-    mB.Info=getinfo;
+    metaBook.Info=getinfo;
 
     /* Getting tagstrings from a gloss */
     var tag_prefixes=["","*","**","~","~~"];
@@ -763,7 +766,7 @@ var metaBook={
                 if (prefix==="") results.push(tag);
                 else results.push({prefix: prefix,tag: tag});}}
         return results;}
-    mB.getGlossTags=getGlossTags;
+    metaBook.getGlossTags=getGlossTags;
 
     /* Navigation functions */
 
@@ -772,7 +775,7 @@ var metaBook={
         else if (typeof head === "string") 
             head=getHead(mbID(head))||mB.content;
         else {}
-        var headid=head.codexbaseid||head.id;
+        var headid=head.baseid||head.id;
         var headinfo=mB.docinfo[headid];
         while ((headinfo)&&(!(headinfo.level))) {
             headinfo=headinfo.head;
@@ -798,7 +801,7 @@ var metaBook={
                 mB.trace("mB.setFalseHead",head);
             mB.TOC.setHead(headinfo);
             mB.head=false;}}
-    mB.setHead=setHead;
+    metaBook.setHead=setHead;
 
     function setLocation(location,force){
         if ((!(force)) && (mB.location===location)) return;
@@ -839,7 +842,7 @@ var metaBook={
                     progressbox=progressbox[0];
                     progressbox.style.left=((Math.round(ratio*10000))/100)+"%";}}}
         mB.location=location;}
-    mB.setLocation=setLocation;
+    metaBook.setLocation=setLocation;
 
     function location2pct(location) {
         var max_loc=mB.ends_at;
@@ -852,64 +855,64 @@ var metaBook={
         if (Math.floor(pct)===pct)
             return Math.floor(pct)+"%";
         else return fdjtString.precString(pct,prec)+"%";}
-    mB.location2pct=location2pct;
+    metaBook.location2pct=location2pct;
 
     function setTarget(target){
         if (mB.Trace.target) mB.trace("mB.setTarget",target);
         if (target===mB.target) return;
         else if ((mB.target)&&
-                 (mB.target.id===target.codexbaseid))
+                 (mB.target.id===target.baseid))
             return;
         if (mB.target) {
             var old_target=mB.target, oldid=old_target.id;
             var old_targets=getDups(oldid);
-            dropClass(old_target,"codextarget");
-            dropClass(old_target,"codexnewtarget");
-            dropClass(old_targets,"codextarget");
-            dropClass(old_targets,"codexnewtarget");
+            dropClass(old_target,"mBtarget");
+            dropClass(old_target,"mBnewtarget");
+            dropClass(old_targets,"mBtarget");
+            dropClass(old_targets,"mBnewtarget");
             if (!(hasParent(old_target,target)))
                 clearHighlights(old_targets);
             mB.target=false;}
         if (!(target)) {
             if (mB.UI.setTarget) mB.UI.setTarget(false);
             return;}
-        else if ((inUI(target))||(!(target.id||target.codexbaseid)))
+        else if ((inUI(target))||(!(target.id||target.baseid)))
             return;
         else {}
-        var targetid=target.codexbaseid||target.id;
+        var targetid=target.baseid||target.id;
         var primary=((targetid)&&(mbID(targetid)))||target;
         var targets=getDups(targetid);
-        addClass(target,"codextarget");
-        addClass(target,"codexnewtarget");
-        addClass(targets,"codextarget");
-        addClass(targets,"codexnewtarget");
+        addClass(target,"mBtarget");
+        addClass(target,"mBnewtarget");
+        addClass(targets,"mBtarget");
+        addClass(targets,"mBnewtarget");
         setTimeout(function(){
-            dropClass(target,"codexnewtarget");
-            dropClass(targets,"codexnewtarget");},
+            dropClass(target,"mBnewtarget");
+            dropClass(targets,"mBnewtarget");},
                    3000);
         fdjtState.setCookie(
-            "codextarget",targetid||target.getAttribute('data-sbookid'));
+            "mBtarget",targetid||target.getAttribute('data-sbookid'));
         mB.target=primary;
         if (mB.UI.setTarget) mB.UI.setTarget(primary);
         if (mB.empty_cloud)
             mB.setCloudCuesFromTarget(mB.empty_cloud,primary);}
-    mB.setTarget=setTarget;
+    metaBook.setTarget=setTarget;
 
     function clearHighlights(target){
         if (typeof target === "string") target=mbID(target);
         if (!(target)) return;
         else if (target.length) {
-            dropClass(target,"codexhighlightpassage");
+            dropClass(target,"mBhighlightpassage");
             var i=0, lim=target.length;
             while (i<lim) {
                 var node=target[i++];
-                fdjtUI.Highlight.clear(node,"codexhighlightexcerpt");
-                fdjtUI.Highlight.clear(node,"codexhighlightsearch");}}
+                fdjtUI.Highlight.clear(node,"mBhighlightexcerpt");
+                fdjtUI.Highlight.clear(node,"mBhighlightsearch");}}
         else {
-            dropClass(target,"codexhighlightpassage");
-            fdjtUI.Highlight.clear(target,"codexhighlightexcerpt");
-            fdjtUI.Highlight.clear(target,"codexhighlightsearch");}}
-    mB.clearHighlights=clearHighlights;
+            dropClass(target,"mBhighlightpassage");
+            fdjtUI.Highlight.clear(target,"mBhighlightexcerpt");
+            fdjtUI.Highlight.clear(target,"mBhighlightsearch");}}
+    metaBook.clearHighlights=clearHighlights;
 
     function findExcerpt(node,excerpt,off){
         if (typeof node === "string") node=mbID(node);
@@ -931,7 +934,7 @@ var metaBook={
                 node,pattern,result.end_offset+1,1);}
         if ((matches)&&(matches.length)) return matches[0];
         else return result;}
-    mB.findExcerpt=findExcerpt;
+    metaBook.findExcerpt=findExcerpt;
 
     /* Tags */
 
@@ -951,7 +954,7 @@ var metaBook={
                    (usekno.handleSubjectEntry(tag)));
         if (slot!=="tags") return {slot: slot,tag: knode};
         else return knode;}
-    mB.parseTag=parseTag;
+    metaBook.parseTag=parseTag;
     
     var knoduleAddTags=Knodule.addTags;
     function addTags(nodes,tags,slotid,tagdb){
@@ -970,32 +973,32 @@ var metaBook={
             var subheads=docdb.find('heads',node);
             if ((subheads)&&(subheads.length))
                 addTags(subheads,tags,"^"+slotid,tagdb);}}
-    mB.addTags=addTags;
+    metaBook.addTags=addTags;
         
     /* Navigation */
 
     var sbookUIclasses=
-        /(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bcodexmargin\b)/;
+        /(\bhud\b)|(\bglossmark\b)|(\bleading\b)|(\bmBmargin\b)/;
 
     function inUI(elt){
-        if (elt.codexui) return true;
+        if (elt.metabookui) return true;
         else if (hasParent(elt,mB.HUD)) return true;
         else while (elt)
-            if (elt.codexui) return true;
+            if (elt.metabookui) return true;
         else if (hasClass(elt,sbookUIclasses)) return true;
         else elt=elt.parentNode;
         return false;}
-    mB.inUI=inUI;
+    metaBook.inUI=inUI;
 
     function setHashID(target){
-        var targetid=target.codexbaseid||target.id;
+        var targetid=target.baseid||target.id;
         if ((!(targetid))||(window.location.hash===targetid)||
             ((window.location.hash[0]==='#')&&
              (window.location.hash.slice(1)===targetid)))
             return;
         if ((target===mB.body)||(target===document.body)) return;
         if (targetid) window.location.hash=targetid;}
-    mB.setHashID=setHashID;
+    metaBook.setHashID=setHashID;
 
     // Assert whether we're connected and update body classes
     //  to reflect the state. Also, run run any delayed thunks
@@ -1007,14 +1010,14 @@ var metaBook={
             if ((onconnect)&&(onconnect.length)) {
                 var i=0; var lim=onconnect.length;
                 while (i<lim) (onconnect[i++])();}
-            if (fdjtState.getLocal("codex.queued("+mB.refuri+")"))
+            if (fdjtState.getLocal("metabook.queued("+mB.refuri+")"))
                 mB.writeQueuedGlosses();}
         if (((val)&&(!(mB.connected)))||
             ((!(val))&&(mB.connected)))
             fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
                               ((val)?("cxCONN"):("cxDISCONN")));
         mB.connected=val;
-    } mB.setConnected=setConnected;
+    } metaBook.setConnected=setConnected;
 
 
     /* Managing the reader state */
@@ -1037,9 +1040,9 @@ var metaBook={
     // This initializes the reading state, either from local storage
     //  or the initial hash id from the URL (which was saved in
     //  mB.inithash).
-    mB.initState=function initState() {
+    metaBook.initState=function initState() {
         var uri=mB.docuri;
-        var state=readLocal("codex.state("+uri+")",true);
+        var state=readLocal("metabook.state("+uri+")",true);
         var hash=mB.inithash;
         if (hash) {
             if (hash[0]==="#") hash=hash.slice(1);}
@@ -1058,7 +1061,7 @@ var metaBook={
                 state.target=hash;
                 state.location=false;
                 state.changed=fdjtTime.tick;
-                saveLocal("codex.state("+uri+")",state,true);}}
+                saveLocal("metabook.state("+uri+")",state,true);}}
         if (state) mB.state=state;};
     
     // This records the current state of the app, bundled into an
@@ -1096,14 +1099,14 @@ var metaBook={
         mB.state=state;
         var statestring=JSON.stringify(state);
         var uri=mB.docuri;
-        saveLocal("codex.state("+uri+")",statestring);
+        saveLocal("metabook.state("+uri+")",statestring);
         if ((!(syncing))&&(mB.locsync)&&
             ((!(mB.xstate))||(state.changed>mB.xstate.changed)))
             syncState(true);
         if ((!(skiphist))&&(frag)&&
             (window.history)&&(window.history.pushState))
             setHistory(state,frag,title);
-    } mB.saveState=saveState;
+    } metaBook.saveState=saveState;
 
     // This sets the browser history from a particular state
     function setHistory(state,hash,title){
@@ -1146,14 +1149,14 @@ var metaBook={
         if (!(state.refuri)) state.refuri=mB.refuri;
         if (!(state.docuri)) state.docuri=mB.docuri;
         saveState(state);
-    } mB.restoreState=restoreState;
+    } metaBook.restoreState=restoreState;
 
     function clearState(){
         var uri=mB.docuri;
         mB.state=false;
-        clearLocal("codex.state("+uri+")");
+        clearLocal("metabook.state("+uri+")");
         mB.xstate=false;
-    } mB.clearState=clearState;
+    } metaBook.clearState=clearState;
 
     var last_sync=false;
     // Post the current state and update synced state from what's
@@ -1217,7 +1220,7 @@ var metaBook={
                         uri,req.status);}
                 mB.locsync=false;
                 setTimeout(function(){mB.locsync=true;},15*60*1000);}}
-    } mB.syncState=syncState;
+    } metaBook.syncState=syncState;
 
     var prompted=false;
 
@@ -1259,7 +1262,7 @@ var metaBook={
             syncing=false;}}
 
     var last_hidden=false;
-    mB.visibilityChange=function visibilityChange(){
+    metaBook.visibilityChange=function visibilityChange(){
         if (!(document[fdjtDOM.isHidden])) {
             if ((last_hidden)&&((fdjtTime.tick()-last_hidden)<300)) {}
             else if (navigator.onLine) {
@@ -1283,14 +1286,14 @@ var metaBook={
         else mB._onconnect=[function(){mB.update();}];
         if (!(mB.syncstart)) mB.syncLocation();
         else syncState();
-    } mB.forceSync=forceSync;
+    } metaBook.forceSync=forceSync;
 
     function getLocInfo(elt){
         var eltid=false;
         var counter=0; var lim=200;
         var forward=fdjtDOM.forward;
         while ((elt)&&(counter<lim)) {
-            eltid=elt.codexbaseid||elt.id;
+            eltid=elt.baseid||elt.id;
             if ((eltid)&&(mB.docinfo[eltid])) break;
             else {counter++; elt=forward(elt);}}
         if ((eltid)&&(mB.docinfo[eltid])) {
@@ -1298,7 +1301,7 @@ var metaBook={
             return {start: info.starts_at,end: info.ends_at,
                     len: info.ends_at-info.starts_at};}
         else return false;
-    } mB.getLocInfo=getLocInfo;
+    } metaBook.getLocInfo=getLocInfo;
 
     function resolveLocation(loc){
         var allinfo=mB.docinfo._allinfo;
@@ -1310,7 +1313,7 @@ var metaBook={
             if (allinfo[i].starts_at>loc) break;
             else i++;}
         return mbID(allinfo[i-1].frag);
-    } mB.resolveLocation=resolveLocation;
+    } metaBook.resolveLocation=resolveLocation;
 
     // This moves within the document in a persistent way
     function codexGoTo(arg,caller,istarget,savestate,skiphist){
@@ -1363,7 +1366,7 @@ var metaBook={
                           true);
             else saveState({location: mB.location},true);
             return;}
-        var targetid=target.codexbaseid||target.id;
+        var targetid=target.baseid||target.id;
         if (mB.Trace.nav)
             fdjtLog("mB.GoTo%s() #%o@P%o/L%o %o",
                     ((caller)?("/"+caller):""),targetid,pageno,
@@ -1392,7 +1395,7 @@ var metaBook={
             target: (target.getAttribute("data-baseid")||target.id),
             location: location,page: pageno,npages: mB.pagecount});
         if (page)
-            mB.GoToPage(page,caller||"codexGoTo",false,true);
+            mB.GoToPage(page,caller||"mBGoTo",false,true);
         else {
             if (mB.previewing)
                 mB.stopPreview(((caller)?("goto/"+caller):("goto")),target);
@@ -1403,7 +1406,7 @@ var metaBook={
         if (mB.clearGlossmark) mB.clearGlossmark();
         if (mB.mode==="addgloss") mB.setMode(false,false);
         mB.location=location;
-    } mB.GoTo=codexGoTo;
+    } metaBook.GoTo=codexGoTo;
 
     function anchorFn(evt){
         var target=fdjtUI.T(evt);
@@ -1412,20 +1415,20 @@ var metaBook={
         if ((target)&&(target.href)&&(target.href[0]==='#')) {
             var elt=mbID(target.href.slice(1));
             if (elt) {mB.GoTo(elt,"anchorFn"); fdjtUI.cancel(evt);}}}
-    mB.anchorFn=anchorFn;
+    metaBook.anchorFn=anchorFn;
 
     // This jumps and disables the HUD at the same time
-    function CodexJumpTo(target){
+    function metaBookJumpTo(target){
         if (mB.hudup) mB.setMode(false);
         mB.GoTo(target,"JumpTo");}
-    mB.JumpTo=CodexJumpTo;
+    metaBook.JumpTo=metaBookJumpTo;
 
     function getTOCHead(id){
         var elts=fdjtDOM.$("#METABOOKSTATICTOC div.head[NAME='SBR"+id+"']");
         return ((elts)&&(elts.length===1)&&(elts[0]));}
 
     // This jumps and disables the HUD at the same time
-    function CodexGoTOC(target){
+    function metaBookGoTOC(target){
         if (target) mB.GoTo(target,"GoTOC");
         mB.setMode("statictoc");
         var headid=((mB.head)&&(mB.head.id));
@@ -1442,18 +1445,18 @@ var metaBook={
         else if (cxtelt)
             cxtelt.scrollIntoView();
         else {}}
-    mB.GoTOC=CodexGoTOC;
+    metaBook.GoTOC=metaBookGoTOC;
 
     // This jumps and disables the HUD at the same time
     // We try to animate the transition
-    function CodexSkimTo(target){
+    function metaBookSkimTo(target){
         if (mB.hudup) { // Figure out what mode to go to
             var headinfo=mB.docinfo[target]||mB.docinfo[target.id];
             if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0))) {
                 mB.setMode("statictoc"); mB.setHUD(false,false);
                 addClass(document.body,"cxSKIMMING");}}
-        mB.GoTo(target,"CodexSkimTo");}
-    mB.Skimto=CodexSkimTo;
+        mB.GoTo(target,"MetaBookSkimTo");}
+    metaBook.Skimto=metaBookSkimTo;
 
     // Preview functions
     var oldscroll=false, preview_elt=false;
@@ -1489,10 +1492,10 @@ var metaBook={
             preview_elt=false; oldscroll=false;}}
     
     function clearPreview(){
-        var current=fdjtDOM.$(".codexpreviewtarget");
+        var current=fdjtDOM.$(".mBpreviewtarget");
         var i=0, lim=current.length; while (i<lim) {
             var p=current[i++];
-            dropClass(p,"codexpreviewtarget");
+            dropClass(p,"mBpreviewtarget");
             mB.clearHighlights(p);}}
 
     function startPreview(spec,caller){
@@ -1503,15 +1506,15 @@ var metaBook={
         else if (mB.layout instanceof fdjt.CodexLayout) {
             var dups=((getTarget(target))&&(mB.getDups(target)));
             mB.startPagePreview(target,caller);
-            if (dups) addClass(dups,"codexpreviewtarget");}
+            if (dups) addClass(dups,"mBpreviewtarget");}
         else {
             scrollPreview(target,caller);
-            addClass(target,"codexpreviewtarget");}
+            addClass(target,"mBpreviewtarget");}
         mB.previewing=target;
         addClass(document.body,"cxPREVIEW");
         if (hasClass(target,"codexpage")) addClass(document.body,"cxPAGEPREVIEW");
         return target;}
-    mB.startPreview=startPreview;
+    metaBook.startPreview=startPreview;
     function stopPreview(caller,jumpto){
         clearPreview();
         if ((jumpto)&&(!(jumpto.nodeType)))
@@ -1533,7 +1536,7 @@ var metaBook={
             if (mB.hudup) mB.setHUD(false);
             codexGoTo(jumpto);}
         return false;}
-    mB.stopPreview=stopPreview;
+    metaBook.stopPreview=stopPreview;
 
     function getLevel(elt,rel){
         if (elt.toclevel) {
@@ -1583,7 +1586,7 @@ var metaBook={
             if (level) return level;}
         return false;}
 
-    mB.getTOCLevel=getLevel;
+    metaBook.getTOCLevel=getLevel;
     
     function getCover(){
         if (mB.cover) return mB.cover;
@@ -1592,13 +1595,13 @@ var metaBook={
             fdjtID("COVERPAGE");
         if (cover) mB.cover=cover;
         return cover;}
-    mB.getCover=getCover;
+    metaBook.getCover=getCover;
 
     function fixStaticRefs(string){
         return string.replace(
                 /http:\/\/static.beingmeta.com\//g,mB.root)
             .replace(/{{bmg}}/g,mB.root+"g/");}
-    mB.fixStaticRefs=fixStaticRefs;
+    metaBook.fixStaticRefs=fixStaticRefs;
     
 })();
 

@@ -58,11 +58,11 @@
     var KNode=Knodule.KNode;
 
     var mB=metaBook;
-    mB.search_cloud=false;
+    metaBook.search_cloud=false;
     
-    if (!(mB.empty_cloud)) mB.empty_cloud=false;
-    if (!(mB.show_refiners)) mB.show_refiners=25;
-    if (!(mB.search_gotlucky)) mB.search_gotlucky=7;
+    if (!(mB.empty_cloud)) metaBook.empty_cloud=false;
+    if (!(mB.show_refiners)) metaBook.show_refiners=25;
+    if (!(mB.search_gotlucky)) metaBook.search_gotlucky=7;
     
     var Completions=fdjtUI.Completions;
     var addClass=fdjtDOM.addClass;
@@ -140,7 +140,7 @@
         completions.updated=function(){adjustCloudFont(this);};
 
         return completions;}
-    mB.makeCloud=makeCloud;
+    metaBook.makeCloud=makeCloud;
 
     function cloudSpan(dterm,completions,scores,freqs){
         var freq=freqs.get(dterm)||1;
@@ -298,7 +298,7 @@
                 tag.droplets=[{entry: entry,lang: lang,cloud: cloud}];
                 tag.onLoad(initCloudEntries);
                 return entry;}}}
-    mB.cloudEntry=cloudEntry;
+    metaBook.cloudEntry=cloudEntry;
     
     function addTag2Cloud(tag,cloud,kb,scores,freqs,thresh){
         if (!(kb)) kb=mB.knodule;
@@ -317,7 +317,7 @@
                        (cloudEntry(tagref,cloud)));
             if (!(hasParent(entry,container))) fdjtDOM(container,entry," ");
             return entry;}}
-    mB.addTag2Cloud=addTag2Cloud;
+    metaBook.addTag2Cloud=addTag2Cloud;
 
     function getShowAll(use_cues,how_many){
         var showall=(use_cues)&&
@@ -330,7 +330,7 @@
             showall.title="There are "+how_many+" in all";
         if (showall) showall.onclick=showall_ontap;
         return showall;}
-    mB.UI.getShowAll=getShowAll;
+    metaBook.UI.getShowAll=getShowAll;
 
     function organize_tags(tags,scores,knodule,sourcedb){
         var min_score=false, max_score=false;
@@ -404,7 +404,7 @@
             else addClass(cloud,"showall");
             query.cloud=completions;
             return query.cloud;}}
-    mB.queryCloud=queryCloud;
+    metaBook.queryCloud=queryCloud;
     RefDB.Query.prototype.getCloud=function(){return queryCloud(this);};
     
     function tag_sorter(x,y,scores){
@@ -452,7 +452,7 @@
             else return 0;}
         else if (xv>yv) return -1;
         else return 1;}
-    mB.tag_sorter=tag_sorter;
+    metaBook.tag_sorter=tag_sorter;
     function sort_tags(tags){
         // Sort alphabetically, sort of
         tags.sort(function(x,y){
@@ -491,7 +491,7 @@
             if (sx<sy) return -1;
             else if (sx>sy) return 1;
             else return 0;});}
-    mB.sortTags=sort_tags;
+    metaBook.sortTags=sort_tags;
     
     function sortCloud(cloud){
         var values=[].concat(cloud.values);
@@ -506,7 +506,7 @@
                 if (i>1) holder.appendChild(document.createTextNode(" "));
                 holder.appendChild(completion);}}
         cloud.dom.appendChild(holder);}
-    mB.sortCloud=sortCloud;
+    metaBook.sortCloud=sortCloud;
 
     function sizeCloud(cloud,scores,roots){
         var gscores=mB.tagscores;
@@ -566,7 +566,7 @@
         if (mB.Trace.clouds)
             fdjtLog("Finished sizing tags in %o using scores [%o,%o]",
                     cloud.dom,min_score,max_score);}
-    mB.sizeCloud=sizeCloud;
+    metaBook.sizeCloud=sizeCloud;
 
     function searchcloud_select(evt){
         evt=evt||window.event;
@@ -608,7 +608,7 @@
     function add_searchtag(value){
         mB.setQuery(mB.extendQuery(mB.query,value));}
 
-    mB.UI.searchCloudToggle=function(){
+    metaBook.UI.searchCloudToggle=function(){
         fdjtDOM.toggleClass(fdjtID('METABOOKSEARCHCLOUD'),'showall');
         mB.UI.updateScroller(fdjtID('METABOOKSEARCHCLOUD'));};
 
@@ -629,7 +629,7 @@
                 addClass(completion,"softcue");}}}
     function setCloudCuesFromTarget(cloud,target){
         var tags=[];
-        var targetid=((target.codexbaseid)||(target.id)||(target.frag));
+        var targetid=((target.baseid)||(target.id)||(target.frag));
         var info=mB.docinfo[targetid];
         var glosses=mB.glossdb.find('frag',targetid);
         var knodule=mB.knodule;
@@ -645,8 +645,8 @@
             var g=glosses[i++]; var gtags=g.tags;
             if (gtags) tags=tags.concat(gtags);}
         setCloudCues(cloud,tags);}
-    mB.setCloudCues=setCloudCues;
-    mB.setCloudCuesFromTarget=setCloudCuesFromTarget;
+    metaBook.setCloudCues=setCloudCues;
+    metaBook.setCloudCuesFromTarget=setCloudCuesFromTarget;
 
     function adjustCloudFont(cloud){
         var round=Math.round, sqrt=Math.sqrt;
@@ -670,7 +670,7 @@
             dom.style.fontSize=pct+"%";
             if (mB.Trace.clouds)
                 fdjtLog("Adjusted cloud %o: %o/%o to %o%%",dom,ih,oh,pct);}}
-    mB.adjustCloudFont=adjustCloudFont;
+    metaBook.adjustCloudFont=adjustCloudFont;
     Completions.prototype.adjustCloudFont=function(){
         return adjustCloudFont(this);};
 

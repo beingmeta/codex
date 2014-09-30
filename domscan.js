@@ -280,7 +280,7 @@ metaBook.DOMScan=(function(){
                 ((typeof classname !== "string")||
                  (classname.search(/\b(sbookignore|codexignore)\b/)>=0)))
                 return;
-            if ((child.codexui)||((id)&&(id.search("METABOOK")===0))) return;
+            if ((child.metabookui)||((id)&&(id.search("METABOOK")===0))) return;
 
             if (mB.Trace.domscan>3)
                 fdjtLog("Scanning %o level=%o, loc=%o, head=%o: %j",
@@ -421,7 +421,7 @@ metaBook.DOMScan=(function(){
         /* Build the metadata */
         var i=0; while (i<children.length) {
             var child=children[i++];
-            if (!((child.sbookskip)||(child.codexui)))
+            if (!((child.sbookskip)||(child.metabookui)))
                 scanner(child,scanstate,docinfo);} 
         docinfo._nodecount=scanstate.nodecount;
         docinfo._headcount=scanstate.headcount;

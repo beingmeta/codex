@@ -4,32 +4,32 @@
 
 @charset "UTF-8";
 
-.codexcard { 
+.mbcard { 
     white-space: normal; clear: both;
     text-align: left; text-decoration: none;
     text-align: left;
     font-size: 90%;}
 
-div.codexcard { margin-left: 20px; margin-right: 0px; }
-div.codexcard > div.idhead, div.codexcard > div.tochead {
+div.mbcard { margin-left: 20px; margin-right: 0px; }
+div.mbcard > div.idhead, div.mbcard > div.tochead {
     max-height: 3ex; white-space: nowrap;
     text-overflow: ellipsis; overflow: hidden;}
 
-div.codexcard > div.idhead { margin-left: -10px;}
-div.codexcard > div.tochead { margin-left: -20px; }
+div.mbcard > div.idhead { margin-left: -10px;}
+div.mbcard > div.tochead { margin-left: -20px; }
 
-#METABOOKHUD.openglossmark div.codexcard > div.idhead { display: none;}
-#METABOOKHUD.openglossmark div.codexcard > div.tochead { display: none;}
+#METABOOKHUD.openglossmark div.mbcard > div.idhead { display: none;}
+#METABOOKHUD.openglossmark div.mbcard > div.tochead { display: none;}
 
 /* Sbook notes */
 
-div.codexcard > div { text-align: left;}
-div.codexcard > div span.count { float: right;}
+div.mbcard > div { text-align: left;}
+div.mbcard > div span.count { float: right;}
 
-div.codexcard div.audience, div.codexcard div.links {
+div.mbcard div.audience, div.mbcard div.links {
     text-align: right;}
-div.codexcard > div .audience span.count,
-div.codexcard > div .links span.count {
+div.mbcard > div .audience span.count,
+div.mbcard > div .links span.count {
     float: right; padding-left: 1ex;
     font-style: italic;
     opacity: 0.70;
@@ -40,19 +40,19 @@ div.codexcard > div .links span.count {
     -moz-opacity: 0.70;
     -o-opacity: 0.70;}
 
-div.codexcard > hr {
+div.mbcard > hr {
     color: gold; background-color: gold; min-width: 3px; height: 100%;
     border-right: solid gold 1px; border-left: solid gold 1px;
     position: absolute; left: 0px; 
     border: 0px; padding: 0px; margin: 0px;}
 
-.codexcard a.ref {
+.mbcard a.ref {
   display: block; font-weight: normal;}
-.codexcard a.ref span.title {
+.mbcard a.ref span.title {
   font-family: sans,sans-serif;}
-.codexcard a.ref span.uri {
+.mbcard a.ref span.uri {
   font-family: courier,fixed;}
-.codexcard span.oldterm {
+.mbcard span.oldterm {
     color: blue; background-color: yellow;
     padding: 2px; border: solid blue 1px;
     border-top-left-radius: 6px; border-bottom-left-radius: 6px;
@@ -69,138 +69,138 @@ div.codexcard > hr {
     -moz-border-radius-bottomleft: 6px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;}
-#METABOOKHUD .codexcard span.oldterm {color: blue; }
-.codexcard span.user { 
+#METABOOKHUD .mbcard span.oldterm {color: blue; }
+.mbcard span.user { 
   color: green; font-size: 125%; font-style: italic;}
-.codexcard span.outlet { color: green;}
-.codexcard span.overlay { 
+.mbcard span.outlet { color: green;}
+.mbcard span.overlay { 
   color: green; font-size: 125%; font-style: normal;
   font-variant: small-caps;}
-.codexcard span.links:before { content: " //"; }
-.codexcard span.audience:before { content: " //"; }
-.codexcard .private {
+.mbcard span.links:before { content: " //"; }
+.mbcard span.audience:before { content: " //"; }
+.mbcard .private {
     background-color: red; color: white; vertical-align: top;
     padding-right: 3px; padding-left: 3px;
     font-weight: bold; font-variant: small-caps;}
-.codexcard .links a {
+.mbcard .links a {
   color: blue; text-decoration: underline;
   white-space: nowrap;}
-.codexcard .links img { height: 2ex; width: auto; vertical-align: baseline;}
-.codexcard span.tribe { 
+.mbcard .links img { height: 2ex; width: auto; vertical-align: baseline;}
+.mbcard span.tribe { 
   color: darkblue; font-weight: bold; font-style: italic;}
-.codexcard span.audience { font-weight: normal; }
-.codexcard span.audience .outlet,
-.codexcard span.audience .tribe {
+.mbcard span.audience { font-weight: normal; }
+.mbcard span.audience .outlet,
+.mbcard span.audience .tribe {
     font-size: 90%; font-style: italic; padding-right: 1ex;}
-.codexcard span.audience .outlet { color: slategray; }
-.codexcard span.audience .outlet { color: forestgreen; }
-.codexcard .audience .outlet:before {
+.mbcard span.audience .outlet { color: slategray; }
+.mbcard span.audience .outlet { color: forestgreen; }
+.mbcard .audience .outlet:before {
     content: "→ "; font-weight: bold;}
 
-.codexcardbody { padding-top: 6px;}
-.codexcardbody:before, .codexcard .codexcardbody:after {
+.mbcardbody { padding-top: 6px;}
+.mbcardbody:before, .mbcard .mbcardbody:after {
     content: " "; display: table;}
-.codexcardbody:after { clear: both; }
+.mbcardbody:after { clear: both; }
 
-.codexcard .fdjtclearfloats { margin-bottom: 3px;}
-.codexcard.gloss .codexcardbody {
+.mbcard .fdjtclearfloats { margin-bottom: 3px;}
+.mbcard.gloss .mbcardbody {
     border-top: solid purple 2px;}
-.codexcard.passage .codexcardbody {
+.mbcard.passage .mbcardbody {
     background-color: white;
     border-top: solid purple 1px;}
-.codexcard span.controller { cursor: pointer;}
-.codexcard .info { 
+.mbcard span.controller { cursor: pointer;}
+.mbcard .info { 
   float: right;}
-.codexcard div.info { 
+.mbcard div.info { 
   float: right; width: 40px;}
-.codexcard .info span.score {
+.mbcard .info span.score {
   color: gold; display: none;}
-.codexcard span.tags { font-size: 80%; vertical-align: top;}
-.codexcard span.tags img.tagicon { height: 3ex; width: auto;}
-.codexcard span.tags span { vertical-align: top;}
-.codexcard span.tags span.rawterm, .codexcard span.tags span.dterm {
+.mbcard span.tags { font-size: 80%; vertical-align: top;}
+.mbcard span.tags img.tagicon { height: 3ex; width: auto;}
+.mbcard span.tags span { vertical-align: top;}
+.mbcard span.tags span.rawterm, .mbcard span.tags span.dterm {
     white-space: nowrap;}
-.codexcard span.tags span.sectname {
+.mbcard span.tags span.sectname {
     font-style: italic; color: purple;}
-.codexcard span.tags span.sectname.longterm {
+.mbcard span.tags span.sectname.longterm {
     font-size: 80%; letter-spacing: -0.5px;}
-.codexcard.gloss span.tags.fdjtexpanded { display: block;}
-.codexcard span.tags.fdjtexpanded span.controller {
+.mbcard.gloss span.tags.fdjtexpanded { display: block;}
+.mbcard span.tags.fdjtexpanded span.controller {
     color: black; float: right;
     vertical-align: top; margin-top: -0.5ex;}
-.codexcard span.head {
+.mbcard span.head {
     font-size: 75%;}
-.codexcard span.headhead {
+.mbcard span.headhead {
     color: blue; font-weight: bold;}
-.codexcard span.controller {
+.mbcard span.controller {
     font-weight: bold; color: silver;
     white-space: nowrap;}
-.codexcard span.note {
+.mbcard span.note {
     font-size: 110%; font-style: italic;
     vertical-align: top;}
-.codexcard span.excerpt { vertical-align: top; }
-.codexcardbody img.glosspic,
-.codexcardbody img.userpic,
-.codexcardbody img.sourcepic  {
+.mbcard span.excerpt { vertical-align: top; }
+.mbcardbody img.glosspic,
+.mbcardbody img.userpic,
+.mbcardbody img.sourcepic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: auto;
-    /* This lines up with the padding on codexcardbody */
+    /* This lines up with the padding on mbcardbody */
     margin-top: -6px;}
-.codexcardbody div.glosspic,
-.codexcardbody div.userpic,
-.codexcardbody div.sourcepic  {
+.mbcardbody div.glosspic,
+.mbcardbody div.userpic,
+.mbcardbody div.sourcepic  {
     float: left; clear: left; margin-right: 3px;
     width: 50px; height: 50px; font-size: 32px;
     text-align: center; vertical-align: top;
     color: black; font-weight: bold;
-    /* This lines up with the padding on codexcardbody */
+    /* This lines up with the padding on mbcardbody */
     margin-top: -6px;}
-.codexcardbody div.userpic.sbooknopic,
-.codexcardbody div.sourcepic.sbooknopic {
+.mbcardbody div.userpic.sbooknopic,
+.mbcardbody div.sourcepic.sbooknopic {
     background-image:
     url(https://s3.amazonaws.com/beingmeta/static/g/codex/someone50x50.png);}
-.codexcard img.detailsbutton { border: none; }
-.codexcard img.xrefsbutton { border: none;}
-.codexcard .score {
+.mbcard img.detailsbutton { border: none; }
+.mbcard img.xrefsbutton { border: none;}
+.mbcard .score {
     float: right; color: darkblue;
     font-size: 80%; vertical-align: top; margin-top: -0.5ex;}
-.codexcard .glossinfo {
+.mbcard .glossinfo {
     float: right; clear: right; display: block;
     padding: 0px; margin: 0px;
     margin-left: 3px; padding-top: 2px;
     text-align: right;}
-.codexcard .glossinfo img { padding-left: 4px; cursor: pointer; }
-.codexcard .tool {
+.mbcard .glossinfo img { padding-left: 4px; cursor: pointer; }
+.mbcard .tool {
     font-weight: normal; cursor: pointer;
     font-size: 70%; text-decoration: none;}
-.codexcard .tool > span, .codexcard .tool > a, .codexcard .tool > img {
+.mbcard .tool > span, .mbcard .tool > a, .mbcard .tool > img {
     float: right; }
-.codexcard .tool span.label {
+.mbcard .tool span.label {
   font-weight: bold; color: blue;
   padding-right: 1ex; padding-left: 1ex; padding-bottom: 1ex; 
   display: none;}
-.codexcard .tool img {
+.mbcard .tool img {
     height: 40px; width: 40px; opacity: 0.3; clear: right;
     /* This makes it overlap the date, tightening things up generally */
     margin-right: 6px; margin-top: -1em;}
-.codexcard span.detail {
+.mbcard span.detail {
     background-color: lightblue; color: black;
     padding: 2px; margin-top: 2px;
     border: solid darkblue 2px; border-radius: 1ex;
     -webkit-border-radius: 1ex; -khtml-border-radius: 1ex;
     -moz-border-radius: 1ex; -o-border-radius: 1ex;}
-.codexcard .age {
+.mbcard .age {
     color: rgb(18, 141, 238); font-weight: bold;
     vertical-align: top; padding-right: 0.5em; padding-left: 0.4ex;
     clear: none;}
-.codexcard .age:hover {text-decoration: underline;} 
-.codexcard a.deletebutton { 
+.mbcard .age:hover {text-decoration: underline;} 
+.mbcard a.deletebutton { 
   color: orange; text-decoration: none;
   padding-right: 3px;}
-.codexcard .glossinfo img.delete { 
+.mbcard .glossinfo img.delete { 
     padding-right: 3px;
     cursor: pointer;}
-.codexcard a.headref {
+.mbcard a.headref {
     float: right; clear: right; 
     font-family: times,serif; font-style: italic; font-size: 80%;
     white-space: nowrap; padding: 2px; padding-top: 0px;

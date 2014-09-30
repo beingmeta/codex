@@ -56,18 +56,18 @@ metaBook.TOC=
 
         var mB=metaBook;
         var mbID=mB.ID;
-        var cxicon=mB.icon;
+        var mbicon=mB.icon;
         
         function navicon(kind){
             switch (kind) {
-            case 'right': return cxicon("skim_right",64,64);
-            case 'left': return cxicon("skim_left",64,64);
-            case 'start': return cxicon("skim_left_stop",64,64);
-            case 'end': return cxicon("skim_right_stop",64,64);
+            case 'right': return mbicon("skim_right",64,64);
+            case 'left': return mbicon("skim_left",64,64);
+            case 'start': return mbicon("skim_left_stop",64,64);
+            case 'end': return mbicon("skim_right_stop",64,64);
             default: return false;}}
-        mB.navicon=navicon;
+        metaBook.navicon=navicon;
 
-        function CodexTOC(headinfo,depth,tocspec,prefix,headless){
+        function metaBookTOC(headinfo,depth,tocspec,prefix,headless){
             var sizebar=fdjtDOM("HR.sizebar");
             var progressbar=fdjtDOM("HR.progressbar");
             var head=((headless)?(false):
@@ -112,7 +112,7 @@ metaBook.TOC=
                 return toc;}
             var i=0; var n=sub.length;
             while (i<n) {
-                toc.appendChild(new CodexTOC(sub[i++],depth+1,spec,prefix,headless));}
+                toc.appendChild(new metaBookTOC(sub[i++],depth+1,spec,prefix,headless));}
             if (depth===0) {
                 if (prefix)
                     mB.TapHold[prefix]=fdjtUI.TapHold(
@@ -143,7 +143,7 @@ metaBook.TOC=
             return div;}
         
         function generate_spanbar(headinfo){
-            var spanbar=fdjtDOM("div.spanbar.codexslice");
+            var spanbar=fdjtDOM("div.spanbar.bookslice");
             var spans=fdjtDOM("div.spans"), span=false;
             var start=headinfo.starts_at, end=headinfo.ends_at;
             var len=end-start;
@@ -249,9 +249,9 @@ metaBook.TOC=
                     addClass(show.parentNode,"codexlivehead");
                 addClass(show,"codexlivehead");}
             addClass(base_elt,"codexcurhead");}
-        CodexTOC.updateTOC=updateTOC;
+        metaBookTOC.updateTOC=updateTOC;
 
-        CodexTOC.setHead=function setHead(headinfo){
+        metaBookTOC.setHead=function setHead(headinfo){
             var livetitles=(fdjtDOM.$("a.codexlivehead.codextitle"));
             var i=0; var lim=livetitles.length;
             while (i<lim) livetitles[i++].style.fontSize='';
@@ -292,7 +292,7 @@ metaBook.TOC=
                         if (sw>cw) elt.style.fontSize=(80*(cw/sw))+"%";}}
                 head=head.head;}}
             
-        return CodexTOC;})();
+        return metaBookTOC;})();
 
 /* Emacs local variables
    ;;;  Local variables: ***

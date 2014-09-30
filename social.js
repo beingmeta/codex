@@ -58,7 +58,7 @@
     var hasClass=fdjtDOM.hasClass;
 
     var mB=metaBook;
-    var cxicon=mB.icon;
+    var mbicon=mB.icon;
 
     /* Social UI components */
 
@@ -84,9 +84,9 @@
                 var kind=info.kind;
                 if (pic) {}
                 else if (kind===':CIRCLE')
-                    pic=cxicon("readingcircle",64,64);
+                    pic=mbicon("readingcircle",64,64);
                 else if (kind===':OVERLAY')
-                    pic=cxicon("sideguide",64,64);
+                    pic=mbicon("sideguide",64,64);
                 else {}
                 if (pic)
                   icon=fdjtDOM.Image
@@ -106,8 +106,8 @@
                 icon.id="SBOOKSOURCEICON"+humid;
                 fdjtDOM(fdjtID("METABOOKSOURCES")," ",icon);}}
         return info;}
-    mB.UI.addSource=addSource;
-    mB.UI.addGlossSource=function(info){addSource(info,true);};
+    metaBook.UI.addSource=addSource;
+    metaBook.UI.addGlossSource=function(info){addSource(info,true);};
 
     function everyone_ontap(evt){
         evt=evt||window.event||null;
@@ -195,13 +195,13 @@
         image.setAttribute("data-images",images.join("|"));
         return glossmark;}
     
-    mB.UI.addGlossmark=function(passage,gloss){
+    metaBook.UI.addGlossmark=function(passage,gloss){
         var Glosses=mB.glossdb;
         var current_glossmark=fdjtDOM.getChild(passage,".codexglossmark");
         if ((current_glossmark)&&(current_glossmark.parentNode===passage)) {
             if (gloss) extendGlossmark(current_glossmark,[gloss]);
             return current_glossmark;}
-        var imgsrc=(cxicon("sbwedge",64,64));
+        var imgsrc=(mbicon("sbwedge",64,64));
         var wedge=fdjtDOM.Image(imgsrc,"wedge","glosses");
         var glossmark=fdjtDOM("a.codexglossmark.fdjtskiptext",wedge);
         // Get all the glosses from the index
@@ -220,14 +220,14 @@
         glossmark.name="METABOOK_GLOSSMARK_"+id;
         return glossmark;};
     
-    var CodexSlice=mB.Slice;
+    var BookSlice=mB.Slice;
 
     function showGlossmark(target,point) {
-        var id=target.codexbaseid||target.id;
+        var id=target.baseid||target.id;
         if (!(id)) return;
         var dups=mB.getDups(target.id);
         var glossids=mB.glossdb.find('frag',id), glosses=[];
-        var slicediv=fdjtDOM("div.codexglosses.codexslice");
+        var slicediv=fdjtDOM("div.codexglosses.bookslice");
         if ((!(glossids))||(!(glossids.length)))
             fdjtDOM.addClass(slicediv,"noglosses");
         if (mB.target) mB.clearHighlights(mB.target);
@@ -241,9 +241,9 @@
                 var range=mB.findExcerpt(dups,gloss.excerpt,gloss.exoff);
                 if (range) {
                     var starts=range.startContainer;
-                    if (!(hasClass(starts,"codexhighlightexcerpt"))) {
-                        fdjtUI.Highlight(range,"codexhighlightexcerpt");}}}}
-        var slice=new CodexSlice(slicediv,glosses);
+                    if (!(hasClass(starts,"mBhighlightexcerpt"))) {
+                        fdjtUI.Highlight(range,"mBhighlightexcerpt");}}}}
+        var slice=new BookSlice(slicediv,glosses);
         var hudwrapper=fdjtDOM("div.hudpanel#METABOOKPOINTGLOSSES",slicediv);
         if (point) {
             hudwrapper.style.display='block';
@@ -322,14 +322,14 @@
         mB.setTarget(target);
         slice.update();
         mB.setMode("openglossmark");}
-    mB.showGlossmark=showGlossmark;
+    metaBook.showGlossmark=showGlossmark;
 
     function clearGlossmark() {
         if (mB.mode==="openglossmark") mB.setMode(false,true);
-        var slicediv=fdjtDOM("div.codexglosses.codexslice");
+        var slicediv=fdjtDOM("div.codexglosses.bookslice");
         var hudwrapper=fdjtDOM("div.hudpanel#METABOOKPOINTGLOSSES",slicediv);
         fdjtDOM.replace("METABOOKPOINTGLOSSES",hudwrapper);}
-    mB.clearGlossmark=clearGlossmark;
+    metaBook.clearGlossmark=clearGlossmark;
 
 })();
 

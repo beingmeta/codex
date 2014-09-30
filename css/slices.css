@@ -6,48 +6,48 @@
 
 /* codex 'slices' of summaries or glosses */
 
-div.codexslice { cursor: crosshair; }
-div.codexslice button, div.codexslice input[TYPE="SUBMIT"],
-div.codexslice img.button, div.codexslice .tool {
+div.bookslice { cursor: crosshair; }
+div.bookslice button, div.bookslice input[TYPE="SUBMIT"],
+div.bookslice img.button, div.bookslice .tool {
     cursor: pointer; }
-div.codexslice input[TYPE="TEXT"], div.codexslice textarea { cursor: text; }
+div.bookslice input[TYPE="TEXT"], div.bookslice textarea { cursor: text; }
 
-div.codexslice div.codexcard { margin-left: 20px;}
-div.codexslice.sourced div.codexcard { display: none;}
-div.codexslice.sourced div.codexcard.sourced { display: block;}
+div.bookslice div.mbcard { margin-left: 20px;}
+div.bookslice.sourced div.mbcard { display: none;}
+div.bookslice.sourced div.mbcard.sourced { display: block;}
 @media (pointer: coarse) and (max-width: 650px) {
-    div.codexslice div.codexcard { font-size: 120%; }}
+    div.bookslice div.mbcard { font-size: 120%; }}
 
-div.codexslice.sourced div.codexthread { display: none;}
-div.codexslice.sourced div.codexthread > div { display: none;}
-div.codexslice.sourced div.codexthread.sourced { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.tochead { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.idhead { display: block;}
-div.codexslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
-div.codexslice.sourced div.codexthread.sourced > div.codexthread.sourced {
+div.bookslice.sourced div.codexthread { display: none;}
+div.bookslice.sourced div.codexthread > div { display: none;}
+div.bookslice.sourced div.codexthread.sourced { display: block;}
+div.bookslice.sourced div.codexthread.sourced > div.tochead { display: block;}
+div.bookslice.sourced div.codexthread.sourced > div.idhead { display: block;}
+div.bookslice.sourced div.codexthread.sourced > div.codexthread { display: none;}
+div.bookslice.sourced div.codexthread.sourced > div.codexthread.sourced {
     display: block;}
 
-div.codexslice.onepassage .tocblock .tochead {display:none;}
+div.bookslice.onepassage .tocblock .tochead {display:none;}
 
-div.codexslice .tocthread {}
-div.codexslice .tocthread .codexcard .tochead { display: none;}
-div.codexslice .idthread .codexcard .idhead { display: none;}
-div.codexslice .tocthread > .codexcard .idhead { display: none;}
+div.bookslice .tocthread {}
+div.bookslice .tocthread .mbcard .tochead { display: none;}
+div.bookslice .idthread .mbcard .idhead { display: none;}
+div.bookslice .tocthread > .mbcard .idhead { display: none;}
 
-div.codexslice .tocthread > .codexcard:first-child .tochead {
+div.bookslice .tocthread > .mbcard:first-child .tochead {
     display: block;}
-div.codexslice .tocthread > .idthread:first-child .codexcard:first-child .tochead {
+div.bookslice .tocthread > .idthread:first-child .mbcard:first-child .tochead {
     display: block;}
-div.codexslice .idthread > .codexcard:first-child .idhead {
+div.bookslice .idthread > .mbcard:first-child .idhead {
     display: block;}
 
-div.codexslice .codexcard div.detail { 
+div.bookslice .mbcard div.detail { 
   display: none; color: ivory; clear: both;}
-div.codexslice .showdetail div.detail { display: block;}
-div.codexslice div.xrefs { display: none;}
-div.codexslice .showxrefs div.xrefs { display: block;}
-div.codexslice div.xrefs a { display: block;}
-div.codexslice div.codexcard span.tags span.other { display: none;}
+div.bookslice .showdetail div.detail { display: block;}
+div.bookslice div.xrefs { display: none;}
+div.bookslice .showxrefs div.xrefs { display: block;}
+div.bookslice div.xrefs a { display: block;}
+div.bookslice div.mbcard span.tags span.other { display: none;}
 
 div.codexthread {
     clear: both; margin: 0px; border: none;
@@ -58,31 +58,31 @@ div.codexthread.singleton {
 div.codexthread .locbar { background-color: silver;}
 div.codexthread.headthread { border-top: solid gold 2px;}
 div.codexthread.idthread {border: none;}
-div.codexthread.idthread .codexcard {}
-div.codexslice div.codexthread div.codexcard div.locbar {border: none;}
-div.codexslice div.codexthread div.codexcard div.locbar {display:none;}
-div.codexslice div.codexthread div.codexcard:first-child div.locbar {
+div.codexthread.idthread .mbcard {}
+div.bookslice div.codexthread div.mbcard div.locbar {border: none;}
+div.bookslice div.codexthread div.mbcard div.locbar {display:none;}
+div.bookslice div.codexthread div.mbcard:first-child div.locbar {
     display:block;}
 
-div.codexslice div.codexskimpoint {
+div.bookslice div.codexskimpoint {
     border-left: solid red 16px;
     border-top: solid red 4px;
     border-bottom: solid red 4px;
     margin-left: 0px;
     background-color: white;}
-div.codexslice div.codexskimpoint.codexcard {}
-div.codexslice div.codexskimpoint.codexcard .tool {
+div.bookslice div.codexskimpoint.mbcard {}
+div.bookslice div.codexskimpoint.mbcard .tool {
     font-size: 47%; font-weight: bold;}
-div.codexslice div.codexskimpoint.codexcard img.userpic,
-div.codexslice div.codexskimpoint.codexcard img.sourcepic {
+div.bookslice div.codexskimpoint.mbcard img.userpic,
+div.bookslice div.codexskimpoint.mbcard img.sourcepic {
     width: 75px;}
 
-div.codexskimpoint .codexcard .codexcardbody { padding-top: 0px;}
+div.codexskimpoint .mbcard .mbcardbody { padding-top: 0px;}
 
-div.codexslice div.codexcard.codexskimpoint + div.codexcard > div.codexcardbody,
-div.codexslice div.codexcard.codexskimpoint .codexcardbody {
+div.bookslice div.mbcard.codexskimpoint + div.mbcard > div.mbcardbody,
+div.bookslice div.mbcard.codexskimpoint .mbcardbody {
     border-top-width: 0px;}
-div.codexslice div.codexcard.codexskimpoint .fdjtclearfloats {
+div.bookslice div.mbcard.codexskimpoint .fdjtclearfloats {
     margin-bottom: 0px;}
 
 /* METABOOKSOURCES */
@@ -168,19 +168,19 @@ div.idhead div {
     -moz-opacity: 0.75;
     -o-opacity: 0.75;}
 
-div.codexslice div.codexcard div.tochead { display: none; }
-div.codexslice div.codexcard div.idhead { display: none; }
-div.codexslice div.codexcard.slicenewhead div.tochead { display: block; }
-div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
+div.bookslice div.mbcard div.tochead { display: none; }
+div.bookslice div.mbcard div.idhead { display: none; }
+div.bookslice div.mbcard.slicenewhead div.tochead { display: block; }
+div.bookslice div.mbcard.slicenewpassage div.idhead { display: block; }
 
-#METABOOKPOINTGLOSSES div.codexslice div.codexcard.gloss.slicenewpassage
-  div.codexcardbody,
-#METABOOKSKIMMER div.codexcard div.codexcardbody {
+#METABOOKPOINTGLOSSES div.bookslice div.mbcard.gloss.slicenewpassage
+  div.mbcardbody,
+#METABOOKSKIMMER div.mbcard div.mbcardbody {
     border-top: 0px; padding-left: 1em; padding-top: 0.25ex;}
-#METABOOKSKIMMER div.codexcard div.idhead {
+#METABOOKSKIMMER div.mbcard div.idhead {
     border-bottom: 0px;}
 
-#METABOOKFRAME.cxANIMATE body.cxISCROLL div.codexslice {
+#METABOOKFRAME.cxANIMATE body.cxISCROLL div.bookslice {
     transition-property: transform;
     -webkit-transition-property: -webkit-transform;
     -moz-transition-property: -moz-transform;
