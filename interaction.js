@@ -154,7 +154,7 @@
             Codex.TapHold.body=fdjtUI.TapHold(
                 fdjt.ID("CODEXBODY"),
                 {override: true,noslip: true,id: "CODEXBODY",
-                 maxtouches: 2,taptapthresh: false,
+                 maxtouches: 2,taptapthresh: 350,
                  untouchable: externClickable,
                  movethresh: 10});
             addHandlers(Codex.HUD,'hud');}
