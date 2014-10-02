@@ -699,7 +699,7 @@ body.hudup._FULLHEIGHT #METABOOKHUD .hudbutton {
     -moz-opacity: 0.95;
     -o-opacity: 0.95;}
 
-body.hudup #METABOOKPAGE p, body.hudup #METABOOKPAGE div { cursor: pointer;}
+body.hudup #CODEXPAGE p, body.hudup #CODEXPAGE div { cursor: pointer;}
 
 /* METABOOKPOINTGLOSSES rules */
 

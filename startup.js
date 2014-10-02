@@ -1774,8 +1774,8 @@ metaBook.Startup=
 
         function initBody(){
             var body=document.body, started=fdjtTime();
-            var init_content=fdjtID("METABOOKCONTENT");
-            var content=(init_content)||(fdjtDOM("div#METABOOKCONTENT"));
+            var init_content=fdjtID("CODEXCONTENT");
+            var content=(init_content)||(fdjtDOM("div#CODEXCONTENT"));
             var i, lim;
             if (mB.Trace.startup>2) fdjtLog("Starting initBody");
 
@@ -1843,7 +1843,7 @@ metaBook.Startup=
             var pages=mB.pages=fdjtID("METABOOKPAGES")||
                 fdjtDOM("div#METABOOKPAGES");
             var page=mB.page=fdjtDOM(
-                "div#METABOOKPAGE",
+                "div#CODEXPAGE",
                 fdjtDOM("div#METABOOKPAGINATING","Laid out ",
                         fdjtDOM("span#METABOOKPAGEPROGRESS",""),
                         " pages"),
@@ -1921,13 +1921,13 @@ metaBook.Startup=
                 mB.CSS.glossmark_rule.style.marginRight=
                     (-glossmark_offset)+"px";}
             else mB.CSS.glossmark_rule=fdjtDOM.addCSSRule(
-                "#METABOOKPAGE .glossmark","margin-right: "+
+                "#CODEXPAGE .glossmark","margin-right: "+
                     (-glossmark_offset)+"px;");
             
             var shrinkrule=mB.CSS.shrinkrule;
             if (!(shrinkrule)) {
                 shrinkrule=fdjtDOM.addCSSRule(
-                    "body._SHRINK #METABOOKPAGE,body._PREVIEW #METABOOKPAGE, body._SKIMMING #METABOOKPAGE", "");
+                    "body._SHRINK #CODEXPAGE,body._PREVIEW #CODEXPAGE, body._SKIMMING #CODEXPAGE", "");
                 mB.CSS.shrinkrule=shrinkrule;}
             var ph=geom.height, sh=ph-25, vs=(sh/ph);
             shrinkrule.style[fdjtDOM.transform]="scale("+vs+","+vs+")";
@@ -2002,8 +2002,8 @@ metaBook.Startup=
             outer_width=window.outerWidth;
             outer_height=window.outerHeight;
             // Possibly a new layout
-            var width=getGeometry(fdjtID("METABOOKPAGE"),false,true).width;
-            var height=getGeometry(fdjtID("METABOOKPAGE"),false,true).inner_height;
+            var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             if ((layout)&&(layout.width===width)&&(layout.height===height))
                 return;
             if ((layout)&&(layout.onresize)&&(!(mB.freezelayout))) {

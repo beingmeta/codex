@@ -38,8 +38,8 @@
        #METABOOKCOVER
        #METABOOKMEDIA
      #METABOOKBODY
-       #METABOOKCONTENT
-       #METABOOKPAGE
+       #CODEXCONTENT
+       #CODEXPAGE
          #METABOOKPAGES
            .codexpage 
            ....
@@ -166,15 +166,15 @@ body._COVER #METABOOKHUD, body.hudup._COVER #METABOOKHUD {
     left: 0px; right: 0px; top: 0px; bottom: 0px;} /* z-index: -50; */
 #METABOOKBODY { background-color: #ffffff; color: #444; }
 
-/* METABOOKCONTENT is where linear content lives for scrolling layout.
+/* CODEXCONTENT is where linear content lives for scrolling layout.
    It is also used to determine the width of the content region
    (whether scrolled or paged), so the width can be controlled by
-   putting constraints on #METABOOKCONTENT */
-#METABOOKCONTENT {}
+   putting constraints on #CODEXCONTENT */
+#CODEXCONTENT {}
 
-/* METABOOKPAGE is the fixed position wrapper for paged layout.
+/* CODEXPAGE is the fixed position wrapper for paged layout.
    It's left and right styles are set based on the content width. */
-#METABOOKPAGE {
+#CODEXPAGE {
     position: absolute; overflow: visible;
     padding: 0px; margin: 0px;
     left: 50px; right: 50px;

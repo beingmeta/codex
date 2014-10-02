@@ -2065,7 +2065,7 @@
              ("Release to return to page %d, tap a key to settle here (page %d)")),
             mB.curpage,gopage);
         previewing_page=gopage;
-        mB.startPreview("METABOOKPAGE"+previewing_page,"pagebar_span_hold/timeout");}
+        mB.startPreview("CODEXPAGE"+previewing_page,"pagebar_span_hold/timeout");}
     function pagebar_tap(evt,target){
         evt=evt||window.event; if (!(target)) target=fdjtUI.T(evt);
         var pagebar=fdjtID("METABOOKPAGEBAR");

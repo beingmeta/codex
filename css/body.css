@@ -35,11 +35,11 @@
 
 body.sbook { font-size: 62.5%; line-height: inherit;}
 
-#METABOOKBODY #METABOOKCONTENT {
+#METABOOKBODY #CODEXCONTENT {
     margin-left: 3em; margin-right: 3em;}
 
-#METABOOKPAGE { max-width: 40em;}
-#METABOOKPAGE {
+#CODEXPAGE { max-width: 40em;}
+#CODEXPAGE {
     box-sizing: border-box; -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;}
 
@@ -114,13 +114,13 @@ span { font-size: inherit; }
 .sbooktitlepage .credits .lifespan {
     white-space: nowrap; font-size: 0.9em;}
 
-body.codexpagesizedefault #METABOOKPAGE {}
-body.codexpagesizefull #METABOOKPAGE {
+body.codexpagesizedefault #CODEXPAGE {}
+body.codexpagesizefull #CODEXPAGE {
     height: 98%; top: 1%; bottom: 1%;
     width: 98%; left: 1%; right: 1%;}
-body.codexpagesizefullheight #METABOOKPAGE {
+body.codexpagesizefullheight #CODEXPAGE {
     height: 98%; top: 1%; bottom: 1%;}
-body.codexpagesizefullwidth #METABOOKPAGE {
+body.codexpagesizefullwidth #CODEXPAGE {
     width: 98%; left: 1%; right: 1%;}
 
 /* Emacs local variables

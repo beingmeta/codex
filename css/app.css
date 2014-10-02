@@ -33,15 +33,15 @@
 
 /* Major wrappers and rules */
 
-body._FULLWIDTH #METABOOKPAGE { max-width: inherit;}
-body._SCROLL #METABOOKPAGE, img.MBpagebutton { display: none;}
+body._FULLWIDTH #CODEXPAGE { max-width: inherit;}
+body._SCROLL #CODEXPAGE, img.MBpagebutton { display: none;}
 
 body._BYPAGE { overflow: hidden; }
-body._BYPAGE #METABOOKCONTENT { display: none;}
-body._LAYOUT #METABOOKCONTENT { display: none;}
+body._BYPAGE #CODEXCONTENT { display: none;}
+body._LAYOUT #CODEXCONTENT { display: none;}
 
 /* The page content gets a little transparent when the HUD comes up*/
-body._ANIMATE.hudup #METABOOKPAGE {
+body._ANIMATE.hudup #CODEXPAGE {
     transition-property: opacity;
     -webkit-transition-property: opacity;
     -moz-transition-property: opacity;
@@ -58,45 +58,45 @@ body._ANIMATE.hudup #METABOOKPAGE {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 /* When the page is shrunk, the border is visible */
-body._PREVIEW #METABOOKPAGE, body._SHRINK #METABOOKPAGE  {
+body._PREVIEW #CODEXPAGE, body._SHRINK #CODEXPAGE  {
     border-color: rgba(48, 60, 97, 0.54);}
 
 /* This is for page shrinking when appropriate */
-body._ANIMATE #METABOOKPAGE {
+body._ANIMATE #CODEXPAGE {
     transition-property: opacity,transform;
     -webkit-transition-property: -webkit-opacity,-webkit-transform;
     -moz-transition-property: -moz-opacity,-moz-transform;
     -o-transition-property: -o-opacity,-o-transform;
     transition-duration: 0.25s; -webkit-transition-duration: 0.25s;
     -moz-duration: 0.25s; -o-transition-duration: 0.25s;}
-body #METABOOKPAGE {
+body #CODEXPAGE {
     transform: scale(1,1); -webkit-transform:scale(1,1);
     -moz-transform: scale(1,1); -o-transform:scale(1,1);}
-body._NOSHRINK #METABOOKPAGE {
+body._NOSHRINK #CODEXPAGE {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body._SHRINK #METABOOKPAGE, body._PREVIEW #METABOOKPAGE,
-body._SKIMMING #METABOOKPAGE {
+body._SHRINK #CODEXPAGE, body._PREVIEW #CODEXPAGE,
+body._SKIMMING #CODEXPAGE {
     transform-origin: center top;
     -webkit-transform-origin: center top;
     -moz-transform-origin: center top;
     -o-transform: center top;}
 
-body._ANIMATE._NOSHRINK #METABOOKPAGE .codexpage {
+body._ANIMATE._NOSHRINK #CODEXPAGE .codexpage {
     transform: inherit; -webkit-transform: inherit;
     -moz-transform: inherit; -o-transform: inherit;}
-body._SHRINK #METABOOKPAGE .codexpage,
-body._PREVIEW #METABOOKPAGE .codexpage,
-body._SKIMMING #METABOOKPAGE .codexpage {
+body._SHRINK #CODEXPAGE .codexpage,
+body._PREVIEW #CODEXPAGE .codexpage,
+body._SKIMMING #CODEXPAGE .codexpage {
     transform: scale(0.98,0.98); -webkit-transform:scale(0.98,0.98);
     -moz-transform: scale(0.98,0.98); -o-transform:scale(0.98,0.98);}
 
-#METABOOKPAGE #METABOOKPAGES {
+#CODEXPAGE #METABOOKPAGES {
     position: absolute;
     top: 0px; bottom:0px; left: 0px; right: 0px;
     padding: 0px; margin: 0px; border: 0px;
     overflow: visible;}
-#METABOOKPAGE #METABOOKPAGE.codexpaginating #METABOOKPAGES {
+#CODEXPAGE #CODEXPAGE.codexpaginating #METABOOKPAGES {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -109,19 +109,19 @@ body._BYPAGE {
     margin-top: 0px; margin-bottom: 0px;
     margin-left: 0px; margin-right: 0px;}
 
-body._SCROLL #METABOOKCONTENT {
+body._SCROLL #CODEXCONTENT {
     padding-left: 3em; padding-right: 3em;}
 
-#METABOOKCONTENT > * {
+#CODEXCONTENT > * {
     max-width: inherit;}
 
-#METABOOKCONTENT, #METABOOKCONTENT p, #METABOOKCONTENT div {
+#CODEXCONTENT, #CODEXCONTENT p, #CODEXCONTENT div {
     user-select: auto;
     -o-user-select: auto;
     -moz-user-select: auto;
     -webkit-user-select: auto;}
 
-body._STARTUP #METABOOKCONTENT {
+body._STARTUP #CODEXCONTENT {
     opacity: 0.35;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
     filter: alpha(opacity=35);
@@ -130,14 +130,14 @@ body._STARTUP #METABOOKCONTENT {
     -moz-opacity: 0.35;
     -o-opacity: 0.35;}
 
-#METABOOKPAGE #METABOOKPAGES #METABOOKCONTENT {
+#CODEXPAGE #METABOOKPAGES #CODEXCONTENT {
     text-align: left;
     padding: 0px; margin: 0px; border: 0px;
     /* This should make space for glossmarks and buttons */
     padding-left: 32px; padding-right: 32px;
     margin-right: 0px;}
 
-body._BYPAGE #METABOOKPAGE #METABOOKCONTENT .codexpagebreak {
+body._BYPAGE #CODEXPAGE #CODEXCONTENT .codexpagebreak {
     column-break-before: always;
     break-before: always;
     -o-column-break-before: always;
@@ -329,14 +329,14 @@ div.locbar hr {
     width: 54px; height: 50px;
     box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     z-index: 50;}
-#METABOOKPAGE .glossmark {margin-right: -50px;}
+#CODEXPAGE .glossmark {margin-right: -50px;}
 body._NARROW div.fdjtselecting .glossmark {
     width: 10px; z-index: -20; }
 div.fdjtselecting .glossmark > img {
     visibility: hidden;}
 div.fdjtselecting .glossmark:hover > img {
     visibility: visible;}
-/* #METABOOKCONTENT .glossmark { right: 5px;} */
+/* #CODEXCONTENT .glossmark { right: 5px;} */
 
 body .glossmark > img {
     opacity: 0.01;
@@ -693,7 +693,7 @@ body._ANIMATE._PREVIEW div.codexpage {
     -moz-transition-property: none !important;
     -webkit-transition-property: none !important;}
 
-body._ANIMATE #METABOOKPAGE div.codexpage {
+body._ANIMATE #CODEXPAGE div.codexpage {
     transition-duration: 0.15s;
     -o-transition-duration: 0.15s;
     -moz-transition-duration: 0.15s;
@@ -753,26 +753,26 @@ body._ANIMATE div.codexpage.newpage.onright.curpage, div.codexpage.newpage.onlef
 
 /* Special rules for overriding properties on split (dup) passages */
 
-body #METABOOKBODY #METABOOKPAGE .codexpage .codexdupstart {
+body #METABOOKBODY #CODEXPAGE .codexpage .codexdupstart {
     padding-bottom: 0px;
     border-bottom-width: 0px;
     margin-bottom: 0px;}
-body #METABOOKBODY #METABOOKPAGE .codexpage .codexdup {
+body #METABOOKBODY #CODEXPAGE .codexpage .codexdup {
     padding-top: 0px;
     border-top-width: 0px;
     margin-top: 0px;
     padding-bottom: 0px;
     border-bottom-width: 0px;
     margin-bottom: 0px;}
-body #METABOOKBODY #METABOOKPAGE .codexpage p.codexdup,
-body #METABOOKBODY #METABOOKPAGE .codexpage p.codexdupend {
+body #METABOOKBODY #CODEXPAGE .codexpage p.codexdup,
+body #METABOOKBODY #CODEXPAGE .codexpage p.codexdupend {
   text-indent: 0px;}
-body #METABOOKBODY #METABOOKPAGE .codexpage .codexdupend {
+body #METABOOKBODY #CODEXPAGE .codexpage .codexdupend {
     padding-top: 0px;
     border-top-width: 0px;
     margin-top: 0px;}
 
-#METABOOKPAGE.codexpaginating div.codexpage { visibility: hidden;}
+#CODEXPAGE.codexpaginating div.codexpage { visibility: hidden;}
 
 img.codexcoverpage {
     display: block;
@@ -877,16 +877,16 @@ div.fdjtdialog .closebutton {
 /* Media rules */
 
 @media screen and (min-width: 500px) and (max-width: 700px) {
-    #METABOOKPAGE {left: 25px; right: 25px;}}
+    #CODEXPAGE {left: 25px; right: 25px;}}
 @media screen and (min-width: 350px) and (max-width: 500px) {
-    #METABOOKPAGE {left: 10px; right: 10px;}}
+    #CODEXPAGE {left: 10px; right: 10px;}}
 @media screen and (max-width: 300px) {
-    #METABOOKPAGE {left: 5px; right: 5px;}}
+    #CODEXPAGE {left: 5px; right: 5px;}}
 
 @media screen and (min-height: 300px) and (max-height: 500px) {
-    #METABOOKPAGE {top: 10px; bottom: 20px;}}
+    #CODEXPAGE {top: 10px; bottom: 20px;}}
 @media screen and (max-height: 300px) {
-    #METABOOKPAGE {top: 5px; bottom: 15px;}}
+    #CODEXPAGE {top: 5px; bottom: 15px;}}
 
 /* Emacs local variables
 ;;;  Local variables: ***

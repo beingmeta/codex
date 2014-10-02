@@ -149,7 +149,7 @@ metaBook.Paginate=
             addClass(document.body,"_LAYOUT");
             scaleLayout(false);
             var forced=((init)&&(init.forced));
-            var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
+            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
             var height=geom.inner_height, width=geom.width;
             var justify=mB.justify;
             var spacing=mB.bodyspacing;
@@ -189,14 +189,14 @@ metaBook.Paginate=
 
             function restore_layout(content,layout_id){
                 fdjtLog("Using saved layout %s",layout_id);
-                fdjtID("METABOOKCONTENT").style.display='none';
+                fdjtID("CODEXCONTENT").style.display='none';
                 layoutMessage("Using cached layout",0);
                 dropClass(document.body,"_SCROLL");
                 addClass(document.body,"_BYPAGE");
                 layout.restoreLayout(content,finish_layout);}
             function finish_layout(layout) {
-                fdjtID("METABOOKPAGE").style.visibility='';
-                fdjtID("METABOOKCONTENT").style.visibility='';
+                fdjtID("CODEXPAGE").style.visibility='';
+                fdjtID("CODEXCONTENT").style.visibility='';
                 dropClass(document.body,"_LAYOUT");
                 mB.layout=layout;
                 mB.pagecount=layout.pages.length;
@@ -255,8 +255,8 @@ metaBook.Paginate=
                 dropClass(document.body,"_SCROLL");
                 addClass(document.body,"_BYPAGE");
                 // This keeps the page content hidden during layout
-                // fdjtID("METABOOKPAGE").style.visibility='hidden';
-                fdjtID("METABOOKCONTENT").style.visibility='hidden';
+                // fdjtID("CODEXPAGE").style.visibility='hidden';
+                fdjtID("CODEXCONTENT").style.visibility='hidden';
                 
                 // Now make the content (temporarily) the same width as
                 // the page
@@ -290,8 +290,8 @@ metaBook.Paginate=
                                 (elapsed>mB.cache_layout_thresh):(elapsed>5000)) {
                                 layout.saveLayout(function(l){
                                     recordLayout(l.layout_id,mB.sourceid);});}}
-                        fdjtID("METABOOKPAGE").style.visibility='';
-                        fdjtID("METABOOKCONTENT").style.visibility='';
+                        fdjtID("CODEXPAGE").style.visibility='';
+                        fdjtID("CODEXCONTENT").style.visibility='';
                         dropClass(document.body,"_LAYOUT");
                         mB.layout=layout;
                         mB.pagecount=layout.pages.length;
@@ -415,14 +415,14 @@ metaBook.Paginate=
         mB.addConfig("justify",updateLayoutProperty);
         
         function getLayoutID(width,height,family,size,spacing,justify,source_id){
-            var page=fdjtID("METABOOKPAGE");
+            var page=fdjtID("CODEXPAGE");
             var left=page.style.left, right=page.style.right;
             var layout_source=fdjt.CodexLayout.sourcehash;
             page.style.left=""; page.style.right="";
             if (!(width))
                 width=getGeometry(page,false,true).width;
             if (!(height))
-                height=getGeometry(fdjtID("METABOOKPAGE"),false,true).inner_height;
+                height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
             if (!(family)) family=mB.bodyfamily||"serif";
             if (!(size)) size=mB.bodysize||"normal";
             if (!(source_id))
@@ -466,9 +466,9 @@ metaBook.Paginate=
         metaBook.clearLayouts=clearLayouts;
 
         function getLayoutArgs(){
-            var width=getGeometry(fdjtID("METABOOKPAGE"),false,true).width;
-            var height=getGeometry(fdjtID("METABOOKPAGE"),false,true).inner_height;
-            var origin=fdjtDOM("div#METABOOKCONTENT");
+            var width=getGeometry(fdjtID("CODEXPAGE"),false,true).width;
+            var height=getGeometry(fdjtID("CODEXPAGE"),false,true).inner_height;
+            var origin=fdjtDOM("div#CODEXCONTENT");
             var container=fdjtDOM("div.MBpages#METABOOKPAGES");
             var bodyfamily=mB.bodyfamily||"serif";
             var bodysize=mB.bodysize||"normal";
@@ -738,13 +738,13 @@ metaBook.Paginate=
                 return;}
             else sizeCodexPage();
             var layout=mB.layout;
-            var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
+            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
             var width=geom.width, height=geom.inner_height;
             var lwidth=layout.width, lheight=layout.height;
             var hscale=height/lheight, vscale=width/lwidth;
             var scale=((hscale<vscale)?(hscale):(vscale));
             if (!(cheaprule)) {
-                var s="#METABOOKPAGE div.codexpage";
+                var s="#CODEXPAGE div.codexpage";
                 mB.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
                     s+", body._ANIMATE._PREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transformOrigin]="left top";
@@ -804,7 +804,7 @@ metaBook.Paginate=
                     (((pagenum-1)*100)/npages)+"%";}
             if (update_progress) {
                 /* Update section markers */
-                var page=fdjtID("METABOOKPAGE"+pagenum);
+                var page=fdjtID("CODEXPAGE"+pagenum);
                 var topid=(page)&&page.getAttribute("data-topid");
                 var info=(topid)&&mB.docinfo[topid];
                 if (info) {
@@ -1053,7 +1053,7 @@ metaBook.Paginate=
         metaBook.refreshLayout=refreshLayout;
         
         function syncLayout(){
-            var geom=getGeometry(fdjtID("METABOOKPAGE"),false,true);
+            var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
             var height=geom.inner_height, width=geom.width;
             if ((mB.layout.height===height)&&
                 (mB.layout.width===width))
