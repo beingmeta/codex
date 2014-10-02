@@ -1454,7 +1454,7 @@ var metaBook={
             var headinfo=mB.docinfo[target]||mB.docinfo[target.id];
             if ((headinfo)&&((!(headinfo.sub))||(headinfo.sub.length===0))) {
                 mB.setMode("statictoc"); mB.setHUD(false,false);
-                addClass(document.body,"_SKIMMING");}}
+                addClass(document.body,"mbSKIMMING");}}
         mB.GoTo(target,"MetaBookSkimTo");}
     metaBook.Skimto=metaBookSkimTo;
 
@@ -1511,9 +1511,9 @@ var metaBook={
             scrollPreview(target,caller);
             addClass(target,"MBpreviewtarget");}
         mB.previewing=target;
-        addClass(document.body,"_PREVIEW");
+        addClass(document.body,"mbPREVIEW");
         if (hasClass(target,"codexpage"))
-            addClass(document.body,"_PAGEPREVIEW");
+            addClass(document.body,"mbPAGEPREVIEW");
         return target;}
     metaBook.startPreview=startPreview;
     function stopPreview(caller,jumpto){
@@ -1531,8 +1531,8 @@ var metaBook={
             oldscroll=false; scrollPreview(false,caller);}
         else scrollPreview(false,caller);
         mB.previewing=false; mB.previewTarget=false;
-        dropClass(document.body,"_PREVIEW");
-        dropClass(document.body,"_PAGEPREVIEW");
+        dropClass(document.body,"mbPREVIEW");
+        dropClass(document.body,"mbPAGEPREVIEW");
         if (jumpto) {
             if (mB.hudup) mB.setHUD(false);
             metaBookGoTo(jumpto);}

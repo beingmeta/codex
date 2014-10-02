@@ -72,20 +72,20 @@ body {
     z-index: 1;}
 #METABOOKFRAME > div, #METABOOKFRAME > div > div, #METABOOKFRAME > div > a {
     box-sizing: border-box;}
-body.hudup #METABOOKFRAME, body._COVER #METABOOKFRAME,
-body._SKIMMING #METABOOKFRAME, body.openhud #METABOOKFRAME,
-body._MEDIA #METABOOKFRAME {
+body.hudup #METABOOKFRAME, body.mbCOVER #METABOOKFRAME,
+body.mbSKIMMING #METABOOKFRAME, body.openhud #METABOOKFRAME,
+body.mbMEDIA #METABOOKFRAME {
     display: block;}
-body.hudup #METABOOKHUD, body._SKIMMING #METABOOKHUD,
-body.openhud #METABOOKHUD, body._COVER #METABOOKCOVER,
-body._MEDIA #METABOOKMEDIA, body._MEDIA #METABOOKCLOSEMEDIA {
+body.hudup #METABOOKHUD, body.mbSKIMMING #METABOOKHUD,
+body.openhud #METABOOKHUD, body.mbCOVER #METABOOKCOVER,
+body.mbMEDIA #METABOOKMEDIA, body.mbMEDIA #METABOOKCLOSEMEDIA {
     top: 0px; bottom: 0px; left: 0px; right: 0px;
     height: 100%; width: 100%;
     display: block;}
 
-body.hudup #METABOOKFRAME, body._COVER #METABOOKFRAME,
-body.openhud #METABOOKFRAME, body._SKIMMING #METABOOKFRAME,
-body._SHOWHELP #METABOOKFRAME, body._MEDIA #METABOOKFRAME {
+body.hudup #METABOOKFRAME, body.mbCOVER #METABOOKFRAME,
+body.openhud #METABOOKFRAME, body.mbSKIMMING #METABOOKFRAME,
+body.mbSHOWHELP #METABOOKFRAME, body.mbMEDIA #METABOOKFRAME {
     z-index: 50;}
 
 /* The HUD is where all of the active interface elements for reading
@@ -100,7 +100,7 @@ body._TOUCH #METABOOKFRAME > #METABOOKHUD > div {
     pointer-events: none;}
 body._TOUCH.hudup #METABOOKFRAME > #METABOOKHUD > div,
 body._TOUCH #METABOOKFRAME > #METABOOKHUD.addgloss > div,
-body._TOUCH._SKIMMING #METABOOKFRAME > #METABOOKHUD > #METABOOKSKIMMER {
+body._TOUCH.mbSKIMMING #METABOOKFRAME > #METABOOKHUD > #METABOOKSKIMMER {
     background-color: transparent;
     pointer-events: all;}
 
@@ -121,7 +121,7 @@ body._TOUCH #METABOOKFRAME > #METABOOKHUD > #METABOOKFOOT {
     text-align: center;
     font-size: 1.5em;
     z-index: 100;}
-body._COVER #METABOOKFRAME > #METABOOKCOVER { pointer-events: all; }
+body.mbCOVER #METABOOKFRAME > #METABOOKCOVER { pointer-events: all; }
 
 #METABOOKFRAME.metabookuifontlarge #METABOOKCOVER { font-size: 2em; }
 #METABOOKFRAME.metabookuifontnormal #METABOOKCOVER { font-size: 1.5em; }
@@ -130,11 +130,11 @@ body._COVER #METABOOKFRAME > #METABOOKCOVER { pointer-events: all; }
 #METABOOKFRAME.metabookuifontlarge #METABOOKCOVER > #METABOOKCOVERCONTROLS {
     font-size: 0.8em; }
 
-body._COVER #METABOOKCOVER {
+body.mbCOVER #METABOOKCOVER {
     opacity: 1.0; z-index: 100; pointer-events: all;}
-body._COVER #METABOOKBODY {
+body.mbCOVER #METABOOKBODY {
     visibility: hidden; pointer-events: none;}
-body._COVER #METABOOKHUD, body.hudup._COVER #METABOOKHUD {
+body.mbCOVER #METABOOKHUD, body.hudup.mbCOVER #METABOOKHUD {
     visibility: hidden; z-index: -50; pointer-events: none;}
 
 #METABOOKFRAME > #METABOOKMEDIA {

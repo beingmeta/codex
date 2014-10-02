@@ -146,7 +146,7 @@ metaBook.Paginate=
             if (!(why)) why="because";
             layoutMessage("Preparing your book",0);
             dropClass(document.body,"_SCROLL");
-            addClass(document.body,"_LAYOUT");
+            addClass(document.body,"mbLAYOUT");
             scaleLayout(false);
             var forced=((init)&&(init.forced));
             var geom=getGeometry(fdjtID("CODEXPAGE"),false,true);
@@ -168,7 +168,7 @@ metaBook.Paginate=
                     ((!(spacing))||(spacing===current.bodyspacing))&&
                     (((justify)&&(current.justify))||
                      ((!justify)&&(!current.justify)))) {
-                    dropClass(document.body,"_LAYOUT");
+                    dropClass(document.body,"mbLAYOUT");
                     fdjtLog("Skipping redundant pagination for %s",
                             current.layout_id);
                     return;}
@@ -197,7 +197,7 @@ metaBook.Paginate=
             function finish_layout(layout) {
                 fdjtID("CODEXPAGE").style.visibility='';
                 fdjtID("CODEXCONTENT").style.visibility='';
-                dropClass(document.body,"_LAYOUT");
+                dropClass(document.body,"mbLAYOUT");
                 mB.layout=layout;
                 mB.pagecount=layout.pages.length;
                 if (mB.Trace.startup)
@@ -292,7 +292,7 @@ metaBook.Paginate=
                                     recordLayout(l.layout_id,mB.sourceid);});}}
                         fdjtID("CODEXPAGE").style.visibility='';
                         fdjtID("CODEXCONTENT").style.visibility='';
-                        dropClass(document.body,"_LAYOUT");
+                        dropClass(document.body,"mbLAYOUT");
                         mB.layout=layout;
                         mB.pagecount=layout.pages.length;
                         setupPagebar();
@@ -746,7 +746,7 @@ metaBook.Paginate=
             if (!(cheaprule)) {
                 var s="#CODEXPAGE div.codexpage";
                 mB.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
-                    s+", body._ANIMATE._PREVIEW "+s,"");}
+                    s+", body._ANIMATE.mbPREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transformOrigin]="left top";
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
             var nwidth=lwidth*scale, nheight=lheight*scale;
@@ -901,7 +901,7 @@ metaBook.Paginate=
         function GoToPage(spec,caller,savestate,skiphist){
             if (typeof savestate === 'undefined') savestate=true;
             if (mB.previewing) mB.stopPreview("GoToPage",false);
-            dropClass(document.body,"mbhelp");
+            dropClass(document.body,"metabookhelp");
             if (mB.clearGlossmark) mB.clearGlossmark();
             if (mB.mode==="addgloss") mB.setMode(false,false);
             var page=(mB.layout)&&
@@ -989,7 +989,7 @@ metaBook.Paginate=
             if (curpage) addClass(curpage,"hidepage");
             addClass(page,"previewpage");
             mB.previewing=previewing=page;
-            addClass(document.body,"_PREVIEW");
+            addClass(document.body,"mbPREVIEW");
             updatePageDisplay(pagenum,pageloc,"preview");}
         metaBook.startPagePreview=startPagePreview;
         function stopPagePreview(caller,target){
@@ -1017,7 +1017,7 @@ metaBook.Paginate=
             dropClass(getChildren(mB.pages,".previewpage"),
                       "previewpage");
             mB.previewing=previewing=false;
-            dropClass(document.body,"_PREVIEW");
+            dropClass(document.body,"mbPREVIEW");
             if (newpage) {
                 var newnum=parseInt(newpage.getAttribute("data-pagenum"),10);
                 var newloc=mB.getLocInfo(target);

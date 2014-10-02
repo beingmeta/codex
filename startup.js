@@ -698,7 +698,7 @@ metaBook.Startup=
                     mB.glosshash=hash;
                 else mB.inithash=location.hash;}
             mB._starting=fdjtTime();
-            addClass(document.body,"_STARTUP");
+            addClass(document.body,"mbSTARTUP");
             // This is all of the startup that we need to do synchronously
             syncStartup();
             // The rest of the stuff we timeslice
@@ -883,7 +883,7 @@ metaBook.Startup=
                 if (evt.state) mB.restoreState(evt.state,"popstate");};
             fdjtLog("Startup done");
             mB.displaySync();
-            fdjtDOM.dropClass(document.body,"_STARTUP");
+            fdjtDOM.dropClass(document.body,"mbSTARTUP");
             if (fdjtID("METABOOKREADYMESSAGE"))
                 fdjtID("METABOOKREADYMESSAGE").innerHTML="Open";
             if (mode) {}
@@ -1536,7 +1536,7 @@ metaBook.Startup=
                 cover.appendChild(help);}
             var cover_help=fdjtID("METABOOKCOVERHELP");
             if (!(cover_help)) {
-                cover_help=fdjtDOM("div#METABOOKCOVERHELP.mbhelp");
+                cover_help=fdjtDOM("div#METABOOKCOVERHELP.metabookhelp");
                 help.appendChild(cover_help);}
             cover_help.innerHTML=fixStaticRefs(mB.HTML.help);
             
@@ -1927,7 +1927,7 @@ metaBook.Startup=
             var shrinkrule=mB.CSS.shrinkrule;
             if (!(shrinkrule)) {
                 shrinkrule=fdjtDOM.addCSSRule(
-                    "body._SHRINK #CODEXPAGE,body._PREVIEW #CODEXPAGE, body._SKIMMING #CODEXPAGE", "");
+                    "body.mbSHRINK #CODEXPAGE,body.mbPREVIEW #CODEXPAGE, body.mbSKIMMING #CODEXPAGE", "");
                 mB.CSS.shrinkrule=shrinkrule;}
             var ph=geom.height, sh=ph-25, vs=(sh/ph);
             shrinkrule.style[fdjtDOM.transform]="scale("+vs+","+vs+")";
@@ -2604,7 +2604,7 @@ metaBook.Startup=
             if (tracelevel)
                 fdjtLog("Setting up initial tag clouds for %d tags",
                         searchtags.length);
-            addClass(document.body,"_INDEXING");
+            addClass(document.body,"mbINDEXING");
             fdjtDOM(empty_cloud.dom,
                     fdjtDOM("div.cloudprogress","Cloud Shaping in Progress"));
             addClass(empty_cloud.dom,"working");
@@ -2631,7 +2631,7 @@ metaBook.Startup=
             if (mB.Trace.startup>1)
                 fdjtLog("Done populating clouds with %d tags",
                         searchtags.length);
-            dropClass(document.body,"_INDEXING");
+            dropClass(document.body,"mbINDEXING");
             eq.cloud=empty_cloud;
             if (!(fdjtDOM.getChild(empty_cloud.dom,".showall")))
                 fdjtDOM.prepend(empty_cloud.dom,
@@ -2737,13 +2737,13 @@ metaBook.Startup=
                         while (j<jlim) {terms.push(idinfo[j++]);}}
                     occurrences.push(info);}
                 addTags(occurrences,knode||taghead);}
-            addClass(document.body,"_INDEXING");
+            addClass(document.body,"mbINDEXING");
             fdjtTime.slowmap(
                 handleIndexEntry,alltags,
                 ((alltags.length>100)&&(tracelevel>1)&&(indexProgress)),
                 function(state){
                     fdjtLog("Book index links %d keys to %d refs",ntags,nitems);
-                    dropClass(document.body,"_INDEXING");
+                    dropClass(document.body,"mbINDEXING");
                     mB.tagmaxweight=maxweight;
                     mB.tagminweight=minweight;
                     if (whendone) return whendone();

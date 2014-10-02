@@ -40,7 +40,7 @@
         margin-bottom: 2px; margin-top: 2px;
         left: 5px; right: 5px;
         font-size: 75%;}
-    #METABOOKHUD div.mbhelp.hudpanel {
+    #METABOOKHUD div.metabookhelp.hudpanel {
         left: 5px; right: 5px; top: 60px; bottom: 60px;}
   #METABOOKHUD div.helphud.rightmiddle,
   #METABOOKHUD div.helphud.leftmiddle {

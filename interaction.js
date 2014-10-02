@@ -330,8 +330,8 @@
             cancel(evt);
             return;}
 
-        if (hasClass(document.body,"mbhelp")) {
-            dropClass(document.body,"mbhelp");
+        if (hasClass(document.body,"metabookhelp")) {
+            dropClass(document.body,"metabookhelp");
             cancel(evt);
             return;}
 
@@ -738,7 +738,7 @@
         if (adx>(ady*2)) {
             // Horizontal swipe
             if (dx<-(mB.minswipe||10)) {
-                if (hasClass(document.body,"_SKIMMING"))
+                if (hasClass(document.body,"mbSKIMMING"))
                     mB.skimForward(evt);
                 else if (evt.ntouches>1) {
                     if (!(headinfo)) mB.Forward(evt);
@@ -751,7 +751,7 @@
                     else mB.Forward(evt);}
                 else mB.Forward(evt);}
             else if (dx>(mB.minswipe||10)) {
-                if (hasClass(document.body,"_SKIMMING"))
+                if (hasClass(document.body,"mbSKIMMING"))
                     mB.skimBackward(evt);
                 else if (evt.ntouches>1) {
                     if (!(headinfo)) mB.Forward(evt);
@@ -1168,7 +1168,7 @@
             mB.setHUD(false);
             fdjt.UI.cancel(evt);
             return false;}
-        else if (hasClass(document.body,"_COVER")) {
+        else if (hasClass(document.body,"mbCOVER")) {
             mB.clearStateDialog();
             mB.hideCover();
             fdjt.UI.cancel(evt);
@@ -1256,7 +1256,7 @@
         else if ((ch===72)||(ch===104)) { // 'H' or 'h'
             mB.clearStateDialog();
             mB.hideCover();
-            fdjtDOM.toggleClass(document.body,"_SHOWHELP");
+            fdjtDOM.toggleClass(document.body,"mbSHOWHELP");
             return false;}
         else if ((ch===67)||(ch===99)) { // 'C' or 'c'
             mB.clearStateDialog();
@@ -1808,7 +1808,7 @@
         evt=evt||window.event;
         if (mB.uisound)
             fdjtDOM.playAudio("METABOOKSKIMFORWARDAUDIO");
-        if (hasClass(document.body,"_SKIMMING")) {}
+        if (hasClass(document.body,"mbSKIMMING")) {}
         else if (mB.mode==="openglossmark") {
             var ids=mB.docinfo._ids;
             var id=((mB.target)&&(mB.target.id));
@@ -1872,7 +1872,7 @@
         else last_motion=now;
         if (mB.uisound)
             fdjtDOM.playAudio("METABOOKSKIMBACKWARDAUDIO");
-        if (hasClass(document.body,"_SKIMMING")) {}
+        if (hasClass(document.body,"mbSKIMMING")) {}
         else if (mB.mode==="openglossmark") {
             var ids=mB.docinfo._ids;
             var id=((mB.target)&&(mB.target.id));
@@ -2006,9 +2006,9 @@
         else if (mB.mode) {
             fdjtUI.cancel(evt);
             mB.setMode(false);}
-        else if (fdjtDOM.hasClass(document.body,"mbhelp")) {
+        else if (fdjtDOM.hasClass(document.body,"metabookhelp")) {
             fdjtUI.cancel(evt);
-            fdjtDOM.dropClass(document.body,"mbhelp");}
+            fdjtDOM.dropClass(document.body,"metabookhelp");}
         else if (mB.hudup) {
             fdjtUI.cancel(evt);
             mB.setMode(false);}
@@ -2382,7 +2382,7 @@
         if (mB.mode==="addgloss") 
             mB.cancelGloss();
         mB.setMode(false);
-        fdjtDOM.dropClass(document.body,"mbhelp");}
+        fdjtDOM.dropClass(document.body,"metabookhelp");}
 
     function clearMode(evt){
         evt=evt||window.event; mB.setMode(false);}
@@ -2444,10 +2444,10 @@
 
     function setHelp(flag){
         if (flag) {
-            fdjtDOM.addClass(document.body,"mbhelp");
+            fdjtDOM.addClass(document.body,"metabookhelp");
             mB.cxthelp=true;}
         else {
-            fdjtDOM.dropClass(document.body,"mbhelp");
+            fdjtDOM.dropClass(document.body,"metabookhelp");
             mB.cxthelp=false;}
         return false;}
     metaBook.setHelp=setHelp;
@@ -2456,10 +2456,10 @@
         evt=evt||window.event;
         fdjtUI.cancel(evt);
         if (mB.cxthelp) {
-            fdjtDOM.dropClass(document.body,"mbhelp");
+            fdjtDOM.dropClass(document.body,"metabookhelp");
             mB.cxthelp=false;}
         else {
-            fdjtDOM.addClass(document.body,"mbhelp");
+            fdjtDOM.addClass(document.body,"metabookhelp");
             mB.cxthelp=true;}
         return false;}
     metaBook.toggleHelp=toggleHelp;
@@ -2674,7 +2674,7 @@
          "div.glossetc div.notetext": {click: editglossnote},
          // For checkspans
          ".sbookglossform, #METABOOKSETTINGS": {click: fdjt.UI.CheckSpan.onclick},
-         ".MBtogglehelp": {click: mB.toggleHelp},
+         ".mbtogglehelp": {click: mB.toggleHelp},
          "#METABOOKCONSOLETEXTINPUT": {
              focus: function(){fdjt.DOM.addClass('METABOOKCONSOLEINPUT','uptop');},
              blur: function(){fdjt.DOM.dropClass('METABOOKCONSOLEINPUT','uptop');}},
@@ -2836,7 +2836,7 @@
              click: cancel},
          "#METABOOKSETTINGS": {
              touchend: fdjt.UI.CheckSpan.onclick},
-         ".MBtogglehelp": {
+         ".mbtogglehelp": {
              touchstart: cancel,
              touchend: mB.toggleHelp},
         

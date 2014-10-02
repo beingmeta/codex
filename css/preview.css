@@ -4,30 +4,30 @@
 
 @charset "UTF-8";
 
-body._PREVIEW { cursor: crosshair; }
+body.mbPREVIEW { cursor: crosshair; }
 
-body._PREVIEW #METABOOKTOP { display: none; }
-body._PREVIEW #METABOOKHUD.openhead #METABOOKTOP { display: none; }
+body.mbPREVIEW #METABOOKTOP { display: none; }
+body.mbPREVIEW #METABOOKHUD.openhead #METABOOKTOP { display: none; }
 
-body._PREVIEW .hudbutton { display: none; }
+body.mbPREVIEW .hudbutton { display: none; }
 
-body._PREVIEW #METABOOKHUD.openhead.overtoc #METABOOKTOP {
+body.mbPREVIEW #METABOOKHUD.openhead.overtoc #METABOOKTOP {
     display: block; }
 
-body._PREVIEW #METABOOKHUD.overtoc #METABOOKTOP,
-body._PREVIEW #METABOOKHUD.overtoc #METABOOKFOOT {
+body.mbPREVIEW #METABOOKHUD.overtoc #METABOOKTOP,
+body.mbPREVIEW #METABOOKHUD.overtoc #METABOOKFOOT {
     background-color: transparent;
     border-color: transparent;}
-body._PREVIEW #METABOOKHUD.overtoc #METABOOKTOP .hudpanel {
+body.mbPREVIEW #METABOOKHUD.overtoc #METABOOKTOP .hudpanel {
     background-color: transparent;}
 
-body._PREVIEW #METABOOKHUD.allglosses #METABOOKSKIMMER,
-body._PREVIEW #METABOOKHUD.searchresults #METABOOKSKIMMER {
+body.mbPREVIEW #METABOOKHUD.allglosses #METABOOKSKIMMER,
+body.mbPREVIEW #METABOOKHUD.searchresults #METABOOKSKIMMER {
     display: block;}
 
 /* HUD Preview rules */
 
-body._PREVIEW #METABOOKHUD {
+body.mbPREVIEW #METABOOKHUD {
     opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -36,7 +36,7 @@ body._PREVIEW #METABOOKHUD {
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
 <<<<<<< HEAD
-body.hudup._PREVIEW #METABOOKHEARTFRAME {
+body.hudup.mbPREVIEW #METABOOKHEARTFRAME {
     background-color: transparent; border-color: transparent; opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -44,7 +44,7 @@ body.hudup._PREVIEW #METABOOKHEARTFRAME {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body.hudup._PREVIEW #METABOOKHUD.openheart #METABOOKHEARTFRAME {
+body.hudup.mbPREVIEW #METABOOKHUD.openheart #METABOOKHEARTFRAME {
     background-color: transparent; border-color: transparent; opacity: 0.0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -53,7 +53,7 @@ body.hudup._PREVIEW #METABOOKHUD.openheart #METABOOKHEARTFRAME {
     -moz-opacity: 0;
     -o-opacity: 0;}
 
-body.hudup._PREVIEW #METABOOKHUD.allglosses #METABOOKSOURCES {
+body.hudup.mbPREVIEW #METABOOKHUD.allglosses #METABOOKSOURCES {
     opacity: 0.01;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -62,7 +62,7 @@ body.hudup._PREVIEW #METABOOKHUD.allglosses #METABOOKSOURCES {
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
 
-body._PREVIEW #METABOOKHUD.searchresults #METABOOKSEARCH.hudpanel {
+body.mbPREVIEW #METABOOKHUD.searchresults #METABOOKSEARCH.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -70,7 +70,7 @@ body._PREVIEW #METABOOKHUD.searchresults #METABOOKSEARCH.hudpanel {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body._PREVIEW #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES.hudpanel {
+body.mbPREVIEW #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -79,15 +79,15 @@ body._PREVIEW #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES.hudpanel {
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
 
-body._PREVIEW #METABOOKHUD.openhead #METABOOKTOP,
-body._PREVIEW #METABOOKHUD.openfoot #METABOOKFOOT,
-body._PREVIEW #METABOOKHUD.openhead.openheart #METABOOKTOP {
+body.mbPREVIEW #METABOOKHUD.openhead #METABOOKTOP,
+body.mbPREVIEW #METABOOKHUD.openfoot #METABOOKFOOT,
+body.mbPREVIEW #METABOOKHUD.openhead.openheart #METABOOKTOP {
     background-color: transparent;}
 
-body.hudup._PREVIEW #METABOOKHUD.openhead #METABOOKTOP,
-body._PREVIEW #METABOOKHUD.addgloss #METABOOKTOP,
-body._PREVIEW #METABOOKHUD.openglossmark #METABOOKSKIMMER,
-body._PREVIEW._SKIMMING #METABOOKHUD #METABOOKSKIMMER {
+body.hudup.mbPREVIEW #METABOOKHUD.openhead #METABOOKTOP,
+body.mbPREVIEW #METABOOKHUD.addgloss #METABOOKTOP,
+body.mbPREVIEW #METABOOKHUD.openglossmark #METABOOKSKIMMER,
+body.mbPREVIEW.mbSKIMMING #METABOOKHUD #METABOOKSKIMMER {
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -117,19 +117,19 @@ body._PREVIEW._SKIMMING #METABOOKHUD #METABOOKSKIMMER {
 #METABOOKPAGEBARHELP.helpbox dfn, #METABOOKSEETHRUHELP.helpbox dfn {
     font-size: 125%;}
 
-body._PREVIEW._PAGEPREVIEW #METABOOKPAGEBARHELP,
-body._PREVIEW #METABOOKSEETHRUHELP {
+body.mbPREVIEW.mbPAGEPREVIEW #METABOOKPAGEBARHELP,
+body.mbPREVIEW #METABOOKSEETHRUHELP {
     display: block; opacity: 0.9;}
-body._PREVIEW._PAGEPREVIEW #METABOOKSEETHRUHELP { display: none;}
+body.mbPREVIEW.mbPAGEPREVIEW #METABOOKSEETHRUHELP { display: none;}
 
-body._PREVIEW.hudup #METABOOKHUD.searchresults #METABOOKSEETHRUHELP,
-body._PREVIEW.hudup #METABOOKHUD.allglosses #METABOOKSEETHRUHELP {
+body.mbPREVIEW.hudup #METABOOKHUD.searchresults #METABOOKSEETHRUHELP,
+body.mbPREVIEW.hudup #METABOOKHUD.allglosses #METABOOKSEETHRUHELP {
     display: none;}
 
-body._PREVIEW #METABOOKPAGENOTEXT, body._PREVIEW #METABOOKLOCPCT, body._PREVIEW #METABOOKLOCOFF {
+body.mbPREVIEW #METABOOKPAGENOTEXT, body.mbPREVIEW #METABOOKLOCPCT, body.mbPREVIEW #METABOOKLOCOFF {
     pointer-events: none;}
 
-div.mbhelp .result span { display: none; }
+div.metabookhelp .result span { display: none; }
 
 /* Emacs local variables
 ;;;  Local variables: ***

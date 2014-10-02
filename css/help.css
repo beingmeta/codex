@@ -32,7 +32,7 @@
 @charset "UTF-8";
 
 /* Help is displayed in fixed position boxes and selectively displayed
-    based on the body class body._SHOWHELP and the individual state
+    based on the body class body.mbSHOWHELP and the individual state
     CSS classes maintained in the DOM tree.  */
 
 /* The help HUD */
@@ -61,12 +61,12 @@ div.helpbox img.inline { background-color: gray; }
     color: darkblue;
     display: none;}
 
-body._STARTUP #METABOOKSTARTPAGE #METABOOKSTARTUPMSG {
+body.mbSTARTUP #METABOOKSTARTPAGE #METABOOKSTARTUPMSG {
     display: inline;}
-body._STARTUP #METABOOKSTARTPAGE #METABOOKHELPTITLE {
+body.mbSTARTUP #METABOOKSTARTPAGE #METABOOKHELPTITLE {
     display: none;}
 
-body._SHOWHELP #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
+body.mbSHOWHELP #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     background-color: silver; border-color: black;
     opacity: 0.9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -76,7 +76,7 @@ body._SHOWHELP #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-body.hudup._SHOWHELP #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
+body.hudup.mbSHOWHELP #METABOOKHUD img.hudbutton#METABOOKHELPBUTTON {
     background-color: silver; border-color: black;}
 
 div.helpbox {
@@ -96,7 +96,7 @@ div.helpbox {
     overflow: auto;
     display: none;}
 
-div.helpbox img.closebutton, div.mbhelp img.closebutton {
+div.helpbox img.closebutton, div.metabookhelp img.closebutton {
     position: absolute; width: 24px; height: 24px;
     top: 6px; right: 6px; padding: 2px;
     border: solid red 2px; 
@@ -104,7 +104,7 @@ div.helpbox img.closebutton, div.mbhelp img.closebutton {
     -moz-border-radius: 6px; -o-border-radius: 6px;
     color: red;}
 
-div.helpbox th.helptext, div.mbhelp th.helptext {
+div.helpbox th.helptext, div.metabookhelp th.helptext {
     text-indent: 0px;}
 
 div.helpbox.atfoot {
@@ -121,42 +121,42 @@ div.helpbox.atfoot {
 
 #METABOOKHUD div.helpbox {
     border-color: black; z-index: 250;}
-body._SHOWHELP #METABOOKHUD .helphud,
-body._SHOWHELP #METABOOKHUD > div.mbhelp {display: block;}
-body._SHOWHELP #METABOOKHUD .hudbutton {
+body.mbSHOWHELP #METABOOKHUD .helphud,
+body.mbSHOWHELP #METABOOKHUD > div.metabookhelp {display: block;}
+body.mbSHOWHELP #METABOOKHUD .hudbutton {
     opacity: 0.5;}
-body._SHOWHELP.hudup #METABOOKHUD div.mbhelp, 
-body._SHOWHELP._SHRINK #METABOOKHUD div.mbhelp,
-body._SHOWHELP._PREVIEW #METABOOKHUD div.mbhelp,
-body._SHOWHELP.hudup #METABOOKHUD .helphud,
-body._SHOWHELP._SKIMMING #METABOOKHUD div.mbhelp,
-body._SHOWHELP._SKIMMING #METABOOKHUD .helphud,
-body._SHOWHELP #METABOOKHUD.addgloss .helphud,
-body._SHOWHELP #METABOOKHUD.overtoc .helphud,
-body._SHOWHELP #METABOOKHUD.statictoc .helphud,
-body._SHOWHELP._SHRINK #METABOOKHUD .helphud,
-body._SHOWHELP._PREVIEW #METABOOKHUD .helphud {
+body.mbSHOWHELP.hudup #METABOOKHUD div.metabookhelp, 
+body.mbSHOWHELP.mbSHRINK #METABOOKHUD div.metabookhelp,
+body.mbSHOWHELP.mbPREVIEW #METABOOKHUD div.metabookhelp,
+body.mbSHOWHELP.hudup #METABOOKHUD .helphud,
+body.mbSHOWHELP.mbSKIMMING #METABOOKHUD div.metabookhelp,
+body.mbSHOWHELP.mbSKIMMING #METABOOKHUD .helphud,
+body.mbSHOWHELP #METABOOKHUD.addgloss .helphud,
+body.mbSHOWHELP #METABOOKHUD.overtoc .helphud,
+body.mbSHOWHELP #METABOOKHUD.statictoc .helphud,
+body.mbSHOWHELP.mbSHRINK #METABOOKHUD .helphud,
+body.mbSHOWHELP.mbPREVIEW #METABOOKHUD .helphud {
     display: none;}
-body._SHOWHELP.hudup #METABOOKHUD.splash div.mbhelp {
+body.mbSHOWHELP.hudup #METABOOKHUD.splash div.metabookhelp {
     display: block;}
 #METABOOKHUDHELP { z-index: 500; display: none;}
-body._SHOWHELP #METABOOKHUDHELP { display: block; }
-body.hudup._SHOWHELP #METABOOKHUDHELP { display: block; }
+body.mbSHOWHELP #METABOOKHUDHELP { display: block; }
+body.hudup.mbSHOWHELP #METABOOKHUDHELP { display: block; }
 
-body._SHOWHELP #METABOOKHUD.addgloss #METABOOKHUDHELP { display: block; }
-body._SHOWHELP #METABOOKHUD.addgloss #METABOOKSTARTPAGE,
-body._SHOWHELP._SHRINK #METABOOKHUD.addgloss #METABOOKSTARTPAGE {
+body.mbSHOWHELP #METABOOKHUD.addgloss #METABOOKHUDHELP { display: block; }
+body.mbSHOWHELP #METABOOKHUD.addgloss #METABOOKSTARTPAGE,
+body.mbSHOWHELP.mbSHRINK #METABOOKHUD.addgloss #METABOOKSTARTPAGE {
     display: none; }
 
-body._SHOWHELP.hudup #METABOOKHUD.overtoc #METABOOKTOCHELP.helpbox,
-body._SHOWHELP #METABOOKHUD.addgloss #METABOOKADDGLOSSHELP.helpbox,
-body._SHOWHELP._SKIMMING #METABOOKHUD.allglosses #METABOOKSKIMMINGHELP.helpbox,
-body._SHOWHELP._SKIMMING #METABOOKHUD.searchresults #METABOOKSKIMMINGHELP.helpbox,
-body._SHOWHELP #METABOOKHUD.refinesearch #METABOOKSEARCHINPUTHELP.helpbox,
-body._SHOWHELP #METABOOKHUD.expandsearch #METABOOKSEARCHINPUTHELP.helpbox,
-body._SHOWHELP #METABOOKHUD.searchresults #METABOOKSEARCHRESULTSHELP.helpbox,
-body._SHOWHELP #METABOOKHUD.allglosses #METABOOKALLGLOSSESHELP.helpbox,
-body._SHOWHELP #METABOOKHUD.statictoc #METABOOKSTATICTOCHELP.helpbox {
+body.mbSHOWHELP.hudup #METABOOKHUD.overtoc #METABOOKTOCHELP.helpbox,
+body.mbSHOWHELP #METABOOKHUD.addgloss #METABOOKADDGLOSSHELP.helpbox,
+body.mbSHOWHELP.mbSKIMMING #METABOOKHUD.allglosses #METABOOKSKIMMINGHELP.helpbox,
+body.mbSHOWHELP.mbSKIMMING #METABOOKHUD.searchresults #METABOOKSKIMMINGHELP.helpbox,
+body.mbSHOWHELP #METABOOKHUD.refinesearch #METABOOKSEARCHINPUTHELP.helpbox,
+body.mbSHOWHELP #METABOOKHUD.expandsearch #METABOOKSEARCHINPUTHELP.helpbox,
+body.mbSHOWHELP #METABOOKHUD.searchresults #METABOOKSEARCHRESULTSHELP.helpbox,
+body.mbSHOWHELP #METABOOKHUD.allglosses #METABOOKALLGLOSSESHELP.helpbox,
+body.mbSHOWHELP #METABOOKHUD.statictoc #METABOOKSTATICTOCHELP.helpbox {
     border-color: black; z-index: 260; display: block; opacity: 0.9; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
@@ -166,9 +166,9 @@ body._SHOWHELP #METABOOKHUD.statictoc #METABOOKSTATICTOCHELP.helpbox {
     -o-opacity: 0.90;
     display: block;}
 
-body._SHOWHELP._SKIMMING #METABOOKHUD.searchresults
+body.mbSHOWHELP.mbSKIMMING #METABOOKHUD.searchresults
   #METABOOKSEARCHRESULTSHELP.helpbox,
-body._SHOWHELP._SKIMMING #METABOOKHUD.allglosses
+body.mbSHOWHELP.mbSKIMMING #METABOOKHUD.allglosses
   #METABOOKALLGLOSSESHELP.helpbox {
     display: none;}
 
@@ -186,7 +186,7 @@ body._SHOWHELP._SKIMMING #METABOOKHUD.allglosses
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-body._SHOWHELP._PREVIEW #METABOOKHUD #METABOOKHUDHELP {
+body.mbSHOWHELP.mbPREVIEW #METABOOKHUD #METABOOKHUDHELP {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -195,7 +195,7 @@ body._SHOWHELP._PREVIEW #METABOOKHUD #METABOOKHUDHELP {
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
 
-body._SHOWHELP #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES {
+body.mbSHOWHELP #METABOOKHUD.openglossmark #METABOOKPOINTGLOSSES {
     opacity: 0;}
 
 div.helpbox p {
@@ -227,7 +227,7 @@ div.helpbox blockquote p {
     max-width: 40em; margin-left: auto; margin-right: auto;
     text-align: center;
     color: red;}
-#METABOOKSTARTPAGE div.mbhelp p.checkspan { text-align: center; }
+#METABOOKSTARTPAGE div.metabookhelp p.checkspan { text-align: center; }
 
 /* Help HUD */
 
@@ -276,21 +276,21 @@ div.helpbox blockquote p {
 .helphud.botleft span.arrow { float: left;}
 .helphud.botright span.arrow { float: right;}
 
-div.mbhelp div.helphud#HIDETHISHELP {
+div.metabookhelp div.helphud#HIDETHISHELP {
     position: absolute;
     top: 40px; right: 4px; width: 70px;}
 
-body div.mbhelp h1, body div.mbhelp h2,
-body div.mbhelp h3, body div.helpbox h1,
+body div.metabookhelp h1, body div.metabookhelp h2,
+body div.metabookhelp h3, body div.helpbox h1,
 body div.helpbox h2, body div.helpbox h3 {
     text-align: left;
     margin-left: 5%; margin-right: 1%;}
-div.mbhelp h1 span.MBtogglehelp,
-div.mbhelp h2 span.MBtogglehelp,
-div.mbhelp h3 span.MBtogglehelp,
-div.helpbox h1 span.MBtogglehelp,
-div.helpbox h2 span.MBtogglehelp,
-div.helpbox h3 span.MBtogglehelp {
+div.metabookhelp h1 span.mbtogglehelp,
+div.metabookhelp h2 span.mbtogglehelp,
+div.metabookhelp h3 span.mbtogglehelp,
+div.helpbox h1 span.mbtogglehelp,
+div.helpbox h2 span.mbtogglehelp,
+div.helpbox h3 span.mbtogglehelp {
     float: right;
     font-variant: small-caps;
     font-weight: bold; font-style: italic;
@@ -298,55 +298,55 @@ div.helpbox h3 span.MBtogglehelp {
     padding-left: 1ex; padding-right: 1ex;
     border: solid black 2px; border-radius: 1ex;}
 
-div.mbhelp td {
+div.metabookhelp td {
     color: rgba(0,0,0,0.75);}
 
-div.mbhelp h1 {
+div.metabookhelp h1 {
     margin-left: 5%; margin-right: 5%;
     margin-top: 3px; padding-top: 0px;}
 
-div.mbhelp .action {
+div.metabookhelp .action {
     color: darkblue;}
-div.mbhelp .result {
+div.metabookhelp .result {
     font-style: italic; color: rgba(0,0,0,1);}
-div.mbhelp td dfn {
+div.metabookhelp td dfn {
     color: rgba(0,0,0,1);}
-div.mbhelp > table, div.mbhelp > div > table {
+div.metabookhelp > table, div.metabookhelp > div > table {
     margin-left: 2%; margin-right: 2%; width: 96%;
     margin-top: 1em;}
-div.mbhelp table th, div.mbhelp table td {
+div.metabookhelp table th, div.metabookhelp table td {
     padding-bottom: 0px; padding-top: 0px;}
-div.mbhelp table th { padding-right: 0.5ex;}
-div.mbhelp table th img {
+div.metabookhelp table th { padding-right: 0.5ex;}
+div.metabookhelp table th img {
     background-color: ivory; padding: 0px;
     height: 3em; width: auto;
     vertical-align: top;}
-div.mbhelp table tbody tr:first-child th,
-div.mbhelp table tbody tr:first-child td {
+div.metabookhelp table tbody tr:first-child th,
+div.metabookhelp table tbody tr:first-child td {
     padding-top: 1ex; }
-div.mbhelp table table {
+div.metabookhelp table table {
     margin-left: 2%; margin-right: 2%;}
-div.mbhelp table td.icon { width: 32px;}
-div.mbhelp table td.icon img { width: 32px;}
-div.mbhelp table td.textleft { text-align: left;}
-div.mbhelp table td.textright { text-align: right;}
+div.metabookhelp table td.icon { width: 32px;}
+div.metabookhelp table td.icon img { width: 32px;}
+div.metabookhelp table td.textleft { text-align: left;}
+div.metabookhelp table td.textright { text-align: right;}
 
-div.mbhelp .result span { display: none; }
+div.metabookhelp .result span { display: none; }
 
-div.mbhelp img.narrowimage, div.mbhelp img.wideimage {
+div.metabookhelp img.narrowimage, div.metabookhelp img.wideimage {
     clear: both; max-width:90%; margin-left: 5%; height: auto;}
 
-div.mbhelp img.narrowimage { display: none;}
+div.metabookhelp img.narrowimage { display: none;}
 @media (max-width: 700) {
-    div.mbhelp img.narrowimage { display: inline;}
-    div.mbhelp img.wideimage { display: none;}}
+    div.metabookhelp img.narrowimage { display: inline;}
+    div.metabookhelp img.wideimage { display: none;}}
 
 div#METABOOKHELP table.textual { font-size: 120%;}
-div.mbhelp table.textual td {padding-left: 3px;}
-div.mbhelp div.glossbarbox {
+div.metabookhelp table.textual td {padding-left: 3px;}
+div.metabookhelp div.glossbarbox {
     font-weight: normal; padding-right: 2px; border-right: solid blue 3px;}
 
-#METABOOKHUD div.mbhelp.hudpanel {
+#METABOOKHUD div.metabookhelp.hudpanel {
     position: absolute; text-align: center;
     top: 100px; bottom: 100px; left: 80px; right: 80px; 
     height: auto; width: auto; padding-bottom: 1em;
