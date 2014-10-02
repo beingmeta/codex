@@ -296,8 +296,8 @@ body._TOUCH div.fortouch { display: block;}
 body._TOUCH p.fortouch { display: block;}
 body._TOUCH li.fortouch { display: list-item;}
 
-body._MOUSE.USESVG img.fortouch.svg,
-body._TOUCH.USESVG img.notouch.svg {
+body._MOUSE._USESVG img.fortouch.svg,
+body._TOUCH._USESVG img.notouch.svg {
     display: none !important;}
 
 body img.touchicon { display: none;}
