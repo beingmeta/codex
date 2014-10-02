@@ -1366,7 +1366,11 @@ metaBook.Startup=
                 cover=existing_cover;}
             else {
                 cover=fdjtDOM("div#METABOOKCOVER");
-                cover.innerHTML=fixStaticRefs(mB.HTML.cover);
+                cover.innerHTML=fdjt.Template(
+                    mB.HTML.cover,
+                    {bmg: mB.root+"g/",coverimage: mB.coverimage,
+                     publisherurl: "",publishername: "",
+                     publogoclass: ""});
                 frame.appendChild(cover);}
             if (mB.Trace.startup>2) {
                 if (existing_cover)

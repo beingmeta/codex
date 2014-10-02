@@ -61,6 +61,7 @@ body.hudup #METABOOKTOP {
     min-height: 40px;
     padding-bottom: 0.5ex;
     border-width: 4px;}
+
 body._FULLHEIGHT.hudup #METABOOKTOP {
     background-color: transparent;}
 body.hudup #METABOOKTOP .hudpanel {
@@ -533,6 +534,7 @@ body._SKIMMING #METABOOKHUD img.hudbutton {
 #METABOOKHUD.addgloss #METABOOKFOOT img.hudbutton {
     opacity: 0.8; -webkit-opacity: 0.8;
     -moz-opacity: 0.8; -o-opacity: 0.8;}
+
 #METABOOKHUD.addgloss #METABOOKFOOT img.hudbutton[alt="save gloss"],
 body._SKIMMING #METABOOKHUD.searchresults
    img.hudbutton[hudmode="searchresults"] {
@@ -615,6 +617,7 @@ img.closebutton, img.MBpagebutton, img.MBskimbutton, img.hudbutton {
     cursor: pointer;
     font-variant: small-caps;
     display: inline-block;}
+
 #METABOOKSHOWCOVER.tapholdtarget { border-color: blue; }
 #METABOOKFRAME._ANIMATE #METABOOKSHOWCOVER {
     transition-property: opacity;
@@ -631,6 +634,7 @@ img.closebutton, img.MBpagebutton, img.MBskimbutton, img.hudbutton {
     -khtml-opacity: 0.00;
     -moz-opacity: 0.00;
     -o-opacity: 0.00;}
+
 #METABOOKHEAD:hover #METABOOKSHOWCOVER,
 #METABOOKHEAD.tapholding #METABOOKSHOWCOVER,
 body._TOUCH #METABOOKHEAD.tapholding:hover #METABOOKSHOWCOVER {
