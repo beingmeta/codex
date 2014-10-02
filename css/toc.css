@@ -194,7 +194,7 @@ div.spanbar div.progressbox {
     position: absolute; z-index: 100; }
 
 #CODEXTOC div.codextoc.codexcurhead > div.spanbar { }
-body._PREVIEW #CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
+body.cxPREVIEW #CODEXTOC div.codextoc.codexcurhead > div.spanbar div.codexhudspan {
     height: 18px;}
 #CODEXTOC div.codextoc.codexcurhead > div.spanbar div.spans a.codextitle {
     display: none;}
@@ -254,9 +254,9 @@ div.codextoc div.spanbar div.spans
         display: none; pointer-events: none;}
 div.codextoc div.spanbar div.spans
     a.codextitle.codexlivehead { display: block;}
-body._PREVIEW div.codextoc.codexheld div.spanbar div.spans
+body.cxPREVIEW div.codextoc.codexheld div.spanbar div.spans
     a.codextitle.codexlivehead { display: none;}
-body._PREVIEW div.codextoc.codexheld div.spanbar div.spans
+body.cxPREVIEW div.codextoc.codexheld div.spanbar div.spans
     a.codextitle.codexpreviewtitle {
         color: yellow;
         display: block;}
@@ -290,9 +290,9 @@ div.spanbar div.spans {
 
 /* Handling preview mode */
 
-body._PREVIEW #CODEXHUD #CODEXTOC a.codextitle {
+body.cxPREVIEW #CODEXHUD #CODEXTOC a.codextitle {
     visibility: hidden;}
-body._PREVIEW #CODEXHUD div.spanbar {
+body.cxPREVIEW #CODEXHUD div.spanbar {
     opacity: 0.03;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=03)";
     filter: alpha(opacity=03);
@@ -300,7 +300,7 @@ body._PREVIEW #CODEXHUD div.spanbar {
     -khtml-opacity: 0.03;
     -moz-opacity: 0.03;
     -o-opacity: 0.03;}
-body._PREVIEW #CODEXHUD div.spanbar.codexvisible {
+body.cxPREVIEW #CODEXHUD div.spanbar.codexvisible {
     visibility: visible;
     opacity: 0.25;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
@@ -309,7 +309,7 @@ body._PREVIEW #CODEXHUD div.spanbar.codexvisible {
     -khtml-opacity: 0.25;
     -moz-opacity: 0.25;
     -o-opacity: 0.25;}
-body._PREVIEW #CODEXHUD div.codextoc > div.head {
+body.cxPREVIEW #CODEXHUD div.codextoc > div.head {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=05)";
     filter: alpha(opacity=05);
@@ -317,7 +317,7 @@ body._PREVIEW #CODEXHUD div.codextoc > div.head {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body._PREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
+body.cxPREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
     opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -325,7 +325,7 @@ body._PREVIEW #CODEXHUD div.codextoc.codexcurhead div.sub {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body._PREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
+body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
     opacity: 0.10;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
     filter: alpha(opacity=10);
@@ -333,7 +333,7 @@ body._PREVIEW #CODEXHUD div.codextoc.codexlivehead > div.head {
     -khtml-opacity: 0.10;
     -moz-opacity: 0.10;
     -o-opacity: 0.10;}
-body._PREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
+body.cxPREVIEW #CODEXHUD div.codextoc.codexlivehead.codexcurhead > div.head {
     opacity: 0.40;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);

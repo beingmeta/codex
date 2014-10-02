@@ -143,7 +143,7 @@ Codex.Paginate=
             if (((Codex.layout)&&(!(Codex.layout.done)))) return;
             if (!(why)) why="because";
             layoutMessage("Preparing your book",0);
-            dropClass(document.body,"cxSCROLL");
+            dropClass(document.body,"_SCROLL");
             addClass(document.body,"cxLAYOUT");
             scaleLayout(false);
             var forced=((init)&&(init.forced));
@@ -189,8 +189,8 @@ Codex.Paginate=
                 fdjtLog("Using saved layout %s",layout_id);
                 fdjtID("CODEXCONTENT").style.display='none';
                 layoutMessage("Using cached layout",0);
-                dropClass(document.body,"cxSCROLL");
-                addClass(document.body,"cxBYPAGE");
+                dropClass(document.body,"_SCROLL");
+                addClass(document.body,"_BYPAGE");
                 layout.restoreLayout(content,finish_layout);}
             function finish_layout(layout) {
                 fdjtID("CODEXPAGE").style.visibility='';
@@ -250,8 +250,8 @@ Codex.Paginate=
             function new_layout(){
 
                 // Prepare to do the layout
-                dropClass(document.body,"cxSCROLL");
-                addClass(document.body,"cxBYPAGE");
+                dropClass(document.body,"_SCROLL");
+                addClass(document.body,"_BYPAGE");
                 // This keeps the page content hidden during layout
                 // fdjtID("CODEXPAGE").style.visibility='hidden';
                 fdjtID("CODEXCONTENT").style.visibility='hidden';
@@ -379,8 +379,8 @@ Codex.Paginate=
                     if (Codex.layout) {
                         Codex.layout.Revert();
                         Codex.layout=false;}
-                    dropClass(document.body,"cxBYPAGE");
-                    addClass(document.body,"cxSCROLL");
+                    dropClass(document.body,"_BYPAGE");
+                    addClass(document.body,"_SCROLL");
                     fdjt.DOM.tweakFonts(Codex.content);}});
 
         function updateLayoutProperty(name,val){
@@ -722,16 +722,16 @@ Codex.Paginate=
             // transforms) the current layout.
             var cheaprule=Codex.CSS.resizerule;
             if (typeof flag==="undefined") flag=true;
-            if ((flag)&&(hasClass(document.body,"cxSCALEDLAYOUT"))) return;
+            if ((flag)&&(hasClass(document.body,"_SCALEDLAYOUT"))) return;
             if ((!(flag))&&
-                (!(hasClass(document.body,"cxSCALEDLAYOUT")))) return;
+                (!(hasClass(document.body,"_SCALEDLAYOUT")))) return;
             if (cheaprule) {
                 cheaprule.style[fdjtDOM.transform]="";
                 cheaprule.style[fdjtDOM.transformOrigin]="";
                 cheaprule.style.left="";
                 cheaprule.style.top="";}
             if (!(flag)) {
-                dropClass(document.body,"cxSCALEDLAYOUT");
+                dropClass(document.body,"_SCALEDLAYOUT");
                 sizeCodexPage();
                 return;}
             else sizeCodexPage();
@@ -744,7 +744,7 @@ Codex.Paginate=
             if (!(cheaprule)) {
                 var s="#CODEXPAGE div.codexpage";
                 Codex.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
-                    s+", body._ANIMATE._PREVIEW "+s,"");}
+                    s+", body._ANIMATE.cxPREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transformOrigin]="left top";
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
             var nwidth=lwidth*scale, nheight=lheight*scale;
@@ -761,7 +761,7 @@ Codex.Paginate=
                 Codex.CSS.pagespanrule.style.width=spanwidth+"px";
             else Codex.CSS.pagespanrule=fdjtDOM.addCSSRule(
                 "div.codexpagespans > span","width: "+spanwidth+"px;");
-            addClass(document.body,"cxSCALEDLAYOUT");}
+            addClass(document.body,"_SCALEDLAYOUT");}
         Codex.scaleLayout=scaleLayout;
         
         /* Updating the page display */

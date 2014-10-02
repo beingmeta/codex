@@ -1552,7 +1552,7 @@
         if ((evt.type==='click')||
             (evt.type==='tap')||
             (evt.type==='release')) {
-            dropClass(document.body,"cxHOLDING");
+            dropClass(document.body,"_HOLDING");
             if ((Codex.skimming)&&(!(Codex.hudup))) {
                 if ((mode==="refinesearch")||(mode==="searchresults")) {
                     Codex.setMode("searchresults"); return;}
@@ -1567,8 +1567,8 @@
         else if (evt.type==="tap")
             Codex.setHUD(true);
         else if (evt.type==="hold") 
-            addClass(document.body,"cxHOLDING");
-        else dropClass(document.body,"cxHOLDING");}
+            addClass(document.body,"_HOLDING");
+        else dropClass(document.body,"_HOLDING");}
     Codex.UI.hudmodebutton=hudmodebutton;
 
     Codex.UI.dropHUD=function(evt){

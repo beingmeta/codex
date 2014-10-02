@@ -838,12 +838,12 @@ Codex.setMode=
                 Codex.Frame,/codexuifont\w+/,"codexuifont"+value);});
         Codex.addConfig("animatecontent",function(name,value){
             if (Codex.dontanimate) {}
-            else if (value) addClass(document.body,"cxANIMATE");
-            else dropClass(Codex.page,"cxANIMATE");});
+            else if (value) addClass(document.body,"_ANIMATE");
+            else dropClass(Codex.page,"_ANIMATE");});
         Codex.addConfig("animatehud",function(name,value){
             if (Codex.dontanimate) {}
-            else if (value) addClass("CODEXFRAME","cxANIMATE");
-            else dropClass("CODEXFRAME","cxANIMATE");});
+            else if (value) addClass("CODEXFRAME","_ANIMATE");
+            else dropClass("CODEXFRAME","_ANIMATE");});
 
         /* Settings apply/save handlers */
 

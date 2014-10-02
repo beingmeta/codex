@@ -715,7 +715,7 @@ Codex.Startup=
                 //  heading information).
                 function(){
                     if (Codex.bypage) Codex.Paginate("initial");
-                    else addClass(document.body,"cxSCROLL");},
+                    else addClass(document.body,"_SCROLL");},
                 // Build the display TOC, both the dynamic (top of
                 // display) and the static (inside the hudheart)
                 function(){
@@ -1045,7 +1045,7 @@ Codex.Startup=
             fdjt.TapHold.default_opts.bubble=false;
             
             if (device.touch) {
-                fdjtDOM.addClass(body,"cxTOUCH");
+                fdjtDOM.addClass(body,"_TOUCH");
                 fdjt.TapHold.default_opts.fortouch=true;
                 Codex.ui="touch";
                 Codex.touch=true;
@@ -1071,15 +1071,15 @@ Codex.Startup=
                 // Have fdjtLog do it's own format conversion for the log
                 fdjtLog.doformat=true;}
             else if (device.touch) {
-                fdjtDOM.addClass(body,"cxTOUCH");
+                fdjtDOM.addClass(body,"_TOUCH");
                 Codex.ui="touch";}
             else if (!(Codex.ui)) {
                 // Assume desktop or laptop
-                fdjtDOM.addClass(body,"cxMOUSE");
+                fdjtDOM.addClass(body,"_MOUSE");
                 Codex.ui="mouse";}
             else {}
             if (Codex.iscroll) {
-                fdjtDOM.addClass(body,"cxISCROLL");
+                fdjtDOM.addClass(body,"_ISCROLL");
                 device.iscroll=true;}
             device.string=device.string+" "+
                 ((Codex.iscroll)?("iScroll"):("nativescroll"));
@@ -1654,8 +1654,8 @@ Codex.Startup=
             fdjt.UI.cancel(evt);}
 
         Codex.addConfig("showconsole",function(name,value){
-            if (value) addClass(document.body,"cxSHOWCONSOLE");
-            else dropClass(document.body,"cxSHOWCONSOLE");});
+            if (value) addClass(document.body,"_SHOWCONSOLE");
+            else dropClass(document.body,"_SHOWCONSOLE");});
         
         Codex.addConfig("uisound",function(name,value){
             Codex.uisound=(value)&&(true);});
@@ -1884,10 +1884,10 @@ Codex.Startup=
             if ((geom.left<10)||((view_width-(geom.width+geom.left))<25))
                 Codex.fullwidth=true;
             else Codex.fullwidth=false;
-            if (Codex.fullwidth) addClass(document.body,"cxFULLWIDTH");
-            else dropClass(document.body,"cxFULLWIDTH");
-            if (Codex.fullheight) addClass(document.body,"cxFULLHEIGHT");
-            else dropClass(document.body,"cxFULLHEIGHT");
+            if (Codex.fullwidth) addClass(document.body,"_FULLWIDTH");
+            else dropClass(document.body,"_FULLWIDTH");
+            if (Codex.fullheight) addClass(document.body,"_FULLHEIGHT");
+            else dropClass(document.body,"_FULLHEIGHT");
             geom=getGeometry(page,page.offsetParent,true);
             var fakepage=fdjtDOM("DIV.codexpage");
             page.appendChild(fakepage);
@@ -1920,7 +1920,7 @@ Codex.Startup=
             var shrinkrule=Codex.CSS.shrinkrule;
             if (!(shrinkrule)) {
                 shrinkrule=fdjtDOM.addCSSRule(
-                    "body._SHRINK #CODEXPAGE,body._PREVIEW #CODEXPAGE, body._SKIMMING #CODEXPAGE", "");
+                    "body.cxSHRINK #CODEXPAGE,body.cxPREVIEW #CODEXPAGE, body.cxSKIMMING #CODEXPAGE", "");
                 Codex.CSS.shrinkrule=shrinkrule;}
             var ph=geom.height, sh=ph-25, vs=(sh/ph);
             shrinkrule.style[fdjtDOM.transform]="scale("+vs+","+vs+")";
@@ -2071,7 +2071,7 @@ Codex.Startup=
                         Codex.glossdb.load(
                             getLocal("codex.queued("+Codex.refuri+")",true));
                     fdjtID("CODEXCOVER").className="bookcover";
-                    addClass(document.body,"cxNOUSER");}
+                    addClass(document.body,"_NOUSER");}
                 if (info.nodeid) setNodeID(info.nodeid);}
             else if (info.wronguser) {
                 clearOffline();
@@ -2259,8 +2259,8 @@ Codex.Startup=
             fdjtLog("Setting up user %s (%s)",userinfo._id,
                     userinfo.name||userinfo.email);
             if (userinfo) {
-                fdjtDOM.dropClass(document.body,"cxNOUSER");
-                fdjtDOM.addClass(document.body,"cxUSER");}
+                fdjtDOM.dropClass(document.body,"_NOUSER");
+                fdjtDOM.addClass(document.body,"_USER");}
             if (Codex.user) {
                 if (userinfo._id===Codex.user._id) {}
                 else throw { error: "Can't change user"};}
@@ -2307,9 +2307,9 @@ Codex.Startup=
             var startui=fdjtTime();
             if (Codex._user_ui_setup) return;
             if (!(Codex.user)) {
-                fdjtDOM.addClass(document.body,"cxNOUSER");
+                fdjtDOM.addClass(document.body,"_NOUSER");
                 return;}
-            fdjtDOM.dropClass(document.body,"cxNOUSER");
+            fdjtDOM.dropClass(document.body,"_NOUSER");
             var username=Codex.user.name||Codex.user.handle||Codex.user.email;
             if (username) {
                 if (fdjtID("CODEXUSERNAME"))

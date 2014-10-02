@@ -24,8 +24,8 @@ body.hudup #CODEXFOOT #CODEXPAGEBAR {
     -o-opacity: 0.70;}
 #CODEXFOOT #CODEXPAGEBAR span#CODEXLOCPCT {
     position: absolute; right: 3px; cursor: text;}
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR span#CODEXLOCPCT,
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR span#CODEXPAGENOTEXT {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR span#CODEXLOCPCT,
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR span#CODEXPAGENOTEXT {
     pointer-events: none;}
 #CODEXFOOT span#CODEXPAGENO span#CODEXPAGENOTEXT {
     cursor: text;}
@@ -81,8 +81,8 @@ hr#CODEXLAYOUTINDICATOR {
     font-weight: bold; color: black; background-color: transparent; 
     z-index: 200;
     display: none;}
-body._LAYOUT #CODEXLAYOUTADJUST { display: block; }
-body._LAYOUT hr#CODEXLAYOUTINDICATOR {
+body.cxLAYOUT #CODEXLAYOUTADJUST { display: block; }
+body.cxLAYOUT hr#CODEXLAYOUTINDICATOR {
     display: block; opacity: 0.8;}
 
 #CODEXFOOT #CODEXPAGEBAR .codexpagespans {
@@ -92,19 +92,19 @@ body._LAYOUT hr#CODEXLAYOUTINDICATOR {
   opacity: 0.0; overflow: hidden; z-index: 20; height: 100%;
   display: inline-block; position: absolute; bottom: 0px;
   box-sizing: border-box; vertical-align: top;}
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span {
     height: 100%;}
 #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
   background-color: lightblue; color: transparent; 
   visibility: visible; opacity: 1.0; z-index: 100;
   overflow: visible; z-index: 50;}
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans {
   top: 0px; bottom: auto;}
 body #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
     vertical-align: bottom; height: 50%;}
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
     height: 100%;}
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
   overflow: visible; visibility: visible; z-index: 60; color: black;
   opacity: 1.0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -113,12 +113,12 @@ body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
   -khtml-opacity: 1.00;
   -moz-opacity: 1.00;
   -o-opacity: 1.00;}
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview {
   background-color: gold; overflow: visible;
   visibility: visible; opacity: 1.0; z-index: 100;
   font-size: 200%; height: 150%; width: 1.5em;
   pointer-events: none;}
-body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
+body.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
     font-size: 200%; height: 75%;}
 
 #CODEXFOOT #CODEXPAGEBAR #CODEXPAGEPROGRESS {
@@ -143,9 +143,9 @@ body._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.current {
 #CODEXFOOT #CODEXPAGEBAR #CODEXSECTMARKER3.codexsectmarker {
     height: 50%; background-color: rgba(0,0,255,0.1); }
 
-body._TOUCH._PREVIEW #CODEXFOOT #CODEXPAGEBAR {
+body._TOUCH.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR {
     height: 150px;}
-body._TOUCH._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview  {
+body._TOUCH.cxPREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview  {
     height: 100%;}
 
 #CODEXHUD .codexgoto {
@@ -197,8 +197,8 @@ body._TOUCH._PREVIEW #CODEXFOOT #CODEXPAGEBAR .codexpagespans span.preview  {
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.justreading { display: none;}
 
-body._SKIMMING #CODEXHUD #CODEXSHOWTEXT span.justreading { display: none;}
-body._SKIMMING #CODEXHUD #CODEXSHOWTEXT span.stopskimming { display: inline;}
+body.cxSKIMMING #CODEXHUD #CODEXSHOWTEXT span.justreading { display: none;}
+body.cxSKIMMING #CODEXHUD #CODEXSHOWTEXT span.stopskimming { display: inline;}
 
 #CODEXHUD.addgloss #CODEXSHOWTEXT span.cancelgloss,
 #CODEXHUD.addgloss.editgloss #CODEXSHOWTEXT span.cancelchanges {
@@ -208,9 +208,9 @@ body._SKIMMING #CODEXHUD #CODEXSHOWTEXT span.stopskimming { display: inline;}
 
 body.hudup #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.openhud #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
-body._SKIMMING #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
+body.cxSKIMMING #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT {
     display: block;}
-body.hudup._PREVIEW #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
+body.hudup.cxPREVIEW #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.hudup.codexhelp #CODEXHUD #CODEXFOOT #CODEXSHOWTEXT,
 body.hudup.codexhelp #CODEXHUD #CODEXFOOT #CODEXPAGEBAR {
     display: none;}

@@ -60,9 +60,9 @@ div.helpbox img.inline { background-color: gray; }
     text-align: right; padding-top: 2px; padding-right: 8px;
     color: darkblue;
     display: none;}
-body._STARTUP #CODEXSTARTPAGE #CODEXSTARTUPMSG {
+body.cxSTARTUP #CODEXSTARTPAGE #CODEXSTARTUPMSG {
     display: inline;}
-body._STARTUP #CODEXSTARTPAGE #CODEXHELPTITLE {
+body.cxSTARTUP #CODEXSTARTPAGE #CODEXHELPTITLE {
     display: none;}
 
 body.codexhelp #CODEXHUD img.hudbutton#CODEXHELPBUTTON {
@@ -125,16 +125,16 @@ body.codexhelp #CODEXHUD > div.codexhelp {display: block;}
 body.codexhelp #CODEXHUD .hudbutton {
     opacity: 0.5;}
 body.codexhelp.hudup #CODEXHUD div.codexhelp, 
-body.codexhelp._SHRINK #CODEXHUD div.codexhelp,
-body.codexhelp._PREVIEW #CODEXHUD div.codexhelp,
+body.codexhelp.cxSHRINK #CODEXHUD div.codexhelp,
+body.codexhelp.cxPREVIEW #CODEXHUD div.codexhelp,
 body.codexhelp.hudup #CODEXHUD .helphud,
-body.codexhelp._SKIMMING #CODEXHUD div.codexhelp,
-body.codexhelp._SKIMMING #CODEXHUD .helphud,
+body.codexhelp.cxSKIMMING #CODEXHUD div.codexhelp,
+body.codexhelp.cxSKIMMING #CODEXHUD .helphud,
 body.codexhelp #CODEXHUD.addgloss .helphud,
 body.codexhelp #CODEXHUD.overtoc .helphud,
 body.codexhelp #CODEXHUD.statictoc .helphud,
-body.codexhelp._SHRINK #CODEXHUD .helphud,
-body.codexhelp._PREVIEW #CODEXHUD .helphud {
+body.codexhelp.cxSHRINK #CODEXHUD .helphud,
+body.codexhelp.cxPREVIEW #CODEXHUD .helphud {
     display: none;}
 body.codexhelp.hudup #CODEXHUD.splash div.codexhelp {
     display: block;}
@@ -144,13 +144,13 @@ body.hudup.codexhelp #CODEXHUDHELP { display: block; }
 
 body.codexhelp #CODEXHUD.addgloss #CODEXHUDHELP { display: block; }
 body.codexhelp #CODEXHUD.addgloss #CODEXSTARTPAGE,
-body.codexhelp._SHRINK #CODEXHUD.addgloss #CODEXSTARTPAGE {
+body.codexhelp.cxSHRINK #CODEXHUD.addgloss #CODEXSTARTPAGE {
     display: none; }
 
 body.codexhelp.hudup #CODEXHUD.overtoc #CODEXTOCHELP.helpbox,
 body.codexhelp #CODEXHUD.addgloss #CODEXADDGLOSSHELP.helpbox,
-body.codexhelp._SKIMMING #CODEXHUD.allglosses #CODEXSKIMMINGHELP.helpbox,
-body.codexhelp._SKIMMING #CODEXHUD.searchresults #CODEXSKIMMINGHELP.helpbox,
+body.codexhelp.cxSKIMMING #CODEXHUD.allglosses #CODEXSKIMMINGHELP.helpbox,
+body.codexhelp.cxSKIMMING #CODEXHUD.searchresults #CODEXSKIMMINGHELP.helpbox,
 body.codexhelp #CODEXHUD.refinesearch #CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp #CODEXHUD.expandsearch #CODEXSEARCHINPUTHELP.helpbox,
 body.codexhelp #CODEXHUD.searchresults #CODEXSEARCHRESULTSHELP.helpbox,
@@ -165,9 +165,9 @@ body.codexhelp #CODEXHUD.statictoc #CODEXSTATICTOCHELP.helpbox {
     -o-opacity: 0.90;
     display: block;}
 
-body.codexhelp._SKIMMING #CODEXHUD.searchresults
+body.codexhelp.cxSKIMMING #CODEXHUD.searchresults
   #CODEXSEARCHRESULTSHELP.helpbox,
-body.codexhelp._SKIMMING #CODEXHUD.allglosses
+body.codexhelp.cxSKIMMING #CODEXHUD.allglosses
   #CODEXALLGLOSSESHELP.helpbox {
     display: none;}
 
@@ -185,7 +185,7 @@ body.codexhelp._SKIMMING #CODEXHUD.allglosses
     -moz-opacity: 0.90;
     -o-opacity: 0.90;}
 
-body.codexhelp._PREVIEW #CODEXHUD #CODEXHUDHELP {
+body.codexhelp.cxPREVIEW #CODEXHUD #CODEXHUDHELP {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);

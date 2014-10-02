@@ -1009,7 +1009,7 @@ var Codex={
         if (((val)&&(!(Codex.connected)))||
             ((!(val))&&(Codex.connected)))
             fdjtDOM.swapClass(document.body,/\bcx(CONN|DISCONN)\b/,
-                              ((val)?("cxCONN"):("cxDISCONN")));
+                              ((val)?("_CONN"):("_DISCONN")));
         Codex.connected=val;
     } Codex.setConnected=setConnected;
 

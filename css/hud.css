@@ -164,7 +164,7 @@ body.hudup #CODEXHUD.openhead.overtoc #CODEXTOP {
 body.hudup #CODEXHUD.openhead #CODEXTOP .hudpanel {
     position: static;}
 #CODEXHUD.openglossmark #CODEXSKIMMER,
-body._SKIMMING #CODEXHUD #CODEXSKIMMER,
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER,
 #CODEXHUD.allglosses #CODEXSKIMMER {
     overflow: hidden;}
 #CODEXHUD.addgloss #CODEXTOP {
@@ -183,8 +183,8 @@ body.hudup #CODEXHUD #CODEXFOOT { height: 50px;}
 
 #CODEXHUD.openhead #CODEXTOP {max-height: 50%;}
 #CODEXHUD.openglossmark #CODEXSKIMMER.expanded,
-body._SKIMMING #CODEXHUD #CODEXSKIMMER.expanded,
-body._SKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded,
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER.expanded {
     height: auto; max-height: 50%; overflow: visible;}
 
 #CODEXHEARTFRAME {
@@ -338,7 +338,7 @@ body.hudup #CODEXHUD.openheart #CODEXHEARTFRAME {
 #CODEXHUD #CODEXFOOT {
     position: absolute; bottom: 0px; z-index: 300;}
 
-body._SKIMMING #CODEXHUD #CODEXSKIMMER {display: block;}
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {display: block;}
 
 /* HUD panels */
 
@@ -396,8 +396,8 @@ body.hudup #CODEXHUD div.hudpanel {
     -moz-opacity: 0.98;
     -o-opacity: 0.98;}
 
-body._SKIMMING #CODEXHUD.allglosses #CODEXSOURCES,
-body._SKIMMING #CODEXHUD.searchresults #CODEXSEARCH {
+body.cxSKIMMING #CODEXHUD.allglosses #CODEXSOURCES,
+body.cxSKIMMING #CODEXHUD.searchresults #CODEXSEARCH {
     display: none; }
 
 /* Heart rules */
@@ -502,7 +502,7 @@ div.completions.hudpanel .normal { line-height: 250%;}
     border-color: blue; opacity: 0.99;}
 ._MOUSE #CODEXHUD img.hudbutton:hover {
     border-color: blue; border-style: dotted; opacity: 0.99;}
-body._SKIMMING #CODEXHUD img.hudbutton {
+body.cxSKIMMING #CODEXHUD img.hudbutton {
     opacity: 0.80;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -534,11 +534,11 @@ body._SKIMMING #CODEXHUD img.hudbutton {
     opacity: 0.8; -webkit-opacity: 0.8;
     -moz-opacity: 0.8; -o-opacity: 0.8;}
 #CODEXHUD.addgloss #CODEXFOOT img.hudbutton[alt="save gloss"],
-body._SKIMMING #CODEXHUD.searchresults
+body.cxSKIMMING #CODEXHUD.searchresults
    img.hudbutton[hudmode="searchresults"] {
     display: inline-block; }
 #CODEXHUD.addgloss img.hudbutton[hudmode="allglosses"],
-body._SKIMMING #CODEXHUD.searchresults
+body.cxSKIMMING #CODEXHUD.searchresults
   img.hudbutton[hudmode="allglosses"] {
     display: none; }
 
@@ -638,8 +638,8 @@ body._TOUCH #CODEXHEAD.tapholding:hover #CODEXSHOWCOVER {
 body._TOUCH #CODEXHEAD:hover #CODEXSHOWCOVER {opacity: 0;}
 body.hudup #CODEXSHOWCOVER, body.hudup #CODEXHEAD:hover #CODEXSHOWCOVER {
     opacity: 1.0;}
-body._PREVIEW #CODEXSHOWCOVER, 
-body._PREVIEW.hudup #CODEXSHOWCOVER,
+body.cxPREVIEW #CODEXSHOWCOVER, 
+body.cxPREVIEW.hudup #CODEXSHOWCOVER,
 body.hudup #CODEXHUD.openhead #CODEXSHOWCOVER {
     opacity: 0;}
 #CODEXSHOWCOVER { pointer-events: none; }
@@ -740,9 +740,9 @@ body._TOUCH #CODEXFRAME > #CODEXHUD > #CODEXPOINTGLOSSES {
 
 /* The CODEXSKIMMER */
 
-body._PREVIEW #CODEXHUD.allglosses #CODEXSKIMMER,
-body._PREVIEW #CODEXHUD.searchresults #CODEXSKIMMER,
-body._SKIMMING #CODEXHUD #CODEXSKIMMER {
+body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER,
+body.cxPREVIEW #CODEXHUD.searchresults #CODEXSKIMMER,
+body.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
     display: block; overflow: hidden; border-color: steelblue;
     opacity: 0.90;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
@@ -976,24 +976,24 @@ body img.codexskimbutton#CODEXSTARTSKIM,
 body img.codexpagebutton#CODEXPREVPAGE {
     left: 0px;}
 
-body._SKIMMING img.codexskimbutton {display: block;}
-body._SKIMMING img.codexpagebutton { display: none;}
-body._SKIMMING img.codexskimbutton#CODEXSTARTSKIM,
-body._SKIMMING img.codexskimbutton#CODEXENDSKIM {
+body.cxSKIMMING img.codexskimbutton {display: block;}
+body.cxSKIMMING img.codexpagebutton { display: none;}
+body.cxSKIMMING img.codexskimbutton#CODEXSTARTSKIM,
+body.cxSKIMMING img.codexskimbutton#CODEXENDSKIM {
     display: none;}
 
-body._SKIMMING._SKIMSTART img.codexskimbutton#CODEXSTARTSKIM,
-body._SKIMMING._SKIMEND img.codexskimbutton#CODEXENDSKIM {
+body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#CODEXSTARTSKIM,
+body.cxSKIMMING.cxSKIMEND img.codexskimbutton#CODEXENDSKIM {
     display: block;}
-body._SKIMMING._SKIMSTART img.codexskimbutton#CODEXPREVSKIM,
-body._SKIMMING._SKIMEND img.codexskimbutton#CODEXNEXTSKIM {
+body.cxSKIMMING.cxSKIMSTART img.codexskimbutton#CODEXPREVSKIM,
+body.cxSKIMMING.cxSKIMEND img.codexskimbutton#CODEXNEXTSKIM {
     display: none;}
 
 /* Don't display any buttons when you're at both the start and end */
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#CODEXSTARTSKIM,
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#CODEXENDSKIM,
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#CODEXNEXTSKIM,
-body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#CODEXPREVSKIM {
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXSTARTSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXENDSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXNEXTSKIM,
+body.cxSKIMMING.cxSKIMSTART.cxSKIMEND img.codexskimbutton#CODEXPREVSKIM {
     display: none;}
 
 #CODEXHUD #SBOOKABOUT {
@@ -1082,7 +1082,7 @@ body._SKIMMING._SKIMSTART._SKIMEND img.codexskimbutton#CODEXPREVSKIM {
 
 /* The page layout message/progress indicator */
 
-body._LAYOUT._LAYOUTMESSAGE #CODEXLAYOUTMESSAGE {
+body.cxLAYOUT.cxLAYOUTMESSAGE #CODEXLAYOUTMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -1104,8 +1104,8 @@ body._LAYOUT._LAYOUTMESSAGE #CODEXLAYOUTMESSAGE {
 
 /* The cloud population message/progress indicator */
 
-body._INDEXING #CODEXHUD.search #CODEXINDEXMESSAGE,
-body._INDEXING #CODEXHUD.searchresults #CODEXINDEXMESSAGE {
+body.cxINDEXING #CODEXHUD.search #CODEXINDEXMESSAGE,
+body.cxINDEXING #CODEXHUD.searchresults #CODEXINDEXMESSAGE {
     display: block; opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -1177,7 +1177,7 @@ body._NOUSER .cxwithuser { display: none;}
 body._NOUSER .cxdisconn {display: none;}
 body._USER._CONN .cxdisconn {display: none;}
 body._USER._CONN .cxdisconn {display: none;}
-body._USER ._nouser {display: none;}
+body._USER .nouser {display: none;}
 body._USER._DISCONN .cxwithconn {display: none;}
 
 /* Close HUD buttons */
@@ -1195,7 +1195,7 @@ img.codexclosehud#CODEXSTOPSKIM {
     width: 40px; height: 40px;
     /* Let's try to do without this for now */
     display: none;}
-body._SKIMMING #CODEXHUD img.codexclosehud#CODEXSTOPSKIM {
+body.cxSKIMMING #CODEXHUD img.codexclosehud#CODEXSTOPSKIM {
     z-index: 500; display: block;}
 
 /* Full height/width rules */
@@ -1210,7 +1210,7 @@ body._FULLHEIGHT._FULLWIDTH #CODEXHUD {display: none;}
 body._FULLHEIGHT._FULLWIDTH.hudup #CODEXHUD,
 body._FULLHEIGHT._FULLWIDTH.openhud #CODEXHUD,
 body._FULLHEIGHT._FULLWIDTH.openglossmark #CODEXHUD,
-body._FULLHEIGHT._FULLWIDTH._SKIMMING #CODEXHUD,
+body._FULLHEIGHT._FULLWIDTH.cxSKIMMING #CODEXHUD,
 body._FULLHEIGHT._FULLWIDTH.hudup #CODEXHUD {
     display: block;}
 

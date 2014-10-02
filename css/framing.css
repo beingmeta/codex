@@ -72,20 +72,20 @@ body {
     z-index: 1;}
 #CODEXFRAME > div, #CODEXFRAME > div > div, #CODEXFRAME > div > a {
     box-sizing: border-box;}
-body.hudup #CODEXFRAME, body._COVER #CODEXFRAME,
-body._SKIMMING #CODEXFRAME, body.openhud #CODEXFRAME,
-body._MEDIA #CODEXFRAME {
+body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
+body.cxSKIMMING #CODEXFRAME, body.openhud #CODEXFRAME,
+body.cxMEDIA #CODEXFRAME {
     display: block;}
-body.hudup #CODEXHUD, body._SKIMMING #CODEXHUD,
-body.openhud #CODEXHUD, body._COVER #CODEXCOVER,
-body._MEDIA #CODEXMEDIA, body._MEDIA #CODEXCLOSEMEDIA {
+body.hudup #CODEXHUD, body.cxSKIMMING #CODEXHUD,
+body.openhud #CODEXHUD, body.cxCOVER #CODEXCOVER,
+body.cxMEDIA #CODEXMEDIA, body.cxMEDIA #CODEXCLOSEMEDIA {
     top: 0px; bottom: 0px; left: 0px; right: 0px;
     height: 100%; width: 100%;
     display: block;}
 
-body.hudup #CODEXFRAME, body._COVER #CODEXFRAME,
-body.openhud #CODEXFRAME, body._SKIMMING #CODEXFRAME,
-body.codexhelp #CODEXFRAME, body._MEDIA #CODEXFRAME {
+body.hudup #CODEXFRAME, body.cxCOVER #CODEXFRAME,
+body.openhud #CODEXFRAME, body.cxSKIMMING #CODEXFRAME,
+body.codexhelp #CODEXFRAME, body.cxMEDIA #CODEXFRAME {
     z-index: 50;}
 
 /* The HUD is where all of the active interface elements for reading
@@ -100,7 +100,7 @@ body._TOUCH #CODEXFRAME > #CODEXHUD > div {
     pointer-events: none;}
 body._TOUCH.hudup #CODEXFRAME > #CODEXHUD > div,
 body._TOUCH #CODEXFRAME > #CODEXHUD.addgloss > div,
-body._TOUCH._SKIMMING #CODEXFRAME > #CODEXHUD > #CODEXSKIMMER {
+body._TOUCH.cxSKIMMING #CODEXFRAME > #CODEXHUD > #CODEXSKIMMER {
     background-color: transparent;
     pointer-events: all;}
 
@@ -121,7 +121,7 @@ body._TOUCH #CODEXFRAME > #CODEXHUD > #CODEXFOOT {
     text-align: center;
     font-size: 1.5em;
     z-index: 100;}
-body._COVER #CODEXFRAME > #CODEXCOVER { pointer-events: all; }
+body.cxCOVER #CODEXFRAME > #CODEXCOVER { pointer-events: all; }
 
 #CODEXFRAME.codexuifontlarge #CODEXCOVER { font-size: 2em; }
 #CODEXFRAME.codexuifontnormal #CODEXCOVER { font-size: 1.5em; }
@@ -130,11 +130,11 @@ body._COVER #CODEXFRAME > #CODEXCOVER { pointer-events: all; }
 #CODEXFRAME.codexuifontlarge #CODEXCOVER > #CODEXCOVERCONTROLS {
     font-size: 0.8em; }
 
-body._COVER #CODEXCOVER {
+body.cxCOVER #CODEXCOVER {
     opacity: 1.0; z-index: 100; pointer-events: all;}
-body._COVER #CODEXBODY {
+body.cxCOVER #CODEXBODY {
     visibility: hidden; pointer-events: none;}
-body._COVER #CODEXHUD, body.hudup._COVER #CODEXHUD {
+body.cxCOVER #CODEXHUD, body.hudup.cxCOVER #CODEXHUD {
     visibility: hidden; z-index: -50; pointer-events: none;}
 
 #CODEXFRAME > #CODEXMEDIA {

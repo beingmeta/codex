@@ -4,30 +4,30 @@
 
 @charset "UTF-8";
 
-body._PREVIEW { cursor: crosshair; }
+body.cxPREVIEW { cursor: crosshair; }
 
-body._PREVIEW #CODEXTOP { display: none; }
-body._PREVIEW #CODEXHUD.openhead #CODEXTOP { display: none; }
+body.cxPREVIEW #CODEXTOP { display: none; }
+body.cxPREVIEW #CODEXHUD.openhead #CODEXTOP { display: none; }
 
-body._PREVIEW .hudbutton { display: none; }
+body.cxPREVIEW .hudbutton { display: none; }
 
-body._PREVIEW #CODEXHUD.openhead.overtoc #CODEXTOP {
+body.cxPREVIEW #CODEXHUD.openhead.overtoc #CODEXTOP {
     display: block; }
 
-body._PREVIEW #CODEXHUD.overtoc #CODEXTOP,
-body._PREVIEW #CODEXHUD.overtoc #CODEXFOOT {
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXFOOT {
     background-color: transparent;
     border-color: transparent;}
-body._PREVIEW #CODEXHUD.overtoc #CODEXTOP .hudpanel {
+body.cxPREVIEW #CODEXHUD.overtoc #CODEXTOP .hudpanel {
     background-color: transparent;}
 
-body._PREVIEW #CODEXHUD.allglosses #CODEXSKIMMER,
-body._PREVIEW #CODEXHUD.searchresults #CODEXSKIMMER {
+body.cxPREVIEW #CODEXHUD.allglosses #CODEXSKIMMER,
+body.cxPREVIEW #CODEXHUD.searchresults #CODEXSKIMMER {
     display: block;}
 
 /* HUD Preview rules */
 
-body._PREVIEW #CODEXHUD {
+body.cxPREVIEW #CODEXHUD {
     opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
     filter: alpha(opacity=80);
@@ -35,7 +35,7 @@ body._PREVIEW #CODEXHUD {
     -khtml-opacity: 0.80;
     -moz-opacity: 0.80;
     -o-opacity: 0.80;}
-body.hudup._PREVIEW #CODEXHEARTFRAME {
+body.hudup.cxPREVIEW #CODEXHEARTFRAME {
     background-color: transparent; border-color: transparent; opacity: 0.0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -43,7 +43,7 @@ body.hudup._PREVIEW #CODEXHEARTFRAME {
     -khtml-opacity: 0;
     -moz-opacity: 0;
     -o-opacity: 0;}
-body.hudup._PREVIEW #CODEXHUD.openheart #CODEXHEARTFRAME {
+body.hudup.cxPREVIEW #CODEXHUD.openheart #CODEXHEARTFRAME {
     background-color: transparent; border-color: transparent; opacity: 0.0; 
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
@@ -52,7 +52,7 @@ body.hudup._PREVIEW #CODEXHUD.openheart #CODEXHEARTFRAME {
     -moz-opacity: 0;
     -o-opacity: 0;}
 
-body.hudup._PREVIEW #CODEXHUD.allglosses #CODEXSOURCES {
+body.hudup.cxPREVIEW #CODEXHUD.allglosses #CODEXSOURCES {
     opacity: 0.01;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
     filter: alpha(opacity=1);
@@ -61,7 +61,7 @@ body.hudup._PREVIEW #CODEXHUD.allglosses #CODEXSOURCES {
     -moz-opacity: 0.01;
     -o-opacity: 0.01;}
 
-body._PREVIEW #CODEXHUD.searchresults #CODEXSEARCH.hudpanel {
+body.cxPREVIEW #CODEXHUD.searchresults #CODEXSEARCH.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -69,7 +69,7 @@ body._PREVIEW #CODEXHUD.searchresults #CODEXSEARCH.hudpanel {
     -khtml-opacity: 0.05;
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
-body._PREVIEW #CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
+body.cxPREVIEW #CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
     opacity: 0.05;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";
     filter: alpha(opacity=5);
@@ -78,15 +78,15 @@ body._PREVIEW #CODEXHUD.openglossmark #CODEXPOINTGLOSSES.hudpanel {
     -moz-opacity: 0.05;
     -o-opacity: 0.05;}
 
-body._PREVIEW #CODEXHUD.openhead #CODEXTOP,
-body._PREVIEW #CODEXHUD.openfoot #CODEXFOOT,
-body._PREVIEW #CODEXHUD.openhead.openheart #CODEXTOP {
+body.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.openfoot #CODEXFOOT,
+body.cxPREVIEW #CODEXHUD.openhead.openheart #CODEXTOP {
     background-color: transparent;}
 
-body.hudup._PREVIEW #CODEXHUD.openhead #CODEXTOP,
-body._PREVIEW #CODEXHUD.addgloss #CODEXTOP,
-body._PREVIEW #CODEXHUD.openglossmark #CODEXSKIMMER,
-body._PREVIEW._SKIMMING #CODEXHUD #CODEXSKIMMER {
+body.hudup.cxPREVIEW #CODEXHUD.openhead #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.addgloss #CODEXTOP,
+body.cxPREVIEW #CODEXHUD.openglossmark #CODEXSKIMMER,
+body.cxPREVIEW.cxSKIMMING #CODEXHUD #CODEXSKIMMER {
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -116,16 +116,16 @@ body._PREVIEW._SKIMMING #CODEXHUD #CODEXSKIMMER {
 #CODEXPAGEBARHELP.helpbox dfn, #CODEXSEETHRUHELP.helpbox dfn {
     font-size: 125%;}
 
-body._PREVIEW._PAGEPREVIEW #CODEXPAGEBARHELP,
-body._PREVIEW #CODEXSEETHRUHELP {
+body.cxPREVIEW.cxPAGEPREVIEW #CODEXPAGEBARHELP,
+body.cxPREVIEW #CODEXSEETHRUHELP {
     display: block; opacity: 0.9;}
-body._PREVIEW._PAGEPREVIEW #CODEXSEETHRUHELP { display: none;}
+body.cxPREVIEW.cxPAGEPREVIEW #CODEXSEETHRUHELP { display: none;}
 
-body._PREVIEW.hudup #CODEXHUD.searchresults #CODEXSEETHRUHELP,
-body._PREVIEW.hudup #CODEXHUD.allglosses #CODEXSEETHRUHELP {
+body.cxPREVIEW.hudup #CODEXHUD.searchresults #CODEXSEETHRUHELP,
+body.cxPREVIEW.hudup #CODEXHUD.allglosses #CODEXSEETHRUHELP {
     display: none;}
 
-body._PREVIEW #CODEXPAGENOTEXT, body._PREVIEW #CODEXLOCPCT, body._PREVIEW #CODEXLOCOFF {
+body.cxPREVIEW #CODEXPAGENOTEXT, body.cxPREVIEW #CODEXLOCPCT, body.cxPREVIEW #CODEXLOCOFF {
     pointer-events: none;}
 
 div.codexhelp .result span { display: none; }
