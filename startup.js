@@ -1920,7 +1920,7 @@ Codex.Startup=
             var shrinkrule=Codex.CSS.shrinkrule;
             if (!(shrinkrule)) {
                 shrinkrule=fdjtDOM.addCSSRule(
-                    "body.cxSHRINK #CODEXPAGE,body.cxPREVIEW #CODEXPAGE, body.cxSKIMMING #CODEXPAGE", "");
+                    "body._SHRINK #CODEXPAGE,body._PREVIEW #CODEXPAGE, body._SKIMMING #CODEXPAGE", "");
                 Codex.CSS.shrinkrule=shrinkrule;}
             var ph=geom.height, sh=ph-25, vs=(sh/ph);
             shrinkrule.style[fdjtDOM.transform]="scale("+vs+","+vs+")";

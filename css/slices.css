@@ -180,7 +180,7 @@ div.codexslice div.codexcard.slicenewpassage div.idhead { display: block; }
 #CODEXSKIMMER div.codexcard div.idhead {
     border-bottom: 0px;}
 
-#CODEXFRAME.cxANIMATE body.cxISCROLL div.codexslice {
+#CODEXFRAME._ANIMATE body._ISCROLL div.codexslice {
     transition-property: transform;
     -webkit-transition-property: -webkit-transform;
     -moz-transition-property: -moz-transform;

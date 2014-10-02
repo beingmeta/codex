@@ -744,7 +744,7 @@ Codex.Paginate=
             if (!(cheaprule)) {
                 var s="#CODEXPAGE div.codexpage";
                 Codex.CSS.resizerule=cheaprule=fdjtDOM.addCSSRule(
-                    s+", body.cxANIMATE.cxPREVIEW "+s,"");}
+                    s+", body._ANIMATE._PREVIEW "+s,"");}
             cheaprule.style[fdjtDOM.transformOrigin]="left top";
             cheaprule.style[fdjtDOM.transform]="scale("+scale+","+scale+")";
             var nwidth=lwidth*scale, nheight=lheight*scale;

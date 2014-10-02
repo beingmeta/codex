@@ -33,8 +33,8 @@
 
 #CODEXCOVER {}
 
-body.cxSTARTUP #CODEXCOVER, body.cxWORKING #CODEXCOVER,
-body.cxLAYOUT #CODEXCOVER {
+body._STARTUP #CODEXCOVER, body._WORKING #CODEXCOVER,
+body._LAYOUT #CODEXCOVER {
     pointer: progress;}
 
 body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
@@ -48,7 +48,7 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
     border: solid black 3px; /* border-radius: 1ex; */
     opacity: 0.0; overflow: auto; z-index: -50;
     display: none;}
-#CODEXFRAME.cxANIMATE #CODEXCOVER > div {
+#CODEXFRAME._ANIMATE #CODEXCOVER > div {
     transition-property: opacity; transition-duration: 1s;
     -webkit-transition-property: opacity; -webkit-transition-duration: 1s;
     -moz-transition-property: opacity; -moz-transition-duration: 1s;
@@ -93,8 +93,8 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 #CODEXCOVERCONTROLS > span.control:hover {
     text-decoration: underline;}
 
-#CODEXFRAME.cxANIMATE #CODEXCOVER div.loginbox,
-#CODEXFRAME.cxANIMATE #CODEXCOVER div.userbox { 
+#CODEXFRAME._ANIMATE #CODEXCOVER div.loginbox,
+#CODEXFRAME._ANIMATE #CODEXCOVER div.userbox { 
     transition-property: height; transition-duration: 2s;
     -webkit-transition-property: height; -webkit-transition-duration: 2s;
     -moz-transition-property: height; -moz-transition-duration: 2s;
@@ -107,8 +107,8 @@ body.hudup #CODEXHUD, #CODEXHUD.openhead, #CODEXHUD.openheart,
 #CODEXCOVER #CODEXCOVERCONTROLS div.loginbox {
     bottom: -40px;}
 
-body.cxNOUSER #CODEXCOVER div.loginbox,
-body.cxUSER #CODEXCOVER div.userbox {
+body._NOUSER #CODEXCOVER div.loginbox,
+body._USER #CODEXCOVER div.userbox {
     display: block; height: initial;
     vertical-align: top;
     color: gold;}
@@ -131,7 +131,7 @@ div.loginbox form > span {
 #CODEXCOVER div.userbox a.sbookslogo em { color: cornflowerblue; }
 #CODEXCOVER div.userbox span.sbooks em { color: silver;}
 #CODEXCOVER div.userbox a.sbooks em { color: steelblue;}
-body.cxUSER #CODEXCOVER div.userbox {
+body._USER #CODEXCOVER div.userbox {
     height: 40px;}
 
 #CODEXCOVER div.userbox a.sbookslogo { display: none;}
@@ -172,13 +172,13 @@ body.cxUSER #CODEXCOVER div.userbox {
 .control[data-mode='console'], .control[data-mode='aboutsbooks'],
 .control[data-mode='creditspage'] {
     display: none;}
-body.cxSHOWCONSOLE span.control[data-mode='console'] { display: inline;}
+body._SHOWCONSOLE span.control[data-mode='console'] { display: inline;}
 span.control[data-mode='layers'] .whenloggedin { display: none;}
-body.cxUSER span.control[data-mode='layers'] .whenloggedin {
+body._USER span.control[data-mode='layers'] .whenloggedin {
     display: inline;}
-body.cxUSER span.control[data-mode='layers'] .notloggedin {
+body._USER span.control[data-mode='layers'] .notloggedin {
     display: none;}
-body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
+body._USER._CONN .control[data-mode='login'] { display: none;}
 
 #CODEXCOVERCONTROLS.nobookcover .control[data-mode='bookcover'] {
     display: none;}
@@ -253,7 +253,7 @@ body.cxUSER.cxCONN .control[data-mode='login'] { display: none;}
     -webkit-overflow-scrolling: touch;
     overflow: auto;}
 
-body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
+body._SHOWCONSOLE .control[alt='Console'] {display: none;}
 
 /* Title page */
 
@@ -302,8 +302,8 @@ body.cxSHOWCONSOLE .control[alt='Console'] {display: none;}
 #CODEXSETTINGS { padding: 2%; padding-top: 2em; padding-bottom: 2em;}
 #CODEXSETTINGS form {
     max-width: 50em; margin-left: auto; margin-right: auto;}
-body.cxTOUCH #CODEXSETTINGS {  font-size: 1.2em; }
-body.cxTOUCH #CODEXSETTINGS table.settings {  font-size: 1.25em; }
+body._TOUCH #CODEXSETTINGS {  font-size: 1.2em; }
+body._TOUCH #CODEXSETTINGS table.settings {  font-size: 1.25em; }
 
 #CODEXSETTINGS h1 { margin-top: 0px; text-align: left;}
 #CODEXSETTINGS h1 a.logout {
@@ -316,7 +316,7 @@ body.cxTOUCH #CODEXSETTINGS table.settings {  font-size: 1.25em; }
     color: red; display: none;}
 #CODEXSETTINGS.changed .codexsettingschanged { display: block;}
 
-body.cxNOUSER #CODEXSETTINGS h1 a.logout {display:none;}
+body._NOUSER #CODEXSETTINGS h1 a.logout {display:none;}
 
 #CODEXSETTINGS div.setting {
      clear: both; padding: 3px; margin-bottom: 5px; min-height: 20px;}
@@ -384,7 +384,7 @@ table.settings .checkspan.ischecked {
     #CODEXSETTINGS h1 .button { font-size: 80%;}}
 #CODEXSETTINGS .button.exit {
     color: red; background-color: white;}
-body.cxNOUSER #CODEXSETTINGS h1 a.logout {display:none;}
+body._NOUSER #CODEXSETTINGS h1 a.logout {display:none;}
 
 #CODEXSETTINGS tr.codexlayoutsettings { display: none; }
 
@@ -426,11 +426,11 @@ table.settings tr.buttons td, table.settings tr.buttons th {
     background-color: silver;
     float: right;}
 #CODEXCONSOLE #CODEXCONSOLEINPUT textarea { width: 90%;}
-body.cxTOUCH #CODEXCONSOLE #CODEXCONSOLEINPUT.uptop {
+body._TOUCH #CODEXCONSOLE #CODEXCONSOLEINPUT.uptop {
     position: absolute;
     top: 5px; left: 10%; right: 10%; width: 90%;
     margin-left: 0px; padding-top: 0px;}
-body.cxTOUCH #CODEXCONSOLELOG {
+body._TOUCH #CODEXCONSOLELOG {
     /* This make it always scrollable on touch devices,
        in case interesting content is underneath the
        soft keyboard. */
@@ -462,16 +462,16 @@ body.cxTOUCH #CODEXCONSOLELOG {
     margin-top: 0.7ex; padding:  0px 1em 0px 1em;
     border: solid transparent 4px;
     font-variant: small-caps; border-radius: 1ex; }
-body.cxMOUSE #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE:hover {
+body._MOUSE #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE:hover {
     border-color: blue; border-style: dotted;}
 #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE.tapholdtarget {
     border-color: blue; }
-body.cxLAYOUT #CODEXCOVERMESSAGE > #CODEXLAYOUTMESSAGE,
+body._LAYOUT #CODEXCOVERMESSAGE > #CODEXLAYOUTMESSAGE,
 body #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE,
-body.cxBUSY #CODEXCOVERMESSAGE > #CODEXBUSYMESSAGE {
+body._BUSY #CODEXCOVERMESSAGE > #CODEXBUSYMESSAGE {
     display: inline-block;}
-body.cxLAYOUT #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE,
-body.cxBUSY #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE {
+body._LAYOUT #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE,
+body._BUSY #CODEXCOVERMESSAGE > #CODEXREADYMESSAGE {
     display: none;}
 
 #CODEXREADYMESSAGE { padding-bottom: 1ex; }

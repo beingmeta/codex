@@ -42,7 +42,7 @@ div.completions.noinput .cloudtoggle {
     -o-border-radius: 12px; -webkit-border-radius: 12px; 
     -moz-border-radius: 12px;
     cursor: pointer;}
-.cxMOUSE .cloud .showall:hover,
+._MOUSE .cloud .showall:hover,
 .cloud .showall.tapholdtarget {
     border-color: blue;}
 .cloud .showall .showless { display: none;}

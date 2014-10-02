@@ -20,7 +20,7 @@
     width: 100%; border: 0px; margin: 0px; padding: 0px;}
 #CODEXHUD #CODEXHEART .tabcontent section { clear: both;}
 
-body.cxNOUSER a.logout {display: none;}
+body._NOUSER a.logout {display: none;}
 
 /* CODEXHEART content rules */
 
